@@ -7,7 +7,7 @@ package org.diirt.datasource.formula.alarm;
 import org.diirt.datasource.formula.*;
 
 /**
- * A set of functions for alarm manipulation.
+ * Formula functions that operate on {@link org.diirt.vtype.Alarm}s.
  *
  * @author carcassi
  */

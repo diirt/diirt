@@ -23,9 +23,9 @@ import org.junit.Test;
  *
  * @author carcassi
  */
-public class TableFunctionSetTest {
+public class VTableFunctionSetTest {
 
-    private static FormulaFunctionSet set = new TableFunctionSet();
+    private static FormulaFunctionSet set = new VTableFunctionSet();
     
     @Test
     public void columnOf() {

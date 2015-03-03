@@ -7,7 +7,7 @@ package org.diirt.datasource.formula.venum;
 import org.diirt.datasource.formula.*;
 
 /**
- * A set of functions for enum manipulation.
+ * Formula functions that operate on {@link org.diirt.vtype.VEnum}s.
  *
  * @author carcassi
  */

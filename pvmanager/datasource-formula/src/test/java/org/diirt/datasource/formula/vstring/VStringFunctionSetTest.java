@@ -19,7 +19,7 @@ import org.junit.Test;
  */
 public class VStringFunctionSetTest {
 
-    private FormulaFunctionSet set = new StringFunctionSet();
+    private FormulaFunctionSet set = new VStringFunctionSet();
 
     @Test
     public void concatStringArray() {

@@ -8,16 +8,16 @@ import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FormulaFunctionSetDescription;
 
 /**
- * A function set for table operations.
+ Formula functions that operate on {@link org.diirt.vtype.VTable}s.
  *
  * @author carcassi
  */
-public class TableFunctionSet extends FormulaFunctionSet {
+public class VTableFunctionSet extends FormulaFunctionSet {
 
     /**
      * Creates a new set.
      */
-    public TableFunctionSet() {
+    public VTableFunctionSet() {
         super(new FormulaFunctionSetDescription("vtable", "Function to aggregate and manipulate tables")
                 .addFormulaFunction(new ColumnOfVTableFunction())
                 .addFormulaFunction(new ColumnFromVNumberArrayFunction())
