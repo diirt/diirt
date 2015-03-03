@@ -5,7 +5,6 @@
 package org.diirt.datasource.formula.vtable;
 
 import java.util.Arrays;
-import org.diirt.datasource.formula.BaseTestForFormula;
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FunctionTester;
 import org.diirt.util.array.ArrayDouble;
@@ -24,7 +23,7 @@ import org.junit.Test;
  *
  * @author carcassi
  */
-public class TableFunctionSetTest extends BaseTestForFormula {
+public class TableFunctionSetTest {
 
     private static FormulaFunctionSet set = new TableFunctionSet();
     

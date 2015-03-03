@@ -31,7 +31,7 @@ import org.junit.Test;
  * @author shroffk
  * 
  */
-public class ArrayFunctionSetTest extends BaseTestForFormula {
+public class ArrayFunctionSetTest {
 
     private FormulaFunctionSet set = new ArrayFunctionSet();
 

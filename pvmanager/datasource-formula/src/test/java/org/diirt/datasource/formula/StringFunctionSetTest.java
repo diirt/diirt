@@ -18,7 +18,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author shroffk
  * 
  */
-public class StringFunctionSetTest extends BaseTestForFormula {
+public class StringFunctionSetTest {
 
     private FormulaFunctionSet set = new StringFunctionSet();
 

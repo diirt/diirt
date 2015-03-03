@@ -4,18 +4,13 @@
  */
 package org.diirt.datasource.formula.venum;
 
-import org.diirt.datasource.formula.venum.VEnumFunctionSet;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.formula.alarm.*;
 import org.diirt.datasource.formula.*;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VEnum;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
 import org.junit.Test;
 
 import static org.diirt.vtype.ValueFactory.*;
@@ -25,7 +20,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * 
  * @author carcassi
  */
-public class VEnumFunctionSetTest extends BaseTestForFormula {
+public class VEnumFunctionSetTest {
 
     private VEnumFunctionSet set = new VEnumFunctionSet();
 

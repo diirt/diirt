@@ -10,7 +10,7 @@ import org.junit.Test;
  *
  * @author carcassi
  */
-public class MathFunctionSetTest extends BaseTestForFormula {
+public class MathFunctionSetTest {
 
     private static MathFunctionSet set = new MathFunctionSet();
 

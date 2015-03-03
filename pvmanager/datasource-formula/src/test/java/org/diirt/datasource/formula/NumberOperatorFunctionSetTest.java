@@ -18,7 +18,7 @@ import static org.diirt.vtype.ValueFactory.*;
  *
  * @author carcassi
  */
-public class NumberOperatorFunctionSetTest extends BaseTestForFormula {
+public class NumberOperatorFunctionSetTest {
 
     private static FormulaFunctionSet set = new NumberOperatorFunctionSet();
     
