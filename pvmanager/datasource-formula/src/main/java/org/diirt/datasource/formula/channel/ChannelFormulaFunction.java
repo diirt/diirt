@@ -26,7 +26,7 @@ class ChannelFormulaFunction extends DynamicFormulaFunction {
 
     @Override
     public String getName() {
-        return "pv";
+        return "channel";
     }
 
     @Override
