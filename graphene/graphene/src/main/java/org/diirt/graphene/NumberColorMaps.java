@@ -20,6 +20,7 @@ import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.diirt.util.config.Configuration;
 import javax.xml.parsers.DocumentBuilderFactory; 
 import javax.xml.parsers.DocumentBuilder; 
 import javax.xml.parsers.ParserConfigurationException;
@@ -97,14 +98,32 @@ public class NumberColorMaps {
         colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
         return relative(colors, Color.BLACK, colormapName);//cmap file is automatically relative
     }
-    
-    //TODO:new XML file format 
-    /*  <colormap position="relative" colorNaN="#000000">
-        <color position="0.0" value="#450000">
-        <color position="0.1" value="rgb(94,0,0)">
-        <color position="0.2" value="#400">
-        </colormap>
-    */
+    private static List<NumberColorMap> loadDefaultMaps(){
+          List<NumberColorMap> maps = new ArrayList<>();
+          Logger log = Logger.getLogger(NumberColorMaps.class.getName()); 
+          File path = new File(Configuration.getDirectory(),"graphene/colormaps"); 
+        if (path.exists()) {
+                log.log(Level.CONFIG, "Loading ColorMaps from directory: "+path);
+                for (File file : path.listFiles()) {
+                    //makes sure we are only loading the xml files
+                   if(file.getName().endsWith(".xml")){
+                      log.log(Level.CONFIG, "Loading ColorMap from file: "+file);
+                       maps.add(loadXML(file)); 
+                       log.log(Level.CONFIG, "Load Success!");
+                   }
+                }
+             
+            }
+         else { // The path does not exist
+            path.mkdirs();
+            log.log(Level.CONFIG, "Creating Path graphene/colormaps under DIIRT_HOME ");
+            throw new RuntimeException("graphene/colormaps directory not existed. Could not load default ColorMaps"); 
+        }
+   
+      
+         return maps; 
+    }
+
     private static NumberColorMap loadXML(File file){
         //if we are reading from a xml file
 
@@ -209,13 +228,23 @@ public class NumberColorMaps {
             = new ConcurrentHashMap<>();
    
     static {
+        
         registeredColorSchemes.put(JET.toString(), JET);
         registeredColorSchemes.put(GRAY.toString(), GRAY);
         registeredColorSchemes.put(BONE.toString(), BONE);
         registeredColorSchemes.put(HOT.toString(), HOT);
         registeredColorSchemes.put(HSV.toString(), HSV);
+        
         // TODO: Load new ones from "DIIRT_HOME/graphene/colormaps/
         // using Configuration. (see jdbc service)
+        
+         /*
+        List<NumberColorMap> maps = loadDefaultMaps(); 
+        
+        for(NumberColorMap map: maps) {
+            registeredColorSchemes.put(map.toString(),map); 
+        }
+         */
     }
     
     /**
