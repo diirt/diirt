@@ -13,7 +13,7 @@ import org.diirt.datasource.formula.OneArgNumericFormulaFunction;
 import org.diirt.datasource.formula.TwoArgNumericFormulaFunction;
 
 /**
- * A set of function for the number scalar operators.
+ * Formula functions that operate on {@link org.diirt.vtype.VNumber}s.
  *
  * @author carcassi
  */
