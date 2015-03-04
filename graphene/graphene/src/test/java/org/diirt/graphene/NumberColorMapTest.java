@@ -205,4 +205,31 @@ public class NumberColorMapTest {
         assertThat(instance.colorFor(0.0), equalTo(getRGB(Color.YELLOW)));
         assertThat(instance.colorFor(1.0), equalTo(getRGB(Color.GREEN)));
     }
+    
+    @Test
+   
+    public void getRegisteredColorSchemeJET() throws Exception{
+         
+       NumberColorMap jet = NumberColorMaps.getRegisteredColorSchemes().get("JET"); 
+        Range range = Ranges.range(0.0, 1.0);
+        NumberColorMapInstance colorScheme = jet.createInstance(range);
+        assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.rgb(0,0,138))));
+        assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.rgb(0,0,138))));
+        assertThat(colorScheme.colorFor(1.0), equalTo(getRGB(Color.rgb(138,0,0))));
+        assertThat(colorScheme.colorFor(1.1), equalTo(getRGB(Color.rgb(138,0,0))));
+        assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.BLACK)));
+    }
+    @Test
+    public void getRegisterColorSchemeBONE() throws Exception{
+        NumberColorMap bone = NumberColorMaps.getRegisteredColorSchemes().get("BONE"); 
+        Range range = Ranges.range(0.0,1.0); 
+        NumberColorMapInstance colorScheme = bone.createInstance(range); 
+        assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.BLACK)));
+        assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.BLACK)));
+        assertThat(colorScheme.colorFor(0.25), equalTo(getRGB(Color.rgb(57,57,86))));
+        assertThat(colorScheme.colorFor(0.5), equalTo(getRGB(Color.rgb(107,115,140))));
+        assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.RED)));
+    }
+            
+    
 }
