@@ -2,7 +2,11 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.math;
+
+import org.diirt.datasource.formula.FormulaFunctionSet;
+import org.diirt.datasource.formula.FormulaFunctionSetDescription;
+import org.diirt.datasource.formula.OneArgNumericFormulaFunction;
 
 /**
  * A function set that corresponds to all methods in {@link Math}.
