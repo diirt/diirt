@@ -12,12 +12,12 @@ import org.diirt.datasource.formula.DynamicFormulaFunction;
 import org.diirt.vtype.VString;
 
 /**
- * Formula function that returns the value of the pv matching the name
+ * Formula function that returns the value of a channel matching the name
  * of the argument.
  *
  * @author carcassi
  */
-class ChannelFormulaFunction extends DynamicFormulaFunction {
+public class ChannelFormulaFunction extends DynamicFormulaFunction {
 
     @Override
     public boolean isVarArgs() {

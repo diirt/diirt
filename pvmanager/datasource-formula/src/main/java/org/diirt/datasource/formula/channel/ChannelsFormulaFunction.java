@@ -19,11 +19,11 @@ import org.diirt.vtype.table.VTableFactory;
 
 /**
  * Formula function that accepts a list of strings and returns a table where 
- * each row is the value of the pv matching the name.
+ * each row is the value of the channel matching the name.
  *
  * @author carcassi
  */
-class ChannelsFormulaFunction extends DynamicFormulaFunction {
+public class ChannelsFormulaFunction extends DynamicFormulaFunction {
 
     @Override
     public boolean isVarArgs() {

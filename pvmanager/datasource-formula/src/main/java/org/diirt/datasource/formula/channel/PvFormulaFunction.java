@@ -5,10 +5,12 @@
 package org.diirt.datasource.formula.channel;
 
 /**
+ * Formula function that returns the value of a channel matching the name
+ * of the argument.
  *
  * @author carcassi
  */
-class PvFormulaFunction extends ChannelFormulaFunction {
+public class PvFormulaFunction extends ChannelFormulaFunction {
 
     @Override
     public String getName() {

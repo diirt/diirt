@@ -5,10 +5,12 @@
 package org.diirt.datasource.formula.channel;
 
 /**
+ * Formula function that accepts a list of strings and returns a table where 
+ * each row is the value of the channel matching the name.
  *
  * @author carcassi
  */
-class PvsFormulaFunction extends ChannelsFormulaFunction {
+public class PvsFormulaFunction extends ChannelsFormulaFunction {
 
     @Override
     public String getName() {
