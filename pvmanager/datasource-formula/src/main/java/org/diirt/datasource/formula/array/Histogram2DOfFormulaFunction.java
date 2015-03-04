@@ -33,7 +33,7 @@ import org.diirt.vtype.table.VTableFactory;
  * @author shroffk
  * 
  */
-class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
+public class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
 
     @Override
     public boolean isVarArgs() {

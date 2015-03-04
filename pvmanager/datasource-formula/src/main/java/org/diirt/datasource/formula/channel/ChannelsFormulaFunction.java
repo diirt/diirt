@@ -138,8 +138,10 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
     @Override
     public void dispose() {
         // Disconnect everything on dispose
-        for (DesiredRateExpression<?> desiredRateExpression : new HashSet<>(currentExpressions)) {
-            getDirector().disconnectReadExpression(desiredRateExpression);
+        if (currentExpressions != null) {
+            for (DesiredRateExpression<?> desiredRateExpression : new HashSet<>(currentExpressions)) {
+                getDirector().disconnectReadExpression(desiredRateExpression);
+            }
         }
         currentExpressions = null;
         previousNames = null;

@@ -27,7 +27,7 @@ import org.diirt.vtype.VNumberArray;
  * @author shroffk
  * 
  */
-class HistogramOfFormulaFunction extends StatefulFormulaFunction {
+public class HistogramOfFormulaFunction extends StatefulFormulaFunction {
 
     @Override
     public boolean isVarArgs() {

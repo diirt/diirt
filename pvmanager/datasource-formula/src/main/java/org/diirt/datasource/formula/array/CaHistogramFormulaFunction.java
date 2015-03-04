@@ -25,7 +25,7 @@ import org.diirt.vtype.table.VTableFactory;
  *
  * @author carcassi
  */
-class CaHistogramFormulaFunction extends DynamicFormulaFunction {
+public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
 
     @Override
     public boolean isVarArgs() {
@@ -126,8 +126,10 @@ class CaHistogramFormulaFunction extends DynamicFormulaFunction {
     @Override
     public void dispose() {
         // Disconnect everything on dispose
-        for (DesiredRateExpression<?> desiredRateExpression : new HashSet<>(currentExpressions)) {
-            getDirector().disconnectReadExpression(desiredRateExpression);
+        if (currentExpressions != null) {
+            for (DesiredRateExpression<?> desiredRateExpression : new HashSet<>(currentExpressions)) {
+                getDirector().disconnectReadExpression(desiredRateExpression);
+            }
         }
         currentExpressions = null;
         previousName = null;
