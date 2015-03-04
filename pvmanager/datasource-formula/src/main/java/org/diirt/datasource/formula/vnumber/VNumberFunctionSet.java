@@ -17,12 +17,12 @@ import org.diirt.datasource.formula.TwoArgNumericFormulaFunction;
  *
  * @author carcassi
  */
-public class NumberOperatorFunctionSet extends FormulaFunctionSet {
+public class VNumberFunctionSet extends FormulaFunctionSet {
 
     /**
      * Creates a new set.
      */
-    public NumberOperatorFunctionSet() {
+    public VNumberFunctionSet() {
         super(new FormulaFunctionSetDescription("vnumber", "Operators for numeric scalars")
                 .addFormulaFunction(new TwoArgNumericFormulaFunction("+", "Numeric addition", "arg1", "arg2") {
                     @Override

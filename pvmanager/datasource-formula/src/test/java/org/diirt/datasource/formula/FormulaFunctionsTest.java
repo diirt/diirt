@@ -4,7 +4,7 @@
  */
 package org.diirt.datasource.formula;
 
-import org.diirt.datasource.formula.vnumber.NumberOperatorFunctionSet;
+import org.diirt.datasource.formula.vnumber.VNumberFunctionSet;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.vtype.VNumber;
@@ -148,7 +148,7 @@ public class FormulaFunctionsTest {
     
     @Test
     public void formatSignature3() {
-        FormulaFunction function = new NumberOperatorFunctionSet().findFunctions("+").iterator().next();
+        FormulaFunction function = new VNumberFunctionSet().findFunctions("+").iterator().next();
         assertThat(FormulaFunctions.formatSignature(function), equalTo("(VNumber arg1 + VNumber arg2): VNumber"));
     }
 
