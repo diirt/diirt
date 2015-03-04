@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.formula;
 
+import org.diirt.datasource.formula.vnumber.NumberOperatorFunctionSet;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.vtype.VNumber;
@@ -138,7 +139,7 @@ public class FormulaFunctionsTest {
     public void formatSignature2() {
         FormulaFunction function = new OneArgNumericFormulaFunction("log", "desc", "input") {
             @Override
-            double calculate(double arg) {
+            public double calculate(double arg) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         };

@@ -2,36 +2,38 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.datasource.formula;
+package org.diirt.datasource.formula.vnumber;
 
 import java.util.Arrays;
 import java.util.List;
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.vtype.VBoolean;
+import org.diirt.vtype.ValueFactory;
 
 
 /**
- * Implementation for ?: operator.
+ * Implementation for ! operator.
  *
  * @author carcassi
  */
-class ConditionalOperatorFormulaFunction implements FormulaFunction {
+class LogicalNotFormulaFunction implements FormulaFunction {
 
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
     
-    public ConditionalOperatorFormulaFunction() {
-        this.argumentTypes = Arrays.<Class<?>>asList(VBoolean.class, Object.class, Object.class);
-        this.argumentNames = Arrays.asList("condition", "valueIfTrue", "valueIfFalse");
+    public LogicalNotFormulaFunction() {
+        this.argumentTypes = Arrays.<Class<?>>asList(VBoolean.class);
+        this.argumentNames = Arrays.asList("arg");
     }
 
     @Override
     public String getName() {
-        return "?:";
+        return "!";
     }
 
     @Override
     public String getDescription() {
-        return "Conditional operator";
+        return "Conditional NOT";
     }
 
     @Override
@@ -61,18 +63,11 @@ class ConditionalOperatorFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(List<Object> args) {
-        VBoolean condition = (VBoolean) args.get(0);
-        if (condition == null) {
+        VBoolean value = (VBoolean) args.get(0);
+        if (value == null) {
             return null;
         }
-        Object value;
-        if (condition.getValue()) {
-            value = args.get(1);
-        } else {
-            value = args.get(2);
-        }
-        
-        return value;
+        return ValueFactory.newVBoolean(!value.getValue(), value, value);
     }
     
 }

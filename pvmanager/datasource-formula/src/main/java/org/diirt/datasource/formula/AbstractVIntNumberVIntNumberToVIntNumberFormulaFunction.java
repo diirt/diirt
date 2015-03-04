@@ -113,6 +113,6 @@ public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction im
      * @param arg2 the second argument
      * @return the result
      */
-    abstract int calculate(int arg1, int arg2);
+    public abstract int calculate(int arg1, int arg2);
     
 }

@@ -18,7 +18,7 @@ import org.diirt.vtype.ValueUtil;
  *
  * @author carcassi
  */
-abstract class TwoArgNumericFormulaFunction implements FormulaFunction {
+public abstract class TwoArgNumericFormulaFunction implements FormulaFunction {
 
     private final String name;
     private final String description;
@@ -85,6 +85,6 @@ abstract class TwoArgNumericFormulaFunction implements FormulaFunction {
                 , alarm, time, ValueFactory.displayNone());
     }
     
-    abstract double calculate(double arg1, double arg2);
+    public abstract double calculate(double arg1, double arg2);
     
 }

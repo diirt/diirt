@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.formula;
 
+import org.diirt.datasource.formula.vnumber.NumberOperatorFunctionSet;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.util.time.TimeDuration;

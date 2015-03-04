@@ -108,6 +108,6 @@ public abstract class AbstractVNumberVNumberToVBooleanFormulaFunction implements
      * @param arg2 the second argument
      * @return the result
      */
-    abstract boolean calculate(double arg1, double arg2);
+    public abstract boolean calculate(double arg1, double arg2);
     
 }

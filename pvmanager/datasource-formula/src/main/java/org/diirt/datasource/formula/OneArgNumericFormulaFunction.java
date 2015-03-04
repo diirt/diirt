@@ -15,7 +15,7 @@ import org.diirt.vtype.ValueFactory;
  *
  * @author carcassi
  */
-abstract class OneArgNumericFormulaFunction implements FormulaFunction {
+public abstract class OneArgNumericFormulaFunction implements FormulaFunction {
 
     private final String name;
     private final String description;
@@ -74,6 +74,6 @@ abstract class OneArgNumericFormulaFunction implements FormulaFunction {
                 arg, arg, ValueFactory.displayNone());
     }
     
-    abstract double calculate(double arg);
+    public abstract double calculate(double arg);
     
 }

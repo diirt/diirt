@@ -107,6 +107,6 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
      * @param arg2 the second argument
      * @return the result
      */
-    abstract boolean calculate(boolean arg1, boolean arg2);
+    public abstract boolean calculate(boolean arg1, boolean arg2);
     
 }
