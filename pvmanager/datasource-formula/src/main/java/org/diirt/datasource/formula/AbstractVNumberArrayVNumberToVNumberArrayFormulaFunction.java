@@ -17,12 +17,14 @@ import static org.diirt.vtype.ValueFactory.newVNumberArray;
 import org.diirt.vtype.ValueUtil;
 
 /**
- * Abstract class for formula functions that take a VNumber and a VNumberArray as arguments
- * and return a VNumberArray.
+ * Abstract class for formula functions that take a {@link VNumber} and a 
+ * {@link VNumberArray} as arguments
+ * and return a {@code VNumberArray}.
  * <p>
  * This class takes care of:
  * <ul>
- *    <li>extracting the Number and ListNumber from the VNumber and VNumberArray</li>
+ *    <li>extracting double value from {@code VNumber}</li>
+ *    <li>extracting ListNumber value from {@code VNumberArray}</li>
  *    <li>null handling - returns null if one argument is null</li>
  *    <li>alarm handling - returns highest alarm</li>
  *    <li>time handling - returns latest time, or now if no time is available</li>

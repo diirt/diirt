@@ -14,12 +14,12 @@ import org.diirt.vtype.ValueUtil;
 
 
 /**
- * Abstract class for formula functions that take two VNumber as arguments
- * and return a VBoolean.
+ * Abstract class for formula functions that take two {@link VNumber} as arguments
+ * and return a {@link VBoolean}.
  * <p>
  * This class takes care of:
  * <ul>
- *    <li>extracting the Number from the VNumbers</li>
+ *    <li>extracting double value from {@code VNumber}</li>
  *    <li>null handling - returns null if one argument is null</li>
  *    <li>alarm handling - returns highest alarm</li>
  *    <li>time handling - returns latest time, or now if no time is available</li>

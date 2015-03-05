@@ -11,12 +11,12 @@ import org.diirt.vtype.ValueFactory;
 
 
 /**
- * Abstract class for formula functions that take one VNumber as arguments
- * and return a VNumber.
+ * Abstract class for formula functions that take one {@link VNumber} as argument
+ * and return a {@code VNumber}.
  * <p>
  * This class takes care of:
  * <ul>
- *    <li>extracting the Number from the VNumbes</li>
+ *    <li>extracting double value from {@code VNumber}</li>
  *    <li>null handling - returns null if the argument is null</li>
  *    <li>alarm handling - returns the argument alarm</li>
  *    <li>time handling - returns the argument time</li>
