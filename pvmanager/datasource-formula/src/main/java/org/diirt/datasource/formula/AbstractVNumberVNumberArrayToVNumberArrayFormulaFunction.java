@@ -46,13 +46,27 @@ public abstract class AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction i
     /**
      * Creates a new function.
      * 
-     * @param name the name of the function
-     * @param description a short description
-     * @param arg1Name first argument name
-     * @param arg2Name second argument name
+     * @param name function name; can't be null
+     * @param description function description; can't be null
+     * @param arg1Name first argument name; can't be null
+     * @param arg2Name second argument name; can't be null
      */
     public AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction(String name, String description,
 	    String arg1Name, String arg2Name) {
+        // Validate parameters
+        if (name == null) {
+            throw new NullPointerException("Function name can't be null");
+        }
+        if (description == null) {
+            throw new NullPointerException("Function description can't be null");
+        }
+        if (arg1Name == null) {
+            throw new NullPointerException("First argument name can't be null");
+        }
+        if (arg2Name == null) {
+            throw new NullPointerException("Second argument name can't be null");
+        }
+        
 	this.name = name;
 	this.description = description;
 	this.argumentNames = Arrays.asList(arg1Name, arg2Name);

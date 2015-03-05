@@ -33,11 +33,10 @@ public abstract class AbstractVNumberToVNumberFormulaFunction implements Formula
     private final List<String> argumentNames;
     
     /**
-     * Creates a new function with the given function name, function description,
-     * and argument name.
+     * Creates a new function.
      * 
-     * @param name the function name; can't be null
-     * @param description the description; can't be null
+     * @param name function name; can't be null
+     * @param description function description; can't be null
      * @param argName the argument name; can't be null
      */
     public AbstractVNumberToVNumberFormulaFunction(String name, String description, String argName) {
