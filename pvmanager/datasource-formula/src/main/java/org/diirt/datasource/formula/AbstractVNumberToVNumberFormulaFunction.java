@@ -32,7 +32,26 @@ public abstract class AbstractVNumberToVNumberFormulaFunction implements Formula
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
     
+    /**
+     * Creates a new function with the given function name, function description,
+     * and argument name.
+     * 
+     * @param name the function name; can't be null
+     * @param description the description; can't be null
+     * @param argName the argument name; can't be null
+     */
     public AbstractVNumberToVNumberFormulaFunction(String name, String description, String argName) {
+        // Validate parameters
+        if (name == null) {
+            throw new NullPointerException("Function name can't be null");
+        }
+        if (description == null) {
+            throw new NullPointerException("Function description can't be null");
+        }
+        if (argName == null) {
+            throw new NullPointerException("Argument name can't be null");
+        }
+        
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VNumber.class);
