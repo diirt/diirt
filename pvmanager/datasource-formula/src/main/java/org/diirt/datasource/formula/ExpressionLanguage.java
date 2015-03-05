@@ -63,6 +63,13 @@ public class ExpressionLanguage {
         }
     }
     
+    /**
+     * Returns the expression corresponding to the formula represented by the
+     * given Abstract Syntax Tree.
+     * 
+     * @param ast a formula abstract syntax tree
+     * @return an expression for the formula
+     */
     public static DesiredRateReadWriteExpression<?, Object> formula(FormulaAst ast) {
         DesiredRateExpression<?> exp = ast.toExpression();
             
