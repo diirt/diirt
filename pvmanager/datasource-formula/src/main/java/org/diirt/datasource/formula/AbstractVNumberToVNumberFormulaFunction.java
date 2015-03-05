@@ -12,17 +12,28 @@ import org.diirt.vtype.ValueFactory;
 
 
 /**
- *
- * @author carcassi
+ * Abstract class for formula functions that take one VNumber as arguments
+ * and return a VNumber.
+ * <p>
+ * This class takes care of:
+ * <ul>
+ *    <li>extracting the Number from the VNumbes</li>
+ *    <li>null handling - returns null if the argument is null</li>
+ *    <li>alarm handling - returns the argument alarm</li>
+ *    <li>time handling - returns the argument time</li>
+ *    <li>display handling - returns display none</li>
+ * </ul>
+ * 
+ * @author shroffk
  */
-public abstract class OneArgNumericFormulaFunction implements FormulaFunction {
+public abstract class AbstractVNumberToVNumberFormulaFunction implements FormulaFunction {
 
     private final String name;
     private final String description;
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
     
-    public OneArgNumericFormulaFunction(String name, String description, String argName) {
+    public AbstractVNumberToVNumberFormulaFunction(String name, String description, String argName) {
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VNumber.class);
@@ -65,7 +76,7 @@ public abstract class OneArgNumericFormulaFunction implements FormulaFunction {
     }
 
     @Override
-    public Object calculate(List<Object> args) {
+    public final Object calculate(List<Object> args) {
         VNumber arg = (VNumber) args.get(0);
         if (arg == null) {
             return null;
@@ -74,6 +85,13 @@ public abstract class OneArgNumericFormulaFunction implements FormulaFunction {
                 arg, arg, ValueFactory.displayNone());
     }
     
+    /**
+     * Calculates the result based on the arguments. This is the only
+     * method one has to implement.
+     * 
+     * @param arg the argument
+     * @return the result
+     */
     public abstract double calculate(double arg);
     
 }

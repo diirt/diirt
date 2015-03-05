@@ -137,7 +137,7 @@ public class FormulaFunctionsTest {
     
     @Test
     public void formatSignature2() {
-        FormulaFunction function = new OneArgNumericFormulaFunction("log", "desc", "input") {
+        FormulaFunction function = new AbstractVNumberToVNumberFormulaFunction("log", "desc", "input") {
             @Override
             public double calculate(double arg) {
                 throw new UnsupportedOperationException("Not supported yet.");

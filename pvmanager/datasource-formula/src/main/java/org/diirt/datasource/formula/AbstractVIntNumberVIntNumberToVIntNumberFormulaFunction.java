@@ -26,7 +26,6 @@ import org.diirt.vtype.ValueUtil;
  * </ul>
  * 
  * @author shroffk
- * 
  */
 public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction implements FormulaFunction {
 

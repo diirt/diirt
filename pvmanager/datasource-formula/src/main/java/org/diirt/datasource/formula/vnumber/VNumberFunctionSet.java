@@ -9,7 +9,7 @@ import org.diirt.datasource.formula.AbstractVIntNumberVIntNumberToVIntNumberForm
 import org.diirt.datasource.formula.AbstractVNumberVNumberToVBooleanFormulaFunction;
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FormulaFunctionSetDescription;
-import org.diirt.datasource.formula.OneArgNumericFormulaFunction;
+import org.diirt.datasource.formula.AbstractVNumberToVNumberFormulaFunction;
 import org.diirt.datasource.formula.TwoArgNumericFormulaFunction;
 
 /**
@@ -62,7 +62,7 @@ public class VNumberFunctionSet extends FormulaFunctionSet {
                         return Math.pow(arg1, arg2);
                     }
                 })
-                .addFormulaFunction(new OneArgNumericFormulaFunction("-", "Numeric negation", "arg1") {
+                .addFormulaFunction(new AbstractVNumberToVNumberFormulaFunction("-", "Numeric negation", "arg1") {
                     @Override
                     public double calculate(double arg1) {
                         return - arg1;
