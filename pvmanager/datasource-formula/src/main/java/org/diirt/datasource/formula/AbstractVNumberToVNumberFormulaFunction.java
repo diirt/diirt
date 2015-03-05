@@ -6,7 +6,6 @@ package org.diirt.datasource.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.ValueFactory;
 

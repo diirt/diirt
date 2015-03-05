@@ -10,7 +10,7 @@ import org.diirt.datasource.formula.AbstractVNumberVNumberToVBooleanFormulaFunct
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FormulaFunctionSetDescription;
 import org.diirt.datasource.formula.AbstractVNumberToVNumberFormulaFunction;
-import org.diirt.datasource.formula.TwoArgNumericFormulaFunction;
+import org.diirt.datasource.formula.AbstractVNumberVNumberToVNumberFormulaFunction;
 
 /**
  * Formula functions that operate on {@link org.diirt.vtype.VNumber}s.
@@ -26,37 +26,37 @@ public class VNumberFunctionSet extends FormulaFunctionSet {
         // Use abstact classes for most of the functions as the signature
         // is the same
         super(new FormulaFunctionSetDescription("vnumber", "Operators for numeric scalars")
-                .addFormulaFunction(new TwoArgNumericFormulaFunction("+", "Numeric addition", "arg1", "arg2") {
+                .addFormulaFunction(new AbstractVNumberVNumberToVNumberFormulaFunction("+", "Numeric addition", "arg1", "arg2") {
                     @Override
                     public double calculate(double arg1, double arg2) {
                         return arg1 + arg2;
                     }
                 })
-                .addFormulaFunction(new TwoArgNumericFormulaFunction("-", "Numeric subtraction", "arg1", "arg2") {
+                .addFormulaFunction(new AbstractVNumberVNumberToVNumberFormulaFunction("-", "Numeric subtraction", "arg1", "arg2") {
                     @Override
                     public double calculate(double arg1, double arg2) {
                         return arg1 - arg2;
                     }
                 })
-                .addFormulaFunction(new TwoArgNumericFormulaFunction("*", "Numeric multiplication", "arg1", "arg2") {
+                .addFormulaFunction(new AbstractVNumberVNumberToVNumberFormulaFunction("*", "Numeric multiplication", "arg1", "arg2") {
                     @Override
                     public double calculate(double arg1, double arg2) {
                         return arg1 * arg2;
                     }
                 })
-                .addFormulaFunction(new TwoArgNumericFormulaFunction("/", "Numeric division", "arg1", "arg2") {
+                .addFormulaFunction(new AbstractVNumberVNumberToVNumberFormulaFunction("/", "Numeric division", "arg1", "arg2") {
                     @Override
                     public double calculate(double arg1, double arg2) {
                         return arg1 / arg2;
                     }
                 })
-                .addFormulaFunction(new TwoArgNumericFormulaFunction("%", "Numeric remainder", "arg1", "arg2") {
+                .addFormulaFunction(new AbstractVNumberVNumberToVNumberFormulaFunction("%", "Numeric remainder", "arg1", "arg2") {
                     @Override
                     public double calculate(double arg1, double arg2) {
                         return arg1 % arg2;
                     }
                 })
-                .addFormulaFunction(new TwoArgNumericFormulaFunction("^", "Numeric power", "arg1", "arg2") {
+                .addFormulaFunction(new AbstractVNumberVNumberToVNumberFormulaFunction("^", "Numeric power", "arg1", "arg2") {
                     @Override
                     public double calculate(double arg1, double arg2) {
                         return Math.pow(arg1, arg2);
