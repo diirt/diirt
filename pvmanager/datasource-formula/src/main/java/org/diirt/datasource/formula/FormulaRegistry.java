@@ -144,6 +144,12 @@ public class FormulaRegistry {
         return functions;
     }
     
+    /**
+     * Returns the value of the constant with the given name
+     * 
+     * @param constantName the constant name
+     * @return the value of the name
+     */
     public Object findNamedConstant(String constantName) {
         return constants.get(constantName);
     }
