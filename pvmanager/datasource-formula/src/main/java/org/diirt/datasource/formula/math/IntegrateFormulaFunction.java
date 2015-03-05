@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.formula.math;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -14,14 +13,12 @@ import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.table.ListNumberProvider;
-import org.diirt.vtype.table.VTableFactory;
 
 /**
  *
  * @author carcassi
  */
-class IntegrateFormulaFunction extends StatefulFormulaFunction {
+public class IntegrateFormulaFunction extends StatefulFormulaFunction {
 
     @Override
     public boolean isVarArgs() {
