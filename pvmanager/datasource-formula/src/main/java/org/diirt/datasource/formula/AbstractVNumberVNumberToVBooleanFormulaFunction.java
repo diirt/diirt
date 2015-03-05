@@ -51,42 +51,42 @@ public abstract class AbstractVNumberVNumberToVBooleanFormulaFunction implements
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
     @Override
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
     @Override
-    public boolean isPure() {
+    public final boolean isPure() {
         return true;
     }
 
     @Override
-    public boolean isVarArgs() {
+    public final boolean isVarArgs() {
         return false;
     }
 
     @Override
-    public List<Class<?>> getArgumentTypes() {
+    public final List<Class<?>> getArgumentTypes() {
         return argumentTypes;
     }
 
     @Override
-    public List<String> getArgumentNames() {
+    public final List<String> getArgumentNames() {
         return argumentNames;
     }
 
     @Override
-    public Class<?> getReturnType() {
+    public final Class<?> getReturnType() {
         return VBoolean.class;
     }
 
     @Override
-    public Object calculate(List<Object> args) {
+    public final Object calculate(List<Object> args) {
         if (NullUtils.containsNull(args)) {
             return null;
         }

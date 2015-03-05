@@ -40,37 +40,37 @@ public abstract class AbstractVNumberToVNumberFormulaFunction implements Formula
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
     @Override
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
     @Override
-    public boolean isPure() {
+    public final boolean isPure() {
         return true;
     }
 
     @Override
-    public boolean isVarArgs() {
+    public final boolean isVarArgs() {
         return false;
     }
 
     @Override
-    public List<Class<?>> getArgumentTypes() {
+    public final List<Class<?>> getArgumentTypes() {
         return argumentTypes;
     }
 
     @Override
-    public List<String> getArgumentNames() {
+    public final List<String> getArgumentNames() {
         return argumentNames;
     }
 
     @Override
-    public Class<?> getReturnType() {
+    public final Class<?> getReturnType() {
         return VNumber.class;
     }
 
