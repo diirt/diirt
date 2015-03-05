@@ -59,42 +59,42 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction i
     }
 
     @Override
-    public boolean isPure() {
+    public final boolean isPure() {
 	return true;
     }
 
     @Override
-    public boolean isVarArgs() {
+    public final boolean isVarArgs() {
 	return false;
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
 	return name;
     }
 
     @Override
-    public String getDescription() {
+    public final String getDescription() {
 	return description;
     }
 
     @Override
-    public List<Class<?>> getArgumentTypes() {
+    public final List<Class<?>> getArgumentTypes() {
 	return argumentTypes;
     }
 
     @Override
-    public List<String> getArgumentNames() {
+    public final List<String> getArgumentNames() {
 	return argumentNames;
     }
 
     @Override
-    public Class<?> getReturnType() {
+    public final Class<?> getReturnType() {
 	return VNumberArray.class;
     }
 
     @Override
-    public Object calculate(List<Object> args) {
+    public final Object calculate(List<Object> args) {
         if (NullUtils.containsNull(args)) {
             return null;
         }
@@ -114,7 +114,7 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction i
      * method one has to implement.
      * 
      * @param arg1 the first argument; not null
-     * @param arg2 the second argument; not null
+     * @param arg2 the second argument
      * @return the result; not null
      */
     public abstract ListNumber calculate(ListNumber arg1, double arg2);
