@@ -103,7 +103,7 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction i
         VNumber arg2 = (VNumber) args.get(1);
         
 	return newVNumberArray(
-		calculate(arg1.getData(), arg2.getValue()),
+		calculate(arg1.getData(), arg2.getValue().doubleValue()),
                 ValueUtil.highestSeverityOf(args, false),
 		ValueUtil.latestValidTimeOrNowOf(args),
                 displayNone());
@@ -117,6 +117,6 @@ public abstract class AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction i
      * @param arg2 the second argument; not null
      * @return the result; not null
      */
-    public abstract ListNumber calculate(ListNumber arg1, Number arg2);
+    public abstract ListNumber calculate(ListNumber arg1, double arg2);
 
 }

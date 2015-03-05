@@ -35,8 +35,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                         new AbstractVNumberArrayVNumberToVNumberArrayFormulaFunction("arrayPow", "Result[x] = pow(array[x], expon)",
                                 "array", "expon") {
                     @Override
-                    public ListNumber calculate(ListNumber arg1, Number arg2) {
-                        return ListMath.pow(arg1, arg2.doubleValue());
+                    public ListNumber calculate(ListNumber arg1, double arg2) {
+                        return ListMath.pow(arg1, arg2);
                     }
                 })
                 .addFormulaFunction(
@@ -94,8 +94,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "offset") {
 
                             @Override
-                            public ListNumber calculate(ListNumber array, Number offset) {
-                                return ListMath.rescale(array, 1.0, offset.doubleValue());
+                            public ListNumber calculate(ListNumber array, double offset) {
+                                return ListMath.rescale(array, 1.0, offset);
                             }
                         })
                 .addFormulaFunction(
@@ -112,8 +112,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "offset") {
 
                             @Override
-                            public ListNumber calculate(ListNumber array, Number offset) {
-                                return ListMath.rescale(array, 1.0, -offset.doubleValue());
+                            public ListNumber calculate(ListNumber array, double offset) {
+                                return ListMath.rescale(array, 1.0, - offset);
                             }
                         })
                 .addFormulaFunction(
@@ -139,8 +139,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "num") {
 
                             @Override
-                            public ListNumber calculate(ListNumber array, Number num) {
-                                return ListMath.rescale(array, num.doubleValue(), 0.0);
+                            public ListNumber calculate(ListNumber array, double num) {
+                                return ListMath.rescale(array, num, 0.0);
                             }
                         })
                 .addFormulaFunction(
@@ -157,8 +157,8 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                                 "array", "num") {
 
                             @Override
-                            public ListNumber calculate(ListNumber array, Number num) {
-                                return ListMath.rescale(array, (1 / num.doubleValue()), 0.0);
+                            public ListNumber calculate(ListNumber array, double num) {
+                                return ListMath.rescale(array, (1 / num), 0.0);
                             }
                         })
                 .addFormulaFunction(new DftFormulaFunction())
