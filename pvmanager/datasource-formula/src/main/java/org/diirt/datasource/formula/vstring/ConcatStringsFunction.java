@@ -7,14 +7,16 @@ package org.diirt.datasource.formula.vstring;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
+import org.diirt.datasource.util.NullUtils;
 
 import org.diirt.vtype.VString;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;
 
 /**
- * @author shroffk
+ * Function that concatenates the arguments into a single string.
  * 
+ * @author shroffk
  */
 class ConcatStringsFunction implements FormulaFunction {
 
@@ -55,17 +57,19 @@ class ConcatStringsFunction implements FormulaFunction {
 
     @Override
     public Object calculate(List<Object> args) {
+        // Handle nulls
+        if (NullUtils.containsNull(args)) {
+            return null;
+        }
 
-	StringBuffer sb = new StringBuffer();
-
+        // Concatenate strings
+	StringBuilder sb = new StringBuilder();
 	for (Object object : args) {
 	    VString str = (VString) object;
-	    // TODO how should we handle nulls?
-	    if (str == null) {
-		return null;
-	    }
 	    sb.append(str.getValue());
 	}
+        
+        // Return new value
 	return ValueFactory.newVString(sb.toString(),
                 ValueUtil.highestSeverityOf(args, false),
 		ValueUtil.latestValidTimeOrNowOf(args));

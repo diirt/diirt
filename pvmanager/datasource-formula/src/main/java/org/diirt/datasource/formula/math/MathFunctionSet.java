@@ -19,6 +19,8 @@ public class MathFunctionSet extends FormulaFunctionSet {
      * Creates a new set.
      */
     public MathFunctionSet() {
+        // Use abstact classes for most of the functions as the signature
+        // is the same
         super(new FormulaFunctionSetDescription("math", "Basic mathematical functions, wrapped from java.lang.Math")
                 .addFormulaFunction(new OneArgNumericFormulaFunction("abs", "Absolute value", "arg") {
                     @Override

@@ -23,6 +23,8 @@ public class VNumberFunctionSet extends FormulaFunctionSet {
      * Creates a new set.
      */
     public VNumberFunctionSet() {
+        // Use abstact classes for most of the functions as the signature
+        // is the same
         super(new FormulaFunctionSetDescription("vnumber", "Operators for numeric scalars")
                 .addFormulaFunction(new TwoArgNumericFormulaFunction("+", "Numeric addition", "arg1", "arg2") {
                     @Override

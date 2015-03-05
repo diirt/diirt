@@ -16,15 +16,7 @@ import org.diirt.vtype.VBoolean;
  * @author carcassi
  */
 class ConditionalOperatorFormulaFunction implements FormulaFunction {
-
-    private final List<Class<?>> argumentTypes;
-    private final List<String> argumentNames;
     
-    public ConditionalOperatorFormulaFunction() {
-        this.argumentTypes = Arrays.<Class<?>>asList(VBoolean.class, Object.class, Object.class);
-        this.argumentNames = Arrays.asList("condition", "valueIfTrue", "valueIfFalse");
-    }
-
     @Override
     public String getName() {
         return "?:";
@@ -47,12 +39,12 @@ class ConditionalOperatorFormulaFunction implements FormulaFunction {
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-        return argumentTypes;
+        return Arrays.<Class<?>>asList(VBoolean.class, Object.class, Object.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-        return argumentNames;
+        return Arrays.asList("condition", "valueIfTrue", "valueIfFalse");
     }
 
     @Override
@@ -62,10 +54,15 @@ class ConditionalOperatorFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(List<Object> args) {
+        // Convert arguments to actual types
         VBoolean condition = (VBoolean) args.get(0);
+        
+        // Handle null case
         if (condition == null) {
             return null;
         }
+
+        // Select return based on value
         Object value;
         if (condition.getValue()) {
             value = args.get(1);

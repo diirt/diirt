@@ -48,7 +48,8 @@ public class ChannelFormulaFunction extends DynamicFormulaFunction {
     public Class<?> getReturnType() {
         return Object.class;
     }
-    
+
+    // Function state (will be different for each use of the function)
     private String previousName;
     private DesiredRateExpression<?> currentExpression;
 

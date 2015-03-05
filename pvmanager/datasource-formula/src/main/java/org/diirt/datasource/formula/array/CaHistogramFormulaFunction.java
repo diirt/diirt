@@ -57,6 +57,7 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
         return VNumberArray.class;
     }
     
+    // Function state (will be different for each use of the function)
     private String previousName;
     private List<DesiredRateExpression<?>> currentExpressions;
     
