@@ -6,9 +6,11 @@ package org.diirt.datasource.timecache;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.util.CacheHelper;
+import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
 
@@ -20,6 +22,9 @@ import org.diirt.util.time.Timestamp;
  * @author Fred Arnaud (Sopra Group) - ITER
  */
 public class DataRequestThread extends Thread {
+
+	private static AtomicInteger idCounter = new AtomicInteger(0);
+	private final Integer requestID;
 
 	private final String channelName;
 	private final DataSource source;
@@ -33,7 +38,8 @@ public class DataRequestThread extends Thread {
 		if (channelName == null || channelName.isEmpty() || source == null
 				|| interval == null)
 			throw new Exception("null or empty argument not allowed");
-		listeners = new ArrayList<DataRequestListener>();
+		this.requestID = idCounter.getAndIncrement();
+		this.listeners = new ArrayList<DataRequestListener>();
 		this.channelName = channelName;
 		this.source = source;
 		this.interval = CacheHelper.arrange(interval);
@@ -62,7 +68,7 @@ public class DataRequestThread extends Thread {
 					break;
 				}
 			}
-			currentChunk = source.getData(channelName, lastReceived);
+			currentChunk = source.getData(channelName, lastReceived.plus(IntervalsList.minDuration));
 		}
 		notifyComplete();
 	}
@@ -91,6 +97,14 @@ public class DataRequestThread extends Thread {
 			listeners.remove(l);
 	}
 
+	public TimeInterval getInterval() {
+		return interval;
+	}
+
+	public void setInterval(TimeInterval interval) {
+		this.interval = interval;
+	}
+
 	public String getChannelName() {
 		return channelName;
 	}
@@ -99,12 +113,38 @@ public class DataRequestThread extends Thread {
 		return source;
 	}
 
-	public TimeInterval getInterval() {
-		return interval;
-	}
-
 	public Timestamp getLastReceived() {
 		return lastReceived;
+	}
+
+	public Integer getRequestID() {
+		return requestID;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((requestID == null) ? 0 : requestID.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DataRequestThread other = (DataRequestThread) obj;
+		if (requestID == null) {
+			if (other.requestID != null)
+				return false;
+		} else if (!requestID.equals(other.requestID))
+			return false;
+		return true;
 	}
 
 }

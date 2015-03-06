@@ -8,10 +8,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import org.diirt.datasource.timecache.Cache;
+import org.diirt.datasource.timecache.CacheConfig;
 import org.diirt.datasource.timecache.CacheFactory;
 import org.diirt.datasource.timecache.CacheImpl;
 import org.diirt.datasource.timecache.PVCache;
 import org.diirt.datasource.timecache.PVCacheImpl;
+import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
+import org.diirt.datasource.timecache.impl.SimpleMemoryStorage;
 import org.diirt.datasource.timecache.query.Query;
 import org.diirt.datasource.timecache.query.QueryData;
 import org.diirt.datasource.timecache.query.QueryImpl;
@@ -32,11 +35,7 @@ import org.junit.Test;
  */
 public class CacheUnitTest {
 
-	private static DateFormat dateFormat = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm");
-
-	private static Timestamp start = null;
-	private static Timestamp end = null;
+	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	/**
 	 * Test that a {@link PVCache} is created when none exists. Test that the
@@ -48,9 +47,13 @@ public class CacheUnitTest {
 	@Test
 	public void testCreateQuery() {
 		try {
-			Cache cache = CacheFactory.getCache();
-			start = Timestamp.of(dateFormat.parse("2014-04-03 09:00"));
-			end = Timestamp.of(dateFormat.parse("2014-04-03 12:00"));
+			CacheConfig config = new CacheConfig();
+			config.addSource(new SimpleFileDataSource("src/test/resources/archive-export.csv"));
+			config.addSource(new SimpleFileDataSource("src/test/resources/archive-export-singlePV.csv"));
+			config.setStorage(new SimpleMemoryStorage());
+			Cache cache = CacheFactory.getCache(config);
+			Timestamp start = Timestamp.of(dateFormat.parse("2014-04-03 09:00"));
+			Timestamp end = Timestamp.of(dateFormat.parse("2014-04-03 12:00"));
 			Query query1 = cache.createQuery("TEST-BTY0:AI1", VType.class,
 					new QueryParameters().timeInterval(TimeRelativeInterval.of(start, end)));
 			// test that the cache is holding 1 PV cache
@@ -65,7 +68,7 @@ public class CacheUnitTest {
 					result = query1.getUpdate();
 					for (QueryData data : result.getData())
 						updateCount += data.getCount();
-					if (((QueryImpl) query1).isComplete())
+					if (((QueryImpl) query1).isCompleted())
 						break;
 				} catch (InterruptedException e) {
 				}
@@ -77,9 +80,8 @@ public class CacheUnitTest {
 				resultCount += data.getCount();
 			Assert.assertEquals(updateCount, resultCount);
 
-			Query query2 = cache.createQuery("TEST-BTY0:AI1",
-					VType.class, new QueryParameters()
-							.timeInterval(TimeRelativeInterval.of(start, end)));
+			Query query2 = cache.createQuery("TEST-BTY0:AI1", VType.class, 
+					new QueryParameters().timeInterval(TimeRelativeInterval.of(start, end)));
 			// test that the cache is still holding 1 PV cache
 			Assert.assertEquals(1, ((CacheImpl) cache).getCount());
 
@@ -99,7 +101,7 @@ public class CacheUnitTest {
 					result = query2.getUpdate();
 					for (QueryData data : result.getData())
 						newUpdateCount += data.getCount();
-					if (((QueryImpl) query2).isComplete())
+					if (((QueryImpl) query2).isCompleted())
 						break;
 				} catch (InterruptedException e) {
 				}

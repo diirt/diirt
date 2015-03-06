@@ -8,11 +8,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
-import org.diirt.datasource.timecache.util.CacheHelper;
-import org.diirt.util.time.TimeDuration;
+import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Statistics of {@link PVCache}.
@@ -20,84 +20,45 @@ import org.diirt.util.time.Timestamp;
  */
 public class PVCacheStatistics {
 
-	private class RequestCounter {
+	private final String channelName;
+	private SortedMap<Integer, DataRequestStatistics> requestStatsByID = Collections
+			.synchronizedSortedMap(new TreeMap<Integer, DataRequestStatistics>());
 
-		private final Timestamp start;
-		private final TimeInterval interval;
-		private TimeDuration duration;
-
-		public RequestCounter(TimeInterval interval, Timestamp start) {
-			this.interval = interval;
-			this.start = start;
-		}
-
-		public void intervalCompleted() {
-			this.duration = Timestamp.now().durationBetween(start);
-		}
-
-		public Timestamp getStart() {
-			return start;
-		}
-
-		public TimeInterval getInterval() {
-			return interval;
-		}
-
-		public TimeDuration getDuration() {
-			return duration;
-		}
+	public PVCacheStatistics(String channelName) {
+		this.channelName = channelName;
 	}
 
-	private List<RequestCounter> currentCounters = Collections
-			.synchronizedList(new LinkedList<RequestCounter>());
-	private List<RequestCounter> finishedCounters = Collections
-			.synchronizedList(new LinkedList<RequestCounter>());
-	private double sourceRequested = 0;
-	private double storageHit = 0;
-
-	public void intervalRequested(TimeInterval interval, Timestamp start) {
-		currentCounters.add(new RequestCounter(interval, start));
+	public void intervalRequested(int requestID, DataSource source) {
+		requestStatsByID.put(requestID, new DataRequestStatistics(source));
 	}
 
-	public void intervalsCompleted(final TimeInterval interval,
-			final Timestamp start) {
-		Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Iterator<RequestCounter> it = currentCounters.iterator();
-				while (it.hasNext()) {
-					RequestCounter rc = it.next();
-					if (rc.getStart().equals(start)) {
-						rc.intervalCompleted();
-						it.remove();
-						finishedCounters.add(rc);
-						break;
-					}
-				}
+	/**
+	 * Setting interval when the request ends avoid managing changes due to
+	 * request optimization
+	 */
+	public void intervalsCompleted(int requestID, TimeInterval interval) {
+		DataRequestStatistics rs = requestStatsByID.get(requestID);
+		rs.intervalCompleted();
+		rs.setInterval(interval);
+	}
+
+	public List<DataRequestStatistics> getRequestStatsIn(TimeInterval interval) {
+		List<DataRequestStatistics> stats_list = new LinkedList<DataRequestStatistics>();
+		Iterator<DataRequestStatistics> it_rs = requestStatsByID.values().iterator();
+		while (it_rs.hasNext()) {
+			DataRequestStatistics rs = it_rs.next();
+			if (interval.contains(rs.getStart())) {
+				stats_list.add(rs);
 			}
-		});
-		thread.start();
+		}
+		return stats_list;
 	}
 
-	public void foundStoredData() {
-		storageHit++;
-	}
-
-	public void sourceRequested() {
-		sourceRequested++;
-	}
-
-	public String print() {
+	public String toConsoleString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("# Hit: " + storageHit + "\n");
-		sb.append("# Source requested: " + sourceRequested + "\n");
-		for (RequestCounter rc : finishedCounters) {
-			sb.append("> ");
-			sb.append(CacheHelper.format(rc.getInterval()));
-			sb.append(" started at ");
-			sb.append(CacheHelper.format(rc.getStart()));
-			sb.append(": ");
-			sb.append(CacheHelper.format(rc.getDuration()));
+		sb.append("Requested intervals for " + channelName + " (start => interval: duration):\n");
+		for (DataRequestStatistics stats : requestStatsByID.values()) {
+			sb.append(stats.toConsoleString());
 			sb.append("\n");
 		}
 		return sb.toString();

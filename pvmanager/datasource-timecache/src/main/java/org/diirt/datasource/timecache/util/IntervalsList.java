@@ -237,7 +237,7 @@ public class IntervalsList {
 		} else if (!processed) {
 			newIntervals.add(i);
 		}
-		intervals = newIntervals;
+		intervals = mergeAllLimits(newIntervals);
 	}
 
 	private void handleAddNull(TimeInterval i) {
@@ -268,6 +268,28 @@ public class IntervalsList {
 			newIntervals.add(TimeInterval.between(inf, null));
 		}
 		intervals = newIntervals;
+	}
+
+	private List<TimeInterval> mergeAllLimits(List<TimeInterval> intervals) {
+		List<TimeInterval> newIntervals = new ArrayList<TimeInterval>();
+		Iterator<TimeInterval> iterator = intervals.iterator();
+		TimeInterval previous = null;
+		TimeInterval current = null;
+		if (iterator.hasNext())
+			current = iterator.next();
+		while (iterator.hasNext()) {
+			previous = current;
+			current = iterator.next();
+			if (previous.getEnd().plus(minDuration).equals(current.getStart())) {
+				TimeInterval merged = TimeInterval.between(previous.getStart(), current.getEnd());
+				current = merged;
+			} else {
+				newIntervals.add(previous);
+			}
+		}
+		if (current != null)
+			newIntervals.add(current);
+		return newIntervals;
 	}
 
 	/**
@@ -426,6 +448,20 @@ public class IntervalsList {
 			list.addToSelf(intersection(list1, iterator.next()));
 		}
 		return list;
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("IntervalsList [intervals=");
+		for (TimeInterval ti : intervals) {
+			sb.append(CacheHelper.format(ti));
+			sb.append(", ");
+		}
+		if (intervals.size() > 0)
+			sb.delete(sb.length() - 2, sb.length());
+		sb.append("]");
+		return sb.toString();
 	}
 
 }

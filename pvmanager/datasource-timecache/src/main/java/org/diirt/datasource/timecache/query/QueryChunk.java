@@ -4,12 +4,13 @@
  */
 package org.diirt.datasource.timecache.query;
 
+import java.io.PrintStream;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.diirt.datasource.timecache.Data;
 import org.diirt.datasource.timecache.util.CacheHelper;
@@ -24,17 +25,28 @@ import org.diirt.vtype.VType;
  */
 public class QueryChunk {
 
-	private static final Logger log = Logger.getLogger(QueryChunk.class.getName());
+	// TODO: remove in final version...
+	private static final boolean DEBUG = true;
+	private static PrintStream ps = CacheHelper.ps;
+	private final Query query;
+	// ...until here and all debug blocks
+
+	public static int Added = 1;
+	public static int Updated = 0;
+	public static int Ignored = -1;
 
 	private static enum Status {
 		NoDataReceived, SomeDataReceived, AllDataReceived, Blank
 	}
 
 	private final TimeInterval timeInterval;
-	private SortedSet<Data> dataSet = new TreeSet<Data>();
+	private SortedSet<Data> dataSet = Collections
+			.synchronizedSortedSet(new TreeSet<Data>());
 	private Status status = Status.NoDataReceived;
+	private boolean sent = false;
 
-	public QueryChunk(TimeInterval timeInterval) {
+	public QueryChunk(TimeInterval timeInterval, Query query) {
+		this.query = query;
 		this.timeInterval = timeInterval;
 	}
 
@@ -42,29 +54,40 @@ public class QueryChunk {
 		return timeInterval;
 	}
 
-	public boolean addData(Data data) {
-		if (data == null || isComplete()
+	public int addData(Data data, boolean forceUpdate) {
+		if (data == null
+				|| (isComplete() && !forceUpdate) 
 				|| !timeInterval.contains(data.getTimestamp()))
-			return false;
-		dataSet.add(data);
+			return Ignored;
+		if (isComplete() && DEBUG) {
+			ps.println(query + ": " + this + ": REOPENED CHUNK with " + CacheHelper.format(data.getTimestamp()));
+		}
 		status = Status.SomeDataReceived;
-		return true;
+		if (dataSet.add(data)) return Added;
+		else return Updated;
 	}
 
 	public void markComplete() {
 		if (this.dataSet.isEmpty()) this.status = Status.Blank;
 		else this.status = Status.AllDataReceived;
-		log.log(Level.INFO,
-				"Completed: " + CacheHelper.format(timeInterval) + ": " + dataSet.size());
+	}
+
+	public void invalidate() {
+		if (this.dataSet.isEmpty()) this.status = Status.NoDataReceived;
+		else this.status = Status.SomeDataReceived;
+	}
+
+	public void markSent() {
+		this.sent = true;
+	}
+
+	public boolean hasBeenSent() {
+		return sent;
 	}
 
 	public boolean isComplete() {
 		return status.equals(Status.AllDataReceived)
 				|| status.equals(Status.Blank);
-	}
-
-	public void clearData() {
-		this.dataSet.clear();
 	}
 
 	public void clearDataAndStatus() {
@@ -84,13 +107,33 @@ public class QueryChunk {
 			return new QueryDataNR(timeInterval);
 		case AllDataReceived:
 			SortedMap<Timestamp, VType> sortedMap = new TreeMap<Timestamp, VType>();
-			for (Data data : dataSet)
+			Iterator<Data> itData = dataSet.iterator();
+			while (itData.hasNext()) {
+				Data data = itData.next();
 				// TODO null is a specific case => update status ?
 				if (data.getValue() != null)
 					sortedMap.put(data.getTimestamp(), data.getValue());
+			}
+			if (DEBUG) {
+				ps.println(query + ": " + this + ": READ CHUNK");
+			}
 			return new QueryDataComplete(timeInterval, sortedMap);
-		default:
+		case Blank:
 			return new QueryDataBlank(timeInterval);
+		default:
+			return null;
 		}
 	}
+
+	// Useful for debug
+	public int getDataCount() {
+		return dataSet.size();
+	}
+
+	@Override
+	public String toString() {
+		return "QueryChunk (" + CacheHelper.format(timeInterval) + " "
+				+ dataSet.size() + " values, status: " + status + ")";
+	}
+
 }
