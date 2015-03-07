@@ -129,7 +129,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
     /**
      * Redraws the graph
      */
-    final protected void reconnect() {
+    protected void reconnect() {
 	this.setFormula( "" );
 	this.setFormula( this.getFormula() );
     }
@@ -139,7 +139,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * 
      * @param dataFormula the data formula to use
      */
-    final protected void reconnect( String dataFormula ) {
+    protected void reconnect( String dataFormula ) {
 	
         if (pv != null) {
             pv.close();

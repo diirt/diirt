@@ -42,6 +42,14 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 	return plot;
     }
     
+    @Override
+    public void reconnect( String data ) {
+	super.reconnect( data );
+	if ( graph != null ) {
+	    graph.update( graph.newUpdate().highlightFocusValue( highlightFocusValue.getValue() ) );
+	}
+    }
+    
     public BubbleGraphView() {
 	
 	this.highlightFocusValue.addListener( new ChangeListener< Boolean >() {
@@ -56,6 +64,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 
 	    @Override
 	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+		System.out.println( xColumn.getValue() );
 		BubbleGraphView.super.reconnect();
 	    }
 	});
