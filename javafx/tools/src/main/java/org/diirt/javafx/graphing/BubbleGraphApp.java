@@ -161,6 +161,7 @@ public class BubbleGraphApp extends BaseGraphApp {
 		@Override
 		public void handle(ActionEvent event) {
 		    configureAndSave();
+		    ConfigurationDialog.this.hide();
 		}
 	    });
 	    
@@ -212,13 +213,14 @@ public class BubbleGraphApp extends BaseGraphApp {
 	    txtSizeColumn.setText( lastConfiguration.sizeColumn );
 	    txtColorColumn.setText( lastConfiguration.colorColumn );
 	    chkHighlightFocus.setSelected( lastConfiguration.highlightFocus );
+	    configure();
 	}
 	
 	private void configure() {
-	    BubbleGraphApp.this.bubbleGraphView.setXColumn( txtXColumn.getText() );
-	    BubbleGraphApp.this.bubbleGraphView.setYColumn( txtYColumn.getText() );
-	    BubbleGraphApp.this.bubbleGraphView.setSizeColumn( txtSizeColumn.getText() );
-	    BubbleGraphApp.this.bubbleGraphView.setColorColumn( txtColorColumn.getText() );
+	    BubbleGraphApp.this.bubbleGraphView.setXColumn( txtXColumn.getText().equals( "" )? null : txtXColumn.getText() );
+	    BubbleGraphApp.this.bubbleGraphView.setYColumn( txtYColumn.getText().equals( "" )? null : txtYColumn.getText() );
+	    BubbleGraphApp.this.bubbleGraphView.setSizeColumn( txtSizeColumn.getText().equals( "" )? null : txtSizeColumn.getText() );
+	    BubbleGraphApp.this.bubbleGraphView.setColorColumn( txtColorColumn.getText().equals( "" )? null : txtColorColumn.getText() );
 	    BubbleGraphApp.this.bubbleGraphView.setHighlightFocusValue( chkHighlightFocus.isSelected() );
 	}
 	

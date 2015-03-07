@@ -139,7 +139,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * 
      * @param dataFormula the data formula to use
      */
-    final private void reconnect( String dataFormula ) {
+    final protected void reconnect( String dataFormula ) {
 	
         if (pv != null) {
             pv.close();
@@ -167,6 +167,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
                     }
                 })
                 .maxRate(ofHertz(100));
+	
     }
     
     /**

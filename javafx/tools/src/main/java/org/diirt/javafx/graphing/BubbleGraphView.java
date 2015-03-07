@@ -6,13 +6,12 @@
 package org.diirt.javafx.graphing;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.input.MouseEvent;
 import static org.diirt.datasource.formula.ExpressionLanguage.formula;
 import static org.diirt.datasource.formula.ExpressionLanguage.formulaArg;
 import org.diirt.datasource.graphene.BubbleGraph2DExpression;
@@ -22,7 +21,7 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
 
 /**
  *
- * @author Mickey
+ * @author mjchao
  */
 public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate > {
 
@@ -86,6 +85,11 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 		BubbleGraphView.super.reconnect();
 	    }
 	});
+    }
+    
+    @Override
+    protected void onMouseMove(MouseEvent e) {
+        graph.update(graph.newUpdate().focusPixel( (int)e.getX(), (int)e.getY()));
     }
     
     public BooleanProperty highlightFocusValueProperty() {
