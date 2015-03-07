@@ -36,7 +36,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
 		}
 		else
 		{
-			PVStructure alarmStructure = pvField.getStructureField("alarm");
+			PVStructure alarmStructure = (pvField != null) ? pvField.getStructureField("alarm") : null;
 			if (alarmStructure != null)
 			{
 				PVInt severityField = alarmStructure.getIntField("severity");
@@ -63,7 +63,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
 		}
 		
 		// timeStamp_t
-		PVStructure timeStampStructure = pvField.getStructureField("timeStamp");
+		PVStructure timeStampStructure = (pvField != null) ? pvField.getStructureField("timeStamp") : null;
 		if (timeStampStructure != null)
 		{
 			PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");

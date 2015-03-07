@@ -28,7 +28,7 @@ public class UnitTestUtils {
 
 	public static File getTestResource(String name)
 			throws FileNotFoundException {
-		return new File("resources/test/" + name);
+		return new File("src/test/resources" + name);
 	}
 
 	public static String readFile(File file) throws IOException {

@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>pvmanager-all</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>datasource-sample</artifactId>
     <name>org.diirt.datasource.sample</name>
@@ -109,6 +109,11 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>service</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.diirt.javafx</groupId>
+            <artifactId>javafx</artifactId>
+            <version>3.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <reporting>

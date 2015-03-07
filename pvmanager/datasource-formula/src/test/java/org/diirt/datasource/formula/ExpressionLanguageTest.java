@@ -7,18 +7,11 @@ package org.diirt.datasource.formula;
 import org.antlr.runtime.RecognitionException;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.ReadExpressionTester;
 import org.diirt.vtype.VDouble;
-import org.diirt.datasource.ReadFunction;
-import org.diirt.datasource.ValueCache;
-import org.diirt.datasource.expression.DesiredRateExpression;
-import org.diirt.datasource.expression.SourceRateExpression;
 import org.junit.Test;
-import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
-import org.diirt.datasource.expression.ChannelExpression;
 import org.diirt.datasource.test.CountDownPVWriterListener;
 import org.diirt.datasource.test.MockDataSource;
 import org.diirt.util.array.*;
@@ -30,14 +23,12 @@ import org.diirt.vtype.VString;
 import org.diirt.vtype.ValueFactory;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
 
 /**
  *
  * @author carcassi
  */
-public class ExpressionLanguageTest extends BaseTestForFormula {
+public class ExpressionLanguageTest {
 
     @Test
     public void formula1() throws RecognitionException {

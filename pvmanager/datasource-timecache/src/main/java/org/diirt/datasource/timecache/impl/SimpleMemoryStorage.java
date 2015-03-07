@@ -6,6 +6,7 @@ package org.diirt.datasource.timecache.impl;
 
 import java.lang.ref.ReferenceQueue;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.SortedSet;
@@ -19,6 +20,7 @@ import org.diirt.datasource.timecache.storage.DataStorageListener;
 import org.diirt.datasource.timecache.storage.MemoryStoredData;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.timecache.util.TimestampsSet;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
@@ -36,11 +38,21 @@ public class SimpleMemoryStorage implements DataStorage {
 
 	private List<DataStorageListener> listeners = new ArrayList<DataStorageListener>();
 
+	private int chunkSize = 1000;
+	private TimeDuration minChunkDuration = null;
+
+	public SimpleMemoryStorage() {
+	}
+
+	public SimpleMemoryStorage(int chunkSize) {
+		this.chunkSize = chunkSize;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public DataChunk getData(String channelName, Timestamp from) {
 		processQueue();
-		DataChunk chunk = new DataChunk();
+		DataChunk chunk = new DataChunk(chunkSize);
 		Timestamp currentKey = null;
 		if (from == null) currentKey = cache.firstKey();
 		else currentKey = cache.ceilingKey(from);
@@ -123,6 +135,13 @@ public class SimpleMemoryStorage implements DataStorage {
 			cache.put(data.getTimestamp(), msd);
 			set.add(msd);
 		}
+		TimeDuration chunkDuration = chunk.getInterval().getEnd()
+				.durationFrom(chunk.getInterval().getStart());
+		if (minChunkDuration == null) {
+			minChunkDuration = chunkDuration;
+		} else if (chunkDuration.compareTo(minChunkDuration) < 0) {
+			chunkDuration = minChunkDuration;
+		}
 		return set;
 	}
 
@@ -133,11 +152,14 @@ public class SimpleMemoryStorage implements DataStorage {
 	 */
 	private void processQueue() {
 		TimestampsSet lostSet = new TimestampsSet();
+		lostSet.setTolerance(minChunkDuration);
 		MemoryStoredData msd = null;
 		while ((msd = (MemoryStoredData) queue.poll()) != null) {
 			cache.remove(msd.getTimestamp());
 			lostSet.add(msd.getTimestamp());
 		}
+		if (lostSet.isEmpty())
+			return;
 		for (DataStorageListener l : listeners)
 			l.dataLoss(lostSet);
 	}
@@ -154,6 +176,23 @@ public class SimpleMemoryStorage implements DataStorage {
 	public void removeListener(DataStorageListener listener) {
 		if (listener != null)
 			listeners.remove(listener);
+	}
+
+	// Useful to debug
+	public int getStoredSampleCount() {
+		return cache.size();
+	}
+
+	@Override
+	public void clearAll() {
+		TimestampsSet lostSet = new TimestampsSet();
+		lostSet.setTolerance(minChunkDuration);
+		Iterator<Timestamp> keyIterator = cache.keySet().iterator();
+		while (keyIterator.hasNext())
+			lostSet.add(keyIterator.next());
+		cache.clear();
+		for (DataStorageListener l : listeners)
+			l.dataLoss(lostSet);
 	}
 
 }

@@ -108,7 +108,7 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
 		super(pvField, disconnected);
 		
 		// display_t
-		PVStructure displayStructure = pvField.getStructureField("display");
+		PVStructure displayStructure = (pvField != null) ? pvField.getStructureField("display") : null;
 		if (displayStructure != null)
 		{
 			lowerDisplayLimit = getDoubleValue(displayStructure, "limitLow", noDisplay.getLowerDisplayLimit());
@@ -135,7 +135,7 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
 		}
 	
 		// control_t
-		PVStructure controlStructure = pvField.getStructureField("control");
+		PVStructure controlStructure = (pvField != null) ? pvField.getStructureField("control") : null;
 		if (controlStructure != null)
 		{
 			lowerCtrlLimit = getDoubleValue(controlStructure, "limitLow", noDisplay.getLowerCtrlLimit());
@@ -149,7 +149,7 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
 		
 		
 		// valueAlarm_t
-		PVStructure valueAlarmStructure = pvField.getStructureField("valueAlarm");
+		PVStructure valueAlarmStructure = (pvField != null) ? pvField.getStructureField("valueAlarm") : null;
 		if (valueAlarmStructure != null)
 		{
 			lowerAlarmLimit = getDoubleValue(valueAlarmStructure, "lowAlarmLimit", noDisplay.getLowerAlarmLimit());

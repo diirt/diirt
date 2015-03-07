@@ -4,6 +4,8 @@
  */
 package org.diirt.support.pva.adapters;
 
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVStructure;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VTypeToString;
@@ -16,19 +18,23 @@ public class PVFieldToVDouble extends AlarmTimeDisplayExtractor implements VDoub
 
 	protected final Double value;
 	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
 	public PVFieldToVDouble(PVStructure pvField, boolean disconnected) {
-		super(pvField, disconnected);
-		
-		value = getDoubleValue(pvField, "value", null);
+		this("value", pvField, disconnected);
 	}
 
-    /* (non-Javadoc)
-     * @see org.epics.pvmanager.pva.adapters.PVFieldToVNumber#getValue()
-     */
+	public PVFieldToVDouble(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVDouble(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+
+		if (field instanceof PVScalar)
+			value = convert.toDouble((PVScalar)field);
+	    else
+	    	value = null;
+	}
+
 	@Override
     public Double getValue()
     {

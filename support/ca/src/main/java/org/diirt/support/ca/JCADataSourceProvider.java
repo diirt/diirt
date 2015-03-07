@@ -4,24 +4,22 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.datasource.DataSource;
-import org.diirt.datasource.DataSourceProvider;
+import org.diirt.datasource.ConfigurableDataSourceProvider;
 
 /**
  * DataSourceProvider for channel access.
  *
  * @author carcassi
  */
-public class JCADataSourceProvider extends DataSourceProvider {
+public class JCADataSourceProvider extends ConfigurableDataSourceProvider<JCADataSource, JCADataSourceConfiguration> {
+    
+    public JCADataSourceProvider() {
+        super(JCADataSourceConfiguration.class);
+    }
 
     @Override
     public String getName() {
         return "ca";
-    }
-
-    @Override
-    public DataSource createInstance() {
-        return new JCADataSource();
     }
     
 }

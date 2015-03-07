@@ -8,10 +8,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.epics.pvdata.pv.StringArrayData;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStringArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.StringArrayData;
 import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayInt;
@@ -26,17 +27,21 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
 	private final ListInt size;
 	private final List<String> array;
 	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
-	public PVFieldToVStringArray(PVStructure pvField, String fieldName, boolean disconnected) {
-		super(pvField, disconnected);
+	public PVFieldToVStringArray(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
+
+	public PVFieldToVStringArray(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVStringArray(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
 		
-		PVStringArray valueField =
-			(PVStringArray)pvField.getScalarArrayField(fieldName, ScalarType.pvString);
-		if (valueField != null)
+		if (field instanceof PVStringArray)
 		{
+			PVStringArray valueField = (PVStringArray)field;
+
 			StringArrayData data = new StringArrayData();
 			valueField.get(0, valueField.getLength(), data);
 			
@@ -45,15 +50,11 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
 		}
 		else
 		{
-			this.size = null;
-			this.array = null;
+			size = null;
+			array = null;
 		}
 	}
 
-	public PVFieldToVStringArray(PVStructure pvField, boolean disconnected) {
-		this(pvField, "value", disconnected);
-	}
-	
 	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.Array#getSizes()
 	 */

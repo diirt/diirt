@@ -48,9 +48,16 @@ public class SimpleFileDataSource implements DataSource {
 
 	private TreeMap<Timestamp, Integer> indexes;
 
+	private int chunkSize = 1000;
+
 	public SimpleFileDataSource(String csvFilePath) {
 		this.csvFile = csvFilePath;
 		indexes = new TreeMap<Timestamp, Integer>();
+	}
+
+	public SimpleFileDataSource(String csvFilePath, int chunkSize) {
+		this(csvFilePath);
+		this.chunkSize = chunkSize;
 	}
 
 	/** {@inheritDoc} */
@@ -68,7 +75,7 @@ public class SimpleFileDataSource implements DataSource {
 
 	private DataChunk readSamples(String channelName, Timestamp from)
 			throws Exception {
-		DataChunk chunk = new DataChunk();
+		DataChunk chunk = new DataChunk(chunkSize);
 
 		BufferedReader br = null;
 		String currentLine = "";
@@ -100,7 +107,6 @@ public class SimpleFileDataSource implements DataSource {
 						}
 					}
 				}
-				lineNumber++;
 			}
 		} finally {
 			if (br != null)
@@ -176,4 +182,33 @@ public class SimpleFileDataSource implements DataSource {
 		return line.split(csvSplitBy, -1);
 	}
 
+	public String getCsvFile() {
+		return csvFile;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((csvFile == null) ? 0 : csvFile.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SimpleFileDataSource other = (SimpleFileDataSource) obj;
+		if (csvFile == null) {
+			if (other.csvFile != null)
+				return false;
+		} else if (!csvFile.equals(other.csvFile))
+			return false;
+		return true;
+	}
+	
 }

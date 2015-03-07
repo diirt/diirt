@@ -29,7 +29,7 @@ import org.diirt.datasource.extra.DynamicGroup;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import static org.diirt.datasource.extra.ExpressionLanguage.*;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

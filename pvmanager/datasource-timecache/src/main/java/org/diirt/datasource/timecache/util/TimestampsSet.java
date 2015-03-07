@@ -19,7 +19,7 @@ import org.diirt.util.time.Timestamp;
 public class TimestampsSet {
 
 	private Set<Timestamp> timestamps;
-	private TimeDuration tolerance = TimeDuration.ofMillis(1);
+	private TimeDuration tolerance = TimeDuration.ofSeconds(1);
 
 	/** Build an empty {@link TimestampsSet}. */
 	public TimestampsSet() {

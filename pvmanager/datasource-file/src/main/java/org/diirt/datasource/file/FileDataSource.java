@@ -26,17 +26,10 @@ public final class FileDataSource extends DataSource {
 	// Install type support for the types it generates.
 	DataTypeSupport.install();
     }
-
-    /**
-     * Creates a new data source.
-     */
-    public FileDataSource() {
-        this(new FileDataSourceProvider().readDefaultConfiguration());
-    }
     
-    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.datasource.util.Executors.namedPool("diirt - file watch"));
+    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.util.concurrent.Executors.namedPool("diirt - file watch"));
     
-    public FileDataSource(FileDataSourceConfiguration conf) {
+    FileDataSource(FileDataSourceConfiguration conf) {
         super(true);
         if (conf.isPollEnabled()) {
             fileWatchService = new FileWatcherPollingService(exec, conf.pollInterval);

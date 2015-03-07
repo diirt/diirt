@@ -5,7 +5,7 @@
 package org.diirt.datasource.sample;
 
 import org.diirt.datasource.PVManager;
-import org.diirt.datasource.util.Executors;
+import org.diirt.util.concurrent.Executors;
 
 /**
  *

@@ -6,10 +6,13 @@ package org.diirt.support.pva.adapters;
 
 
 import java.util.List;
+
 import org.epics.pvdata.pv.ByteArrayData;
 import org.epics.pvdata.pv.PVByteArray;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.PVUByteArray;
 import org.diirt.vtype.VByteArray;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayByte;
@@ -28,17 +31,31 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
 	private final ListInt size;
 	private final ListByte list;
 	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
-	public PVFieldToVByteArray(PVStructure pvField, String fieldName, boolean disconnected) {
-		super(pvField, disconnected);
-		
-		PVByteArray valueField =
-			(PVByteArray)pvField.getScalarArrayField(fieldName, ScalarType.pvByte);
-		if (valueField != null)
+	public PVFieldToVByteArray(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
+
+	public PVFieldToVByteArray(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVByteArray(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+
+		if (field instanceof PVByteArray)
 		{
+			PVByteArray valueField = (PVByteArray)field;
+
+			ByteArrayData data = new ByteArrayData();
+			valueField.get(0, valueField.getLength(), data);
+			
+			this.size = new ArrayInt(data.data.length);
+			this.list = new ArrayByte(data.data);
+		}
+		else if (field instanceof PVUByteArray)
+		{
+			PVUByteArray valueField = (PVUByteArray)field;
+
 			ByteArrayData data = new ByteArrayData();
 			valueField.get(0, valueField.getLength(), data);
 			
@@ -52,10 +69,6 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
 		}
 	}
 
-	public PVFieldToVByteArray(PVStructure pvField, boolean disconnected) {
-		this(pvField, "value", disconnected);
-	}
-	
 	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.Array#getSizes()
 	 */

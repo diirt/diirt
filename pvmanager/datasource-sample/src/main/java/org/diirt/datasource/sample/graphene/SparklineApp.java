@@ -4,8 +4,6 @@
  */
 package org.diirt.datasource.sample.graphene;
 
-import java.awt.EventQueue;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -16,22 +14,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextField;
-import org.diirt.graphene.Graph2DRendererUpdate;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import static org.diirt.datasource.formula.ExpressionLanguage.formula;
-import org.diirt.datasource.graphene.ExpressionLanguage;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
-import org.diirt.datasource.graphene.Graph2DExpression;
 import org.diirt.datasource.graphene.Graph2DResult;
-import org.diirt.datasource.graphene.LineGraph2DExpression;
 import org.diirt.datasource.graphene.SparklineGraph2DExpression;
 import org.diirt.datasource.sample.ImagePanel;
 import org.diirt.datasource.sample.SetupUtil;
-import static org.diirt.datasource.sample.graphene.BaseGraphApp.main;
-import static org.diirt.datasource.util.Executors.swingEDT;
+import static org.diirt.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.ofHertz;
 import org.diirt.vtype.ValueUtil;
 

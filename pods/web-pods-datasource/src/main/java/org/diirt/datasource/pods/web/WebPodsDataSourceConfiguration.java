@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.diirt.datasource.DataSourceConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -24,16 +25,17 @@ import org.xml.sax.SAXException;
  *
  * @author carcassi
  */
-public final class WebPodsDataSourceConfiguration {
+public final class WebPodsDataSourceConfiguration extends DataSourceConfiguration<WebPodsDataSource> {
     
     // Package private so we don't need getters
     URI socketLocation;
 
-    private WebPodsDataSourceConfiguration() {
+    public WebPodsDataSourceConfiguration() {
         this.socketLocation = null;
     }
 
-    public WebPodsDataSourceConfiguration(InputStream input) {
+    @Override
+    public DataSourceConfiguration<WebPodsDataSource> read(InputStream input) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -53,6 +55,7 @@ public final class WebPodsDataSourceConfiguration {
             Logger.getLogger(WebPodsDataSourceConfiguration.class.getName()).log(Level.FINEST, "Couldn't load wp configuration", ex);
             throw new IllegalArgumentException("Couldn't load wp configuration", ex);
         }
+        return this;
     }
 
     public URI getSocketLocation() {
@@ -62,6 +65,11 @@ public final class WebPodsDataSourceConfiguration {
     public WebPodsDataSourceConfiguration socketLocation(URI socketLocation) {
         this.socketLocation = socketLocation;
         return this;
+    }
+
+    @Override
+    public WebPodsDataSource create() {
+        return new WebPodsDataSource(this);
     }
     
 }

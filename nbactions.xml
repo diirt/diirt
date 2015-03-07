@@ -8,4 +8,26 @@
                 <goal>site:stage</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-Release prepare</actionName>
+            <displayName>Release prepare</displayName>
+            <goals>
+                <goal>release:prepare</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+                <arguments>"-DskipTests"</arguments>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-Release perform</actionName>
+            <displayName>Release perform</displayName>
+            <goals>
+                <goal>release:perform</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+                <arguments>"-DskipTests"</arguments>
+            </properties>
+        </action>
     </actions>

@@ -16,7 +16,7 @@
  * @param debug debug flag
  * @returns a new Client object.
  */
-function Client(url, debug, username, password) {
+function Client(url, debug, maxRate, username, password) {
 
 	var channelIDIndex = 0;
 	var channelArray = [];
@@ -34,7 +34,7 @@ function Client(url, debug, username, password) {
     var jsonSent = []; // Contains JSON organized by id
 
 
-	openWebSocket(url, username, password);
+	openWebSocket(url, username, password, maxRate);
 
     /**
 	 * Add a callback to WebSocket onOpen event.
@@ -100,10 +100,8 @@ function Client(url, debug, username, password) {
 	 */
     this.subscribeChannel = function(name, callback, readOnly, type, version, maxRate) {
         var typeJson;
-        if(readOnly == null || readOnly =="true") {
+        if(readOnly != false) {
             readOnly = true;
-        } else {
-            readOnly = false;
         }
         if (type != null) {
             if (version == null)
@@ -198,10 +196,19 @@ function Client(url, debug, username, password) {
 	 * connect to a websocket.
 	 * @param {string} url url of the service websocket.
 	 */
-    function openWebSocket(url, username, password) {
-        if(username != null && password != null) {
+    function openWebSocket(url, username, password, maxRate) {
+        if((url.indexOf("wss://") != -1  && username != null) || maxRate != null) {
+            url = url + '?';
+            if(maxRate != null) {
+                url = url + 'maxRate=' + maxRate;
+            }
             if(url.indexOf("wss://") != -1) {
-                url = url + '?user/' + username + '/password/' + password;
+                if(username != null) {
+                    if(maxRate != null) {
+                        url = url + '&';
+                    }
+                    url = url + 'user=' + username + '&password=' + password;
+                }
             }
         }
         if ('WebSocket' in window) {

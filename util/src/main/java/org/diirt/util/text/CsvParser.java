@@ -94,6 +94,10 @@ public class CsvParser {
         private Matcher mLineTokens;
         private final Matcher mQuote = pQuote.matcher("");
         private final Matcher mDouble = pDouble.matcher("");
+        
+        // Keep data on best matched separator
+        private String bestSeparator;
+        private int bestNLines = -1;
     }
     
     
@@ -225,6 +229,10 @@ public class CsvParser {
             for (int i = 1; i < lines.size(); i++) {
                 parseLine(state, lines.get(i));
                 if (state.columnMismatch) {
+                    if (i > state.bestNLines) {
+                        state.bestSeparator =  state.currentSeparator;
+                        state.bestNLines = i;
+                    }
                     continue separatorLoop;
                 }
             }
@@ -237,7 +245,8 @@ public class CsvParser {
         // We are out of the loop: did we end because we parsed correctly,
         // or because even the last separator was a mismatch?
         if (state.columnMismatch) {
-            return new CsvParserResult(null, null, null, 0, false, "Number of columns is not the same for all lines");
+            return new CsvParserResult(null, null, null, 0, false, "Parsing failed: number of columns not constant. Using separator '"
+                    + state.bestSeparator + "', line " + (state.bestNLines + 1));
         }
         
         // Parsing was successful.

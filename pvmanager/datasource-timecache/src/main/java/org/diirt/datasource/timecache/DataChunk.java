@@ -27,6 +27,11 @@ public class DataChunk {
 		this.maxData = 1000;
 	}
 
+	public DataChunk(int size) {
+		datas = new TreeSet<Data>();
+		this.maxData = size;
+	}
+
 	/**
 	 * Add a data to the chunk.
 	 * @param data to be added.

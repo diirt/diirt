@@ -29,7 +29,7 @@ public class JCAClientNotificationCount
 {
     public static void main(String[] args) throws Exception
     {
-        final JCADataSource jca = new JCADataSource();
+        final JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
 
         final String[] names =

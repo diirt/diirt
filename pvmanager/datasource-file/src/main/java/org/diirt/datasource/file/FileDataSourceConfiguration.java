@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.diirt.datasource.DataSourceConfiguration;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -25,16 +26,14 @@ import org.xml.sax.SAXException;
  *
  * @author carcassi
  */
-public final class FileDataSourceConfiguration {
+public final class FileDataSourceConfiguration extends DataSourceConfiguration<FileDataSource> {
     
     // Package private so we don't need getters
     boolean pollEnabled = false;
     Duration pollInterval = Duration.ofSeconds(5);
 
-    public FileDataSourceConfiguration() {
-    }
-
-    public FileDataSourceConfiguration(InputStream input) {
+    @Override
+    public FileDataSourceConfiguration read(InputStream input) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -57,6 +56,8 @@ public final class FileDataSourceConfiguration {
             Logger.getLogger(FileDataSourceConfiguration.class.getName()).log(Level.FINEST, "Couldn't load file configuration", ex);
             throw new IllegalArgumentException("Couldn't load file configuration", ex);
         }
+        
+        return this;
     }
 
     public Duration getPollInterval() {
@@ -75,6 +76,11 @@ public final class FileDataSourceConfiguration {
     public FileDataSourceConfiguration pollEnabled(boolean pollEnabled) {
         this.pollEnabled = pollEnabled;
         return this;
+    }
+
+    @Override
+    public FileDataSource create() {
+        return new FileDataSource(this);
     }
 
 }
