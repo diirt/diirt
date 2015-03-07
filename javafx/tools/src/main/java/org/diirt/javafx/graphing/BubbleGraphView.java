@@ -88,7 +88,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 	});
     }
     
-    public ReadOnlyBooleanProperty highlightFocusValueProperty() {
+    public BooleanProperty highlightFocusValueProperty() {
 	return this.highlightFocusValue;
     }
     
@@ -100,7 +100,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.highlightFocusValue.setValue( highlightFocusValue );
     }
     
-    public ReadOnlyStringProperty xColumnProperty() {
+    public StringProperty xColumnProperty() {
 	return this.xColumn;
     }
     
@@ -112,7 +112,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.xColumn.setValue( xColumn );
     }
     
-    public ReadOnlyStringProperty yColumnProperty() {
+    public StringProperty yColumnProperty() {
 	return this.yColumn;
     }
     
@@ -124,7 +124,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.yColumn.setValue( yColumn );
     }
     
-    public ReadOnlyStringProperty sizeColumnProperty() {
+    public StringProperty sizeColumnProperty() {
 	return this.sizeColumn;
     }
     
@@ -136,7 +136,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.sizeColumn.setValue( sizeColumn );
     }
     
-    public ReadOnlyStringProperty colorColumnProperty() {
+    public StringProperty colorColumnProperty() {
 	return this.colorColumn;
     }
     

@@ -101,6 +101,10 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 	return this.formula.getValue();
     }
     
+    public StringProperty formulaProperty() {
+	return this.formula;
+    }
+    
     /**
      * Called whenever the mouse moves over the graph image of this view. By
      * default, this does nothing. Override this method to provide custom
