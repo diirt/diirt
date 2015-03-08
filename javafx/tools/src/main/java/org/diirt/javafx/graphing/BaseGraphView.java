@@ -130,8 +130,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * Redraws the graph
      */
     protected void reconnect() {
-	this.setFormula( "" );
-	this.setFormula( this.getFormula() );
+	reconnect( this.getFormula() );
     }
     /**
      * Sends the given data formula to the data source and asks it for data. 

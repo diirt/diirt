@@ -22,6 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 /**
  * Creates bubble graphs.
@@ -88,6 +89,15 @@ public class BubbleGraphApp extends BaseGraphApp {
 	public ConfigurationDialog() {
 	    this.initStyle(StageStyle.UTILITY);
 	    
+	    this.setOnCloseRequest( new EventHandler< WindowEvent >() {
+
+		@Override
+		public void handle(WindowEvent event) {
+		    ConfigurationDialog.this.loadSaved();
+		}
+		
+	    });
+	    
 	    GridPane pnlConfigurations = new GridPane();
 	    
 	    GridPane.setConstraints( lblXColumn , 0 , 0 );
@@ -133,8 +143,8 @@ public class BubbleGraphApp extends BaseGraphApp {
 	    GridPane.setConstraints( txtColorColumn , 1 , 3 );
 	    txtColorColumn.textProperty().addListener( new ChangeListener< String >() {
 
-		@Override
-		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+	    @Override
+	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 		    if ( !newValue.equals( oldValue ) ) {
 			configure();
 		    }
@@ -170,6 +180,7 @@ public class BubbleGraphApp extends BaseGraphApp {
 
 		@Override
 		public void handle(ActionEvent event) {
+		    ConfigurationDialog.this.loadSaved();
 		    ConfigurationDialog.this.hide();
 		}
 	    });

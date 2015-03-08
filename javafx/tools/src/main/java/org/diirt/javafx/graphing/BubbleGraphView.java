@@ -64,7 +64,6 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 
 	    @Override
 	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		System.out.println( xColumn.getValue() );
 		BubbleGraphView.super.reconnect();
 	    }
 	});
