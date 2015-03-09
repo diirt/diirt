@@ -105,4 +105,11 @@ window.onload = function() {
         selectedId = subscriptionList.selectedIndex;
     }
     
+    clearBtn.onclick = function() {
+        var node = document.getElementById('results');
+        while (node.firstChild) {
+            node.removeChild(node.firstChild);
+        }
+    }
+    
 }
