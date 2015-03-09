@@ -23,7 +23,6 @@ window.onload = function() {
     var eventDetails = [];
 
     serverField.value = "ws://" + window.location.host + "/web-pods/socket";
-
     
     function addEventDetails(event) {
         eventDetails.unshift('<div><pre>' + JSON.stringify(event, null, '     ') + '</pre></div>');
@@ -90,6 +89,11 @@ window.onload = function() {
     resumeBtn.onclick = function() {
         var channel = socket.getChannel(selectedId);
         channel.resume();
+    }
+    
+    unsubscribeBtn.onclick = function() {
+        var channel = socket.getChannel(selectedId);
+        channel.unsubscribe();
     }
   
     results.onchange = function() {
