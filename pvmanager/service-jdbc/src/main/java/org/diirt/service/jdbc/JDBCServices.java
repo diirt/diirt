@@ -63,7 +63,7 @@ public class JDBCServices {
             
             JDBCServiceDescription service = new JDBCServiceDescription(serviceName, serviceDesecription);
             service.dataSource(new SimpleDataSource(jdbcUrl));
-            service.addExecutor(defaultExecutor);
+            service.executorService(defaultExecutor);
 
             NodeList methods = (NodeList) xPath.evaluate("/jdbcService/methods/method", document, XPathConstants.NODESET);
             for (int i = 0; i < methods.getLength(); i++) {

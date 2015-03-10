@@ -66,7 +66,7 @@ public class ExecServiceProviderTest {
     }
 
     @Test
-    public void runCommand1() throws URISyntaxException {
+    public void runCommand1() throws URISyntaxException, Exception {
         File file = new File(getClass().getResource(".").toURI());
         ExecServiceProvider factory = new ExecServiceProvider(file, false);
         Collection<Service> services = factory.createServices();
@@ -74,7 +74,7 @@ public class ExecServiceProviderTest {
         Service service = services.iterator().next();
         Map<String, Object> params = new HashMap<>();
         params.put("string", ValueFactory.newVString("FOO!", ValueFactory.alarmNone(), ValueFactory.timeNow()));
-        Map<String, Object> result = service.getServiceMethods().get("echo").syncExecute(params);
+        Map<String, Object> result = service.getServiceMethods().get("echo").executeSync(params);
         VString output = (VString) result.get("output");
         assertThat(output.getValue(), equalTo("You selected FOO!\n"));
     }

@@ -65,7 +65,7 @@ public class ExecServiceProvider extends AbstractFileServiceProvider {
     @Override
     public Collection<Service> additionalServices() {
         if (includeGenericExecService) {
-            return Collections.<Service>singleton(new GenericExecService());
+            return Collections.<Service>singleton(GenericExecService.createGenericExecService());
         } else {
             return Collections.emptySet();
         }

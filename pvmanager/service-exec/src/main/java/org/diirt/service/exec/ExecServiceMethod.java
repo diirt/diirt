@@ -5,7 +5,6 @@
 package org.diirt.service.exec;
 
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
 import org.diirt.vtype.VString;
@@ -17,7 +16,6 @@ import org.diirt.vtype.VString;
  */
 class ExecServiceMethod extends ServiceMethod {
     
-    private final ExecutorService executorService;
     private final String shell;
     private final String shellArg;
     private final String command;
@@ -27,16 +25,15 @@ class ExecServiceMethod extends ServiceMethod {
      * 
      * @param serviceMethodDescription a method description
      */
-    ExecServiceMethod(ExecServiceMethodDescription serviceMethodDescription) {
-        super(serviceMethodDescription.serviceMethodDescription);
-        this.executorService = serviceMethodDescription.executorService;
-        this.shell = serviceMethodDescription.shell;
-        this.shellArg = serviceMethodDescription.shellArg;
+    ExecServiceMethod(ExecServiceMethodDescription serviceMethodDescription, ExecServiceDescription serviceDescription) {
+        super(serviceMethodDescription, serviceDescription);
+        this.shell = serviceDescription.shell;
+        this.shellArg = serviceDescription.shellArg;
         this.command = serviceMethodDescription.command;
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
+    public void asyncExecImpl(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
         String expandedCommand = command;
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             String name = entry.getKey();
@@ -52,6 +49,7 @@ class ExecServiceMethod extends ServiceMethod {
             }
             expandedCommand = expandedCommand.replaceAll("#" + name + "#", value);
         }
-        GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, executorService, shell, shellArg, expandedCommand);
+        //TODO: executing async from this implementation requires an executor
+        GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, super.executor, shell, shellArg, expandedCommand);
     }
 }

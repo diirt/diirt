@@ -9,10 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -79,7 +77,8 @@ public abstract class ServiceMethod {
     private final Map<String, DataDescription> argumentMap;
     private final List<DataDescription> results;
     private final Map<String, DataDescription> resultMap;
-    private final ExecutorService executor;
+    //TODO: this was changed to protected
+    protected final ExecutorService executor;
     
     private final boolean asyncExecute;
     private final boolean syncExecute;
@@ -104,13 +103,19 @@ public abstract class ServiceMethod {
         
         //Determines whether the synchronous or asynchronous method was overridden
         boolean sync = false;
-        boolean async = false;
         try {
             sync = !ServiceMethod.class.equals(this.getClass().getMethod("syncExecImpl", Map.class).getDeclaringClass());
+        } catch (NoSuchMethodException | SecurityException ex) {
+//            Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        boolean async = false;
+        try {
             async = !ServiceMethod.class.equals(this.getClass().getMethod("asyncExecImpl", Map.class, Consumer.class, Consumer.class).getDeclaringClass());
         } catch (NoSuchMethodException | SecurityException ex) {
-            Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         syncExecute = sync;
         asyncExecute = async;
         if (!asyncExecute && !syncExecute){
@@ -223,16 +228,16 @@ public abstract class ServiceMethod {
     }
     
     //Implementation of the method (OVERRIDDEN BY SUBCLASS)
+    //TODO made this protected rather than public
     //--------------------------------------------------------------------------    
-    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
+    protected Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
         throw new RuntimeException("syncExecImpl was not overridden.");
     }
     
-    public void asyncExecImpl(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
+    protected void asyncExecImpl(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
         throw new RuntimeException("asyncExecImpl was not overridden.");        
     }
     //--------------------------------------------------------------------------
-    
     
     //Wrap from sync <--> async calls
     //--------------------------------------------------------------------------
@@ -335,20 +340,4 @@ public abstract class ServiceMethod {
         }        
     }
     //--------------------------------------------------------------------------    
-
-    //TODO: service.close() have a close method
-    //ServiceDescription, add create services (see jdbc)
-    //change methoddescription to implementation
-    //move asyncImpl and syncImpl to interfaces and include in methoddescription
-    
-    //SM descr      ->      S descr
-    //                   /  |
-    //                  /   v
-    //SM impl        < /    S
-    
-    //Notes:
-    //I kept the service-method-implementations within this class in order
-    //to ensure ServiceMethod remained immutable. Creating "asyncImpl" and
-    //"syncImpl" interfaces and copying those references to a ServiceMethod
-    //would not gurantee the execution was immutable.
 }

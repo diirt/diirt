@@ -18,7 +18,7 @@ public class JDBCSampleService {
     public static Service create() {
         return new JDBCServiceDescription("jdbcSample", "A test service")
                 .dataSource(new SimpleDataSource("jdbc:mysql://localhost/test?user=root&password=root"))
-                .addExecutor(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("jdbcSample")))
+                .executorService(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("jdbcSample")))
                 .addServiceMethod(new JDBCServiceMethodDescription("query", "A test query")
                     .query("SELECT * FROM Data")
                     .queryResult("result", "The query result")

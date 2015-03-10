@@ -1,6 +1,6 @@
 /**
- * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT All rights
- * reserved. Use is subject to license terms. See LICENSE.TXT
+ * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
+ * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.diirt.datasource.sample.services.math;
 
@@ -50,7 +50,7 @@ public class MathExample {
         System.out.println("SYNCHRONOUS EXECUTION: ");
         syncExecuteAdd();
         syncExecuteMultiply();
-        
+
         System.out.println("ASYNCHRONOUS EXECUTION: ");
         asyncExecuteAdd();
     }
@@ -61,7 +61,7 @@ public class MathExample {
      */
     public static void syncExecuteAdd() {
         //Generate the service action to be called
-        ServiceMethod method = new MathService().getServiceMethods().get("add");
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
 
         //Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
@@ -90,8 +90,7 @@ public class MathExample {
      * synchronously.
      */
     public static void syncExecuteMultiply() {
-        //Generate the service action to be called
-        ServiceMethod method = new MathService().getServiceMethods().get("multiply");
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
 
         //Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(2, Alarm.noValue(), Time.now(), Display.none());
@@ -116,7 +115,8 @@ public class MathExample {
     }
 
     public static void asyncExecuteAdd() {
-        ServiceMethod method = new MathService().getServiceMethods().get("add");
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
+
         //Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
         VNumber arg2 = VInt.create(2, Alarm.noValue(), Time.now(), Display.none());
@@ -149,7 +149,7 @@ public class MathExample {
         //Executes the service asynchronously, callbacks handle what happens afterwards
         method.executeAsync(parameters, callback, errorCallback);
         System.out.println("I might print out before the result.");
-        
+
         //Expected output:
         //service: 1 + 2
         //result: 3.0          

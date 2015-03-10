@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import static org.diirt.service.Service.namePattern;
 
 /**
@@ -85,5 +84,5 @@ public abstract class ServiceMethodDescription {
         return this;
     }
     
-    public abstract ServiceMethod createServiceMethod(ServiceDescription serviceDesccription);
+    public abstract ServiceMethod createServiceMethod(ServiceDescription serviceDescription);
 }

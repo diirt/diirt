@@ -6,8 +6,6 @@ package org.diirt.service.jdbc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import javax.sql.DataSource;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
@@ -19,27 +17,28 @@ import org.diirt.vtype.VTable;
  * @author carcassi
  */
 public class JDBCServiceMethodDescription extends ServiceMethodDescription {
-    
+
     boolean resultAdded = false;
     String query;
     final List<String> orderedParameterNames = new ArrayList<>();
 
     /**
      * A new service method with the given name and description.
-     * 
+     *
      * @param name the method name
      * @param description the method description
      */
     public JDBCServiceMethodDescription(String name, String description) {
         super(name, description);
     }
-    
+
     /**
      * Adds a result for the query.
      * <p>
-     * The result must be specified if the query returns data (i.e. it is a SELECT)
-     * and must not be specified if the query does not return data (i.e. INSERT, UPDATE, DELETE, ...).
-     * 
+     * The result must be specified if the query returns data (i.e. it is a
+     * SELECT) and must not be specified if the query does not return data (i.e.
+     * INSERT, UPDATE, DELETE, ...).
+     *
      * @param name the result name
      * @param description the result description
      * @return this
@@ -51,10 +50,10 @@ public class JDBCServiceMethodDescription extends ServiceMethodDescription {
         addResult(name, description, VTable.class);
         return this;
     }
-    
+
     /**
      * The query mapped to this service method.
-     * 
+     *
      * @param query the query
      * @return this
      */
@@ -67,8 +66,8 @@ public class JDBCServiceMethodDescription extends ServiceMethodDescription {
     }
 
     @Override
-    public ServiceMethod createServiceMethod(ServiceDescription serviceDesccription) {
-        return new JDBCServiceMethod(this, (JDBCServiceDescription) serviceDesccription);
+    public ServiceMethod createServiceMethod(ServiceDescription serviceDescription) {
+        return new JDBCServiceMethod(this, (JDBCServiceDescription) serviceDescription);
     }
-    
+
 }

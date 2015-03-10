@@ -14,8 +14,8 @@ public class MathService {
         return new ServiceMethodDescription("add", "Adds two numbers.") {
 
             @Override
-            public ServiceMethod createServiceMethod(ServiceDescription serviceDesccription) {
-                return new AddServiceMethod(this, serviceDesccription);
+            public ServiceMethod createServiceMethod(ServiceDescription serviceDescription) {
+                return new AddServiceMethod(this, serviceDescription);
             }
         }.addArgument("arg1", "First argument", Number.class)
                 .addArgument("arg2", "Second argument", Number.class)

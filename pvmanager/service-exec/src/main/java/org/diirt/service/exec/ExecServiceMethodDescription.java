@@ -6,7 +6,8 @@ package org.diirt.service.exec;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import org.diirt.service.ServiceDescription;
+import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
 import org.diirt.vtype.VType;
 
@@ -15,45 +16,25 @@ import org.diirt.vtype.VType;
  *
  * @author carcassi
  */
-public class ExecServiceMethodDescription {
-    
-    final ServiceMethodDescription serviceMethodDescription;
+public class ExecServiceMethodDescription extends ServiceMethodDescription {
+
     boolean resultAdded = false;
-    ExecutorService executorService;
-    String shell;
-    String shellArg;
     String command;
     final List<String> orderedParameterNames = new ArrayList<>();
 
     /**
      * A new service method with the given name and description.
-     * 
+     *
      * @param name the method name
      * @param description the method description
      */
     public ExecServiceMethodDescription(String name, String description) {
-        serviceMethodDescription = new ServiceMethodDescription(name, description);
+        super(name, description);
     }
-    
-    /**
-     * Adds an argument for the query.
-     * <p>
-     * Arguments need to be specified in the same order as they appear in the query.
-     * 
-     * @param name argument name
-     * @param description argument description
-     * @param type the expected type of the argument
-     * @return this
-     */
-    public ExecServiceMethodDescription addArgument(String name, String description, Class<?> type) {
-        serviceMethodDescription.addArgument(name, description, type);
-        orderedParameterNames.add(name);
-        return this;
-    }
-    
+
     /**
      * Adds a result for the script.
-     * 
+     *
      * @param name the result name
      * @param description the result description
      * @return this
@@ -62,15 +43,7 @@ public class ExecServiceMethodDescription {
         if (resultAdded) {
             throw new IllegalArgumentException("The query can only have one result");
         }
-        serviceMethodDescription.addResult(name, description, VType.class);
-        return this;
-    }
-    
-    ExecServiceMethodDescription executorService(ExecutorService executorService) {
-        if (this.executorService != null) {
-            throw new IllegalArgumentException("ExecutorService was already set");
-        }
-        this.executorService = executorService;
+        addResult(name, description, VType.class);
         return this;
     }
 
@@ -78,5 +51,10 @@ public class ExecServiceMethodDescription {
         this.command = command;
         return this;
     }
-    
+
+    @Override
+    public ServiceMethod createServiceMethod(ServiceDescription serviceDescription) {
+        return new ExecServiceMethod(this, (ExecServiceDescription) serviceDescription);
+    }
+
 }

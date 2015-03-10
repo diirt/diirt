@@ -8,15 +8,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import org.diirt.service.ServiceMethod;
-import org.diirt.service.ServiceMethodDescription;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import org.diirt.service.ServiceDescription;
+import org.diirt.service.ServiceMethodDescription;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.io.CSVIO;
 
@@ -26,21 +26,22 @@ import org.diirt.vtype.io.CSVIO;
  */
 class GenericExecServiceMethod extends ServiceMethod {
 
-    public GenericExecServiceMethod() {
-        super(new ServiceMethodDescription("run", "Executes a command.")
-                .addArgument("command", "The command", VString.class)
-                .addResult("output", "The output of the command", VType.class));
+    public GenericExecServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
+        super(serviceMethodDescription, serviceDescription);
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+    public void asyncExecImpl(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
+        
+        //TODO: this was replaced with the executor from the parent class
+        //ExecutorService executor = Executors.newSingleThreadExecutor();
+        
         String shell = defaultShell();
         String shellArg = defaultShellArg();
         String command = ((VString) parameters.get("command")).getValue();
-        executeCommand(parameters, callback, errorCallback, executor, shell, shellArg, command);
+        executeCommand(parameters, callback, errorCallback, super.executor, shell, shellArg, command);
     }
-    
+
     static String defaultShell() {
         if (isWindows()) {
             return "cmd";
@@ -48,7 +49,7 @@ class GenericExecServiceMethod extends ServiceMethod {
             return "/bin/bash";
         }
     }
-    
+
     static String defaultShellArg() {
         if (isWindows()) {
             return "/c";
@@ -56,7 +57,7 @@ class GenericExecServiceMethod extends ServiceMethod {
             return "-c";
         }
     }
-    
+
     static boolean isWindows() {
         return System.getProperties().get("os.name").toString().toLowerCase().indexOf("win") >= 0;
     }
@@ -70,7 +71,7 @@ class GenericExecServiceMethod extends ServiceMethod {
                 Process process = null;
                 try {
                     process = new ProcessBuilder(shell, shellArg, command).start();
-                    
+
                     // Read output to a text buffer
                     StringBuilder buffer = new StringBuilder();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -79,7 +80,7 @@ class GenericExecServiceMethod extends ServiceMethod {
                         buffer.append(line).append("\n");
                     }
                     String output = buffer.toString();
-                    
+
                     // Try parsing output as a table
                     try {
                         CSVIO io = new CSVIO();
@@ -88,10 +89,10 @@ class GenericExecServiceMethod extends ServiceMethod {
                         resultMap.put("output", table);
                         callback.accept(resultMap);
                         return;
-                    } catch(Exception ex) {
+                    } catch (Exception ex) {
                         // Can't parse output to a table
                     }
-                    
+
                     // Return output as a String
                     Map<String, Object> resultMap = new HashMap<>();
                     resultMap.put("output", ValueFactory.newVString(output, ValueFactory.alarmNone(), ValueFactory.timeNow()));

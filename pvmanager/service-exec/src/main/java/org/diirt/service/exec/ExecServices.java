@@ -17,6 +17,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.diirt.service.Service;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.w3c.dom.Document;
@@ -25,7 +26,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Utility class to create JDBCServices.
+ * Utility class to create ExecServices.
  *
  * @author carcassi
  */
@@ -35,7 +36,7 @@ public class ExecServices {
         // Prevent instanciation
     }
     
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
+    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Exec services"));
 
     /**
      * Creates a JDBCService based on the description of an XML file.
@@ -43,7 +44,7 @@ public class ExecServices {
      * @param input a stream with an xml file
      * @return the new service
      */
-    public static ExecService createFromXml(InputStream input) {
+    public static Service createFromXml(InputStream input) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -71,10 +72,10 @@ public class ExecServices {
                 String resultName = xPath.evaluate("result/@name", method);
                 String resultDescription = xPath.evaluate("result/@description", method);
                 
-                ExecServiceMethodDescription jdbcMethod = new ExecServiceMethodDescription(methodName, methodDescription);
-                jdbcMethod.command(command);
+                ExecServiceMethodDescription execMethod = new ExecServiceMethodDescription(methodName, methodDescription);
+                execMethod.command(command);
                 if (!resultName.trim().isEmpty()) {
-                    jdbcMethod.queryResult(resultName, resultDescription);
+                    execMethod.queryResult(resultName, resultDescription);
                 }
                 
                 NodeList arguments = (NodeList) xPath.evaluate("argument", method, XPathConstants.NODESET);
@@ -92,13 +93,13 @@ public class ExecServices {
                         default: throw new IllegalArgumentException("Type " + argType + " not supported.");
                     }
                     if (!argName.trim().isEmpty()) {
-                        jdbcMethod.addArgument(argName, argDescription, argClass);
+                        execMethod.addArgument(argName, argDescription, argClass);
                     }
                 }
-                service.addServiceMethod(jdbcMethod);
+                service.addServiceMethod(execMethod);
             }
             
-            return new ExecService(service);
+            return service.createService();
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(ExecServices.class.getName()).log(Level.FINEST, "Couldn't create service", ex);
             throw new IllegalArgumentException("Couldn't create service", ex);

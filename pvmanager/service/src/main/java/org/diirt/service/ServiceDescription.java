@@ -58,7 +58,7 @@ public class ServiceDescription {
     }
 
     //NEW
-    public ServiceDescription addExecutor(ExecutorService executor) {
+    public ServiceDescription executorService(ExecutorService executor) {
         if (this.executorService != null) {
             throw new IllegalArgumentException("ExecutorService was already set");
         }

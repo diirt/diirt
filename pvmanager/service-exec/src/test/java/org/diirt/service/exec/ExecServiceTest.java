@@ -11,9 +11,9 @@ import java.util.concurrent.Executors;
 import org.diirt.service.Service;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.ValueFactory;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -22,29 +22,31 @@ import static org.hamcrest.Matchers.*;
 public class ExecServiceTest {
 
     @Test
-    public void runCommand1() {
+    public void runCommand1() throws Exception {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Service service = new ExecService(new ExecServiceDescription("execSample", "A simple exec service")
+        Service service = new ExecServiceDescription("execSample", "A simple exec service")
                 .executorService(executor)
                 .addServiceMethod(new ExecServiceMethodDescription("echo", "A simple command")
-                                 .command("echo This is a test!")));
+                .command("echo This is a test!"))
+                .createService();
         Map<String, Object> params = new HashMap<>();
-        Map<String, Object> result = service.getServiceMethods().get("echo").syncExecute(params);
+        Map<String, Object> result = service.getServiceMethods().get("echo").executeSync(params);
         VString output = (VString) result.get("output");
         assertThat(output.getValue(), equalTo("This is a test!\n"));
     }
 
     @Test
-    public void runCommand2() {
+    public void runCommand2() throws Exception {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Service service = new ExecService(new ExecServiceDescription("execSample", "A simple exec service")
+        Service service = new ExecServiceDescription("execSample", "A simple exec service")
                 .executorService(executor)
                 .addServiceMethod(new ExecServiceMethodDescription("echo", "A simple command")
-                                 .command("echo You entered #param#")
-                                 .addArgument("param", "The parameter", VString.class)));
+                .command("echo You entered #param#")
+                .addArgument("param", "The parameter", VString.class))
+                .createService();
         Map<String, Object> params = new HashMap<>();
         params.put("param", ValueFactory.newVString("FOO!", ValueFactory.alarmNone(), ValueFactory.timeNow()));
-        Map<String, Object> result = service.getServiceMethods().get("echo").syncExecute(params);
+        Map<String, Object> result = service.getServiceMethods().get("echo").executeSync(params);
         VString output = (VString) result.get("output");
         assertThat(output.getValue(), equalTo("You entered FOO!\n"));
     }
