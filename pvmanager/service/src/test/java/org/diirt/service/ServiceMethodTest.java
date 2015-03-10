@@ -83,6 +83,7 @@ public class ServiceMethodTest {
                 final long timeAsync = System.currentTimeMillis() - startTimeAsync;
                 
                 //TESTING
+                // TODO: NOOOOOOOO! Use latch 
                 assertTrue(timeAsync > timeSync);
                 assertTrue(timeAsync >= 2000);
             }
@@ -97,5 +98,6 @@ public class ServiceMethodTest {
             
         };        
         method.executeAsync(new HashMap<>(), callback, errorCallback);
+        // TODO Check the time right after the asynch call <100ms
     }
 }

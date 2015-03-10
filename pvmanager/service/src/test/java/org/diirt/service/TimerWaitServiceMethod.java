@@ -20,9 +20,9 @@ public class TimerWaitServiceMethod extends ServiceMethod {
 
     @Override
     public Map<String, Object> syncExecImpl(Map<String, Object> parameters) {
-            Map<String, Object> resultMap = new HashMap<>();
-            resultMap.put("result", "Timer has finished waiting (sleep 0)");
-            return resultMap;
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("result", "Timer has finished waiting (sleep 0)");
+        return resultMap;
     }
 
     @Override

@@ -62,6 +62,7 @@ class GenericExecServiceMethod extends ServiceMethod {
         return System.getProperties().get("os.name").toString().toLowerCase().indexOf("win") >= 0;
     }
 
+    // TODO: should expose the synchronous executotion
     static void executeCommand(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback,
             final ExecutorService executor, final String shell, final String shellArg, final String command) {
         executor.submit(new Runnable() {

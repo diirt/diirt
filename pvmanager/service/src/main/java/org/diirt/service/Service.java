@@ -38,6 +38,10 @@ public final class Service {
     Service(ServiceDescription serviceDescription) {
         this.name = serviceDescription.name;
         this.description = serviceDescription.description;
+        // TODO before creating methods, get the executor. If null, create a
+        // single threaded one, and change the serviceDescription, so that
+        // the creating of the serviceMethods use the now created executor
+        // TODO use the createServiceMethods()
         this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.serviceMethods));
     }
 
@@ -67,5 +71,7 @@ public final class Service {
     public final Map<String, ServiceMethod> getServiceMethods() {
         return serviceMethods;
     }
+    
+    // TODO add close that shuts down the executor
     
 }
