@@ -102,11 +102,11 @@ public abstract class ServiceMethod {
             tmpArgMap.put(arg.name, arg);
         });
         Map<String, DataDescription> tmpResultMap = new HashMap<>();
-        arguments.stream().forEach((result) -> {
-            tmpArgMap.put(result.name, result);
+        results.stream().forEach((result) -> {
+            tmpResultMap.put(result.name, result);
         });
-        this.argumentMap = Collections.unmodifiableMap(tmpArgMap);
-        this.resultMap = Collections.unmodifiableMap(tmpResultMap);
+        this.argumentMap = Collections.unmodifiableMap(new HashMap<>(tmpArgMap));
+        this.resultMap = Collections.unmodifiableMap(new HashMap<>(tmpResultMap));
         
         // TODO verify correctness
         // TODO test me !!!
