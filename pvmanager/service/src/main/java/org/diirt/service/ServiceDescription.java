@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.function.Function;
 import static org.diirt.service.Service.namePattern;
 
 /**
@@ -26,10 +25,8 @@ public class ServiceDescription {
     // these
     String name;
     String description;
-    List<ServiceMethodDescription> serviceMethodDescriptions = new ArrayList<>(); //NEW
-    // Remove following
-    Map<String, ServiceMethod> serviceMethods = new HashMap<>();
-    ExecutorService executorService; //NEW
+    List<ServiceMethodDescription> serviceMethodDescriptions = new ArrayList<>();
+    ExecutorService executorService;
 
     /**
      * Creates a new service description with the given name and description,
@@ -39,7 +36,20 @@ public class ServiceDescription {
      * @param description the service description, can't be null
      */
     public ServiceDescription(String name, String description) {
-        // TODO: check they are not null or empty strings
+        // Validate the parameters (non-null and non-empty)
+        if (name == null){
+            throw new NullPointerException("Name must not be null");
+        }
+        if (description == null){
+            throw new NullPointerException("Description must not be null");
+        }
+        if (name.isEmpty()){
+            throw new IllegalArgumentException("Name must not be empty");
+        }
+        if (description.isEmpty()){
+            throw new IllegalArgumentException("Description must not be empty");
+        }
+        
         this.name = name;
         this.description = description;
         if (!namePattern.matcher(name).matches()) {
@@ -50,39 +60,50 @@ public class ServiceDescription {
     /**
      * Adds the given method to this service description.
      *
-     * @param serviceMethod a service method, can't be null
+     * @param serviceMethodDescription a service method, can't be null
      * @return this description
      */
-    public ServiceDescription addServiceMethod(ServiceMethodDescription serviceMethod) {
-        // TODO check for null
-        // TODO Check for reused name of service method
-        serviceMethodDescriptions.add(serviceMethod);
-        //serviceMethods.put(serviceMethod.getName(), serviceMethod);
+    public ServiceDescription addServiceMethod(ServiceMethodDescription serviceMethodDescription) {
+        // Validate parameters (non-null, non-duplicate method)
+        if (serviceMethodDescription == null) {
+            throw new NullPointerException("ServiceMethodDescription must not be null");
+        }
+        // Throws exception if parameter has a duplicate name of a service method
+        if (serviceMethodDescriptions.stream().anyMatch((ServiceMethodDescription t) -> {
+            return t.name.equals(serviceMethodDescription.name);
+        })) {
+            throw new IllegalArgumentException("ServiceMethodDescription with name \'" + serviceMethodDescription.name + "\' already exists");
+        }
+
+        serviceMethodDescriptions.add(serviceMethodDescription);
+
         return this;
     }
 
-    //NEW
     public ServiceDescription executorService(ExecutorService executor) {
-        // TODO Check for null argument
+        // Validate parameters (non-null, not already set)
+        if (executor == null) {
+            throw new NullPointerException("ExecutorService must not be null");
+        }
         if (this.executorService != null) {
             throw new IllegalArgumentException("ExecutorService was already set");
         }
+
         this.executorService = executor;
         return this;
     }
     
-    // TODO  Map<String, ServiceMethod> createServiceMethods()
-    // Map should be already immutable
-
-    //NEW
-    public Service createService() {
-        //All method descriptions
+    public Map<String, ServiceMethod> createServiceMethods() {
+        Map<String, ServiceMethod> map = new HashMap<>();
         for (ServiceMethodDescription serviceMethodDescription : serviceMethodDescriptions) {
-            //Creates the method and updates
             ServiceMethod method = serviceMethodDescription.createServiceMethod(this);
-            serviceMethods.put(method.getName(), method);
+            map.put(method.getName(), method);
         }
+        return map;
+    }
 
+    // TODO verify correctness
+    public Service createService() {
         return new Service(this);
     }
 }

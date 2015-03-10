@@ -6,7 +6,6 @@ package org.diirt.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  *
@@ -19,24 +18,17 @@ public class TimerWaitServiceMethod extends ServiceMethod {
     }
 
     @Override
-    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("result", "Timer has finished waiting (sleep 0)");
-        return resultMap;
-    }
-
-    @Override
-    public void asyncExecImpl(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception{
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             Map<String, Object> resultMap = new HashMap<>();
-            resultMap.put("result", "Timer has finished waiting (sleep 2000)");
-            callback.accept(resultMap);
-        } catch (InterruptedException ex) {
-            errorCallback.accept(ex);
+            resultMap.put("result", "Timer has finished waiting (sleep 1000)");
+            return resultMap;
+        } catch (InterruptedException ex){
+            throw new RuntimeException(ex);
         }
     }
-
+    
     public static Service createTimerService(){
         return new ServiceDescription("timer", "Simple timer service")
                 .addServiceMethod(timerMethod())

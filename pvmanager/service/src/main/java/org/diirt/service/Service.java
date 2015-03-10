@@ -7,6 +7,8 @@ package org.diirt.service;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 /**
@@ -26,7 +28,8 @@ public final class Service {
     private final String name;
     private final String description;
     private final Map<String, ServiceMethod> serviceMethods;
-
+    private final ExecutorService executorService;
+    
     /**
      * Creates a new service given the description. All properties
      * are copied out of the description, guaranteeing the immutability
@@ -38,11 +41,15 @@ public final class Service {
     Service(ServiceDescription serviceDescription) {
         this.name = serviceDescription.name;
         this.description = serviceDescription.description;
-        // TODO before creating methods, get the executor. If null, create a
-        // single threaded one, and change the serviceDescription, so that
-        // the creating of the serviceMethods use the now created executor
-        // TODO use the createServiceMethods()
-        this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.serviceMethods));
+
+        // TODO verify correctness
+        // If no executor is attached to the description, we create one
+        if (serviceDescription.executorService == null){
+            serviceDescription.executorService = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool(this.name + " services"));
+        }
+        this.executorService = serviceDescription.executorService;
+        
+        this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.createServiceMethods()));
     }
 
     /**
@@ -72,6 +79,7 @@ public final class Service {
         return serviceMethods;
     }
     
-    // TODO add close that shuts down the executor
-    
+    public void close(){
+        this.executorService.shutdown();
+    }
 }

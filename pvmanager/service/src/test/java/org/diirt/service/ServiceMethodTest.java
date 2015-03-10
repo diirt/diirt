@@ -6,6 +6,9 @@ package org.diirt.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,35 +72,43 @@ public class ServiceMethodTest {
     public void executeAsyncVsSync(){
         ServiceMethod method = TimerWaitServiceMethod.createTimerService().getServiceMethods().get("wait");
         
-        //SYNC
-        final long startTimeSync = System.currentTimeMillis();
-        method.executeSync(new HashMap<>());
-        final long timeSync = System.currentTimeMillis() - startTimeSync;
+        // Time measurement
+        long startTimeSync, endTimeSync;
+        long startTimeAsync, endTimeAsync, postLatchTimeAsync;
         
-        //ASYNC
-        final long startTimeAsync = System.currentTimeMillis();
-        Consumer<Map<String, Object>> callback = new Consumer<Map<String, Object>>(){
-
-            @Override
-            public void accept(Map<String, Object> resultAsync) {
-                final long timeAsync = System.currentTimeMillis() - startTimeAsync;
-                
-                //TESTING
-                // TODO: NOOOOOOOO! Use latch 
-                assertTrue(timeAsync > timeSync);
-                assertTrue(timeAsync >= 2000);
-            }
-            
+        // ASYNC setup
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicReference<Map<String, Object>> result = new AtomicReference<>();
+        
+        Consumer<Map<String, Object>> callback = (Map<String, Object> newValue) -> {
+            result.set(newValue);
+            latch.countDown();
         };
-        Consumer<Exception> errorCallback = new Consumer<Exception>(){
-
-            @Override
-            public void accept(Exception ex) {
-                fail("Unexpected async exception");
-            }
-            
-        };        
+        Consumer<Exception> errorCallback = (Exception ex) -> {
+            fail("Unexpected async exception");
+        };
+        
+        // ASYNC execution        
+        startTimeAsync = System.currentTimeMillis();
         method.executeAsync(new HashMap<>(), callback, errorCallback);
-        // TODO Check the time right after the asynch call <100ms
+        endTimeAsync = System.currentTimeMillis();
+        
+        // await latch
+        try {
+            latch.await(60, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            fail("Unable to finish async execution");
+        }
+        postLatchTimeAsync = System.currentTimeMillis();
+        
+        // SYNC execution
+        startTimeSync = System.currentTimeMillis();
+        method.executeSync(new HashMap<>());
+        endTimeSync = System.currentTimeMillis();
+        
+        // Test
+        assertTrue(endTimeAsync - startTimeAsync < 1000);
+        assertTrue(postLatchTimeAsync - startTimeAsync >= 1000);
+        assertTrue(endTimeSync - startTimeSync >= 1000);
     }
 }

@@ -4,6 +4,7 @@
  */
 package org.diirt.service;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,8 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A call that provides access to command/response type of communication for sources of
@@ -73,13 +72,11 @@ public abstract class ServiceMethod {
     }
     private final String name;
     private final String description;
+    private final ExecutorService executor;
     private final List<DataDescription> arguments;
     private final Map<String, DataDescription> argumentMap;
     private final List<DataDescription> results;
     private final Map<String, DataDescription> resultMap;
-    //TODO: this was changed to protected
-    protected final ExecutorService executor;
-    
     private final boolean asyncExecute;
     private final boolean syncExecute;
             
@@ -95,31 +92,42 @@ public abstract class ServiceMethod {
     public ServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
         this.name = serviceMethodDescription.name;
         this.description = serviceMethodDescription.description;
-        this.arguments = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.arguments));
-        this.argumentMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.argumentMap));
-        this.results = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.results));
-        this.resultMap = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.resultMap));
         this.executor = serviceDescription.executorService;
+        this.arguments = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.arguments));
+        this.results = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.results));
         
-        //Determines whether the synchronous or asynchronous method was overridden
-        boolean sync = false;
+        // Create a map of the names to argument/result
+        Map<String, DataDescription> tmpArgMap = new HashMap<>();
+        arguments.stream().forEach((arg) -> {
+            tmpArgMap.put(arg.name, arg);
+        });
+        Map<String, DataDescription> tmpResultMap = new HashMap<>();
+        arguments.stream().forEach((result) -> {
+            tmpArgMap.put(result.name, result);
+        });
+        this.argumentMap = Collections.unmodifiableMap(tmpArgMap);
+        this.resultMap = Collections.unmodifiableMap(tmpResultMap);
+        
+        // TODO verify correctness
+        // TODO test me !!!
+        
+        // Checks if the subclass overrides the syncrhonous implementation
+        Method method = null;
         try {
-            sync = !ServiceMethod.class.equals(this.getClass().getMethod("syncExecImpl", Map.class).getDeclaringClass());
+            method = this.getClass().getMethod("syncExecImpl", Map.class);
         } catch (NoSuchMethodException | SecurityException ex) {
-            //TODO what happens here
-            //Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
         }
+        syncExecute = method != null && !ServiceMethod.class.equals(method.getDeclaringClass());
         
-        boolean async = false;
+        // Checks if the subclass overrides the asynchronous implementation
+        method = null;
         try {
-            async = !ServiceMethod.class.equals(this.getClass().getMethod("asyncExecImpl", Map.class, Consumer.class, Consumer.class).getDeclaringClass());
+            method = this.getClass().getMethod("asyncExecImpl", Map.class, Consumer.class, Consumer.class);
         } catch (NoSuchMethodException | SecurityException ex) {
-            //TODO what happens here
-            //Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        syncExecute = sync;
-        asyncExecute = async;
+        asyncExecute = method != null && !ServiceMethod.class.equals(method.getDeclaringClass());
+
+        // Validates that the subclass contains an implementation
         if (!asyncExecute && !syncExecute){
             throw new RuntimeException("Must implement the method \"syncExecImpl\" or \"asyncExecImpl\".");
         }
@@ -320,6 +328,8 @@ public abstract class ServiceMethod {
     public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
         validateParameters(parameters);
         
+        // TODO if asyncExecImpl does not run on another thread, it's not actually
+        // async, is this an issue?
         if (asyncExecute) {
             asyncExecImpl(parameters, callback, errorCallback);
         } else if (syncExecute) {

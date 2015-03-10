@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import static org.diirt.service.Service.namePattern;
+import org.diirt.service.ServiceMethod.DataDescription;
 
 /**
  * A utility class to gather all the elements that define the service method.
@@ -26,18 +27,31 @@ public abstract class ServiceMethodDescription {
     String description;
     List<ServiceMethod.DataDescription> arguments = new ArrayList<>();
     List<ServiceMethod.DataDescription> results = new ArrayList<>();
-    Map<String, ServiceMethod.DataDescription> argumentMap = new HashMap<>();
-    Map<String, ServiceMethod.DataDescription> resultMap = new HashMap<>();
+//    Map<String, ServiceMethod.DataDescription> argumentMap = new HashMap<>();
+//    Map<String, ServiceMethod.DataDescription> resultMap = new HashMap<>();
     
     /**
      * Creates a new service method description with the given name and description,
      * both of which are mandatory attributes of the service methods.
      * 
-     * @param name the service method name, can't be null
-     * @param description the service method description, can't be null
+     * @param name the service method name, can't be null or empty
+     * @param description the service method description, can't be null or empty
      */
     public ServiceMethodDescription(String name, String description) {
-        // TODO Check for null
+        // Validate the parameters (non-null and non-empty)
+        if (name == null){
+            throw new NullPointerException("Name must not be null");
+        }
+        if (description == null){
+            throw new NullPointerException("Description must not be null");
+        }
+        if (name.isEmpty()){
+            throw new IllegalArgumentException("Name must not be empty");
+        }
+        if (description.isEmpty()){
+            throw new IllegalArgumentException("Description must not be empty");
+        }
+        
         this.name = name;
         this.description = description;
         if (!namePattern.matcher(name).matches()) {
@@ -50,20 +64,40 @@ public abstract class ServiceMethodDescription {
      * The order in which arguments are added is retained as the preferred order
      * of arguments for the service method.
      * 
-     * @param name a short argument name; can't be null
-     * @param description a meaningful description; can't be null
+     * @param name a short argument name; can't be null or empty
+     * @param description a meaningful description; can't be null or empty
      * @param type the type of the argument
      * @return this description
      */
     public ServiceMethodDescription addArgument(String name, String description, Class<?> type) {
-        // TODO Check for null
-        // TODO: check name is not already used
+        // Validate the parameters (non-null and non-empty)
+        if (name == null){
+            throw new NullPointerException("Name must not be null");
+        }
+        if (description == null){
+            throw new NullPointerException("Description must not be null");
+        }
+        if (name.isEmpty()){
+            throw new IllegalArgumentException("Name must not be empty");
+        }
+        if (description.isEmpty()){
+            throw new IllegalArgumentException("Description must not be empty");
+        }
+
+        // Ensures the name makes sense (matches the pattern)
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
         }
+        
+        // Throws exception if parameter has a duplicate name of an argument
+        if (arguments.stream().anyMatch((DataDescription t) -> {
+            return t.getName().equals(name);
+        })) {
+            throw new IllegalArgumentException("Argument with name \'" + name + "\' already exists");
+        }
+        
         ServiceMethod.DataDescription dataDescription = new ServiceMethod.DataDescription(name, description, type);
         arguments.add(dataDescription);
-        argumentMap.put(name, dataDescription);
         return this;
     }
     
@@ -78,14 +112,34 @@ public abstract class ServiceMethodDescription {
      * @return this description
      */
     public ServiceMethodDescription addResult(String name, String description, Class<?> type) {
-        // TODO Check for null
-        // TODO: check name is not already used
+        // Validate the parameters (non-null and non-empty)
+        if (name == null){
+            throw new NullPointerException("Name must not be null");
+        }
+        if (description == null){
+            throw new NullPointerException("Description must not be null");
+        }
+        if (name.isEmpty()){
+            throw new IllegalArgumentException("Name must not be empty");
+        }
+        if (description.isEmpty()){
+            throw new IllegalArgumentException("Description must not be empty");
+        }
+
+        // Ensures the name makes sense (matches the pattern)
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
         }
+        
+        // Throws exception if parameter has a duplicate name of an argument
+        if (results.stream().anyMatch((DataDescription t) -> {
+            return t.getName().equals(name);
+        })) {
+            throw new IllegalArgumentException("Result with name \'" + name + "\' already exists");
+        }
+        
         ServiceMethod.DataDescription dataDescription = new ServiceMethod.DataDescription(name, description, type);
         results.add(dataDescription);
-        resultMap.put(name, dataDescription);
         return this;
     }
     
