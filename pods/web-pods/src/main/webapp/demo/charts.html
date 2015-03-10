@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
+
+    <script>
+        // Calculating URL from document location, so that examples work no
+        // matter where they are deployed. Typical use would hard-code URL
+        var wsUri = document.location.protocol.replace("http", "ws") + "//" + document.location.host + "/" +
+                document.location.pathname.split("/")[1] + "/socket";
+        var wp = new Client(wsUri);
+    </script>
+    <script type="text/javascript" language="javascript" src="../js/widgets/wp-xygraph.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js" ></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+
+</head>
+<body>
+
+
+<div class="row" style="padding-bottom:20px; overflow:hidden;">
+    <div id = "my-widget3" class="wp-xygraph" data-channel="sim/intermittentChannel(1, 1,2,3,4,5)"  data-graph-type="column" style="float:left; height: 200px; width: 600px; overflow:hidden;" ></div>
+    <div id = "my-widget4" class="wp-xygraph" data-channel="sim/ramp(200, 300, 1, 1)" style="height: 200px; width: 600px; overflow:hidden;" data-channel-readonly="true"></div>
+</div>
+<div class="row" style="padding-bottom:20px; overflow:hidden;">
+    <div class="wp-xygraph" data-channel="sim/ramp(200, 300, 1, 1)"  data-graph-type="area" style="float:left; height: 200px; width: 600px; overflow:hidden;" ></div>
+</div>
+</body>
+</html>

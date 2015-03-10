@@ -1,0 +1,24 @@
+.wp-progress-bar {
+    display: inline-block;
+}
+
+.wp-progress-bar .alarm-none {
+    background-color: green;
+}
+
+.wp-progress-bar .alarm-minor {
+    background-color: yellow;
+}
+
+.wp-progress-bar .alarm-major {
+    background-color: red;
+}
+
+.wp-progress-bar .alarm-invalid {
+    background-color: magenta;
+}
+
+.wp-progress-bar .alarm-undefined {
+    background-color: magenta;
+}
+

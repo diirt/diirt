@@ -8,7 +8,7 @@
 
 $(document).ready(function() {
 
-	var nodes = document.getElementsByClassName("text-input");
+	var nodes = document.getElementsByClassName("wp-text-input");
 	var len = nodes.length;
     var inputs = {};
     var modified = {};

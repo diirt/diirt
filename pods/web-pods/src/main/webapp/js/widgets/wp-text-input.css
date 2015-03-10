@@ -1,24 +1,24 @@
-.text-input {
+.wp-text-input {
     display: inline-block;
 }
 
-.text-input .alarm-none {
+.wp-text-input .alarm-none {
     background-color: white;
 }
 
-.text-input .alarm-minor {
+.wp-text-input .alarm-minor {
     background-color: yellow;
 }
 
-.text-input .alarm-major {
+.wp-text-input .alarm-major {
     background-color: red;
 }
 
-.text-input .alarm-invalid {
+.wp-text-input .alarm-invalid {
     background-color: magenta;
 }
 
-.text-input .alarm-undefined {
+.wp-text-input .alarm-undefined {
     background-color: magenta;
 }
 

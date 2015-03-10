@@ -18,9 +18,9 @@ $(document).ready(function() {
 
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
-        var max = parseFloat(nodes[i].getAttribute("data-max"));
-        var min = parseFloat(nodes[i].getAttribute("data-min"));
-        var step = parseFloat(nodes[i].getAttribute("data-step"));
+        var max = nodes[i].getAttribute("data-displayHigh") != null ? parseFloat(nodes[i].getAttribute("data-displayHigh")) : 100;
+        var min = nodes[i].getAttribute("data-displayLow") != null ? parseFloat(nodes[i].getAttribute("data-displayLow")) : 0;
+        var step = nodes[i].getAttribute("data-step") != null ? parseFloat(nodes[i].getAttribute("data-step")) : 1;
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var id = nodes[i].getAttribute("id");
         if (id === null) {
