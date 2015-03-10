@@ -7,8 +7,6 @@ package org.diirt.datasource.sample.services.math;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.diirt.service.ServiceMethod;
 import org.diirt.vtype.next.Alarm;
 import org.diirt.vtype.next.Display;
@@ -142,14 +140,13 @@ public class MathExample {
 
             @Override
             public void accept(Exception e) {
-                Logger.getLogger(MathExample.class.getName()).log(Level.SEVERE, null, e);
+                System.out.println(e);
             }
 
         };
 
         //Executes the service asynchronously, callbacks handle what happens afterwards
         method.executeAsync(parameters, callback, errorCallback);
-        System.out.println("I might print out before the result.");
 
         //Expected output:
         //service: 1 + 2
@@ -183,14 +180,13 @@ public class MathExample {
 
             @Override
             public void accept(Exception e) {
-                Logger.getLogger(MathExample.class.getName()).log(Level.SEVERE, null, e);
+                System.out.println(e);
             }
 
         };
 
         //Executes the service asynchronously, callbacks handle what happens afterwards
         method.executeAsync(parameters, callback, errorCallback);
-        System.out.println("I might print out before the result.");
 
         //Expected output:
         //service: 2 * 3
