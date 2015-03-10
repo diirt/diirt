@@ -106,14 +106,16 @@ public abstract class ServiceMethod {
         try {
             sync = !ServiceMethod.class.equals(this.getClass().getMethod("syncExecImpl", Map.class).getDeclaringClass());
         } catch (NoSuchMethodException | SecurityException ex) {
-//            Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
+            //TODO what happens here
+            //Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         boolean async = false;
         try {
             async = !ServiceMethod.class.equals(this.getClass().getMethod("asyncExecImpl", Map.class, Consumer.class, Consumer.class).getDeclaringClass());
         } catch (NoSuchMethodException | SecurityException ex) {
-//            Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
+            //TODO what happens here
+            //Logger.getLogger(ServiceMethod.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         syncExecute = sync;

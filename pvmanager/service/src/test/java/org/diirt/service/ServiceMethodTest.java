@@ -6,9 +6,12 @@ package org.diirt.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -60,5 +63,39 @@ public class ServiceMethodTest {
     public void toString2() {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         assertThat(method.toString(), equalTo("add(Number arg1, Number arg2): Number result"));
+    }
+    
+    @Test
+    public void executeAsyncVsSync(){
+        ServiceMethod method = TimerWaitServiceMethod.createTimerService().getServiceMethods().get("wait");
+        
+        //SYNC
+        final long startTimeSync = System.currentTimeMillis();
+        method.executeSync(new HashMap<>());
+        final long timeSync = System.currentTimeMillis() - startTimeSync;
+        
+        //ASYNC
+        final long startTimeAsync = System.currentTimeMillis();
+        Consumer<Map<String, Object>> callback = new Consumer<Map<String, Object>>(){
+
+            @Override
+            public void accept(Map<String, Object> resultAsync) {
+                final long timeAsync = System.currentTimeMillis() - startTimeAsync;
+                
+                //TESTING
+                assertTrue(timeAsync > timeSync);
+                assertTrue(timeAsync >= 2000);
+            }
+            
+        };
+        Consumer<Exception> errorCallback = new Consumer<Exception>(){
+
+            @Override
+            public void accept(Exception ex) {
+                fail("Unexpected async exception");
+            }
+            
+        };        
+        method.executeAsync(new HashMap<>(), callback, errorCallback);
     }
 }
