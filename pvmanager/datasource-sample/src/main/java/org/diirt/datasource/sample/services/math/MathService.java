@@ -4,6 +4,8 @@
  */
 package org.diirt.datasource.sample.services.math;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.diirt.service.Service;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
@@ -16,6 +18,8 @@ import org.diirt.vtype.next.VNumber;
  */
 public class MathService {
 
+    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Math services"));
+    
     public static ServiceMethodDescription addMethod() {
         return new ServiceMethodDescription("add", "Adds two numbers.") {
 
@@ -46,6 +50,7 @@ public class MathService {
         return new ServiceDescription("math", "Simple math service for VNumber")
                 .addServiceMethod(addMethod())
                 .addServiceMethod(multiplyMethod())
+                .executorService(defaultExecutor)
                 .createService();
     }
 }

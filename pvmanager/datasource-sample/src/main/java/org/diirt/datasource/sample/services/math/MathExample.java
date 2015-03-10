@@ -53,6 +53,7 @@ public class MathExample {
 
         System.out.println("ASYNCHRONOUS EXECUTION: ");
         asyncExecuteAdd();
+        asyncExecuteMultiply();
     }
 
     /**
@@ -154,4 +155,46 @@ public class MathExample {
         //service: 1 + 2
         //result: 3.0          
     }
+    
+    public static void asyncExecuteMultiply() {
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
+
+        //Generate the parameters to be supplied to the addition service
+        VNumber arg1 = VDouble.create(2, Alarm.noValue(), Time.now(), Display.none());
+        VNumber arg2 = VInt.create(3, Alarm.noValue(), Time.now(), Display.none());
+
+        //Puts the arguments in a map to supply to the the service
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("arg1", arg1);
+        parameters.put("arg2", arg2);
+        System.out.println("service: 2 * 3");
+
+        Consumer<Map<String, Object>> callback = new Consumer<Map<String, Object>>() {
+
+            @Override
+            public void accept(Map<String, Object> returnValues) {
+                //Obtains the mathematical result
+                VNumber result = (VNumber) returnValues.get("result");
+                System.out.println("result: " + result.getValue().doubleValue());
+            }
+
+        };
+        Consumer<Exception> errorCallback = new Consumer<Exception>() {
+
+            @Override
+            public void accept(Exception e) {
+                Logger.getLogger(MathExample.class.getName()).log(Level.SEVERE, null, e);
+            }
+
+        };
+
+        //Executes the service asynchronously, callbacks handle what happens afterwards
+        method.executeAsync(parameters, callback, errorCallback);
+        System.out.println("I might print out before the result.");
+
+        //Expected output:
+        //service: 2 * 3
+        //result: 6.0          
+    }
+    
 }
