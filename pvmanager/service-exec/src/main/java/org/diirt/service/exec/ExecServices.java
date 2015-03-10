@@ -36,6 +36,7 @@ public class ExecServices {
         // Prevent instanciation
     }
     
+    // TODO: replace with GenericExecService executor
     private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Exec services"));
 
     /**
