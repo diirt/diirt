@@ -229,9 +229,7 @@ public abstract class ServiceMethod {
         return sb.toString();
     }
     
-    //Implementation of the method (OVERRIDDEN BY SUBCLASS)
-    //TODO made this protected rather than public
-    //--------------------------------------------------------------------------    
+    // Implementation of the method (OVERRIDDEN BY SUBCLASS)
     protected Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
         throw new RuntimeException("syncExecImpl was not overridden.");
     }
@@ -320,26 +318,19 @@ public abstract class ServiceMethod {
     }
     
     public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
-        
-        //TODO: try to find a way to ensure the service method has an executor
-        //descr -> SM descrs -> service methods -> service
-        //service methods are IMMUTABLE
         validateParameters(parameters);
         
-        if (asyncExecute){
+        if (asyncExecute) {
             asyncExecImpl(parameters, callback, errorCallback);
-        }
-        else if (syncExecute){
-            if (executor != null){
+        } else if (syncExecute) {
+            if (executor != null) {
                 wrapAsAsync(executor, parameters, callback, errorCallback);
-            }
-            else{
+            } else {
                 throw new RuntimeException("Attempts asyncExecImpl with no executor.");
             }
-        }
-        else{
+        } else {
             throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
-        }        
+        }
     }
     //--------------------------------------------------------------------------    
 }

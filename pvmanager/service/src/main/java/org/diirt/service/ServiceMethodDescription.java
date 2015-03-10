@@ -37,6 +37,7 @@ public abstract class ServiceMethodDescription {
      * @param description the service method description, can't be null
      */
     public ServiceMethodDescription(String name, String description) {
+        // TODO Check for null
         this.name = name;
         this.description = description;
         if (!namePattern.matcher(name).matches()) {
@@ -55,6 +56,8 @@ public abstract class ServiceMethodDescription {
      * @return this description
      */
     public ServiceMethodDescription addArgument(String name, String description, Class<?> type) {
+        // TODO Check for null
+        // TODO: check name is not already used
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
         }
@@ -75,6 +78,8 @@ public abstract class ServiceMethodDescription {
      * @return this description
      */
     public ServiceMethodDescription addResult(String name, String description, Class<?> type) {
+        // TODO Check for null
+        // TODO: check name is not already used
         if (!namePattern.matcher(name).matches()) {
             throw new IllegalArgumentException("Name must start by a letter and only consist of letters and numbers");
         }

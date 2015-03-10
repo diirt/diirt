@@ -27,6 +27,7 @@ public class ServiceDescription {
     String name;
     String description;
     List<ServiceMethodDescription> serviceMethodDescriptions = new ArrayList<>(); //NEW
+    // Remove following
     Map<String, ServiceMethod> serviceMethods = new HashMap<>();
     ExecutorService executorService; //NEW
 
@@ -38,6 +39,7 @@ public class ServiceDescription {
      * @param description the service description, can't be null
      */
     public ServiceDescription(String name, String description) {
+        // TODO: check they are not null or empty strings
         this.name = name;
         this.description = description;
         if (!namePattern.matcher(name).matches()) {
@@ -52,6 +54,8 @@ public class ServiceDescription {
      * @return this description
      */
     public ServiceDescription addServiceMethod(ServiceMethodDescription serviceMethod) {
+        // TODO check for null
+        // TODO Check for reused name of service method
         serviceMethodDescriptions.add(serviceMethod);
         //serviceMethods.put(serviceMethod.getName(), serviceMethod);
         return this;
@@ -59,12 +63,16 @@ public class ServiceDescription {
 
     //NEW
     public ServiceDescription executorService(ExecutorService executor) {
+        // TODO Check for null argument
         if (this.executorService != null) {
             throw new IllegalArgumentException("ExecutorService was already set");
         }
         this.executorService = executor;
         return this;
     }
+    
+    // TODO  Map<String, ServiceMethod> createServiceMethods()
+    // Map should be already immutable
 
     //NEW
     public Service createService() {
