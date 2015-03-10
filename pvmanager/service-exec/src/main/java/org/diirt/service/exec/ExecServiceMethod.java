@@ -5,7 +5,6 @@
 package org.diirt.service.exec;
 
 import java.util.Map;
-import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
 import org.diirt.vtype.VString;
 
@@ -33,7 +32,7 @@ class ExecServiceMethod extends ServiceMethod {
     }
 
     @Override
-    public void asyncExecImpl(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
+    public Map<String, Object> syncExecImpl(final Map<String, Object> parameters) throws Exception {
         String expandedCommand = command;
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             String name = entry.getKey();
@@ -44,12 +43,10 @@ class ExecServiceMethod extends ServiceMethod {
             } else if (object == null) {
                 value = "";
             } else {
-                errorCallback.accept(new IllegalArgumentException("Can't map parameter '" + name + "': was " + object));
-                return;
+                throw new IllegalArgumentException("Can't map parameter '" + name + "': was " + object);
             }
             expandedCommand = expandedCommand.replaceAll("#" + name + "#", value);
         }
-        //TODO: executing async from this implementation requires an executor
-        GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, super.executor, shell, shellArg, expandedCommand);
+        return GenericExecServiceMethod.syncExecuteCommand(parameters, shell, shellArg, expandedCommand);
     }
 }

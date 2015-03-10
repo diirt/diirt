@@ -19,8 +19,7 @@ import org.diirt.vtype.VType;
  */
 public class GenericExecService {
 
-    //TODO using a default executor, should it be different from execService?
-    private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Generic Exec services"));
+    static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Exec services"));
     
     public static ServiceMethodDescription runMethod() {
         return new ServiceMethodDescription("run", "Executes a command.") {

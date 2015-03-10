@@ -36,9 +36,6 @@ public class ExecServices {
         // Prevent instanciation
     }
     
-    // TODO: replace with GenericExecService executor
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Exec services"));
-
     /**
      * Creates a JDBCService based on the description of an XML file.
      * 
@@ -62,7 +59,7 @@ public class ExecServices {
             }
             
             ExecServiceDescription service = new ExecServiceDescription(serviceName, serviceDesecription);
-            service.executorService(defaultExecutor);
+            service.executorService(GenericExecService.defaultExecutor);
 
             NodeList methods = (NodeList) xPath.evaluate("/execService/methods/method", document, XPathConstants.NODESET);
             for (int i = 0; i < methods.getLength(); i++) {
