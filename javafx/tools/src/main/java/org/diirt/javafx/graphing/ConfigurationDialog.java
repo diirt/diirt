@@ -28,8 +28,52 @@ import javafx.stage.StageStyle;
 
 /**
  * Allows the user to configure the properties of a graph (e.g. the x column of
- * a bubble graph, or the interpolation scheme of a line graph)
+ * a bubble graph, or the interpolation scheme of a line graph).
+ * <p>
+ * To create a custom <code>ConfigurationDialog</code>, in the containing class, 
+ * list out what properties the user may configure. In most cases, the containing
+ * class will be of type <code>BaseGraphApp</code>, and the supported property types are
+ * <ul>
+ *  <li> String
+ *  <li> Boolean
+ *  <li> InterpolationScheme (TODO)
+ * </ul>
  * 
+ * <p>
+ * Then, determine what code should execute when each property changes, and create
+ * a <code>Runnable</code> for each of these actions. For example,
+ * 
+ * <p>
+ * <pre>
+ * <code>
+ * Runnable onPropertyChanged = new Runnable() {
+ *     public void run() {
+ *          //update graph view to reflect this property change
+ *     }
+ * };
+ * </code>
+* </pre>
+* 
+ * <p>
+ * Finally, in the containing class, determine the appropriate <code>addProperty()</code>
+ * method to add each property to the configuration dialog. For example, to add
+ * a string property, we would use
+ * 
+ * <p>
+ * <pre>
+ * <code>
+ * StringProperty newProperty = new StringProperty( this , "My String Property" , "" );
+ * Runnable onStringChanged = new Runnable() {
+ *     public void run() {
+ *         graph.update( graph.newUpdate().xColumn( newProperty.getValue() );
+ *     }
+ * };
+ * config.add( newProperty , onStringChanged );
+ * </code>
+ * </pre>
+ * <p>
+ * Then, the configuration dialog will display the name of the property, "My String Property"
+ * in a label, and provide a text field for the user to edit the property.
  * @author mjchao
  */
 public class ConfigurationDialog extends Stage {
