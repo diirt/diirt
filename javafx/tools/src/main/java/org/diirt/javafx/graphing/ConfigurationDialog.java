@@ -68,12 +68,13 @@ import javafx.stage.StageStyle;
  *         graph.update( graph.newUpdate().xColumn( newProperty.getValue() );
  *     }
  * };
- * config.add( newProperty , onStringChanged );
+ * config.addStringProperty( newProperty , onStringChanged );
  * </code>
  * </pre>
  * <p>
- * Then, the configuration dialog will display the name of the property, "My String Property"
+ * Then, the configuration dialog will display the name of the property, "My String Property",
  * in a label, and provide a text field for the user to edit the property.
+ * 
  * @author mjchao
  */
 public class ConfigurationDialog extends Stage {
