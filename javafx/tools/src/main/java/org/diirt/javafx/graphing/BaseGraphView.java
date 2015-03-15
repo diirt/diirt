@@ -4,6 +4,9 @@
  */
 package org.diirt.javafx.graphing;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.diirt.javafx.tools.*;
@@ -35,6 +38,12 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
     VImageView imagePanel = new VImageView();
     
     StringProperty formula = new SimpleStringProperty( "" );
+    
+    /**
+     * stores the last exception that was reported by PVManager when it tried
+     * to graph
+     */
+    final private Property< Exception > lastException = new SimpleObjectProperty< Exception >();
     
     public BaseGraphView() {
 	
@@ -105,6 +114,18 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 	return this.formula;
     }
     
+    public ReadOnlyProperty< Exception > lastExceptionProperty() {
+	return this.lastException;
+    }
+    
+    /**
+     * @return the last exception that was reported by PVManager when it tried
+     * to graph. It is null, if PVManager did not report an exception
+     */
+    public Exception getlastException() {
+	return this.lastException.getValue();
+    }
+    
     /**
      * Called whenever the mouse moves over the graph image of this view. By
      * default, this does nothing. Override this method to provide custom
@@ -160,6 +181,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 
                     @Override
                     public void pvChanged(PVReaderEvent<Graph2DResult> event) {
+			lastException.setValue( pv.lastException() );
                         if (pv.getValue() != null) {
                             imagePanel.setVImage(pv.getValue().getImage());
                         }
