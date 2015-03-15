@@ -23,7 +23,7 @@ window.onload = function() {
     var selectedId;
     var filter = 'none';
     
-    var events = [];
+    var events = [[],[], []]; // [eventDisplay, id, selected (bool)]
     var eventDetails = [];
     var eventDetailsFiltered = [];
 
@@ -42,13 +42,15 @@ window.onload = function() {
     }
     
     function displayEvent(eventDisplay, event) {
-        events.unshift(eventDisplay);
         var newEvent = document.createElement('option');
         results.insertBefore(newEvent, results.childNodes[0]);
         newEvent.appendChild(document.createTextNode(eventDisplay));
-        var att = document.createAttribute('eventId');
-        att.value = event.id;
-        newEvent.setAttributeNode(att);
+        var attId = document.createAttribute('eventId');
+        attId.value = event.id;
+        newEvent.setAttributeNode(attId);
+//        var attSelected = document.createAttribute('selected');
+//        attSelected.value = false;
+//        newEvent.setAttributeNode(attSelected);
     }
     
     function getEventDisplay(event) {
@@ -69,13 +71,21 @@ window.onload = function() {
     function newMessage(event) {
         var eventDisplay = getEventDisplay(event);
         addEventDetails(event);
+        events[0].unshift(eventDisplay);
+        events[1].unshift(event.id);
+        events[2].unshift(false);
         if (event.id == filter || filter == 'none') {
             displayEvent(eventDisplay, event);  
         }
     }
     
     function displayDetails(index) {
-        details.innerHTML = eventDetails[index];
+        if (filter == 'none') {
+            details.innerHTML = eventDetails[index];
+        }
+        else {
+            details.innerHTML = eventDetailsFiltered[filter][index];
+        }
     }
         
     connectBtn.onclick = function() {
@@ -115,6 +125,10 @@ window.onload = function() {
   
     results.onchange = function() {
         selectedEvent = results.selectedIndex;
+        for (var i = 0; i < events[2].length; i++) { // TODO: this can definitely be more efficient
+            events[2][i] = false;
+        }
+        events[2][selectedEvent] = true;
         displayDetails(selectedEvent);
     }
     
@@ -123,6 +137,10 @@ window.onload = function() {
     }
     
     clearBtn.onclick = function() {
+       clearDisplay();
+    }
+    
+    function clearDisplay() {
         var node = document.getElementById('results');
         while (node.firstChild) {
             node.removeChild(node.firstChild);
@@ -130,24 +148,37 @@ window.onload = function() {
     }
     
     function resetEventDisplay() {
-        // TODO: repopulate display with events from events[]
+        clearDisplay();
+        for (var i = 0; i < events[0].length; i++) {
+            var newEvent = document.createElement('option');
+            results.appendChild(newEvent);
+            newEvent.appendChild(document.createTextNode(events[0][i]));
+            var attId = document.createAttribute('eventId');
+            attId.value = events[1][i];
+            newEvent.setAttributeNode(attId);
+            newEvent.selected = events[2][i];
+        }
     }
     
     filterBtn.onclick = function() {
-        filter = selectedId;
-        // TODO: if needed, resetEventDisplay
-        var children = results.children
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].getAttribute('eventId') != filter) {
-                results.removeChild(children[i]);
-                i--;
+        if (selectedId != filter) {
+            filter = selectedId;
+            resetEventDisplay();
+            var children = results.children;
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].getAttribute('eventId') != filter) {
+                    results.removeChild(children[i]);
+                    i--;
+                }
             }
         }
     }
     
-    showAllBtn.onclick = function() {
+    showAllBtn.onclick = function() { // TODO: fix this--still deletes selection on filtered --> unfiltered
+        if (filter != 'none') {
+            resetEventDisplay();
+        }
         filter = 'none';
-        // TODO: reset DOM
     }
     
 }
