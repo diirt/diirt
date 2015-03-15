@@ -22,20 +22,32 @@ import javafx.stage.Stage;
 
 /**
  * Allows the user to select some form of data (e.g. a Gaussian wave or a sine
- * wave) and graphs it.
+ * wave), and graphs it with some available configurations (e.g. modifying the 
+ * interpolation scheme).
  * <p>
- * To produce a custom graph app, e.g. a BubbleGraphApp, you first extend the
- * BaseGraphApp. Inside this new class, you must create the BaseGraphView object
- * templated with the correct Graph2DRendererUpdate for your graph type.
- * Furthermore, you must define how to create expressions to be sent to
- * PVManager for data. Inside the BaseGraphView object, you will also find a
- * Graph2DExpression object which represents the data to be plotted on the graph.
- * You can send updates to this if you choose to.
- * <p>
- * The BaseGraphView object is created, so you can define the getGraphView()
- * method. Now, everything should be all set up. Just override start(), 
- * add your data formulae, and your graph app should be complete.
+ * To produce a custom graph app, e.g. a <code>BubbleGraphApp</code>, you first extend the
+ * <code>BaseGraphApp</code>. You must also create a custom graph view, e.g. a <code>BubbleGraphView</code>,
+ * by extending the <code>BaseGraphView</code>. Details on how to create the <code>BaseGraphView</code>
+ * are available in the documentation for that class. When you have the <code>BaseGraphView</code>, you
+ * can override the getGraphView() method to return that.
  * 
+ * <p>
+ * Then, you add some data formulae to the app, using
+ * <p>
+ * <code>
+ *     addDataFormulae( "[formula 1]", "[formula 2]" , ... )
+ * </code>
+ * <p>
+ * This can be done in the constructor or by overriding the start() method.
+ * 
+ * <p>
+ * If you wish to allow the user to configure properties of the graph, for example
+ * change its interpolation scheme, you must create a <code>ConfigurationDialog</code>. 
+ * More details on how to use <code>ConfigurationDialog</code> are available in
+ * the documentation for that class.
+ * 
+ * @see BaseGraphView
+ * @see ConfigurationDialog
  * @author mjchao
  */
 abstract public class BaseGraphApp extends Application {
