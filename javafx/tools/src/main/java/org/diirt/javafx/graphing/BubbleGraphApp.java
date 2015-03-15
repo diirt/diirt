@@ -34,7 +34,6 @@ public class BubbleGraphApp extends BaseGraphApp {
 	    @Override
 	    public void run() {
 		bubbleGraphView.setXColumn( xCol.getValue().equals( "" )? null : xCol.getValue() );
-		bubbleGraphView.reconnect();
 	    }
 	    
 	});
@@ -45,7 +44,6 @@ public class BubbleGraphApp extends BaseGraphApp {
 	    @Override
 	    public void run() {
 		bubbleGraphView.setYColumn( yCol.getValue().equals( "" )? null : yCol.getValue() );
-		bubbleGraphView.reconnect();
 	    }
 	});
 	
@@ -55,7 +53,6 @@ public class BubbleGraphApp extends BaseGraphApp {
 	    @Override
 	    public void run() {
 		bubbleGraphView.setSizeColumn( sizeCol.getValue().equals( "" )? null : sizeCol.getValue() );
-		bubbleGraphView.reconnect();
 	    }
 	});
 	
@@ -65,7 +62,6 @@ public class BubbleGraphApp extends BaseGraphApp {
 	    @Override
 	    public void run() {
 		bubbleGraphView.setColorColumn( colorCol.getValue().equals( "" )? null : colorCol.getValue() );
-		bubbleGraphView.reconnect();
 	    }
 	});
 	
