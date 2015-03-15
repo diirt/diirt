@@ -15,31 +15,40 @@ window.onload = function() {
     var resumeBtn = document.getElementById('resume');
     var unsubscribeBtn = document.getElementById('unsubscribe');
     var clearBtn = document.getElementById('clear');
+    var filterBtn = document.getElementById('filter');
+    var showAllBtn = document.getElementById('showAll');
     
     var socket;
     var selectedEvent;
     var selectedId;
+    var filter = 'none';
     
+    var events = [];
     var eventDetails = [];
+    var eventDetailsFiltered = [];
 
     serverField.value = "ws://" + window.location.host + "/web-pods/socket";
-    
-    function addEventDetails(event) {
-        eventDetails.unshift('<div><pre>' + JSON.stringify(event, null, '     ') + '</pre></div>');
-    }
     
     function addNewSubscription(channel, id) {
         var newChannel = document.createElement('option');
         subscriptionList.appendChild(newChannel);
         newChannel.appendChild(document.createTextNode('id: ' + id + ', channel: ' + channel));
+        eventDetailsFiltered.push([]);
     }
     
-    function newMessage(event) {
-        var eventDisplay = getEventDisplay(event);
+    function addEventDetails(event) {
+        eventDetails.unshift('<div><pre>' + JSON.stringify(event, null, '     ') + '</pre></div>');
+        eventDetailsFiltered[event.id].unshift('<div><pre>' + JSON.stringify(event, null, '     ') + '</pre></div>');
+    }
+    
+    function displayEvent(eventDisplay, event) {
+        events.unshift(eventDisplay);
         var newEvent = document.createElement('option');
         results.insertBefore(newEvent, results.childNodes[0]);
         newEvent.appendChild(document.createTextNode(eventDisplay));
-        addEventDetails(event);
+        var att = document.createAttribute('eventId');
+        att.value = event.id;
+        newEvent.setAttributeNode(att);
     }
     
     function getEventDisplay(event) {
@@ -54,6 +63,14 @@ window.onload = function() {
         }
         else if (event.type == 'value') { // New value
             return event.value.value;
+        }
+    }
+    
+    function newMessage(event) {
+        var eventDisplay = getEventDisplay(event);
+        addEventDetails(event);
+        if (event.id == filter || filter == 'none') {
+            displayEvent(eventDisplay, event);  
         }
     }
     
@@ -110,6 +127,27 @@ window.onload = function() {
         while (node.firstChild) {
             node.removeChild(node.firstChild);
         }
+    }
+    
+    function resetEventDisplay() {
+        // TODO: repopulate display with events from events[]
+    }
+    
+    filterBtn.onclick = function() {
+        filter = selectedId;
+        // TODO: if needed, resetEventDisplay
+        var children = results.children
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].getAttribute('eventId') != filter) {
+                results.removeChild(children[i]);
+                i--;
+            }
+        }
+    }
+    
+    showAllBtn.onclick = function() {
+        filter = 'none';
+        // TODO: reset DOM
     }
     
 }
