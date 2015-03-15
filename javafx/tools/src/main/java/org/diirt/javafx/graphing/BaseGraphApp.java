@@ -38,7 +38,7 @@ import javafx.stage.Stage;
  *     addDataFormulae( "[formula 1]", "[formula 2]" , ... )
  * </code>
  * <p>
- * This can be done in the constructor or by overriding the start() method.
+ * This can be done by overriding the start() method.
  * 
  * <p>
  * If you wish to allow the user to configure properties of the graph, for example

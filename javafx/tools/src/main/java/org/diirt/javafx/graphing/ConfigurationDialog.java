@@ -7,6 +7,7 @@ package org.diirt.javafx.graphing;
 
 import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -183,6 +185,23 @@ public class ConfigurationDialog extends Stage {
     }
     
     /**
+     * Adds the given string property as something the ser may configure from a 
+     * list of predefined options. In the dialog, this property will have a label
+     * containing the name of the property and a combobox which the user can
+     * use to change this property.
+     * 
+     * @param p a string property that the user may modify
+     * @param list the list of different strings the property may be set to
+     * @param onPropertyChanged what to do when the user changes this property
+     */
+    public void addListProperty( StringProperty p , String[] list , Runnable onPropertyChanged ) {
+	ListField newField = new ListField( p , onPropertyChanged , list );
+	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
+	ConfigurationData data = new ConfigurationData( newField , new SimpleStringProperty( p.getValue() ) );
+	this.configurationData.add( data );
+    }
+    
+    /**
      * Saves the current configuration state so that the user may revert to it
      * later if necessary
      */
@@ -338,5 +357,30 @@ public class ConfigurationDialog extends Stage {
 	    
 	    this.getChildren().addAll( this.lblName , this.chkValue );
 	}
+    }
+    
+    private class ListField extends ConfigurationField< String > {
+
+	final private Label lblName;
+	final private ComboBox< String > cboList;
+	
+	public ListField( Property<String> property , Runnable onPropertyChanged ) {
+	    super( property , onPropertyChanged );
+	    this.lblName = defaultNameLabel( property.getName() );
+	    this.cboList = new ComboBox< String >();
+	    this.cboList.valueProperty().bindBidirectional( property );
+	    this.cboList.setEditable( false );
+	    this.getChildren().addAll( this.lblName , this.cboList );
+	}
+	
+	public ListField( Property< String > p , Runnable onPropertyChanged , String... options ) {
+	    this( p , onPropertyChanged );
+	    addListOptions( options );
+	}
+	
+	final public void addListOptions( String... options ) {
+	    this.cboList.getItems().addAll( options );
+	}
+	
     }
 }
