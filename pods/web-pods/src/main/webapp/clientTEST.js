@@ -26,6 +26,12 @@ window.onload = function() {
     var events = [[],[], []]; // [eventDisplay, id, selected (bool)]
     var eventDetails = [];
     var eventDetailsFiltered = [];
+    
+    // TODO: organize functions and triggers
+    // TODO: add css triggers to pause, resume, unsubscribe
+    // TODO: add some indication of current filter
+    
+    // TODO: successful subscripton callback to change subscription list class
 
     serverField.value = "ws://" + window.location.host + "/web-pods/socket";
     
@@ -48,9 +54,6 @@ window.onload = function() {
         var attId = document.createAttribute('eventId');
         attId.value = event.id;
         newEvent.setAttributeNode(attId);
-//        var attSelected = document.createAttribute('selected');
-//        attSelected.value = false;
-//        newEvent.setAttributeNode(attSelected);
     }
     
     function getEventDisplay(event) {
@@ -58,6 +61,7 @@ window.onload = function() {
             return 'Error';
         }
         else if (event.type == 'connection') { // New subscription
+            subscriptionList.children[event.id].className = 'open';
             return 'Successful subscription';
         }
         else if (event.value.type.name == 'VTable') { // Table
@@ -111,16 +115,21 @@ window.onload = function() {
     pauseBtn.onclick = function() {
         var channel = socket.getChannel(selectedId);
         channel.pause();
+        subscriptionList.children[selectedId].className = 'closed';
     }
     
     resumeBtn.onclick = function() {
         var channel = socket.getChannel(selectedId);
         channel.resume();
+        if (channel.isConnected()) {
+            subscriptionList.children[selectedId].className = 'open';
+        }
     }
     
     unsubscribeBtn.onclick = function() {
         var channel = socket.getChannel(selectedId);
         channel.unsubscribe();
+        subscriptionList.children[selectedId].className = 'unsubscribed';
     }
   
     results.onchange = function() {
