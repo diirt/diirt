@@ -22,7 +22,7 @@ import static org.diirt.util.time.TimeDuration.*;
  */
 public class JCALongTerm {
     public static void main(String[] args) throws Exception {
-        JCADataSource jca = new JCADataSource();
+        JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
         
         List<String> names = new ArrayList<String>();
@@ -60,5 +60,5 @@ public class JCALongTerm {
             
             Thread.sleep(1000);
         }
-    }
+    }    
 }

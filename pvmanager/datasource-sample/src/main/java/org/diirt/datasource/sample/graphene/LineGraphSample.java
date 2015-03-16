@@ -21,7 +21,7 @@ import org.diirt.datasource.graphene.LineGraph2DExpression;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
 import org.diirt.datasource.sample.SetupUtil;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

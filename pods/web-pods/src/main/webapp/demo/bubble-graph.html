@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+        <!-- The WebPods client, its depedency and its configuration -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
+
+        <script>
+            // Calculating URL from document location, so that examples work no
+            // matter where they are deployed. Typical use would hard-code URL
+            var wsUri = document.location.protocol.replace("http", "ws") + "//" + document.location.host + "/" + 
+                    document.location.pathname.split("/")[1] + "/socket";
+            var wp = new Client(wsUri);
+        </script>
+        
+        <!-- The bubble graph widget -->
+        <script type="text/javascript" src="//www.google.com/jsapi"></script>
+        <script type="text/javascript" language="javascript" src="../js/widgets/wp-bubble-graph.js"></script>
+        <link rel="stylesheet" href="../js/widgets/wp-bubble-graph.css">
+        
+        <!-- Bootstrap is used to make this page look decent. It's not needed by the widgets. -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+        <title>WebPODS - Bubble graph examples</title>
+    </head>
+    <body>
+        <!-- Nav bar -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">WebPODS</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="..">Home</a></li>
+                        <li><a href=".">Examples</a></li>
+                        <li class="active"><a href="#">wp-bubble-graph</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Useful links <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="http://diirt.org">diirt.org</a></li>
+                                <li class="divider"></li>
+                                <li><a href="https://github.com/diirt/diirt/wiki/WebPODS-users">User documentation</a></li>
+                                <li><a href="https://github.com/diirt/diirt/wiki/WebPods">Developer documentation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container-fluid" >
+            <h1>Read-only bubble graph widget (wp-bubble-graph)</h1>
+            <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Simple monitoring</div>
+                        <div class="panel-body">
+                            <p>These simple examples just add the channel, using the data-channel property.</p>
+                            <p>sim/table:</p> <div class="wp-table" data-channel="sim/table"></div>
+                            <div class="wp-bubble-graph" data-channel="sim/table"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Error conditions</div>
+                        <div class="panel-body">
+                            <p>Behavior under different error conditions.</p>
+                            <p>Error messages:</p> <div class="wp-bubble-graph" data-channel="sim/wrongChannel"></div>
+                            <p>Wrong formula:</p> <div class="wp-bubble-graph" data-channel='=1+"test"'></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Changing size</div>
+                        <div class="panel-body">
+                            <p>Using CSS style width and height to change size.</p>
+                            <p>width: 300px; height: 250px:</p> <div class="wp-bubble-graph" data-channel="sim/table" style="width: 300px; height: 250px"></div>
+                            <p>width: 400px; height: 300px:</p> <div class="wp-bubble-graph" data-channel="sim/table" style="width: 400px; height: 300px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="series_chart_div" class="wp-bubble-graph" data-channel="sim/table"
+             data-x-column="Index" data-y-column="Value" data-color-column="Text"
+             style="width: 640px; height: 480px;"></div>
+        <div id="ganglia_chart_div" class="wp-bubble-graph" data-channel="sim/table"
+             data-x-column="Value" data-y-column="Index" data-color-column="Text"
+             style="width: 640px; height: 480px;"></div>
+    </body>
+</html>

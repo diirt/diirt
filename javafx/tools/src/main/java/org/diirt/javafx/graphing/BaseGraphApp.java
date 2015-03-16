@@ -6,6 +6,8 @@
 package org.diirt.javafx.graphing;
 
 import javafx.application.Application;
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,33 +22,46 @@ import javafx.stage.Stage;
 
 /**
  * Allows the user to select some form of data (e.g. a Gaussian wave or a sine
- * wave) and graphs it.
+ * wave), and graphs it with some available configurations (e.g. modifying the 
+ * interpolation scheme).
  * <p>
- * To produce a custom graph app, e.g. a BubbleGraphApp, you first extend the
- * BaseGraphApp. Inside this new class, you must create the BaseGraphView object
- * templated with the correct Graph2DRendererUpdate for your graph type.
- * Furthermore, you must define how to create expressions to be sent to
- * PVManager for data. Inside the BaseGraphView object, you will also find a
- * Graph2DExpression object which represents the data to be plotted on the graph.
- * You can send updates to this if you choose to.
- * <p>
- * The BaseGraphView object is created, so you can define the getGraphView()
- * method. Now, everything should be all set up. Just override start(), 
- * add your data formulae, and your graph app should be complete.
+ * To produce a custom graph app, e.g. a <code>BubbleGraphApp</code>, you first extend the
+ * <code>BaseGraphApp</code>. You must also create a custom graph view, e.g. a <code>BubbleGraphView</code>,
+ * by extending the <code>BaseGraphView</code>. Details on how to create the <code>BaseGraphView</code>
+ * are available in the documentation for that class. When you have the <code>BaseGraphView</code>, you
+ * can override the getGraphView() method to return that.
  * 
+ * <p>
+ * Then, you add some data formulae to the app, using
+ * <p>
+ * <code>
+ *     addDataFormulae( "[formula 1]", "[formula 2]" , ... )
+ * </code>
+ * <p>
+ * This can be done by overriding the start() method.
+ * 
+ * <p>
+ * If you wish to allow the user to configure properties of the graph, for example
+ * change its interpolation scheme, you must create a <code>ConfigurationDialog</code>. 
+ * More details on how to use <code>ConfigurationDialog</code> are available in
+ * the documentation for that class.
+ * 
+ * @see BaseGraphView
+ * @see ConfigurationDialog
  * @author mjchao
  */
 abstract public class BaseGraphApp extends Application {
     
     final private DataSelectionPanel pnlData = new DataSelectionPanel();
     private BaseGraphView pnlGraph;
-    final private MessagePanel pnlError = new MessagePanel();
+    private MessagePanel pnlError;
     
     abstract public BaseGraphView getGraphView();
     
     @Override
     public void start( Stage stage ) throws Exception {
 	this.pnlGraph = getGraphView();
+	this.pnlError = new MessagePanel( pnlGraph.lastExceptionProperty() );
 	
 	BorderPane mainPanel = new BorderPane();
 	    mainPanel.setTop( this.pnlData );
@@ -154,11 +169,20 @@ abstract public class BaseGraphApp extends Application {
 	    }
 	}
 	
+	/**
+	 * @return the formula the user has currently selected to be displayed
+	 * in the graph
+	 */
 	final public String getSelectedFormula() {
 	    return this.cboSelectData.getValue();
 	}
     }
     
+    /**
+     * Shows the configuration panel that allows the user to configure properties
+     * of the graph, such as its interpolation scheme or its x column. Override
+     * this to show custom configuration panels for specific graph types.
+     */
     public void openConfigurationPanel() {
 	//do nothing, by default
     }
@@ -169,5 +193,24 @@ abstract public class BaseGraphApp extends Application {
      */
     private class MessagePanel extends BorderPane {
 	
+	final private Label lblMessage = new Label();
+	final private ReadOnlyProperty< Exception > lastException;
+	
+	public MessagePanel( ReadOnlyProperty< Exception > lastException ) {
+	    this.setCenter( lblMessage );
+	    this.lastException = lastException;
+	    this.lastException.addListener( new ChangeListener< Exception >() {
+
+		@Override
+		public void changed(ObservableValue<? extends Exception> observable, Exception oldValue, Exception newValue) {
+		    setMessage( newValue == null? "" : newValue.getMessage() );
+		}
+		
+	    });
+	}
+	
+	public void setMessage( String message ) {
+	    this.lblMessage.setText( message );
+	}
     }
 }

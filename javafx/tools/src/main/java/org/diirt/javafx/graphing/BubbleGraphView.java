@@ -6,13 +6,12 @@
 package org.diirt.javafx.graphing;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.input.MouseEvent;
 import static org.diirt.datasource.formula.ExpressionLanguage.formula;
 import static org.diirt.datasource.formula.ExpressionLanguage.formulaArg;
 import org.diirt.datasource.graphene.BubbleGraph2DExpression;
@@ -22,7 +21,7 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
 
 /**
  *
- * @author Mickey
+ * @author mjchao
  */
 public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate > {
 
@@ -41,6 +40,14 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 	    formulaArg(colorColumn.getValue())
 	);
 	return plot;
+    }
+    
+    @Override
+    public void reconnect( String data ) {
+	super.reconnect( data );
+	if ( graph != null ) {
+	    graph.update( graph.newUpdate().highlightFocusValue( highlightFocusValue.getValue() ) );
+	}
     }
     
     public BubbleGraphView() {
@@ -88,7 +95,12 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 	});
     }
     
-    public ReadOnlyBooleanProperty highlightFocusValueProperty() {
+    @Override
+    protected void onMouseMove(MouseEvent e) {
+        graph.update(graph.newUpdate().focusPixel( (int)e.getX(), (int)e.getY()));
+    }
+    
+    public BooleanProperty highlightFocusValueProperty() {
 	return this.highlightFocusValue;
     }
     
@@ -100,7 +112,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.highlightFocusValue.setValue( highlightFocusValue );
     }
     
-    public ReadOnlyStringProperty xColumnProperty() {
+    public StringProperty xColumnProperty() {
 	return this.xColumn;
     }
     
@@ -112,7 +124,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.xColumn.setValue( xColumn );
     }
     
-    public ReadOnlyStringProperty yColumnProperty() {
+    public StringProperty yColumnProperty() {
 	return this.yColumn;
     }
     
@@ -124,7 +136,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.yColumn.setValue( yColumn );
     }
     
-    public ReadOnlyStringProperty sizeColumnProperty() {
+    public StringProperty sizeColumnProperty() {
 	return this.sizeColumn;
     }
     
@@ -136,7 +148,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
         this.sizeColumn.setValue( sizeColumn );
     }
     
-    public ReadOnlyStringProperty colorColumnProperty() {
+    public StringProperty colorColumnProperty() {
 	return this.colorColumn;
     }
     

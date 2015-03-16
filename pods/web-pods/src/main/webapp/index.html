@@ -1,23 +1,74 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Web PODS</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=9">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <title>WebPODS - Examples</title>
     </head>
     <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">WebPODS</a>
+                </div>
 
-        <h1>Web PODS: web protocol oriented distribution service</h1>
-        <p>Prototype to broadcast real-time data aggregated by diirt.</p>
-        <ul>
-            <li><a href="probe.html">Probe</a></li>
-            <li><a href="demo/index.html">Test Page</a></li>
-            <li><a href="demo/widgetDemo.html">Widgets demo Page</a></li>
-            <li><a href="demo/chartsDemo.html">Chart demo page</a></li>
-            <li><a href="demo/bubbleChart.html">Bubble chart demo</a></li>
-        </ul>
-        <p>Known Issues: with  glassfish 4.0, the error handling is not up to spec due
-        to some bugs in the bundled version of tyrus. Either update the WebSocket
-        implementation or update glassfish to 4.1.</p>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="demo">Examples</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Useful links <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="http://diirt.org">diirt.org</a></li>
+                                <li class="divider"></li>
+                                <li><a href="https://github.com/diirt/diirt/wiki/WebPODS-users">User documentation</a></li>
+                                <li><a href="https://github.com/diirt/diirt/wiki/WebPods">Developer documentation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div>
+        </nav>
+        <div class="container-fluid" >
+            <div class="jumbotron">
+                <h1>WebPODS: </h1>
+                <h2>Web Protocol Oriented Distribution Service</h2>
+                <br>
+                <p>Broadcasts real-time data aggregated by diirt, using WebSockets and JSON.</p>
+                <p><a class="btn btn-primary btn-lg" href="probe.html" role="button">Test with probe</a>
+                    <a class="btn btn-primary btn-lg" href="demo" role="button">Widget examples</a>
+                    <a class="btn btn-primary btn-lg" href="https://github.com/diirt/diirt/wiki/WebPODS-users" role="button">User documentation</a>
+                    <a class="btn btn-primary btn-lg" href="https://github.com/diirt/diirt/wiki/WebPods" role="button">Developer documentation</a> </p>
+            </div>
+            <p>Known Issues: with  glassfish 4.0, the error handling is not up to spec due
+                to some bugs in the bundled version of tyrus. Either update the WebSocket
+                implementation or update glassfish to 4.1.</p>
+
+        </div>
 
     </body>
 </html>

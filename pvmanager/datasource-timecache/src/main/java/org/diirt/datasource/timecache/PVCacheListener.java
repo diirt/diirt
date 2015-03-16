@@ -6,6 +6,9 @@ package org.diirt.datasource.timecache;
 
 import java.util.SortedSet;
 
+import org.diirt.datasource.timecache.util.IntervalsList;
+import org.diirt.util.time.TimeInterval;
+
 /**
  * {@link PVCache} listener.
  * @author Fred Arnaud (Sopra Group) - ITER
@@ -13,6 +16,10 @@ import java.util.SortedSet;
 public interface PVCacheListener {
 
 	/** Informs that a new set of {@link Data} is available in storage. */
-	public void newData(SortedSet<Data> datas);
+	public void newDataInCache(final SortedSet<Data> newData,
+			final TimeInterval newDataInterval,
+			final IntervalsList completedIntervals);
+
+	public void updatedCompletedIntervals(final IntervalsList completedIntervals);
 
 }

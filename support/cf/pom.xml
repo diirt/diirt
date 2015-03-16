@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt.support</groupId>
         <artifactId>support-all</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>diirt-cf</artifactId>
     <name>org.diirt.support.cf</name>
@@ -14,22 +14,22 @@
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>datasource-formula</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>service</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.epics.channelfinder</groupId>
             <artifactId>cf-client-api</artifactId>
-            <version>2.2.1-SNAPSHOT</version>
+            <version>2.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>datasource-sample</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.1-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

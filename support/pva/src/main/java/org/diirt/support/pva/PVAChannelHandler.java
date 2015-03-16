@@ -81,15 +81,97 @@ public class PVAChannelHandler extends
 	private static PVStructure standardPutPVRequest = createRequest.createRequest("field(value)");
 	private static PVStructure enumPutPVRequest = createRequest.createRequest("field(value.index)");
 	
-	public PVAChannelHandler(String channelName,
+	private static final String PVREQUEST_PREFIX = "?request=";
+	private final PVStructure pvRequest;
+	private final String extractPVField;
+	
+	public static PVAChannelHandler create(String channelName,
+			ChannelProvider channelProvider, short priority,
+			PVATypeSupport typeSupport) {
+		
+		int pos = channelName.indexOf(PVREQUEST_PREFIX); 
+		if (pos == -1)
+		{
+			return new PVAChannelHandler(channelName, null, channelProvider, priority, typeSupport);
+		}
+		else
+		{
+			String pvRequestString = channelName.substring(pos+PVREQUEST_PREFIX.length());
+			channelName = channelName.substring(0, pos);
+			return new PVAChannelHandler(channelName, pvRequestString, channelProvider, priority, typeSupport);
+		}
+		
+	}
+
+	public PVAChannelHandler(String channelName, String pvRequestString,
 			ChannelProvider channelProvider, short priority,
 			PVATypeSupport typeSupport) {
 		super(channelName);
+		this.pvRequest = (pvRequestString != null) ? createRequest.createRequest(pvRequestString) : null;
 		this.pvaChannelProvider = channelProvider;
 		this.priority = priority;
 		this.pvaTypeSupport = typeSupport;
+		
+		if (pvRequest != null)
+		{
+			PVStructure field = pvRequest.getStructureField("field");
+			extractPVField = getOnlyChildFieldName(field);
+		}
+		else
+			extractPVField = null;
+		
+		// NOTE: mind "return" above
 	}
 
+	private static final String _OPTIONS = "_options";
+	private static final String TAKE_PARENT = _OPTIONS;
+	private static final String getOnlyChildFieldName(PVStructure field)
+	{		
+		if (field != null)
+		{
+			String[] fieldNames = field.getStructure().getFieldNames();
+			if (fieldNames.length > 0)
+			{
+				String name = null;
+				for (int i = 0; i < fieldNames.length; i++)
+				{
+					// ignore options
+					if (!fieldNames[0].equals(_OPTIONS))
+					{
+						if (name == null)
+							name = fieldNames[0];
+						else
+							return null;
+					}
+				}
+				
+				if (name == null)
+				{
+					// only "_options" field, that's OK
+					return TAKE_PARENT;
+				}
+				else
+				{
+					String childName = getOnlyChildFieldName(field.getStructureField(name));
+					if (childName == null)
+						return null;
+					else if (childName.equals(_OPTIONS))
+						return name;
+					else
+						return name + "." + childName;
+				}
+			}
+			else
+			{
+				// no options, no subfield(s)
+				return TAKE_PARENT;
+			}
+		}
+		else
+			return null;
+	}
+	
+	
 	/**
 	 * @return the channel
 	 */
@@ -102,6 +184,10 @@ public class PVAChannelHandler extends
 	 */
 	public Field getChannelType() {
 		return channelType;
+	}
+
+	public String getExtractFieldName() {
+		return extractPVField;
 	}
 
 	@Override
@@ -155,14 +241,17 @@ public class PVAChannelHandler extends
 		reportStatus("Failed to create channel instance '" + channel.getChannelName(), status);
 		this.channel = channel;
 	}
-
+	
 	@Override
 	public void channelStateChange(Channel channel, ConnectionState connectionState) {
 		try {
 
 			// introspect
 			if (connectionState == ConnectionState.CONNECTED) {
-				channel.getField(this, null);
+				if (extractPVField == null)
+					channel.getField(this, null);
+				else
+					channel.getField(this, extractPVField);
 			}
 			else
 			{
@@ -185,7 +274,7 @@ public class PVAChannelHandler extends
 		{
 			channelType = field;
 		
-			Field valueField = ((Structure)channelType).getField("value");
+			Field valueField = (channelType instanceof Structure) ? ((Structure)channelType).getField("value") : null;
 			if (valueField != null && valueField.getID().equals("enum_t"))
 			{
 				isChannelEnumType = true;
@@ -194,7 +283,7 @@ public class PVAChannelHandler extends
 			else
 				isChannelEnumType = false;
 		}
-		
+	
 		processConnection(this);
 	}
 
@@ -216,6 +305,8 @@ public class PVAChannelHandler extends
         Map<String, Object> properties = new HashMap<String, Object>();
         if (channel != null) {
             properties.put("Channel name", channel.getChannelName());
+            if (pvRequest != null)
+                properties.put("User pvRequest", pvRequest.toString());
             properties.put("Connection state", channel.getConnectionState().name());
             properties.put("Provider name", channel.getProvider().getProviderName());
             if (channel.getConnectionState() == Channel.ConnectionState.CONNECTED) {
@@ -419,6 +510,18 @@ public class PVAChannelHandler extends
 					}
 				}
 				
+				// fallback: try to convert string to an number (index)
+				if (index == -1)
+				{
+					try {
+						int ix = Integer.parseInt(nv);
+						if (ix >= 0 && ix < choices.length)
+							index = ix;
+					} catch (Throwable th) {
+						// failed to convert, noop
+					}
+				}
+				
 				if (index == -1)
 					throw new IllegalArgumentException("enumeration '" + nv +"' is not a valid choice");
 			}
@@ -543,7 +646,7 @@ public class PVAChannelHandler extends
 				} catch (InterruptedException e) { }
 			}
 			// TODO optimize fields
-			channel.createMonitor(this, allPVRequest);
+			channel.createMonitor(this, pvRequest != null ? pvRequest : allPVRequest);
 		}
 	}
 

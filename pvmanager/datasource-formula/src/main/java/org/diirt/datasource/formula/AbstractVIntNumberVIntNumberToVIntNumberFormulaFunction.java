@@ -13,12 +13,12 @@ import org.diirt.vtype.ValueUtil;
 
 
 /**
- * Abstract class for formula functions that take two integer VNumber as arguments
- * and return an integer VNumber.
+ * Abstract class for formula functions that take two integer {@link VNumber} as arguments
+ * and return an integer {@code VNumber}.
  * <p>
  * This class takes care of:
  * <ul>
- *    <li>extracting the Number from the VNumbes</li>
+ *    <li>extracting int value from the {@code VNumber}</li>
  *    <li>null handling - returns null if one argument is null</li>
  *    <li>alarm handling - returns highest alarm</li>
  *    <li>time handling - returns latest time, or now if no time is available</li>
@@ -26,7 +26,6 @@ import org.diirt.vtype.ValueUtil;
  * </ul>
  * 
  * @author shroffk
- * 
  */
 public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction implements FormulaFunction {
 
@@ -38,12 +37,26 @@ public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction im
     /**
      * Creates a new function.
      * 
-     * @param name the name of the function
-     * @param description a short description
-     * @param arg1Name first argument name
-     * @param arg2Name second argument name
+     * @param name function name; can't be null
+     * @param description function description; can't be null
+     * @param arg1Name first argument name; can't be null
+     * @param arg2Name second argument name; can't be null
      */
     public AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction(String name, String description, String arg1Name, String arg2Name) {
+        // Validate parameters
+        if (name == null) {
+            throw new NullPointerException("Function name can't be null");
+        }
+        if (description == null) {
+            throw new NullPointerException("Function description can't be null");
+        }
+        if (arg1Name == null) {
+            throw new NullPointerException("First argument name can't be null");
+        }
+        if (arg2Name == null) {
+            throw new NullPointerException("Second argument name can't be null");
+        }
+        
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VNumber.class, VNumber.class);
@@ -51,42 +64,42 @@ public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction im
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
     @Override
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
     @Override
-    public boolean isPure() {
+    public final boolean isPure() {
         return true;
     }
 
     @Override
-    public boolean isVarArgs() {
+    public final boolean isVarArgs() {
         return false;
     }
 
     @Override
-    public List<Class<?>> getArgumentTypes() {
+    public final List<Class<?>> getArgumentTypes() {
         return argumentTypes;
     }
 
     @Override
-    public List<String> getArgumentNames() {
+    public final List<String> getArgumentNames() {
         return argumentNames;
     }
 
     @Override
-    public Class<?> getReturnType() {
+    public final Class<?> getReturnType() {
         return VNumber.class;
     }
 
     @Override
-    public Object calculate(List<Object> args) {
+    public final Object calculate(List<Object> args) {
         if (NullUtils.containsNull(args)) {
             return null;
         }
@@ -113,6 +126,6 @@ public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction im
      * @param arg2 the second argument
      * @return the result
      */
-    abstract int calculate(int arg1, int arg2);
+    public abstract int calculate(int arg1, int arg2);
     
 }

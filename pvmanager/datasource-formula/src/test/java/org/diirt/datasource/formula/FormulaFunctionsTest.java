@@ -4,20 +4,14 @@
  */
 package org.diirt.datasource.formula;
 
-import java.util.ArrayList;
+import org.diirt.datasource.formula.vnumber.VNumberFunctionSet;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VString;
 import org.diirt.vtype.VNumber;
-import org.junit.AfterClass;
+import org.diirt.vtype.VNumberArray;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
 import static org.hamcrest.Matchers.*;
-import static org.diirt.vtype.ValueFactory.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -96,15 +90,56 @@ public class FormulaFunctionsTest {
     
     @Test
     public void formatSignature1() {
-        FormulaFunction function = new ArrayOfNumberFormulaFunction();
+        FormulaFunction function = new FormulaFunction() {
+
+            @Override
+            public boolean isPure() {
+                return true;
+            }
+
+            @Override
+            public boolean isVarArgs() {
+                return true;
+            }
+
+            @Override
+            public String getName() {
+                return "arrayOf";
+            }
+
+            @Override
+            public String getDescription() {
+                return "";
+            }
+
+            @Override
+            public List<Class<?>> getArgumentTypes() {
+                return Arrays.asList(VNumber.class);
+            }
+
+            @Override
+            public List<String> getArgumentNames() {
+                return Arrays.asList("args");
+            }
+
+            @Override
+            public Class<?> getReturnType() {
+                return VNumberArray.class;
+            }
+
+            @Override
+            public Object calculate(List<Object> args) {
+                throw new UnsupportedOperationException("Not supported.");
+            }
+        };
         assertThat(FormulaFunctions.formatSignature(function), equalTo("arrayOf(VNumber... args): VNumberArray"));
     }
     
     @Test
     public void formatSignature2() {
-        FormulaFunction function = new OneArgNumericFormulaFunction("log", "desc", "input") {
+        FormulaFunction function = new AbstractVNumberToVNumberFormulaFunction("log", "desc", "input") {
             @Override
-            double calculate(double arg) {
+            public double calculate(double arg) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         };
@@ -113,7 +148,7 @@ public class FormulaFunctionsTest {
     
     @Test
     public void formatSignature3() {
-        FormulaFunction function = new NumberOperatorFunctionSet().findFunctions("+").iterator().next();
+        FormulaFunction function = new VNumberFunctionSet().findFunctions("+").iterator().next();
         assertThat(FormulaFunctions.formatSignature(function), equalTo("(VNumber arg1 + VNumber arg2): VNumber"));
     }
 

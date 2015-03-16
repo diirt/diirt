@@ -18,6 +18,6 @@ public interface DataStorageListener {
 	 * from storage.
 	 * @param lostSet {@link TimestampsSet} of lost {@link Timestamp}.
 	 */
-	public void dataLoss(TimestampsSet lostSet);
+	public void dataLoss(final TimestampsSet lostSet);
 
 }

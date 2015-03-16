@@ -4,6 +4,9 @@
  */
 package org.diirt.javafx.graphing;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.diirt.javafx.tools.*;
@@ -25,6 +28,23 @@ import static org.diirt.util.time.TimeDuration.ofHertz;
 /**
  * Displays a graph, handles its resizing, and handles its connection
  * with a data source.
+ * <p>
+ * To produce a custom graph view, e.g. a <code>BubbleGraphView</code>, you must
+ * first extends <code>BaseGraphView</code>. You must define the createExpression()
+ * method which will be sent to <code>PVManager</code> to generate graph data. If
+ * there are any properties relevant to the graph, you must create those 
+ * property objects, and implement change listeners that handle what happens when
+ * these graph properties change. For example, if the interpolation scheme changes,
+ * you will need your listener to update the graph to use the new interpolation scheme.
+ * Finally, you may also override onMouseMove() if you wish to handle mouse events
+ * for the graph.
+ * <p>
+ * To summarize, in creating a custom graph view, there are three things to be defined:
+ * <ul>
+ *  <li> <code>createExpression()</code> (mandatory)
+ *  <li> Any graph properties you desire and their getters and setters
+ *  <li> <code>onMouseMoved()</code> if you desire
+ * </ul>
  * 
  * @author mjchao, carcassi
  * @param <T> the type of renderer object used to create the graphs displayed
@@ -35,6 +55,12 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
     VImageView imagePanel = new VImageView();
     
     StringProperty formula = new SimpleStringProperty( "" );
+    
+    /**
+     * stores the last exception that was reported by PVManager when it tried
+     * to graph
+     */
+    final private Property< Exception > lastException = new SimpleObjectProperty< Exception >();
     
     public BaseGraphView() {
 	
@@ -81,7 +107,6 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 	    }
 	});
 	
-	//"sim://sine2DWaveform(1,50,45,100,100,0.1)"
         reconnect( null );
     }
     
@@ -99,6 +124,22 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      */
     public String getFormula() {
 	return this.formula.getValue();
+    }
+    
+    public StringProperty formulaProperty() {
+	return this.formula;
+    }
+    
+    public ReadOnlyProperty< Exception > lastExceptionProperty() {
+	return this.lastException;
+    }
+    
+    /**
+     * @return the last exception that was reported by PVManager when it tried
+     * to graph. It is null, if PVManager did not report an exception
+     */
+    public Exception getlastException() {
+	return this.lastException.getValue();
     }
     
     /**
@@ -125,9 +166,8 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
     /**
      * Redraws the graph
      */
-    final protected void reconnect() {
-	this.setFormula( "" );
-	this.setFormula( this.getFormula() );
+    protected void reconnect() {
+	reconnect( this.getFormula() );
     }
     /**
      * Sends the given data formula to the data source and asks it for data. 
@@ -135,7 +175,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * 
      * @param dataFormula the data formula to use
      */
-    final private void reconnect( String dataFormula ) {
+    protected void reconnect( String dataFormula ) {
 	
         if (pv != null) {
             pv.close();
@@ -157,12 +197,14 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 
                     @Override
                     public void pvChanged(PVReaderEvent<Graph2DResult> event) {
+			lastException.setValue( pv.lastException() );
                         if (pv.getValue() != null) {
                             imagePanel.setVImage(pv.getValue().getImage());
                         }
                     }
                 })
                 .maxRate(ofHertz(100));
+	
     }
     
     /**

@@ -21,7 +21,7 @@ import org.diirt.vtype.VStringArray;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import org.diirt.support.ca.JCADataSourceBuilder;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 import org.diirt.util.time.TimeDuration;
 import static org.diirt.util.time.TimeDuration.*;
 
@@ -42,7 +42,8 @@ public class JCAClientExample {
         System.out.println(System.getProperty("java.library.path"));
         
         System.loadLibrary("jca");
-        PVManager.setDefaultDataSource(new JCADataSourceBuilder().jcaContextClass(JCALibrary.JNI_THREAD_SAFE).build());
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration()
+                .jcaContextClass(JCALibrary.JNI_THREAD_SAFE).create());
         PVReader<Object> pvReader = PVManager.read(channel("counter1"))
                 .readListener(new PVReaderListener<Object>() {
 

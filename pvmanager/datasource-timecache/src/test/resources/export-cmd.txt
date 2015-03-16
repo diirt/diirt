@@ -1,0 +1,7 @@
+psql -d css_archive_3_0_0 -U archive_ro -A -F ';' -c "select * from sample_view where channel_name IN ('TEST-BTY0:AI1') and smpl_time > '2014-04-03 01:00:00' and smpl_time < '2014-04-04 23:00:00';" > archive-export-singlePV.csv
+
+psql -d css_archive_3_0_0 -U archive_ro -A -F ';' -c "select * from sample_view where channel_name IN ('TEST-BTY0:RAMP1','TEST-BTY0:RAMP2') and smpl_time > '2014-11-25 23:59:59' and smpl_time < '2014-12-02 23:59:59';" > archive-ramps-1W.csv
+psql -d css_archive_3_0_0 -U archive_ro -A -F ';' -c "select * from sample_view where channel_name IN ('TEST-BTY0:RAMP1','TEST-BTY0:RAMP2') and smpl_time > '2014-12-03 00:00:00' and smpl_time < '2014-12-04 00:00:00';" > archive-ramps-1D.csv
+psql -d css_archive_3_0_0 -U archive_ro -A -F ';' -c "select * from sample_view where channel_name IN ('TEST-BTY0:RAMP1','TEST-BTY0:RAMP2') and smpl_time > '2014-12-04 00:00:01' and smpl_time < '2014-12-04 01:00:01';" > archive-ramps-1H.csv
+
+psql -d css_archive_3_0_0 -U archive_ro -A -F ';' -c "select * from sample_view where channel_name IN ('TEST-BTY0:RAMP1','TEST-BTY0:RAMP2') and smpl_time > '2014-12-02 00:00:00' and smpl_time < '2014-12-04 00:00:00' and CAST(float_val AS INTEGER)%5=0;" > archive-ramps-2DUS.csv

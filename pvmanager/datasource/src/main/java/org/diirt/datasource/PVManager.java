@@ -18,7 +18,7 @@ import org.diirt.datasource.expression.WriteExpression;
  * {@link PVReader}, {@link PVWriter} and {@link PV } from an read or write expression.
  * <p>
  * <b>NotificationExecutor</b> - This is used for all notifications.
- * By default this uses {@link org.diirt.datasource.util.Executors#localThread()} so that
+ * By default this uses {@link org.diirt.util.concurrent.Executors#localThread()} so that
  * the notification are done on whatever current thread needs to notify.
  * This means that new read notifications are run on threads managed by
  * the ReadScannerExecutorService, write notifications are run on threads
@@ -33,7 +33,7 @@ import org.diirt.datasource.expression.WriteExpression;
  * submitted here is the calculation of the corresponding {@link WriteExpression}
  * and submission to the {@link DataSource}. The DataSource itself typically
  * has asynchronous work, which is executed in the DataSource specific threads.
- * Changing this to {@link org.diirt.datasource.util.Executors#localThread()} will make that preparation
+ * Changing this to {@link org.diirt.util.concurrent.Executors#localThread()} will make that preparation
  * task on the thread that calls {@link PVWriter#write(java.lang.Object) } but
  * it will not transform the call in a synchronous call.
  * <p>
@@ -46,10 +46,10 @@ import org.diirt.datasource.expression.WriteExpression;
  */
 public class PVManager {
 
-    private static volatile Executor defaultNotificationExecutor = org.diirt.datasource.util.Executors.localThread();
+    private static volatile Executor defaultNotificationExecutor = org.diirt.util.concurrent.Executors.localThread();
     private static volatile DataSource defaultDataSource = DataSourceProvider.createDataSource();
     private static final ScheduledExecutorService workerPool = Executors.newScheduledThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1),
-            org.diirt.datasource.util.Executors.namedPool("PVMgr Worker "));
+            org.diirt.util.concurrent.Executors.namedPool("PVMgr Worker "));
     private static ScheduledExecutorService readScannerExecutorService = workerPool;
     private static ScheduledExecutorService asyncWriteExecutor = workerPool;
 

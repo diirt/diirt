@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.diirt.javafx.tools.*?>
+
+<!-- fx:controller="org.diirt.ui.tools.EventLogViewer" -->
+
+<fx:root prefHeight="433.0" prefWidth="953.0" type="HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TreeTableView fx:id="functionsTreeTable" prefHeight="451.0" prefWidth="898.0" HBox.hgrow="ALWAYS" />
+   </children>
+</fx:root>

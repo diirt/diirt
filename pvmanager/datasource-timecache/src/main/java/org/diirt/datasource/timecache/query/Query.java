@@ -37,4 +37,9 @@ public interface Query {
 	 */
 	public void close();
 
+	/**
+	 * @return <code>true</code> if the query has finished processing.
+	 */
+	public boolean isCompleted();
+
 }

@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>diirt-all</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>pods-all</artifactId>
     <name>pods</name>
@@ -41,7 +41,7 @@
                         </goals>
                         <phase>site</phase>
                         <configuration>
-                            <docfilessubdirs/>
+                            <docfilessubdirs />
                         </configuration>
                     </execution>
                 </executions>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>diirt-util</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>3.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <modules>

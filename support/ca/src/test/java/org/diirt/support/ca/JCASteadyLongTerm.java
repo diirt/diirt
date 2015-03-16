@@ -19,7 +19,7 @@ import static org.diirt.util.time.TimeDuration.*;
  */
 public class JCASteadyLongTerm {
     public static void main(String[] args) throws Exception {
-        JCADataSource jca = new JCADataSource();
+        JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
         final AtomicInteger count = new AtomicInteger();
         

@@ -8,6 +8,11 @@
     </properties>
   
     <body>
+        <release version="2.9" date="2012/02/02" description="Improved PVAccess support.">
+            <action dev="sekoranja"  type="update">
+                pva: updated pvaccess support to latest release. Include functions to work with NTNDArray.
+            </action>
+        </release>
         <release version="2.8" date="2014/09/26" description="File change notification. First review of VNumberArray to better support intensity graphs.">
             <action dev="carcassi"  type="update">
                 file: use ServiceLoader to find supported FileFormats

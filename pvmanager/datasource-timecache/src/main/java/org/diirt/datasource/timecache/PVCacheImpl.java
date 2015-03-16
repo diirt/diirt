@@ -7,11 +7,14 @@ package org.diirt.datasource.timecache;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +24,7 @@ import org.diirt.datasource.timecache.storage.DataStorageListener;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.datasource.timecache.util.TimestampsSet;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
 
@@ -39,45 +43,77 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 
 	private static final Logger log = Logger.getLogger(PVCacheImpl.class.getName());
 
-	private class SourceDataListener implements DataRequestListener {
+	private class DataFromSourceListener implements DataRequestListener {
 
 		@Override
-		public void newData(DataChunk chunk, DataRequestThread thread) {
-			if (chunk == null || chunk.isEmpty())
+		public void newData(final DataChunk chunk, final DataRequestThread thread) {
+			if (chunk == null || chunk.isEmpty() || thread == null)
 				return;
-			SortedSet<Data> storedDatas = storage.storeData(chunk);
-			for (PVCacheListener l : listeners)
-				l.newData(storedDatas);
 			Timestamp start = thread.getInterval().getStart();
 			Timestamp end = thread.getLastReceived();
-			TimeInterval interval = TimeInterval.between(start, end);
-			int index = dataSources.indexOf(thread.getSource());
-			IntervalsList ilist = completedIntervalsBySource.get(index);
-			ilist.addToSelf(interval);
-			updateCompletedIntervals();
+			final TimeInterval interval = TimeInterval.between(start, end);
+			updateService.execute(new Runnable() {
+				public void run() {
+					final SortedSet<Data> storedDatas = storage.storeData(chunk);
+					int index = dataSources.indexOf(thread.getSource());
+					IntervalsList ilist = completedIntervalsBySource.get(index);
+					ilist.addToSelf(interval);
+					updateCompletedIntervals();
+					final IntervalsList completedIntervalsSnaphsot = getCompletedIntervalsList();
+					synchronized (listeners) {
+						for (final PVCacheListener l : listeners)
+							l.newDataInCache(storedDatas, chunk.getInterval(),
+									completedIntervalsSnaphsot);
+					}
+				}
+			});
 		}
 
 		@Override
-		public void intervalComplete(DataRequestThread thread) {
-			if (thread != null) {
-				int index = dataSources.indexOf(thread.getSource());
-				IntervalsList ilist = completedIntervalsBySource.get(index);
-				ilist.addToSelf(thread.getInterval());
-				updateCompletedIntervals();
-				runningThreadsToSources.remove(thread);
-			}
+		public void intervalComplete(final DataRequestThread thread) {
+			if (thread == null)
+				return;
+			final TimeInterval interval = thread.getInterval();
+			updateService.execute(new Runnable() {
+				public void run() {
+					int index = dataSources.indexOf(thread.getSource());
+					IntervalsList ilist = completedIntervalsBySource.get(index);
+					ilist.addToSelf(interval);
+					updateCompletedIntervals();
+					final IntervalsList completedIntervalsSnaphsot = getCompletedIntervalsList();
+					synchronized (listeners) {
+						for (final PVCacheListener l : listeners)
+							l.updatedCompletedIntervals(completedIntervalsSnaphsot);
+					}
+					if(isStatisticsEnabled()) {
+						stats.intervalsCompleted(thread.getRequestID(), interval);
+					}
+					synchronized (runningThreadsToSources) {
+						// Synchronized in order to keep cache 'processing sources'
+						runningThreadsToSources.remove(thread);
+						// Search for missing gaps in order to anticipate for future requests
+						if (runningThreadsToSources.isEmpty()) {
+							IntervalsList missingGaps = retrieveMissingGaps();
+							for (TimeInterval ti : missingGaps.getIntervals()) {
+								retrieveData(ti);
+							}
+						}
+					}
+				}
+			});
 		}
 
 	}
 
 	private boolean statisticsEnabled = false;
-	private final PVCacheStatistics stats = new PVCacheStatistics();
+	private final PVCacheStatistics stats;
 
 	private final String channelName;
 	private final List<DataSource> dataSources;
 	private final DataStorage storage;
 
 	private List<PVCacheListener> listeners;
+	private ExecutorService updateService = Executors.newSingleThreadExecutor();
 	private List<DataRequestThread> runningThreadsToSources;
 
 	private Map<Integer, IntervalsList> completedIntervalsBySource;
@@ -85,12 +121,15 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 	private IntervalsList completedIntervals = new IntervalsList();
 	private IntervalsList requestedIntervals = new IntervalsList();
 
-	public PVCacheImpl(String channelName, Collection<DataSource> dataSources,
-			DataStorage storage) {
+	private TimeDuration retrievalGap = TimeDuration.ofHours(168); // 1 week
+
+	public PVCacheImpl(String channelName, Collection<DataSource> dataSources, DataStorage storage) {
 		this.listeners = Collections.synchronizedList(new LinkedList<PVCacheListener>());
 		this.runningThreadsToSources = Collections.synchronizedList(new LinkedList<DataRequestThread>());
 		this.channelName = channelName;
+		this.stats = new PVCacheStatistics(channelName);
 		this.storage = storage;
+		this.storage.addListener(this);
 		this.dataSources = Collections
 				.unmodifiableList(new ArrayList<DataSource>(dataSources));
 		this.completedIntervalsBySource = new TreeMap<Integer, IntervalsList>();
@@ -126,41 +165,93 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 
 	/** {@inheritDoc} */
 	@Override
-	public DataRequestThread retrieveDataAsync(TimeInterval interval) {
-		if (interval == null)
+	public DataRequestThread retrieveDataAsync(TimeInterval newIntervalToRetrieve) {
+		if (newIntervalToRetrieve == null)
 			return null;
-		interval = CacheHelper.arrange(interval);
-		IntervalsList missingIntervals = retrieveMissingIntervals(interval);
-		if (statisticsEnabled && !missingIntervals.getIntervals().isEmpty())
-			stats.sourceRequested();
-		for (TimeInterval ti : missingIntervals.getIntervals()) {
-			log.log(Level.INFO,
-					"Start requesting: " + CacheHelper.format(interval) + " for " + channelName);
-			for (DataSource s : dataSources) {
-				DataRequestThread thread = null;
-				try {
-					thread = new DataRequestThread(channelName, s, ti);
-					thread.addListener(new SourceDataListener());
-					thread.start();
-					runningThreadsToSources.add(thread);
-				} catch (Exception e) {
-					log.log(Level.SEVERE, e.getMessage());
-				}
-			}
+		newIntervalToRetrieve = CacheHelper.arrange(newIntervalToRetrieve);
+		IntervalsList missing_intervals = retrieveMissingIntervals(newIntervalToRetrieve);
+		for (TimeInterval ti : missing_intervals.getIntervals()) {
+			retrieveData(ti);
 		}
-		requestedIntervals.addToSelf(interval);
+		optimizeRunningRequests(newIntervalToRetrieve);
 		try {
-			return new DataRequestThread(channelName, storage, interval);
+			return new DataRequestThread(channelName, storage, newIntervalToRetrieve);
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage());
 			return null;
 		}
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public SortedSet<Data> retrieveDataSync(TimeInterval interval) {
-		return storage.getAvailableData(interval);
+	private void retrieveData(TimeInterval newIntervalToRetrieve) {
+		log.log(Level.INFO,
+				"START requesting SOURCES: " + CacheHelper.format(newIntervalToRetrieve) + " for " + channelName);
+		for (DataSource s : dataSources) {
+			DataRequestThread thread = null;
+			try {
+				thread = new DataRequestThread(channelName, s, newIntervalToRetrieve);
+				thread.addListener(new DataFromSourceListener());
+				thread.start();
+				runningThreadsToSources.add(thread);
+				if (isStatisticsEnabled()) {
+					stats.intervalRequested(thread.getRequestID(), thread.getSource());
+				}
+			} catch (Exception e) {
+				log.log(Level.SEVERE, e.getMessage());
+			}
+		}
+		requestedIntervals.addToSelf(newIntervalToRetrieve);
+	}
+
+	private void optimizeRunningRequests(TimeInterval newIntervalToRetrieve) {
+		synchronized (runningThreadsToSources) {
+			Iterator<DataRequestThread> it_threads = runningThreadsToSources.iterator();
+			List<DataRequestThread> threads_to_launch = new ArrayList<DataRequestThread>();
+			while (it_threads.hasNext()) {
+				DataRequestThread current_thread = it_threads.next();
+				TimeInterval current_thread_interval = current_thread.getInterval();
+
+				if (CacheHelper.intersects(current_thread_interval, newIntervalToRetrieve)
+						&& newIntervalToRetrieve.getStart().compareTo(current_thread.getLastReceived()) > 0) {
+
+					TimeInterval first_part = TimeInterval.between(current_thread_interval.getStart(), newIntervalToRetrieve.getStart());
+					TimeInterval second_part = TimeInterval.between(newIntervalToRetrieve.getStart(), current_thread_interval.getEnd());
+
+					current_thread.setInterval(first_part);
+					try {
+						DataRequestThread new_thread = new DataRequestThread(
+								channelName, current_thread.getSource(), second_part);
+						new_thread.addListener(new DataFromSourceListener());
+						threads_to_launch.add(new_thread);
+					} catch (Exception e) {
+						log.log(Level.SEVERE, e.getMessage());
+					}
+				}
+			}
+			for (DataRequestThread drt : threads_to_launch) {
+				drt.start();
+				runningThreadsToSources.add(drt);
+				if (isStatisticsEnabled()) {
+					stats.intervalRequested(drt.getRequestID(), drt.getSource());
+				}
+			}
+		}
+	}
+
+	private IntervalsList retrieveMissingGaps() {
+		IntervalsList missingGaps = new IntervalsList();
+		Iterator<TimeInterval> iterator = this.requestedIntervals.getIntervals().iterator();
+		TimeInterval previous = null;
+		TimeInterval current = null;
+		if (iterator.hasNext())
+			current = iterator.next();
+		while (iterator.hasNext()) {
+			previous = current;
+			current = iterator.next();
+			if (previous.getEnd().plus(retrievalGap).compareTo(current.getStart()) > 0) {
+				missingGaps.addToSelf(TimeInterval.between(previous.getEnd(), current.getStart()));
+			}
+		}
+		return missingGaps;
 	}
 
 	private IntervalsList retrieveMissingIntervals(TimeInterval interval) {
@@ -169,7 +260,7 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 		return iList;
 	}
 
-	private void updateCompletedIntervals() {
+	private synchronized void updateCompletedIntervals() {
 		IntervalsList tmpList = null;
 		for (IntervalsList ilist : completedIntervalsBySource.values()) {
 			if (tmpList == null) tmpList = new IntervalsList(ilist);
@@ -180,12 +271,24 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 
 	/** {@inheritDoc} */
 	@Override
-	public void dataLoss(TimestampsSet lostSet) {
+	public SortedSet<Data> retrieveDataSync(TimeInterval interval) {
+		return storage.getAvailableData(interval);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void dataLoss(final TimestampsSet lostSet) {
 		IntervalsList deletedIntervals = lostSet.toIntervalsList();
 		requestedIntervals.subtractFromSelf(deletedIntervals);
 		for (IntervalsList ilist : completedIntervalsBySource.values())
 			ilist.subtractFromSelf(deletedIntervals);
 		updateCompletedIntervals();
+		log.log(Level.INFO, "dataLoss in " + deletedIntervals + " for " + channelName);
+		final IntervalsList completedIntervalsSnaphsot = new IntervalsList(completedIntervals);
+		synchronized (listeners) {
+			for (final PVCacheListener l : listeners)
+				l.updatedCompletedIntervals(completedIntervalsSnaphsot);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -203,8 +306,7 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 	/** {@inheritDoc} */
 	@Override
 	public boolean isStatisticsEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return statisticsEnabled;
 	}
 
 	/** {@inheritDoc} */
@@ -213,14 +315,32 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 		return stats;
 	}
 
-	// Useful for debug
+	/** {@inheritDoc} */
+	@Override
 	public boolean isProcessingSources() {
 		return runningThreadsToSources.size() > 0;
 	}
 
-	// Useful for debug
+	/** {@inheritDoc} */
+	@Override
 	public String getChannelName() {
 		return channelName;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void flush() {
+		storage.clearAll();
+	}
+
+	// Useful to configuration, TODO: improve (see CacheImpl)
+	public void setRetrievalGap(TimeDuration retrievalGap) {
+		this.retrievalGap = retrievalGap;
+	}
+
+	// Useful to debug
+	public DataStorage getStorage() {
+		return storage;
 	}
 
 }

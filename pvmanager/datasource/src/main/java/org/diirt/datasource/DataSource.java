@@ -9,7 +9,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.namedPool;
 
 /**
  * A source for data that is going to be processed by the PVManager.

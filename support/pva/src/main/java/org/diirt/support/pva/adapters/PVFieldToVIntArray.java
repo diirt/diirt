@@ -6,10 +6,13 @@ package org.diirt.support.pva.adapters;
 
 
 import java.util.List;
+
 import org.epics.pvdata.pv.IntArrayData;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVIntArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.PVUIntArray;
 import org.diirt.vtype.VIntArray;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayInt;
@@ -26,17 +29,31 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
 	private final ListInt size;
 	private final ListInt list;
 	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
-	public PVFieldToVIntArray(PVStructure pvField, String fieldName, boolean disconnected) {
-		super(pvField, disconnected);
-		
-		PVIntArray valueField =
-			(PVIntArray)pvField.getScalarArrayField(fieldName, ScalarType.pvInt);
-		if (valueField != null)
+	public PVFieldToVIntArray(PVStructure pvField, boolean disconnected) {
+		this("value", pvField, disconnected);
+	}
+
+	public PVFieldToVIntArray(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVIntArray(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+
+		if (field instanceof PVIntArray)
 		{
+			PVIntArray valueField = (PVIntArray)field;
+
+			IntArrayData data = new IntArrayData();
+			valueField.get(0, valueField.getLength(), data);
+			
+			this.size = new ArrayInt(data.data.length);
+			this.list = new ArrayInt(data.data);
+		}
+		else if (field instanceof PVUIntArray)
+		{
+			PVUIntArray valueField = (PVUIntArray)field;
+
 			IntArrayData data = new IntArrayData();
 			valueField.get(0, valueField.getLength(), data);
 			
@@ -48,10 +65,6 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
 			size = null;
 			list = null;
 		}
-	}
-
-	public PVFieldToVIntArray(PVStructure pvField, boolean disconnected) {
-		this(pvField, "value", disconnected);
 	}
 	
 	/* (non-Javadoc)

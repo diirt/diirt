@@ -63,6 +63,13 @@ public class ExpressionLanguage {
         }
     }
     
+    /**
+     * Returns the expression corresponding to the formula represented by the
+     * given Abstract Syntax Tree.
+     * 
+     * @param ast a formula abstract syntax tree
+     * @return an expression for the formula
+     */
     public static DesiredRateReadWriteExpression<?, Object> formula(FormulaAst ast) {
         DesiredRateExpression<?> exp = ast.toExpression();
             
@@ -176,16 +183,12 @@ public class ExpressionLanguage {
     
     static DesiredRateExpression<?> function(String function, DesiredRateExpressionList<?> args) {
         Collection<FormulaFunction> matchedFunctions = FormulaRegistry.getDefault().findFunctions(function, args.getDesiredRateExpressions().size());
-        if (matchedFunctions.size() > 0) {
-            FormulaReadFunction readFunction = new FormulaReadFunction(Expressions.functionsOf(args), matchedFunctions);
-            List<String> argNames = new ArrayList<>(args.getDesiredRateExpressions().size());
-            for (DesiredRateExpression<? extends Object> arg : args.getDesiredRateExpressions()) {
-                argNames.add(arg.getName());
-            }
-            return new FormulaFunctionReadExpression(args, readFunction, FormulaFunctions.format(function, argNames));
+        FormulaReadFunction readFunction = new FormulaReadFunction(Expressions.functionsOf(args), matchedFunctions, function);
+        List<String> argNames = new ArrayList<>(args.getDesiredRateExpressions().size());
+        for (DesiredRateExpression<? extends Object> arg : args.getDesiredRateExpressions()) {
+            argNames.add(arg.getName());
         }
-        
-        throw new IllegalArgumentException("No function named '" + function + "' is defined");
+        return new FormulaFunctionReadExpression(args, readFunction, FormulaFunctions.format(function, argNames));
     }
     
     static <T> WriteExpression<T> readOnlyWriteExpression(String errorMessage) {

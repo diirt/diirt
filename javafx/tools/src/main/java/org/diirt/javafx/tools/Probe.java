@@ -4,23 +4,29 @@
  */
 package org.diirt.javafx.tools;
 
-import javafx.application.Application;
-import static javafx.application.Application.launch;
+import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 
-public class Probe extends Application {
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("diirt - Probe");
-        stage.setScene(createScene());
-        stage.show();
-    }
+public class Probe extends VBox {
     
+    public Probe() {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("/fxml/Probe.fxml"));
+
+        fxmlLoader.setRoot(this);
+        
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    // TODO: temporary for CS-Studio
     public static Scene createScene() throws Exception {
         Parent root = FXMLLoader.load(Probe.class.getResource("/fxml/Probe.fxml"));
         
@@ -29,16 +35,8 @@ public class Probe extends Application {
         return scene;
     }
 
-    /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        launch(args);
+        JavaFXLaunchUtil.launch("Probe", Probe.class, args);
     }
 
 }

@@ -2,9 +2,6 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-/**
- * 
- */
 package org.diirt.support.pva.adapters;
 
 import org.epics.pvdata.pv.PVStructure;
@@ -13,23 +10,11 @@ import org.epics.pvdata.pv.PVStructure;
  * @author msekoranja
  *
  */
-public class PVANTNDArray {
-	
-	private final PVStructure ntNdArray;
+public class PVANTNDArray extends PVAPVStructure {
 	
 	public PVANTNDArray(PVStructure ntNdArray, boolean disconnected)
 	{
-		this.ntNdArray = ntNdArray;
+		super(ntNdArray, disconnected);
 	}
-	
-	public PVStructure getNTNdArray() {
-		return ntNdArray;
-	}
-
-	@Override
-	public String toString() {
-		return ntNdArray.toString();
-	}
-	
 	
 }

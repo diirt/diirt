@@ -11,6 +11,7 @@ import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
 import static org.diirt.datasource.integration.VTypeMatchMask.*;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 import static org.diirt.vtype.ValueFactory.*;
 
 /**
@@ -43,7 +44,7 @@ public class TypeChangeTestPhase extends AbstractCATestPhase {
     }
 
     public static void main(String[] args) throws Exception {
-        PVManager.setDefaultDataSource(new JCADataSource());
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration().create());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         TestPhase phase1 = new TypeChangeTestPhase();
         phase1.execute();

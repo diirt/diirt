@@ -6,7 +6,9 @@ package org.diirt.support.pva.adapters;
 
 
 import java.util.List;
+
 import org.epics.pvdata.pv.FloatArrayData;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVFloatArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
@@ -28,37 +30,34 @@ public class PVFieldToVFloatArray extends AlarmTimeDisplayExtractor implements V
 	private final ListInt size;
 	private final ListFloat list;
 
-
-  /**
-   * @param pvField
-   * @param fieldName
-   * @param disconnected
-   */
-  public PVFieldToVFloatArray(PVStructure pvField, String fieldName, boolean disconnected) {
-    super(pvField, disconnected);
-
-    PVFloatArray valueField =
-      (PVFloatArray)pvField.getScalarArrayField(fieldName, ScalarType.pvFloat);
-    if (valueField != null)
-    {
-      FloatArrayData data = new FloatArrayData();
-      valueField.get(0, valueField.getLength(), data);
-
-      this.size = new ArrayInt(data.data.length);
-      this.list = new ArrayFloat(data.data);
-    }
-    else
-    {
-      size = null;
-      list = null;
-    }
-  }
-
-
 	public PVFieldToVFloatArray(PVStructure pvField, boolean disconnected) {
-		this(pvField, "value", disconnected);
+		this("value", pvField, disconnected);
 	}
 
+	public PVFieldToVFloatArray(String fieldName, PVStructure pvField, boolean disconnected) {
+		this(pvField.getSubField(fieldName), pvField, disconnected);
+	}
+
+	public PVFieldToVFloatArray(PVField field, PVStructure pvParent, boolean disconnected) {
+		super(pvParent, disconnected);
+		
+		if (field instanceof PVFloatArray)
+		{
+			PVFloatArray valueField = (PVFloatArray)field;
+
+			FloatArrayData data = new FloatArrayData();
+			valueField.get(0, valueField.getLength(), data);
+			
+			this.size = new ArrayInt(data.data.length);
+			this.list = new ArrayFloat(data.data);
+		}
+		else
+		{
+			size = null;
+			list = null;
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.epics.pvmanager.data.Array#getSizes()
 	 */

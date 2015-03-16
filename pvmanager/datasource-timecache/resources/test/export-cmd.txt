@@ -1,1 +1,0 @@
-psql -d css_archive_3_0_0 -U archive_ro -A -F ';' -c "select * from sample_view where channel_name IN ('TEST-BTY0:AI1') and smpl_time > '2014-04-03 01:00:00' and smpl_time < '2014-04-04 23:00:00';" > archive-export-singlePV.csv

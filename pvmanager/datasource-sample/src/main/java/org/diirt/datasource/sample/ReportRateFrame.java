@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.sample;
 
-import java.util.List;
 import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
@@ -12,7 +11,7 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.VDouble;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.swingEDT;
 import org.diirt.util.time.TimeDuration;
 import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.util.time.Timestamp;

@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.formula;
 
+import org.diirt.datasource.formula.array.ArrayFunctionSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

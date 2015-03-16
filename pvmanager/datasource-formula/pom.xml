@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>pvmanager-all</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>datasource-formula</artifactId>
     <name>org.diirt.datasource.formula</name>
@@ -41,6 +41,10 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- The serviceloader-maven-plugin will look for all the implementations of
+                 FormulaFunctionSet and properly register them using the ServiceLoader.
+                 This makes adding/refactoring functions and function set easy, as the
+                 new names will be automatically picked up. -->
             <plugin>
                 <groupId>eu.somatik.serviceloader-maven-plugin</groupId>
                 <artifactId>serviceloader-maven-plugin</artifactId>
