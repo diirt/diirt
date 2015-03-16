@@ -47,6 +47,12 @@ public class ExecServiceMethodDescription extends ServiceMethodDescription {
         return this;
     }
 
+    /**
+     * Add a command for the script.
+     * 
+     * @param command the shell command
+     * @return this description
+     */
     public ExecServiceMethodDescription command(String command) {
         this.command = command;
         return this;

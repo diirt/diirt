@@ -33,11 +33,23 @@ public class ExecServiceDescription extends ServiceDescription {
         super(name, description);
     }
 
+    /**
+     * Adds the shell to this service description.
+     * 
+     * @param shell command to open terminal shell
+     * @return this description
+     */
     public ExecServiceDescription shell(String shell) {
         this.shell = shell;
         return this;
     }
 
+    /**
+     * Adds the shell argument to this service description.
+     * 
+     * @param shellArg argument to apply to the shell
+     * @return this description
+     */
     public ExecServiceDescription shellArg(String shellArg) {
         this.shellArg = shellArg;
         return this;
