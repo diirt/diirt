@@ -41,10 +41,6 @@ public class MathExample {
      * @param args ignored, command line arguments
      */
     public static void main(String[] args) {
-//        for (String service : ServiceRegistry.getDefault().getRegisteredServiceNames()) {
-//            System.out.println("- " + service);
-//        }
-
         System.out.println("SYNCHRONOUS EXECUTION: ");
         syncExecuteAdd();
         syncExecuteMultiply();
@@ -59,29 +55,29 @@ public class MathExample {
      * synchronously.
      */
     public static void syncExecuteAdd() {
-        //Generate the service action to be called
+        // Generate the service action to be called
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
 
-        //Generate the parameters to be supplied to the addition service
+        // Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
         VNumber arg2 = VInt.create(2, Alarm.noValue(), Time.now(), Display.none());
 
-        //Puts the arguments in a map to supply to the the service
+        // Puts the arguments in a map to supply to the the service
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", arg1);
         parameters.put("arg2", arg2);
         System.out.println("service: 1 + 2");
 
-        //Executes the service and obtains all values returned
+        // Executes the service and obtains all values returned
         Map<String, Object> returnValues = method.executeSync(parameters);
 
-        //Obtains the mathematical result
+        // Obtains the mathematical result
         VNumber result = (VNumber) returnValues.get("result");
         System.out.println("result: " + result.getValue().doubleValue());
 
-        //Expected output:
-        //service: 1 + 2
-        //result: 3.0     
+        // Expected output:
+        // service: 1 + 2
+        // result: 3.0     
     }
 
     /**
@@ -101,26 +97,30 @@ public class MathExample {
         parameters.put("arg2", arg2);
         System.out.println("service: 2 * 3");
 
-        //Executes the service and obtains all values returned
+        // Executes the service and obtains all values returned
         Map<String, Object> returnValues = method.executeSync(parameters);
 
-        //Obtains the mathematical results
+        // Obtains the mathematical results
         VNumber result = (VNumber) returnValues.get("result");
         System.out.println("result: " + result.getValue().doubleValue());
 
-        //Expected output:
-        //service: 2 * 3
-        //result: 6.0
+        // Expected output:
+        // service: 2 * 3
+        // result: 6.0
     }
 
+    /**
+     * Demonstration of the {@link VNumber} addition service. Executes
+     * asynchronously.
+     */
     public static void asyncExecuteAdd() {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
 
-        //Generate the parameters to be supplied to the addition service
+        // Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
         VNumber arg2 = VInt.create(2, Alarm.noValue(), Time.now(), Display.none());
 
-        //Puts the arguments in a map to supply to the the service
+        // Puts the arguments in a map to supply to the the service
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", arg1);
         parameters.put("arg2", arg2);
@@ -130,7 +130,7 @@ public class MathExample {
 
             @Override
             public void accept(Map<String, Object> returnValues) {
-                //Obtains the mathematical result
+                // Obtains the mathematical result
                 VNumber result = (VNumber) returnValues.get("result");
                 System.out.println("result: " + result.getValue().doubleValue());
             }
@@ -145,22 +145,26 @@ public class MathExample {
 
         };
 
-        //Executes the service asynchronously, callbacks handle what happens afterwards
+        // Executes the service asynchronously, callbacks handle what happens afterwards
         method.executeAsync(parameters, callback, errorCallback);
 
-        //Expected output:
-        //service: 1 + 2
-        //result: 3.0          
+        // Expected output:
+        // service: 1 + 2
+        // result: 3.0          
     }
-    
+
+    /**
+     * Demonstration of the {@link VNumber} multiplication service. Executes
+     * asynchronously.
+     */
     public static void asyncExecuteMultiply() {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
 
-        //Generate the parameters to be supplied to the addition service
+        // Generate the parameters to be supplied to the addition service
         VNumber arg1 = VDouble.create(2, Alarm.noValue(), Time.now(), Display.none());
         VNumber arg2 = VInt.create(3, Alarm.noValue(), Time.now(), Display.none());
 
-        //Puts the arguments in a map to supply to the the service
+        // Puts the arguments in a map to supply to the the service
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", arg1);
         parameters.put("arg2", arg2);
@@ -170,20 +174,13 @@ public class MathExample {
 
             @Override
             public void accept(Map<String, Object> returnValues) {
-                //Obtains the mathematical result
+                // Obtains the mathematical result
                 VNumber result = (VNumber) returnValues.get("result");
                 System.out.println("result: " + result.getValue().doubleValue());
             }
 
         };
-        Consumer<Exception> errorCallback = new Consumer<Exception>() {
-
-            @Override
-            public void accept(Exception e) {
-                System.out.println(e);
-            }
-
-        };
+        Consumer<Exception> errorCallback = System.out::println;
 
         //Executes the service asynchronously, callbacks handle what happens afterwards
         method.executeAsync(parameters, callback, errorCallback);
@@ -192,5 +189,5 @@ public class MathExample {
         //service: 2 * 3
         //result: 6.0          
     }
-    
+
 }

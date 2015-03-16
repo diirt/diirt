@@ -13,13 +13,21 @@ import org.diirt.service.ServiceMethodDescription;
 import org.diirt.vtype.next.VNumber;
 
 /**
+ * Utility class for the creation of service descriptions and service method
+ * descriptions for the Math Service example.
  *
  * @author carcassi
+ * @author asbarber
  */
 public class MathService {
 
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Math services"));
+    private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Math services"));
     
+    /**
+     * Generates the service method description for the addition service method.
+     *
+     * @return addition service method description
+     */
     public static ServiceMethodDescription addMethod() {
         return new ServiceMethodDescription("add", "Adds two numbers.") {
 
@@ -33,6 +41,12 @@ public class MathService {
                 .addResult("result", "The sum of arg1 and arg2", VNumber.class);
     }
 
+    /**
+     * Generates the service method description for the multiplication service
+     * method.
+     *
+     * @return multiplication service method description
+     */    
     public static ServiceMethodDescription multiplyMethod() {
         return new ServiceMethodDescription("multiply", "Multiplies two numbers.") {
 
@@ -46,6 +60,11 @@ public class MathService {
                 .addResult("result", "The product of arg1 and arg2", VNumber.class);
     }
 
+    /**
+     * Generates the service description that creates the math service.
+     *
+     * @return math service
+     */
     public static Service createMathService() {
         return new ServiceDescription("math", "Simple math service for VNumber")
                 .addServiceMethod(addMethod())

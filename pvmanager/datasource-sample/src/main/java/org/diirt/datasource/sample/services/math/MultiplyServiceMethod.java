@@ -16,24 +16,38 @@ import org.diirt.vtype.next.VDouble;
 import org.diirt.vtype.next.VNumber;
 
 /**
+ * An example service method for the multiplication of
+ * {@link org.diirt.vtype.next.VNumber}s.
  *
  * @author carcassi
+ * @author asbarber 
  */
 public class MultiplyServiceMethod extends ServiceMethod {
 
+    /**
+     * Creates a {@link org.diirt.vtype.next.VNumber} multiplication service
+     * method with the given description. All properties are copied out of the
+     * description, guaranteeing the immutability of objects of this class.
+     * Nonetheless, service method descriptions should not be reused for
+     * different services.
+     *
+     * @param serviceMethodDescription the description of the service method,
+     * can't be null
+     * @param serviceDescription the description of the service; can't be null
+     */
     public MultiplyServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
         super(serviceMethodDescription, serviceDescription);
     }
-    
+
     @Override
-    public Map<String, Object> syncExecImpl(Map<String, Object> parameters){
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) {
         VNumber arg1 = (VNumber) parameters.get("arg1");
         VNumber arg2 = (VNumber) parameters.get("arg2");
         VNumber result = (VNumber) VDouble.create(
-            arg1.getValue().doubleValue() * arg2.getValue().doubleValue(),
-            Alarm.noValue(),
-            Time.now(),
-            Display.none()
+                arg1.getValue().doubleValue() * arg2.getValue().doubleValue(),
+                Alarm.noValue(),
+                Time.now(),
+                Display.none()
         );
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", result);
