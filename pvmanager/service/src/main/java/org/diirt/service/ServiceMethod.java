@@ -118,15 +118,14 @@ public abstract class ServiceMethod {
         this.resultMap = Collections.unmodifiableMap(new HashMap<>(tmpResultMap));
         
         // TODO verify correctness
-        // TODO test me !!!
         
-        // Checks if the subclass overrides the syncrhonous implementation
+        // Checks if the subclass overrides the synchronous implementation
         Method method = null;
         try {
             method = this.getClass().getMethod("syncExecImpl", Map.class);
         } catch (NoSuchMethodException | SecurityException ex) {
         }
-        syncExecute = method != null && !ServiceMethod.class.equals(method.getDeclaringClass());
+        syncExecute = method != null;
         
         // Checks if the subclass overrides the asynchronous implementation
         method = null;
@@ -134,7 +133,7 @@ public abstract class ServiceMethod {
             method = this.getClass().getMethod("asyncExecImpl", Map.class, Consumer.class, Consumer.class);
         } catch (NoSuchMethodException | SecurityException ex) {
         }
-        asyncExecute = method != null && !ServiceMethod.class.equals(method.getDeclaringClass());
+        asyncExecute = method != null;
 
         // Validates that the subclass contains an implementation
         if (!asyncExecute && !syncExecute){
