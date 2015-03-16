@@ -1,0 +1,11 @@
+<colormap position = "relative" colorNaN="BLACK">
+
+	<color position="0.0" value="RED"> </color>
+  	<color position="0.1666667" value="YELLOW"> </color>
+  	<color position="0.3333333" value="GREEN"> </color>
+    <color position="0.5" value="CYAN"> </color>
+    <color position="0.6666667" value="BLUE"> </color>
+   	<color position="0.8333333" value="MAGENTA"> </color>
+	<color position="1.0" value="RED"> </color>
+
+</colormap>

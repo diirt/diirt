@@ -7,8 +7,12 @@ package org.diirt.graphene;
 import org.diirt.util.stats.Range;
 import javafx.scene.paint.Color;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
@@ -98,33 +102,8 @@ public class NumberColorMaps {
         colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
         return relative(colors, Color.BLACK, colormapName);//cmap file is automatically relative
     }
-    private static List<NumberColorMap> loadDefaultMaps(){
-          List<NumberColorMap> maps = new ArrayList<>();
-          Logger log = Logger.getLogger(NumberColorMaps.class.getName()); 
-          File path = new File(Configuration.getDirectory(),"graphene/colormaps"); 
-        if (path.exists()) {
-                log.log(Level.CONFIG, "Loading ColorMaps from directory: "+path);
-                for (File file : path.listFiles()) {
-                    //makes sure we are only loading the xml files
-                   if(file.getName().endsWith(".xml")){
-                      log.log(Level.CONFIG, "Loading ColorMap from file: "+file);
-                       maps.add(loadXML(file)); 
-                       log.log(Level.CONFIG, "Load Success!");
-                   }
-                }
-             
-            }
-         else { // The path does not exist
-            path.mkdirs();
-            log.log(Level.CONFIG, "Creating Path graphene/colormaps under DIIRT_HOME ");
-            throw new RuntimeException("graphene/colormaps directory not existed. Could not load default ColorMaps"); 
-        }
-   
-      
-         return maps; 
-    }
-
-    private static NumberColorMap loadXML(File file){
+    
+       private static NumberColorMap loadXML(File file){
         //if we are reading from a xml file
 
         List<Double> positions = new ArrayList<>();
@@ -176,6 +155,79 @@ public class NumberColorMaps {
         colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
         return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, nanColor, colormapName);
     }
+    private static void createMapsLocal(File path, Logger log){
+        
+        //files to be copied 
+        String [] mapNames ={"BONE.xml","GRAY.xml","HOT.xml","HSV.xml","JET.xml"}; 
+        
+
+        for(String map: mapNames)
+        {
+
+            File mapFile = new File(path,map);
+            try { 
+                mapFile.createNewFile();
+            } catch (IOException ex) {
+                log.log(Level.WARNING,"Failed Creating new file{0)",mapFile);
+            }
+            
+            InputStream input = null; 
+            OutputStream output = null; 
+            try {
+                
+                input = NumberColorMaps.class.getResourceAsStream(map);
+               // input = new FileInputStream(new File("src/main/resources/org/diirt/graphene/"+map)); 
+                output = new FileOutputStream(mapFile);
+                byte[] buffer = new byte[8*1024];
+                int bytesRead;
+                while ((bytesRead = input.read(buffer)) != -1) {
+                    output.write(buffer, 0, bytesRead);
+                }
+                input.close(); 
+                output.close();
+                
+            } catch (FileNotFoundException ex) {
+                log.log(Level.WARNING, "{0} File not found", map);
+            } catch (IOException ex) {
+                log.log(Level.WARNING, "Failed Loading {0}", map);
+            }
+             
+            
+          
+        }
+
+        
+        
+    }
+            
+    private static List<NumberColorMap> loadMapsFromLocal() {
+        List<NumberColorMap> maps = new ArrayList<>();
+        Logger log = Logger.getLogger(NumberColorMaps.class.getName());
+        File path = new File(Configuration.getDirectory(), "graphene/colormaps");
+        //if maps are not there, create them first
+        if (!path.exists()) {
+            path.mkdirs();
+
+            log.log(Level.CONFIG, "Creating Path graphene/colormaps under DIIRT_HOME ");
+            createMapsLocal(path, log);
+        }
+        //load maps from local directory
+        log.log(Level.CONFIG, "Loading ColorMaps from directory: " + path);
+        for (File file : path.listFiles()) {
+
+            log.log(Level.CONFIG, "Loading ColorMap from file: " + file);
+            try {
+                maps.add(load(file));
+            } catch (RuntimeException ex) {
+                log.log(Level.WARNING, ex.getMessage());
+            }
+
+        }
+
+        return maps;      
+    }
+
+ 
     
     /**
      * JET ranges from blue to red, going through cyan and yellow.
@@ -228,23 +280,24 @@ public class NumberColorMaps {
             = new ConcurrentHashMap<>();
    
     static {
-        
+       /*
         registeredColorSchemes.put(JET.toString(), JET);
         registeredColorSchemes.put(GRAY.toString(), GRAY);
         registeredColorSchemes.put(BONE.toString(), BONE);
         registeredColorSchemes.put(HOT.toString(), HOT);
         registeredColorSchemes.put(HSV.toString(), HSV);
-        
+       */
         // TODO: Load new ones from "DIIRT_HOME/graphene/colormaps/
         // using Configuration. (see jdbc service)
         
-         /*
-        List<NumberColorMap> maps = loadDefaultMaps(); 
+        
+        List<NumberColorMap> maps = loadMapsFromLocal(); 
         
         for(NumberColorMap map: maps) {
             registeredColorSchemes.put(map.toString(),map); 
         }
-         */
+        
+         
     }
     
     /**

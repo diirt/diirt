@@ -207,7 +207,7 @@ public class NumberColorMapTest {
     }
     
     @Test
-   
+
     public void getRegisteredColorSchemeJET() throws Exception{
          
        NumberColorMap jet = NumberColorMaps.getRegisteredColorSchemes().get("JET"); 
@@ -220,6 +220,7 @@ public class NumberColorMapTest {
         assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.BLACK)));
     }
     @Test
+    
     public void getRegisterColorSchemeBONE() throws Exception{
         NumberColorMap bone = NumberColorMaps.getRegisteredColorSchemes().get("BONE"); 
         Range range = Ranges.range(0.0,1.0); 
@@ -230,6 +231,6 @@ public class NumberColorMapTest {
         assertThat(colorScheme.colorFor(0.5), equalTo(getRGB(Color.rgb(107,115,140))));
         assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.RED)));
     }
-            
+    
     
 }
