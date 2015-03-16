@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
 import javax.sql.DataSource;
 import org.diirt.service.ServiceMethod;
 import org.diirt.util.array.CircularBufferDouble;
@@ -88,7 +86,7 @@ class JDBCServiceMethod extends ServiceMethod {
                     return Collections.<String, Object>singletonMap(getResults().get(0).getName(), table);
                 } else {
                     preparedStatement.execute();
-                    return new HashMap<String, Object>();
+                    return new HashMap<>();
                 }
             }
         } catch (Exception ex) {
@@ -128,18 +126,18 @@ class JDBCServiceMethod extends ServiceMethod {
                 case Types.BOOLEAN:
                 case Types.BIT:
                     types.add(String.class);
-                    data.add(new ArrayList<String>());
+                    data.add(new ArrayList<>());
                     break;
                     
                 case Types.TIMESTAMP:
                     types.add(Timestamp.class);
-                    data.add(new ArrayList<Timestamp>());
+                    data.add(new ArrayList<>());
                     break;
                     
                 default:
                     if ("java.lang.String".equals(metaData.getColumnClassName(j))) {
                         types.add(String.class);
-                        data.add(new ArrayList<String>());
+                        data.add(new ArrayList<>());
                     } else {
                         throw new IllegalArgumentException("Unsupported type " + metaData.getColumnTypeName(j));
                     }
@@ -170,5 +168,12 @@ class JDBCServiceMethod extends ServiceMethod {
         }
         
         return ValueFactory.newVTable(types, names, data);
+    }
+    
+    //TODO what happens when this is called multiple times!
+    //how can this be enforced to be called (make it abstract, Service closes
+    //service methods
+    public void close() throws SQLException{
+        dataSource.getConnection().close();
     }
 }

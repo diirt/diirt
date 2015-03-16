@@ -36,7 +36,7 @@ public class JDBCServices {
         // Prevent instanciation
     }
     
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
+    private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
 
     /**
      * Creates a JDBCService based on the description of an XML file.
