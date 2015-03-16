@@ -17,12 +17,16 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /**
- * A call that provides access to command/response type of communication for sources of
- * data or RPC-like services. Each method can be executed with a set of parameters, and returns with a set
- * of results. Methods are grouped into services.
+ * A call that provides access to command/response type of communication for
+ * sources of data or RPC-like services. Each method can be executed with a set
+ * of parameters, and returns with a set of results. Methods are grouped into
+ * services.
  * <p>
- * This class is immutable and the method execution is thread-safe and asynchronous (non-blocking).
- * Subclasses must guarantee these properties.
+ * This class is immutable and the method execution is thread-safe and
+ * asynchronous (non-blocking). Subclasses must guarantee these properties.
+ * <p>
+ * Requires either (1) synchronous or (2) asynchronous implementation to be
+ * provided in a subclass.
  *
  * @author carcassi
  */
@@ -85,9 +89,14 @@ public abstract class ServiceMethod {
      * are copied out of the description, guaranteeing the immutability
      * of objects of this class. Nonetheless, service method descriptions
      * should not be reused for different services.
-     * 
+     * <p>
+     * A service method requires either 
+     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
+     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
+     * to be implemented.
+     *
      * @param serviceMethodDescription the description of the service method, can't be null
-     * @param serviceDescription
+     * @param serviceDescription the description of the service; can't be null
      */
     public ServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
         this.name = serviceMethodDescription.name;
@@ -237,18 +246,45 @@ public abstract class ServiceMethod {
         return sb.toString();
     }
     
-    // Implementation of the method (OVERRIDDEN BY SUBCLASS)
+    /**
+     * Implementation (synchronous) of the service method.
+     * <p>
+     * The call should be implemented synchronously, and return the result.
+     * <p>
+     * A service method requires either 
+     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
+     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
+     * to be implemented.
+     *
+     * @param parameters the parameters for the method; not null
+     * @return the result callback, for success; not null
+     * @throws Exception the result callback, for failure
+     */
     protected Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
         throw new RuntimeException("syncExecImpl was not overridden.");
     }
-    
-    protected void asyncExecImpl(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
-        throw new RuntimeException("asyncExecImpl was not overridden.");        
+
+    /**
+     * Implementation (asynchronous) of the service method.
+     * <p>
+     * The call should be implemented asynchronously, only one callback
+     * should be called once with the result. If the method throws an exception,
+     * this will be sent to the errorCallbak, you can let exceptions go through
+     * in which case no callback should be used.
+     * <p>
+     * A service method requires either 
+     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
+     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
+     * to be implemented.
+     *
+     * @param parameters the parameters for the method, already type checked
+     * @param callback the result callback, for success; not null
+     * @param errorCallback the error callback, for failures; can't be null
+     */
+    protected void asyncExecImpl(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
+        throw new RuntimeException("asyncExecImpl was not overridden.");
     }
-    //--------------------------------------------------------------------------
-    
-    //Wrap from sync <--> async calls
-    //--------------------------------------------------------------------------
+
     private Map<String, Object> wrapAsSync(Map<String, Object> parameters) {
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicReference<Map<String, Object>> result = new AtomicReference<>();
@@ -288,27 +324,36 @@ public abstract class ServiceMethod {
 
         throw new RuntimeException("Failed", exception.get());
     }
-    
-    private void wrapAsAsync(ExecutorService executor, Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
-        executor.submit(new Runnable(){
+
+    private void wrapAsAsync(ExecutorService executor, Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
+        executor.submit(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     callback.accept(syncExecImpl(parameters));
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     errorCallback.accept(ex);
                 }
             }
         });
     }
-    //--------------------------------------------------------------------------
-    
-    //Execute the method
-    //--------------------------------------------------------------------------
-    public Map<String, Object> executeSync(Map<String, Object> parameters){
+
+    /**
+     * Executes the service method with the given parameters, and waits for the
+     * response (synchronous execution of this service method).
+     * <p>
+     * A service method requires either 
+     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
+     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
+     * to be implemented.
+     *
+     * @param parameters the parameters for the service; can't be null
+     * @return the result callback, for success; can't be null
+     */
+    public Map<String, Object> executeSync(Map<String, Object> parameters) {
         validateParameters(parameters);
-        
-        if (syncExecute){
+
+        if (syncExecute) {
             try {
                 return syncExecImpl(parameters);
             } catch (RuntimeException ex) {
@@ -316,18 +361,30 @@ public abstract class ServiceMethod {
             } catch (Exception ex) {
                 throw new RuntimeException("Method execution failed", ex);
             }
-        }
-        else if (asyncExecute){
+        } else if (asyncExecute) {
             return wrapAsSync(parameters);
-        }
-        else{
+        } else {
             throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
         }
     }
-    
-    public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback){
+
+    /**
+     * Executes the service method with the given parameters, the result of
+     * which will be communicated through the callbacks (asynchronous execution
+     * of this service method).
+     * <p>
+     * A service method requires either 
+     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
+     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
+     * to be implemented.
+     *
+     * @param parameters the parameters for the service; can't be null
+     * @param callback the result callback, for success; can't be null
+     * @param errorCallback the error callback, for failures; can't be null
+     */    
+    public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
         validateParameters(parameters);
-        
+
         // TODO if asyncExecImpl does not run on another thread, it's not actually
         // async, is this an issue?
         if (asyncExecute) {
@@ -342,5 +399,4 @@ public abstract class ServiceMethod {
             throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
         }
     }
-    //--------------------------------------------------------------------------    
 }

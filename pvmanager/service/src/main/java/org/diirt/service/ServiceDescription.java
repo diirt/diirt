@@ -80,6 +80,13 @@ public class ServiceDescription {
         return this;
     }
 
+    /**
+     * Adds the given executor to this service description. The executor is used
+     * for asynchronous service method executions.
+     *
+     * @param executor an executor service, can't be null
+     * @return this description
+     */
     public ServiceDescription executorService(ExecutorService executor) {
         // Validate parameters (non-null, not already set)
         if (executor == null) {
@@ -92,7 +99,15 @@ public class ServiceDescription {
         this.executorService = executor;
         return this;
     }
-    
+
+    /**
+     * Creates the immutable ServiceMethod objects from the
+     * ServiceMethodDescription objects in this state description state. Used in
+     * registering the methods to the service.
+     *
+     * @return service methods (mapped by method name) registered to this
+     * service
+     */
     public Map<String, ServiceMethod> createServiceMethods() {
         Map<String, ServiceMethod> map = new HashMap<>();
         for (ServiceMethodDescription serviceMethodDescription : serviceMethodDescriptions) {
@@ -102,7 +117,11 @@ public class ServiceDescription {
         return map;
     }
 
-    // TODO verify correctness
+    /**
+     * Creates the immutable Service object from this service description state.
+     *
+     * @return a service based off of this description state
+     */
     public Service createService() {
         return new Service(this);
     }

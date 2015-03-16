@@ -5,9 +5,7 @@
 package org.diirt.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import static org.diirt.service.Service.namePattern;
 import org.diirt.service.ServiceMethod.DataDescription;
 
@@ -143,5 +141,14 @@ public abstract class ServiceMethodDescription {
         return this;
     }
     
+    /**
+     * Creates a service method. Used by service description to create a service
+     * method. A client should implement this to return their custom service
+     * method.
+     *
+     * @param serviceDescription service description to help create the service
+     * method
+     * @return service method
+     */
     public abstract ServiceMethod createServiceMethod(ServiceDescription serviceDescription);
 }

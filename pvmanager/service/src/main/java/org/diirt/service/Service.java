@@ -79,6 +79,11 @@ public final class Service {
         return serviceMethods;
     }
     
+    //TODO verify correctness
+    /**
+     * Shutdown procedure for the service, closing resources (e.g. executor
+     * service).
+     */
     public void close(){
         this.executorService.shutdown();
     }
