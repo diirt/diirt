@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.support.pva.adapters.NTUtils;
 import org.diirt.support.pva.adapters.PVFieldNTMatrixToVDoubleArray;

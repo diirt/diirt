@@ -41,7 +41,6 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
     final String operationName;
 
     final ServiceMethodDescription strictMethodDescription;
-    final Map<String, ServiceMethod.DataDescription> strictArguments;
     
     final static String FIELD_NAME_EQUALS_NAME = "__NOALIAS__";
 
@@ -61,6 +60,8 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
         this.operationName = operationName;
         this.structureId = structureId;
         this.isResultStandalone = isResultStandalone;
+        
+        // TODO this is awful
         this.strictMethodDescription = new ServiceMethodDescription(name, description){
 
             @Override
@@ -76,7 +77,6 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
             }
             
         };
-        this.strictArguments = new HashMap<>();
     }
 
     /**
@@ -139,6 +139,7 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
         super.addArgument(name, description, relaxArgumentType(type));
         
         strictMethodDescription.addArgument(name, description, type);
+        
         orderedParameterNames.put(name, fieldName != null ? fieldName : FIELD_NAME_EQUALS_NAME);
         return this;
     }
@@ -171,6 +172,7 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
     }
     
     protected Map<String, ServiceMethod.DataDescription> getStrictArguments(){
+        // TODO this is awful
         return strictMethodDescription.createServiceMethod(null).getArgumentMap();
     }
 }
