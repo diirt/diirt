@@ -87,13 +87,15 @@ class RPCServiceMethod extends ServiceMethod {
     private final Map<String, String> fieldNames;
     private final String operationName;
 
+    private final Map<String, DataDescription> strictArguments;
+    
     /**
      * Creates a new rpcservice method.
      *
      * @param rpcServiceMethodDescription a method description
      */
     RPCServiceMethod(RPCServiceMethodDescription serviceMethodDescription, RPCServiceDescription serviceDescription) {
-        super(serviceMethodDescription.relaxedServiceMethodDescription, serviceDescription);
+        super(serviceMethodDescription, serviceDescription);
 
         this.parameterNames = serviceMethodDescription.orderedParameterNames;
         this.hostName = serviceDescription.hostName;
@@ -105,6 +107,8 @@ class RPCServiceMethod extends ServiceMethod {
         this.operationName = serviceMethodDescription.operationName;
 
         this.requestStructure = createRequestStructure(serviceMethodDescription.structureId);
+        
+        this.strictArguments = serviceMethodDescription.getStrictArguments();
     }
 
     private Structure createRequestStructure(String structureId) {
@@ -159,24 +163,15 @@ class RPCServiceMethod extends ServiceMethod {
             return methodFieldName != null ? new Field[]{fieldCreate.createScalar(ScalarType.pvString)} : new Field[0];
         }
 
-        //Map<String, Class<?>> argumentTypes = getArgumentTypes();
-        // create ServiceMethod to get access to argumentTypes of serviceMethodDescription (non-relaxed)
-        ServiceMethod sm = new ServiceMethod(serviceMethodDescription) {
-            @Override
-            public void executeMethod(Map<String, Object> parameters,
-                    Consumer<Map<String, Object>> callback,
-                    Consumer<Exception> errorCallback) {
-                // noop
-            }
-        };
-
         // operation name type + parameter types
         List<Field> fieldList = new ArrayList<Field>(this.parameterNames.size() + 1);
         if (methodFieldName != null) {
             fieldList.add(fieldCreate.createScalar(ScalarType.pvString));
         }
+        
+        // non-relaxed argument types
         for (String parameterName : this.parameterNames.keySet()) {
-            fieldList.add(convertToPvType(sm.getArgumentMap().get(parameterName).getClass()));
+            fieldList.add(convertToPvType(strictArguments.get(parameterName).getClass()));
         }
 
         return fieldList.toArray(new Field[fieldList.size()]);
@@ -406,5 +401,13 @@ class RPCServiceMethod extends ServiceMethod {
         }
 
         throw new IllegalArgumentException("Result type " + resultType.getSimpleName() + " not supported in pvAccess RPC rpcservice");
+    }
+    
+    public String getStructureID(){
+        return requestStructure.getID();
+    }
+    
+    public String getOperationName(){
+        return operationName;
     }
 }
