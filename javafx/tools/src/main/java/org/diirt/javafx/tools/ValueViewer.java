@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -63,6 +65,8 @@ public final class ValueViewer extends ScrollPane {
     private TableColumn<VTableColumn, Number> columnSizeColumn;
     @FXML
     private ListView<String> labelsField;
+    @FXML
+    private Button inspectTableButton;
 
     public ValueViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -80,14 +84,18 @@ public final class ValueViewer extends ScrollPane {
         columnNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         columnSizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
+        
         setValue(null, false);
     }
+    
+    private Object value;
     
     public void setValue(Object value, boolean connection) {
         commonMetadata(value, connection);
         numberDisplay(ValueUtil.displayOf(value));
         enumMetadata(value);
         tableMetadata(value);
+        this.value = value;
     }
     
     private void commonMetadata(Object value, boolean connection) {
@@ -179,6 +187,11 @@ public final class ValueViewer extends ScrollPane {
             tableMetadata.setManaged(false);
             columnsTable.setItems(new ImmutableObservableList<>());
         }
+    }
+
+    @FXML
+    private void onInspectTable(ActionEvent event) {
+        VTableInspector.instpectValue((VTable) value);
     }
 
 }

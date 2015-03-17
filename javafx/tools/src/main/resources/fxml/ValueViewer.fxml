@@ -91,19 +91,23 @@
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Columns:" />
-                        <TableView fx:id="columnsTable" prefHeight="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+                        <Label text="Columns:" GridPane.rowIndex="1" />
+                        <TableView fx:id="columnsTable" prefHeight="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
                           <columns>
                             <TableColumn fx:id="columnNameColumn" prefWidth="150.0" text="Name" />
                             <TableColumn fx:id="columnTypeColumn" prefWidth="100.0" text="Type" />
                               <TableColumn fx:id="columnSizeColumn" prefWidth="75.0" text="Size" />
                           </columns>
                         </TableView>
+                        <Label text="Row count:" />
+                        <TextField GridPane.columnIndex="1" />
+                        <Button fx:id="inspectTableButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onInspectTable" text="Inspect VTable..." GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                </content>
