@@ -1,24 +1,18 @@
-.wp-progress-bar {
-    display: inline-block;
+.ui-progressbar .alarm-none
+ {background: green; }
+
+.ui-progressbar .alarm-minor {
+    background: yellow;
 }
 
-.wp-progress-bar .alarm-none {
-    background-color: green;
+.ui-progressbar .alarm-major  {
+    background: red;
 }
 
-.wp-progress-bar .alarm-minor {
-    background-color: yellow;
+.ui-progressbar .alarm-invalid {
+    background: magenta;
 }
 
-.wp-progress-bar .alarm-major {
-    background-color: red;
+.ui-progressbar .alarm-undefined {
+    background: magenta;
 }
-
-.wp-progress-bar .alarm-invalid {
-    background-color: magenta;
-}
-
-.wp-progress-bar .alarm-undefined {
-    background-color: magenta;
-}
-

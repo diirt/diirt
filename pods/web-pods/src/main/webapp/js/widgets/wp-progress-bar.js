@@ -3,9 +3,6 @@
  *
  * scripts to be included on the html file
  * <script src="../js/widgets/lib/jquery-ui/jquery-ui.js"></script>
- * <script src="../js/widgets/lib/jquery-ui/jquery.ui.labeledslider.js"></script>
- * <link href="../js/widgets/lib/jquery-ui/jquery.ui.labeledslider.css" rel="stylesheet"  type="text/css">
- *<script type="text/javascript" language="javascript" src="../js/widgets/slider.js"></script>
  * <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
  ******************************************************************************/
 
@@ -20,7 +17,7 @@ $(document).ready(function() {
     function updateProgressBarAlarm(severity, id, widget) {
         var currentAlarm = currentAlarms[id];
         if (currentAlarm) {
-            widget.classList.remove(currentAlarm);
+            widget.find( ".ui-progressbar-value" ).removeClass(currentAlarm);
         }
         switch (severity) {
             case "MINOR":
@@ -40,7 +37,7 @@ $(document).ready(function() {
                 break;
         }
         currentAlarms[id] = currentAlarm;
-        widget.css(currentAlarm);
+        widget.find( ".ui-progressbar-value" ).addClass(currentAlarm);
     }
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
@@ -49,7 +46,7 @@ $(document).ready(function() {
         var min = nodes[i].getAttribute("data-displayLow") != null ? parseFloat(nodes[i].getAttribute("data-displayLow")) : 0;
         var id = nodes[i].getAttribute("id");
         if (id === null) {
-            id = "progress-bar-" + i;
+            id = "wp-progress-bar-" + i;
             nodes[i].id = id;
         }
         var callback = function(evt, channel) {
@@ -59,12 +56,14 @@ $(document).ready(function() {
                break;
            case "value": //value changed
                var channelValue = channel.getValue();
-               progressbars[channel.getId()].progressbar( "value", channelValue.value );
+               progressbars[channel.getId()].progressbar( "value", channelValue.value ).children('.ui-progressbar-value')
+                                                                                           .html(channelValue.value)
+                                                                                           .css("display", "block");;
                // Change the style based on the alarm
                if ("alarm" in channelValue) {
                    updateProgressBarAlarm(channelValue.alarm.severity, channel.getId(), progressbars[channel.getId()]);
                } else {
-               //    updateProgressBarAlarm("NONE", channel.getId(), progressbars[channel.getId()]);
+                   updateProgressBarAlarm("NONE", channel.getId(), progressbars[channel.getId()]);
                }
 
                // Remove error tooltip
@@ -85,11 +84,13 @@ $(document).ready(function() {
            }
         };
         var channel = wp.subscribeChannel(channelname, callback, readOnly);
-        var progressbar = $("#" + id).progressbar({max: max, min: min});
-        progressbar.style.width = "100%";
-        progressbar.style.height = "100%";
-        progressbar.style.font = "inherit";
-        progressbar.style.textAlign = "inherit";
+        var progressLabel = $( ".progress-label" );
+        var progressbar = $("#" + id).progressbar({
+                                     value: false,
+                                     change: function() {
+                                     progressLabel.text( progressbar.progressbar( "value" ) + "%" );
+                                     }
+                                     });
         progressbars[channel.getId()] = progressbar;
     }
 
