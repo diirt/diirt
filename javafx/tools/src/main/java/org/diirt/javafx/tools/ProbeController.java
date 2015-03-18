@@ -97,7 +97,7 @@ public class ProbeController implements Initializable {
         } else {
             valueField.setText("");
         }
-        setAlarm(null);
+        setAlarm(obj, connected);
         valueViewer.setValue(obj, connected);
     }
     
@@ -113,8 +113,8 @@ public class ProbeController implements Initializable {
         return Collections.unmodifiableMap(map);
     }
     
-    private void setAlarm(Object value) {
-        Alarm alarm = ValueUtil.alarmOf(value, pv.isConnected());
+    private void setAlarm(Object value, boolean connected) {
+        Alarm alarm = ValueUtil.alarmOf(value, connected);
         valueField.setBorder(BORDER_MAP.get(alarm.getAlarmSeverity()));
     }
 
