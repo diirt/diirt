@@ -59,14 +59,14 @@ public class ProbeController implements Initializable {
             valueField.setText(null);
             newValueField.setEditable(false);
             newValueField.setDisable(true);
+            changeValue(null, false);
+            errorField.setText(null);
         }
 
         pv = PVManager.readAndWrite(ExpressionLanguage.formula(channelField.getText()))
                 .readListener(eventLogViewer.eventLog().<Object>createReadListener())
                 .readListener((PVReaderEvent<Object> e) -> {
-                    valueField.setText(format.format(e.getPvReader().getValue()));
-                    setAlarm(e.getPvReader().getValue());
-                    valueViewer.setValue(e.getPvReader().getValue(), e.getPvReader().isConnected());
+                    changeValue(e.getPvReader().getValue(), e.getPvReader().isConnected());
                     Event lastEvent = eventLogViewer.eventLog().getEvents().get(eventLogViewer.eventLog().getEvents().size() - 1);
                     if (lastEvent instanceof ReadEvent) {
                         Exception lastException = ((ReadEvent) lastEvent).getLastException();
@@ -88,6 +88,16 @@ public class ProbeController implements Initializable {
                 })
                 .notifyOn(Executors.javaFXAT())
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
+    }
+    
+    private void changeValue(Object obj, boolean connected) {
+        if (obj != null) {
+            valueField.setText(format.format(obj));
+        } else {
+            valueField.setText("");
+        }
+        setAlarm(null);
+        valueViewer.setValue(obj, connected);
     }
     
     private static final Map<AlarmSeverity, Border> BORDER_MAP = createBorderMap();
