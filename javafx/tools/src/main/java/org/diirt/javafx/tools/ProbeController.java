@@ -86,6 +86,7 @@ public class ProbeController implements Initializable {
                         }
                     }
                 })
+                .timeout(TimeDuration.ofSeconds(1), "Still connecting...", "Still writing...")
                 .notifyOn(Executors.javaFXAT())
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
     }
