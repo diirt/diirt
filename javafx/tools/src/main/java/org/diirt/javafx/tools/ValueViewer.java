@@ -4,16 +4,28 @@
  */
 package org.diirt.javafx.tools;
 
+import com.sun.javafx.collections.ElementObservableListDecorator;
 import com.sun.javafx.collections.ImmutableObservableList;
+import com.sun.javafx.collections.ObservableListWrapper;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.PropertyValueFactory;
+import org.diirt.util.array.ListNumber;
 import org.diirt.vtype.Display;
+import org.diirt.vtype.VTable;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.vtype.ValueUtil;
 
@@ -42,7 +54,19 @@ public final class ValueViewer extends ScrollPane {
     @FXML
     private TitledPane enumMetadata;
     @FXML
+    private TitledPane tableMetadata;
+    @FXML
+    private TableView<VTableColumn> columnsTable;
+    @FXML
+    private TableColumn<VTableColumn, String> columnNameColumn;
+    @FXML
+    private TableColumn<VTableColumn, String> columnTypeColumn;
+    @FXML
+    private TableColumn<VTableColumn, Number> columnSizeColumn;
+    @FXML
     private ListView<String> labelsField;
+    @FXML
+    private Button inspectTableButton;
 
     public ValueViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -56,14 +80,22 @@ public final class ValueViewer extends ScrollPane {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        columnNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        columnSizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
         
         setValue(null, false);
     }
+    
+    private Object value;
     
     public void setValue(Object value, boolean connection) {
         commonMetadata(value, connection);
         numberDisplay(ValueUtil.displayOf(value));
         enumMetadata(value);
+        tableMetadata(value);
+        this.value = value;
     }
     
     private void commonMetadata(Object value, boolean connection) {
@@ -107,6 +139,59 @@ public final class ValueViewer extends ScrollPane {
             enumMetadata.setVisible(false);
             enumMetadata.setManaged(false);
         }
+    }
+    
+    public static class VTableColumn {
+        private final VTable vTable;
+        private final int columnIndex;
+
+        public VTableColumn(VTable vTable, int columnIndex) {
+            this.vTable = vTable;
+            this.columnIndex = columnIndex;
+        }
+        
+        public String getName() {
+            return vTable.getColumnName(columnIndex);
+        }
+        
+        public String getType() {
+            return vTable.getColumnType(columnIndex).getSimpleName();
+        }
+        
+        public int getSize() {
+            Object data = vTable.getColumnData(columnIndex);
+            if (data instanceof ListNumber) {
+                return ((ListNumber) data).size();
+            } else if (data instanceof List) {
+                return ((List) data).size();
+            } else {
+                return 0;
+            }
+        }
+        
+        
+    }
+    
+    private void tableMetadata(Object value) {
+        if (value instanceof org.diirt.vtype.VTable) {
+            tableMetadata.setVisible(true);
+            tableMetadata.setManaged(true);
+            VTable vTable = (VTable) value;
+            List<VTableColumn> columns = new ArrayList<>();
+            for (int n = 0; n < vTable.getColumnCount(); n++) {
+                columns.add(new VTableColumn(vTable, n));
+            }
+            columnsTable.setItems(FXCollections.observableList(columns));
+        } else {
+            tableMetadata.setVisible(false);
+            tableMetadata.setManaged(false);
+            columnsTable.setItems(new ImmutableObservableList<>());
+        }
+    }
+
+    @FXML
+    private void onInspectTable(ActionEvent event) {
+        VTableInspector.instpectValue((VTable) value);
     }
 
 }

@@ -72,4 +72,10 @@ public interface PVCache {
 
 	public PVCacheStatistics getStatistics();
 
+	public boolean isProcessingSources();
+
+	public String getChannelName();
+
+	public void flush();
+
 }

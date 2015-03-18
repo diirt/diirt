@@ -21,9 +21,9 @@ import java.util.regex.Pattern;
 public abstract class FormulaFunctionSet {
     static Pattern namePattern = Pattern.compile("[a-zA-Z_]\\w*");
     
-    private String name;
-    private String description;
-    private Collection<FormulaFunction> formulaFunctions;
+    private final String name;
+    private final String description;
+    private final Collection<FormulaFunction> formulaFunctions;
 
     /**
      * Creates a new ser of functions to be registered in the formula language.

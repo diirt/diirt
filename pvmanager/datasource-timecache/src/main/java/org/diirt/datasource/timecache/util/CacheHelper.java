@@ -4,6 +4,9 @@
  */
 package org.diirt.datasource.timecache.util;
 
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
@@ -16,6 +19,14 @@ import org.diirt.util.time.TimestampFormat;
 public class CacheHelper {
 
 	private static TimestampFormat tsFormat = new TimestampFormat("yyyy-MM-dd'T'HH:mm:ss.NNNNNNNNNZ");
+	public static PrintStream ps = System.out;
+
+	static {
+		try {
+			ps = new PrintStream("src/test/resources/logs.txt");
+		} catch (FileNotFoundException e) {
+		}
+	}
 
 	/** Returns the minimum between the two specified {@link Timestamp}. */
 	public static Timestamp min(Timestamp t1, Timestamp t2) {
@@ -116,6 +127,7 @@ public class CacheHelper {
 
 	/** Returns a formated {@link String} from the specified {@link TimeInterval}. */
 	public static String format(TimeInterval i) {
+		if (i == null) return "[]";
 		return "[" + format(i.getStart()) + " - " + format(i.getEnd()) + "]";
 	}
 

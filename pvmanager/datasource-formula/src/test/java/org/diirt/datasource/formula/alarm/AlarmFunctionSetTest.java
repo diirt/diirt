@@ -9,7 +9,6 @@ import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VEnum;
 
 import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
 import org.junit.Test;
 
 import static org.diirt.vtype.ValueFactory.*;
@@ -19,7 +18,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * 
  * @author carcassi
  */
-public class AlarmFunctionSetTest extends BaseTestForFormula {
+public class AlarmFunctionSetTest {
 
     private AlarmFunctionSet set = new AlarmFunctionSet();
 

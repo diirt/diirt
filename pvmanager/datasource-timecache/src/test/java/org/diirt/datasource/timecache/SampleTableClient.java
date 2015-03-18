@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource.timecache;
 
-import static org.diirt.datasource.ExpressionLanguage.resultOf;
 import static org.diirt.datasource.timecache.ExpressionLanguage.timeTableOf;
+import static org.diirt.datasource.ExpressionLanguage.resultOf;
 import static org.diirt.vtype.ValueFactory.alarmNone;
 import static org.diirt.vtype.ValueFactory.newVString;
 import static org.diirt.vtype.ValueFactory.timeNow;
@@ -15,13 +15,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import org.diirt.datasource.timecache.query.QueryParameters;
 import org.diirt.datasource.ExpressionLanguage.OneArgFunction;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.loc.LocalDataSource;
-import org.diirt.datasource.timecache.query.QueryParameters;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeRelativeInterval;
 import org.diirt.util.time.Timestamp;

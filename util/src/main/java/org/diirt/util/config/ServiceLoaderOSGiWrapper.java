@@ -42,8 +42,12 @@ public class ServiceLoaderOSGiWrapper {
         int count = 0;
         for (T service : ServiceLoaderOSGiWrapper.load(serviceClazz)) {
             log.log(Level.CONFIG, "Found {0} ({1})", new Object[] {serviceClazz.getSimpleName(), service.getClass().getSimpleName()});
-            consumer.accept(service);
-            count++;
+            try {
+                consumer.accept(service);
+                count++;
+            } catch (RuntimeException ex) {
+                log.log(Level.WARNING, "Couldn't register " + serviceClazz.getSimpleName() + " (" + service.getClass().getSimpleName() + ")", ex);
+            }
         }
         log.log(Level.CONFIG, "Found {0} {1}s", new Object[] {count, serviceClazz.getSimpleName()});
     }

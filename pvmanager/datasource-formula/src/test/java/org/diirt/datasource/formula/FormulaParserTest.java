@@ -13,7 +13,6 @@ import org.diirt.datasource.expression.DesiredRateExpression;
 import org.junit.Test;
 import static org.diirt.datasource.formula.FormulaAst.*;
 import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -22,7 +21,7 @@ import static org.hamcrest.Matchers.*;
  *
  * @author carcassi
  */
-public class FormulaParserTest extends BaseTestForFormula {
+public class FormulaParserTest {
 
     @Test
     public void channel1() throws RecognitionException {

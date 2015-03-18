@@ -140,18 +140,32 @@ function drawSeriesChart() {
             var dataArray = [];
             dataArray[0] = ['ID', selectX[nNode].options[xId].text, selectY[nNode].options[yId].text, selectColor[nNode].options[colorId].text];
             var nPoints = value.columnValues[xId].length;
-            for (var i=0; i < nPoints; i++) {
-                dataArray[i+1] = ['', value.columnValues[xId][i], value.columnValues[yId][i], value.columnValues[colorId][i]];
+            if (nPoints > 0) {
+                for (var i=0; i < nPoints; i++) {
+                    dataArray[i+1] = ['', value.columnValues[xId][i], value.columnValues[yId][i], value.columnValues[colorId][i]];
+                }
+                var data = google.visualization.arrayToDataTable(dataArray);
+
+                var options = {
+                    hAxis: {title: selectX[nNode].options[xId].text},
+                    vAxis: {title: selectY[nNode].options[yId].text},
+                    bubble: {textStyle: {fontSize: 11}},
+                    sizeAxis: {minValue: 0,  maxSize: 10}
+                };
+            } else {
+
+                var data = google.visualization.arrayToDataTable([
+                    ['ID', 'X', 'Y', 'Color', 'Size'],
+                    ['', 0, 0, '', 0]
+                ]);
+
+                var options = {
+                    title: 'Empty table',
+                    hAxis: {title: ''},
+                    vAxis: {title: ''},
+                    bubble: {textStyle: {fontSize: 11}}
+                };
             }
-            var data = google.visualization.arrayToDataTable(dataArray);
-
-
-            var options = {
-                hAxis: {title: selectX[nNode].options[xId].text},
-                vAxis: {title: selectY[nNode].options[yId].text},
-                bubble: {textStyle: {fontSize: 11}},
-                sizeAxis: {minValue: 0,  maxSize: 10}
-            };
 
             charts[channel.getId()].draw(data, options);
         };
