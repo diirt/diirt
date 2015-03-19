@@ -69,9 +69,8 @@ public class ServiceDescription {
             throw new NullPointerException("ServiceMethodDescription must not be null");
         }
         // Throws exception if parameter has a duplicate name of a service method
-        if (serviceMethodDescriptions.stream().anyMatch((ServiceMethodDescription t) -> {
-            return t.name.equals(serviceMethodDescription.name);
-        })) {
+        if (serviceMethodDescriptions.stream()
+                .anyMatch(otherMethodDescription -> otherMethodDescription.name.equals(serviceMethodDescription.name))) {
             throw new IllegalArgumentException("ServiceMethodDescription with name \'" + serviceMethodDescription.name + "\' already exists");
         }
 
