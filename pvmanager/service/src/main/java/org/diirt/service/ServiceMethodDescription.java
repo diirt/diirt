@@ -25,8 +25,6 @@ public abstract class ServiceMethodDescription {
     String description;
     List<ServiceMethod.DataDescription> arguments = new ArrayList<>();
     List<ServiceMethod.DataDescription> results = new ArrayList<>();
-//    Map<String, ServiceMethod.DataDescription> argumentMap = new HashMap<>();
-//    Map<String, ServiceMethod.DataDescription> resultMap = new HashMap<>();
     
     /**
      * Creates a new service method description with the given name and description,

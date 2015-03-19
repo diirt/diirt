@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  *
  * @author carcassi
  */
-public final class Service {
+public class Service {
     static Pattern namePattern = Pattern.compile("[a-zA-Z_]\\w*");
     
     private final String name;
@@ -38,11 +38,10 @@ public final class Service {
      * 
      * @param serviceDescription the description of the service, can't be null
      */
-    Service(ServiceDescription serviceDescription) {
+    protected Service(ServiceDescription serviceDescription) {
         this.name = serviceDescription.name;
         this.description = serviceDescription.description;
 
-        // TODO verify correctness
         // If no executor is attached to the description, we create one
         if (serviceDescription.executorService == null){
             serviceDescription.executorService = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool(this.name + " services"));
@@ -79,7 +78,6 @@ public final class Service {
         return serviceMethods;
     }
     
-    //TODO verify correctness
     /**
      * Shutdown procedure for the service, closing resources (e.g. executor
      * service).

@@ -15,6 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A call that provides access to command/response type of communication for
@@ -106,18 +108,8 @@ public abstract class ServiceMethod {
         this.results = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.results));
         
         // Create a map of the names to argument/result
-        Map<String, DataDescription> tmpArgMap = new HashMap<>();
-        arguments.stream().forEach((arg) -> {
-            tmpArgMap.put(arg.name, arg);
-        });
-        Map<String, DataDescription> tmpResultMap = new HashMap<>();
-        results.stream().forEach((result) -> {
-            tmpResultMap.put(result.name, result);
-        });
-        this.argumentMap = Collections.unmodifiableMap(new HashMap<>(tmpArgMap));
-        this.resultMap = Collections.unmodifiableMap(new HashMap<>(tmpResultMap));
-        
-        // TODO verify correctness
+        this.argumentMap = Collections.unmodifiableMap(arguments.stream().collect(Collectors.toMap(DataDescription::getName, Function.identity())));
+        this.resultMap = Collections.unmodifiableMap(results.stream().collect(Collectors.toMap(DataDescription::getName, Function.identity())));
         
         // Checks if the subclass overrides the synchronous implementation
         Method method = null;
@@ -260,7 +252,7 @@ public abstract class ServiceMethod {
      * @throws Exception the result callback, for failure
      */
     protected Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
-        throw new RuntimeException("syncExecImpl was not overridden.");
+        throw new RuntimeException("Sychronuous implementation not provided.");
     }
 
     /**
@@ -281,7 +273,7 @@ public abstract class ServiceMethod {
      * @param errorCallback the error callback, for failures; can't be null
      */
     protected void asyncExecImpl(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
-        throw new RuntimeException("asyncExecImpl was not overridden.");
+        throw new RuntimeException("Asychronuous implementation not provided.");
     }
 
     private Map<String, Object> wrapAsSync(Map<String, Object> parameters) {
@@ -384,8 +376,6 @@ public abstract class ServiceMethod {
     public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
         validateParameters(parameters);
 
-        // TODO if asyncExecImpl does not run on another thread, it's not actually
-        // async, is this an issue?
         if (asyncExecute) {
             asyncExecImpl(parameters, callback, errorCallback);
         } else if (syncExecute) {
