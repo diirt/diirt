@@ -1,9 +1,6 @@
 /*******************************************************************************
  * @author: eschuhmacher
  *
- * scripts to be included on the html file
- * <script src="../js/widgets/lib/jquery-ui/jquery-ui.js"></script>
- * <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
  ******************************************************************************/
 
 
@@ -56,9 +53,20 @@ $(document).ready(function() {
                break;
            case "value": //value changed
                var channelValue = channel.getValue();
-               progressbars[channel.getId()].progressbar( "value", channelValue.value ).children('.ui-progressbar-value')
-                                                                                           .html(channelValue.value)
-                                                                                           .css("display", "block");;
+               if ("value" in channelValue) {
+                   if(channelValue.display && channelValue.display.highDisplay != null) {
+                       progressbars[channel.getId()].progressbar({"value" : channelValue.value, "max" : channelValue.display.highDisplay}).children('.ui-progressbar-value')
+                                                    .html(channelValue.value).css("display", "block");
+
+                   } else {
+                        progressbars[channel.getId()].progressbar( "value", channelValue.value ).children('.ui-progressbar-value')
+                                                     .html(channelValue.value).css("display", "block");
+                   }
+               } else {
+                   // If something else, display the type name
+                   progressbars[channel.getId()].progressbar( "value", false).children('.ui-progressbar-value')
+                                                .html(channelValue.type.name).css("display", "block");
+               }
                // Change the style based on the alarm
                if ("alarm" in channelValue) {
                    updateProgressBarAlarm(channelValue.alarm.severity, channel.getId(), progressbars[channel.getId()]);
@@ -66,14 +74,10 @@ $(document).ready(function() {
                    updateProgressBarAlarm("NONE", channel.getId(), progressbars[channel.getId()]);
                }
 
-               // Remove error tooltip
-               progressbars[channel.getId()].tooltip("");;
                break;
            case "error": //error happened
                // Change displayed alarm to invalid, and set the
-               // tooltip to the error message
                updateProgressBarAlarm("INVALID", channel.getId(), progressbars[channel.getId()]);
-               progressbars[channel.getId()].tooltip(evt.error);
                break;
            case "writePermission":	// write permission changed.
                break;
@@ -85,12 +89,7 @@ $(document).ready(function() {
         };
         var channel = wp.subscribeChannel(channelname, callback, readOnly);
         var progressLabel = $( ".progress-label" );
-        var progressbar = $("#" + id).progressbar({
-                                     value: false,
-                                     change: function() {
-                                     progressLabel.text( progressbar.progressbar( "value" ) + "%" );
-                                     }
-                                     });
+        var progressbar = $("#" + id).progressbar({value: false });
         progressbars[channel.getId()] = progressbar;
     }
 
