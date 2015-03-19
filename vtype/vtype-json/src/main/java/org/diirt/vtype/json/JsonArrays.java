@@ -194,6 +194,10 @@ public class JsonArrays {
     public static JsonArrayBuilder fromListString(List<String> list) {
         JsonArrayBuilder b = Json.createArrayBuilder();
         for (String element : list) {
+            // TODO: Not clear how to handle nulls. Converting them to empty strings.
+            if (element == null) {
+                element = "";
+            }
             b.add(element);
         }
         return b;
