@@ -15,7 +15,7 @@ import static org.diirt.service.Service.namePattern;
  * A utility class to gather all the elements that define the service.
  * <p>
  * This class is not thread-safe and is meant to be used right before the
- * creation of Service objects.
+ * creation of {@link Service} objects.
  *
  * @author carcassi
  */
@@ -58,9 +58,11 @@ public class ServiceDescription {
     }
 
     /**
-     * Adds the given method to this service description.
+     * Adds the given method to this service description. The name of the
+     * given service method must be unique to the service (i.e. can't match the
+     * name of an already added service method).
      *
-     * @param serviceMethodDescription a service method, can't be null
+     * @param serviceMethodDescription a service method description, can't be null
      * @return this description
      */
     public ServiceDescription addServiceMethod(ServiceMethodDescription serviceMethodDescription) {
@@ -80,8 +82,11 @@ public class ServiceDescription {
     }
 
     /**
-     * Adds the given executor to this service description. The executor is used
-     * for asynchronous service method executions.
+     * Determines the executor to be used by the service. The executor
+     * can't be changed once set.
+     * <p>
+     * The executor is used for wrapping synchronous calls into asynchronous
+     * calls.
      *
      * @param executor an executor service, can't be null
      * @return this description
@@ -100,14 +105,11 @@ public class ServiceDescription {
     }
 
     /**
-     * Creates the immutable ServiceMethod objects from the
-     * ServiceMethodDescription objects in this state description state. Used in
-     * registering the methods to the service.
+     * Creates the service method instances that belongs to this service.
      *
-     * @return service methods (mapped by method name) registered to this
-     * service
+     * @return the new service methods indexed by method name
      */
-    public Map<String, ServiceMethod> createServiceMethods() {
+    public final Map<String, ServiceMethod> createServiceMethods() {
         Map<String, ServiceMethod> map = new HashMap<>();
         for (ServiceMethodDescription serviceMethodDescription : serviceMethodDescriptions) {
             ServiceMethod method = serviceMethodDescription.createServiceMethod(this);
@@ -117,7 +119,10 @@ public class ServiceDescription {
     }
 
     /**
-     * Creates the immutable Service object from this service description state.
+     * Creates a service with the given description.
+     * <p>
+     * A client may override this to return their service
+     * implementation.
      *
      * @return a service based off of this description state
      */

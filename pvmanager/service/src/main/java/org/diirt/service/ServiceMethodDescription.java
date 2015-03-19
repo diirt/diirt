@@ -13,7 +13,7 @@ import org.diirt.service.ServiceMethod.DataDescription;
  * A utility class to gather all the elements that define the service method.
  * <p>
  * This class is not thread-safe and is meant to be used right before
- * the creation of ServiceMethod objects.
+ * the creation of {@link ServiceMethod} objects.
  *
  * @author carcassi
  */
@@ -140,13 +140,13 @@ public abstract class ServiceMethodDescription {
     }
     
     /**
-     * Creates a service method. Used by service description to create a service
-     * method. A client should implement this to return their custom service
-     * method.
+     * Creates a service method with the given description.
+     * <p>
+     * A client should implement this to return their service
+     * method implementation.
      *
-     * @param serviceDescription service description to help create the service
-     * method
-     * @return service method
+     * @param serviceDescription service description for the new service method
+     * @return a new service method
      */
     public abstract ServiceMethod createServiceMethod(ServiceDescription serviceDescription);
 }

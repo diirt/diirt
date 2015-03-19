@@ -7,7 +7,6 @@ package org.diirt.service;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -19,16 +18,27 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * A call that provides access to command/response type of communication for
- * sources of data or RPC-like services. Each method can be executed with a set
+ * A request/response operation. Each method can be executed with a set
  * of parameters, and returns with a set of results. Methods are grouped into
  * services.
  * <p>
- * This class is immutable and the method execution is thread-safe and
- * asynchronous (non-blocking). Subclasses must guarantee these properties.
+ * This class is immutable and the method execution is thread-safe. Each method
+ * can either be executed synchronously or asynchronously. The method itself,
+ * its arguments and its results are self-describing: they provide a name, description
+ * and a type.
  * <p>
- * Requires either (1) synchronous or (2) asynchronous implementation to be
- * provided in a subclass.
+ * Implementations of this class must guarantee immutability and thread-safety.
+ * They can choose whether to provide a synchronous implementation, an asynchronous implementation
+ * or both. The framework will route or wrap the call appropriately (i.e if a
+ * synchronous call is requested but only an asynchronous implementation is provided,
+ * the call will wait until the asynchronous implementation returns).
+ * Implementations are provided by overriding  
+ * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
+ * and/or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }.
+ * <p>
+ * Service methods can have parameters that are set by the corresponding service
+ * method description. Refer to the examples and wiki documentation for how
+ * to do it.
  *
  * @author carcassi
  */
@@ -89,15 +99,9 @@ public abstract class ServiceMethod {
     /**
      * Creates a new service method with the given description. All properties
      * are copied out of the description, guaranteeing the immutability
-     * of objects of this class. Nonetheless, service method descriptions
-     * should not be reused for different services.
-     * <p>
-     * A service method requires either 
-     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
-     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
-     * to be implemented.
+     * of objects of this class.
      *
-     * @param serviceMethodDescription the description of the service method, can't be null
+     * @param serviceMethodDescription the description of the service method; can't be null
      * @param serviceDescription the description of the service; can't be null
      */
     public ServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
@@ -161,7 +165,7 @@ public abstract class ServiceMethod {
     }
 
     /**
-     * The arguments, indexed by name
+     * The arguments, indexed by name.
      * 
      * @return the arguments for this method; not null
      */
@@ -179,7 +183,7 @@ public abstract class ServiceMethod {
     }
 
     /**
-     * The results, indexed by name
+     * The results, indexed by name.
      * 
      * @return the results for this method; not null
      */
@@ -201,6 +205,11 @@ public abstract class ServiceMethod {
         }
     }
 
+    /**
+     * Provides a text representation for the method (i.e. <code>name(Type arg1, Type arg2): Type res1</code> ).
+     * 
+     * @return the string representation; not null
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -238,15 +247,11 @@ public abstract class ServiceMethod {
     }
     
     /**
-     * Implementation (synchronous) of the service method.
+     * Synchronous implementation of the service method.
      * <p>
-     * The call should be implemented synchronously, and return the result.
-     * <p>
-     * A service method requires either 
-     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
-     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
-     * to be implemented.
-     *
+     * The implementation should return the value in case of success, or
+     * throw an exception in case of failure. 
+     * 
      * @param parameters the parameters for the method; not null
      * @return the result callback, for success; not null
      * @throws Exception the result callback, for failure
@@ -256,17 +261,12 @@ public abstract class ServiceMethod {
     }
 
     /**
-     * Implementation (asynchronous) of the service method.
+     * Asynchronous implementation of the service method.
      * <p>
-     * The call should be implemented asynchronously, only one callback
-     * should be called once with the result. If the method throws an exception,
-     * this will be sent to the errorCallbak, you can let exceptions go through
-     * in which case no callback should be used.
-     * <p>
-     * A service method requires either 
-     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
-     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
-     * to be implemented.
+     * The implementation should call only one callback, the callback or the 
+     * errorCallback. If the method throws an exception
+     * it will be sent to the errorCallbak (i.e. you can let exceptions go through)
+     * in which case no callback must be used.
      *
      * @param parameters the parameters for the method, already type checked
      * @param callback the result callback, for success; not null
@@ -332,14 +332,10 @@ public abstract class ServiceMethod {
     /**
      * Executes the service method with the given parameters, and waits for the
      * response (synchronous execution of this service method).
-     * <p>
-     * A service method requires either 
-     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
-     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
-     * to be implemented.
      *
      * @param parameters the parameters for the service; can't be null
      * @return the result callback, for success; can't be null
+     * @throws RuntimeException if the method execution is unsuccessful
      */
     public Map<String, Object> executeSync(Map<String, Object> parameters) {
         validateParameters(parameters);
@@ -363,11 +359,6 @@ public abstract class ServiceMethod {
      * Executes the service method with the given parameters, the result of
      * which will be communicated through the callbacks (asynchronous execution
      * of this service method).
-     * <p>
-     * A service method requires either 
-     * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
-     * or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }
-     * to be implemented.
      *
      * @param parameters the parameters for the service; can't be null
      * @param callback the result callback, for success; can't be null
@@ -375,6 +366,7 @@ public abstract class ServiceMethod {
      */    
     public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
         validateParameters(parameters);
+        // TODO check for null
 
         if (asyncExecute) {
             asyncExecImpl(parameters, callback, errorCallback);

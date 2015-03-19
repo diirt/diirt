@@ -12,8 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 /**
- * Provides access to command/response type of communication for sources of
- * data or RPC-like services. Each service is a collection of one of more methods.
+ * Group of request/response operation that share the same resources. Each service is a collection of one of more methods.
  * Each method can be executed with a set of parameters, and returns with a set
  * of results.
  * <p>
