@@ -279,19 +279,24 @@ public class WSEndpoint {
 
         @Override
         public void pvChanged(PVReaderEvent<Object> event) {
-            if (closed) {
-                log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvReader().getName());
-                event.getPvReader().close();
-                return;
-            }
-            if (event.isConnectionChanged()) {
-                session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), event.getPvReader().isConnected(), false));
-            }
-            if (event.isValueChanged()) {
-                session.getAsyncRemote().sendObject(new MessageValueEvent(message.getId(), event.getPvReader().getValue()));
-            }
-            if (event.isExceptionChanged()) {
-                session.getAsyncRemote().sendObject(new MessageErrorEvent(message.getId(), event.getPvReader().lastException().getMessage()));
+            try {
+                if (closed) {
+                    log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvReader().getName());
+                    event.getPvReader().close();
+                    return;
+                }
+                if (event.isConnectionChanged()) {
+                    session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), event.getPvReader().isConnected(), false));
+                }
+                if (event.isValueChanged()) {
+                    System.out.println("Sending value");
+                    session.getAsyncRemote().sendObject(new MessageValueEvent(message.getId(), event.getPvReader().getValue()));
+                }
+                if (event.isExceptionChanged()) {
+                    session.getAsyncRemote().sendObject(new MessageErrorEvent(message.getId(), event.getPvReader().lastException().getMessage()));
+                }
+            } catch (RuntimeException ex) {
+                log.log(Level.SEVERE, "Error while preparing event for " + event.getPvReader().getName(), ex);
             }
         }
     }
@@ -314,37 +319,45 @@ public class WSEndpoint {
 
         @Override
         public void pvChanged(PVReaderEvent<Object> event) {
-            if (closed) {
-                log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvReader().getName());
-                event.getPvReader().close();
-                return;
-            }
-            if (event.isValueChanged()) {
-                session.getAsyncRemote().sendObject(new MessageValueEvent(message.getId(), event.getPvReader().getValue()));
-            }
-            if (event.isExceptionChanged()) {
-                session.getAsyncRemote().sendObject(new MessageErrorEvent(message.getId(), event.getPvReader().lastException().getMessage()));
+            try {
+                if (closed) {
+                    log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvReader().getName());
+                    event.getPvReader().close();
+                    return;
+                }
+                if (event.isValueChanged()) {
+                    session.getAsyncRemote().sendObject(new MessageValueEvent(message.getId(), event.getPvReader().getValue()));
+                }
+                if (event.isExceptionChanged()) {
+                    session.getAsyncRemote().sendObject(new MessageErrorEvent(message.getId(), event.getPvReader().lastException().getMessage()));
+                }
+            } catch (RuntimeException ex) {
+                log.log(Level.SEVERE, "Error while preparing event for " + event.getPvReader().getName(), ex);
             }
         }
 
         @Override
         public void pvChanged(PVWriterEvent<Object> event) {
-            if (closed) {
-                log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvWriter());
-                event.getPvWriter().close();
-                return;
-            }
-            if (event.isConnectionChanged()) {
-                session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), readConnected(event.getPvWriter()), event.getPvWriter().isWriteConnected()));
-            }
-            if (event.isWriteSucceeded()) {
-                session.getAsyncRemote().sendObject(new MessageWriteCompletedEvent(message.getId()));
-            }
-            if (event.isWriteFailed()) {
-                session.getAsyncRemote().sendObject(new MessageWriteCompletedEvent(message.getId(), event.getPvWriter().lastWriteException().getMessage()));
-            }
-            if (event.isExceptionChanged()) {
-                session.getAsyncRemote().sendObject(new MessageErrorEvent(message.getId(), event.getPvWriter().lastWriteException().getMessage()));
+            try {
+                if (closed) {
+                    log.log(Level.SEVERE, "Getting event after channel was closed for " + event.getPvWriter());
+                    event.getPvWriter().close();
+                    return;
+                }
+                if (event.isConnectionChanged()) {
+                    session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), readConnected(event.getPvWriter()), event.getPvWriter().isWriteConnected()));
+                }
+                if (event.isWriteSucceeded()) {
+                    session.getAsyncRemote().sendObject(new MessageWriteCompletedEvent(message.getId()));
+                }
+                if (event.isWriteFailed()) {
+                    session.getAsyncRemote().sendObject(new MessageWriteCompletedEvent(message.getId(), event.getPvWriter().lastWriteException().getMessage()));
+                }
+                if (event.isExceptionChanged()) {
+                    session.getAsyncRemote().sendObject(new MessageErrorEvent(message.getId(), event.getPvWriter().lastWriteException().getMessage()));
+                }
+            } catch (RuntimeException ex) {
+                log.log(Level.SEVERE, "Error while preparing event for " + event.getPvWriter(), ex);
             }
         }
     }
