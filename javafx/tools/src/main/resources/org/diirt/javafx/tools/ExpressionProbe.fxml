@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--fx:controller="org.diirt.javafx.tools.ExpressionProbe"-->
+
+<fx:root fitToWidth="true" prefHeight="1160.0" prefWidth="421.0" type="ScrollPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+   <content>
+      <VBox>
+         <children>
+            <TitledPane fx:id="expressionMetadata" animated="false" text="Expression" VBox.vgrow="NEVER">
+               <content>
+                  <GridPane hgap="5.0" vgap="5.0">
+                    <columnConstraints>
+                      <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" minWidth="10.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Name" />
+                        <TextField fx:id="nameField" editable="false" focusTraversable="false" GridPane.columnIndex="1" />
+                        <TextField fx:id="typeField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Type" GridPane.rowIndex="1" />
+                        <Label text="AST" GridPane.rowIndex="2" />
+                        <TextField fx:id="astField" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="channelMetadata" animated="false" text="Channel">
+               <content>
+                  <GridPane hgap="5.0" vgap="5.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Properties:" GridPane.rowIndex="3" />
+                        <TableView fx:id="propertiesTable" prefHeight="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4">
+                          <columns>
+                            <TableColumn fx:id="propertyNameColumn" prefWidth="150.0" text="Name" />
+                            <TableColumn fx:id="propertyValueColumn" prefWidth="150.0" text="Value" />
+                          </columns>
+                        </TableView>
+                        <Label text="Usage count" />
+                        <TextField fx:id="usageField" GridPane.columnIndex="1" />
+                        <CheckBox fx:id="readConnectedField" mnemonicParsing="false" text="Read connected" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                        <CheckBox fx:id="writeConnectedField" mnemonicParsing="false" text="Write connected" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+               </content>
+            </TitledPane>
+         </children>
+      </VBox>
+   </content>
+</fx:root>

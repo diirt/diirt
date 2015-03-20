@@ -50,6 +50,8 @@ public class ProbeController implements Initializable {
     private ValueViewer valueViewer;
     @FXML
     private EventLogViewer eventLogViewer;
+    @FXML
+    private ExpressionProbe expressionProbe;
 
     @FXML
     private void onChannelChanged(ActionEvent event) {
@@ -61,7 +63,10 @@ public class ProbeController implements Initializable {
             newValueField.setDisable(true);
             changeValue(null, false);
             errorField.setText(null);
+            expressionProbe.setExpression(null);
         }
+        
+        expressionProbe.setExpression(channelField.getText());
 
         pv = PVManager.readAndWrite(ExpressionLanguage.formula(channelField.getText()))
                 .readListener(eventLogViewer.eventLog().<Object>createReadListener())
