@@ -30,9 +30,6 @@ public class LineGraphApp extends BaseGraphApp {
                     "sim://sineWaveform",
                     "sim://triangleWaveform",
                     "=tableOf(column(\"X\", range(-5, 5)), column(\"Y\", 'sim://gaussianWaveform'))" );
-	
-	
-	InterpolationScheme[] interpolations = new InterpolationScheme[]{ InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC };
     }
     
     @Override
