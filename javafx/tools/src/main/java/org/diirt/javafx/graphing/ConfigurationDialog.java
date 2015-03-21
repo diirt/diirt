@@ -39,45 +39,25 @@ import org.diirt.graphene.NumberColorMap;
  * <ul>
  *  <li> String
  *  <li> Boolean
- *  <li> InterpolationScheme (TODO)
+ *  <li> InterpolationScheme
+ *  <li> NumberColorMap
  * </ul>
  * 
  * <p>
- * Then, determine what code should execute when each property changes, and create
- * a <code>Runnable</code> for each of these actions. For example,
- * 
+ * Then find the appropriate method and add that property to the configuration
+ * dialog. For some properties such as the interpolation scheme and number
+ * color mapping, the user cannot choose anything s/he wants. Therefore, a list
+ * of allowed properties is also required
  * <p>
+ * For example, to allow a <code>NumberColorMap</code> property to be configured, 
+ * simply use the code
  * <pre>
  * <code>
- * Runnable onPropertyChanged = new Runnable() {
- *     public void run() {
- *          //update graph view to reflect this property change
- *     }
- * };
- * </code>
-* </pre>
-* 
- * <p>
- * Finally, in the containing class, determine the appropriate <code>addProperty()</code>
- * method to add each property to the configuration dialog. For example, to add
- * a string property, we would use
- * 
- * <p>
- * <pre>
- * <code>
- * StringProperty newProperty = new StringProperty( this , "My String Property" , "" );
- * Runnable onStringChanged = new Runnable() {
- *     public void run() {
- *         graph.update( graph.newUpdate().xColumn( newProperty.getValue() );
- *     }
- * };
- * config.addStringProperty( newProperty , onStringChanged );
+ * Property&lt NumberColorMap &gt p = ...
+ * NumberColorMap[] allowedNumberColorMaps = ...
+ * configurationDialog.addNumberColorMapListProperty( p );
  * </code>
  * </pre>
- * <p>
- * Then, the configuration dialog will display the name of the property, "My String Property",
- * in a label, and provide a text field for the user to edit the property.
- * 
  * @author mjchao
  */
 public class ConfigurationDialog extends Stage {
@@ -103,7 +83,7 @@ public class ConfigurationDialog extends Stage {
     /**
      * stores the data for all the properties in this configuration dialog
      */
-    private ArrayList< ConfigurationData > configurationData = new ArrayList< ConfigurationData >();
+    final private ArrayList< ConfigurationData > configurationData = new ArrayList< ConfigurationData >();
     
     /**
      * panel containing everything in this dialog

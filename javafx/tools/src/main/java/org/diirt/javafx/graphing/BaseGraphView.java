@@ -39,12 +39,18 @@ import static org.diirt.util.time.TimeDuration.ofHertz;
  * Finally, you may also override onMouseMove() if you wish to handle mouse events
  * for the graph.
  * <p>
- * To summarize, in creating a custom graph view, there are three things to be defined:
+ * To summarize, in creating a custom graph view, there are three relevant things to be defined:
  * <ul>
  *  <li> <code>createExpression()</code> (mandatory)
  *  <li> Any graph properties you desire and their getters and setters
  *  <li> <code>onMouseMoved()</code> if you desire
  * </ul>
+ * <p>
+ * For <code>BaseGraphApp</code> demonstrations, we have also moved 
+ * configuration dialogs to be handled by the <code>BaseGraphView</code>. If
+ * there are any properties that the user should be allowed to configure,
+ * also be sure to add those to a <code>ConfigurationDialog</code> when you
+ * extend <code>BaseGraphView</code>.
  * 
  * @author mjchao, carcassi
  * @param <T> the type of renderer object used to create the graphs displayed
@@ -106,8 +112,6 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 		reconnect( newValue );
 	    }
 	});
-	
-        reconnect( null );
     }
     
     /**
