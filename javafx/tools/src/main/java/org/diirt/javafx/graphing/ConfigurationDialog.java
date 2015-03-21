@@ -117,6 +117,7 @@ public class ConfigurationDialog extends Stage {
 	    @Override
 	    public void handle(ActionEvent event) {
 		saveChanges();
+		ConfigurationDialog.this.hide();
 	    }
 	});
 	
