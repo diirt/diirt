@@ -25,11 +25,13 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
  */
 public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate > {
 
-    private StringProperty xColumn = new SimpleStringProperty( null );
-    private StringProperty yColumn = new SimpleStringProperty( null );
-    private StringProperty sizeColumn = new SimpleStringProperty( null );
-    private StringProperty colorColumn = new SimpleStringProperty( null );
-    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( false );
+    private StringProperty xColumn = new SimpleStringProperty( this , "X Column" , null );
+    private StringProperty yColumn = new SimpleStringProperty( this , "Y Column" , null );
+    private StringProperty sizeColumn = new SimpleStringProperty( this , "Size Column" , null );
+    private StringProperty colorColumn = new SimpleStringProperty( this , "Color Column" , null );
+    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "Highlight Focus" , false );
+   
+    private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression<BubbleGraph2DRendererUpdate> createExpression(String dataFormula) {
@@ -93,6 +95,12 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 		BubbleGraphView.super.reconnect();
 	    }
 	});
+	
+	this.defaultConfigurationDialog.addStringProperty( this.xColumn );
+	this.defaultConfigurationDialog.addStringProperty( this.yColumn );
+	this.defaultConfigurationDialog.addStringProperty( this.sizeColumn );
+	this.defaultConfigurationDialog.addStringProperty( this.colorColumn );
+	this.defaultConfigurationDialog.addBooleanProperty( this.highlightFocusValue );
     }
     
     @Override
@@ -158,5 +166,9 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 
     public void setColorColumn(String colorColumn) {
         this.colorColumn.setValue( colorColumn );
+    }
+    
+    public ConfigurationDialog getDefaultConfigurationDialog() {
+	return this.defaultConfigurationDialog;
     }
 }

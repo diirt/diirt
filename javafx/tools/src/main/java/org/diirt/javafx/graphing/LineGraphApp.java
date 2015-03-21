@@ -5,8 +5,6 @@
  */
 package org.diirt.javafx.graphing;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.stage.Stage;
 import org.diirt.graphene.InterpolationScheme;
 
@@ -17,8 +15,7 @@ import org.diirt.graphene.InterpolationScheme;
 public class LineGraphApp extends BaseGraphApp {
 
     final private LineGraphView lineGraphView = new LineGraphView();
-    
-    final private ConfigurationDialog config = new ConfigurationDialog();
+
     @Override
     public BaseGraphView getGraphView() {
 	return this.lineGraphView;
@@ -35,33 +32,12 @@ public class LineGraphApp extends BaseGraphApp {
                     "=tableOf(column(\"X\", range(-5, 5)), column(\"Y\", 'sim://gaussianWaveform'))" );
 	
 	
-	String[] interpolations = new String[] { "NEAREST_NEIGHBOR" , "LINEAR" , "CUBIC" };
-	StringProperty interpolationScheme = new SimpleStringProperty( this , "Interpolation Scheme" , interpolations[ 0 ] );
-	config.addListProperty( interpolationScheme , interpolations , new Runnable() {
-	    
-	    @Override
-	    public void run() {
-		switch( interpolationScheme.getValue() ) {
-		    case "NEAREST_NEIGHBOR":
-			lineGraphView.setInterpolationScheme( InterpolationScheme.NEAREST_NEIGHBOR );
-			break;
-		    case "LINEAR":
-			lineGraphView.setInterpolationScheme( InterpolationScheme.LINEAR );
-			break;
-		    case "CUBIC":
-			lineGraphView.setInterpolationScheme( InterpolationScheme.CUBIC );
-			break;
-		    default:
-			lineGraphView.setInterpolationScheme( InterpolationScheme.NEAREST_NEIGHBOR );
-		}
-	    }
-	});
-	
+	InterpolationScheme[] interpolations = new InterpolationScheme[]{ InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC };
     }
     
     @Override
     public void openConfigurationPanel() {
-	this.config.open();
+	this.lineGraphView.getDefaultConfigurationDialog().open();
     }
     
     final public static void main( String[] args ) {

@@ -22,7 +22,9 @@ import org.diirt.graphene.AreaGraph2DRendererUpdate;
  */
 public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate > {
 
-    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( false );
+    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "Highlight Focus" , false );
+    
+    private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression createExpression(String dataFormula) {
@@ -38,8 +40,9 @@ public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate
 	    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
 		graph.update( graph.newUpdate().highlightFocusValue( newValue ) );
 	    }
-	    
 	});
+	
+	this.defaultConfigurationDialog.addBooleanProperty( this.highlightFocusValue );
     }
     
     @Override
@@ -59,5 +62,9 @@ public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate
     
     public BooleanProperty highlightFocusValueProperty() {
 	return this.highlightFocusValue;
+    }
+    
+    public ConfigurationDialog getDefaultConfigurationDialog() {
+	return this.defaultConfigurationDialog;
     }
 }

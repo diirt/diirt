@@ -5,7 +5,6 @@
  */
 package org.diirt.javafx.graphing;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.stage.Stage;
 
 /**
@@ -15,7 +14,6 @@ import javafx.stage.Stage;
 public class HistogramGraphApp extends BaseGraphApp {
 
     private HistogramGraphView histogramGraphView = new HistogramGraphView();
-    final private ConfigurationDialog config = new ConfigurationDialog();
     
     @Override
     public BaseGraphView getGraphView() {
@@ -29,20 +27,11 @@ public class HistogramGraphApp extends BaseGraphApp {
                     "=histogramOf('sim://noiseWaveform')",
                     "=arrayWithBoundaries(arrayOf(1,3,2,4,3,5), range(-10,10))",
                     "=caHistogram(\"histo\")" );
-	
-	SimpleBooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "Highlight Focus" , false );
-	this.config.addBooleanProperty( highlightFocusValue , new Runnable() {
-	    
-	    @Override
-	    public void run() {
-		histogramGraphView.setHighlightFocusValue( highlightFocusValue.getValue() );
-	    }
-	});
     }
     
     @Override
     public void openConfigurationPanel() {
-	this.config.open();
+	this.histogramGraphView.getDefaultConfigurationDialog().open();
     }
     
     final public static void main( String[] args ) {

@@ -7,13 +7,11 @@ package org.diirt.javafx.graphing;
 
 import java.util.ArrayList;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -27,6 +25,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
+import org.diirt.graphene.InterpolationScheme;
 
 /**
  * Allows the user to configure the properties of a graph (e.g. the x column of
@@ -148,6 +148,15 @@ public class ConfigurationDialog extends Stage {
 	    }
 	});
 	
+	this.setOnHidden( new EventHandler< WindowEvent >() {
+
+	    @Override
+	    public void handle(WindowEvent event) {
+		cancelChanges();
+	    }
+	    
+	});
+	
 	pnlSaveCancel.add( cmdConfigure , 0 , 0 );
 	pnlSaveCancel.add( cmdCancel , 1 , 0 );
 	this.setScene( s );
@@ -160,10 +169,9 @@ public class ConfigurationDialog extends Stage {
      * property.
      * 
      * @param p the string property that the user may modify
-     * @param onPropertyChanged what to do when the user changes this string property
      */
-    public void addStringProperty( StringProperty p , Runnable onPropertyChanged ) {
-	StringField newField = new StringField( p , onPropertyChanged );
+    public void addStringProperty( StringProperty p ) {
+	StringField newField = new StringField( p );
 	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleStringProperty( p.getValue() ) );
 	this.configurationData.add( data );
@@ -175,29 +183,27 @@ public class ConfigurationDialog extends Stage {
      * check box which the user can use to toggle this property to true or false.
      * 
      * @param p the boolean property that the user may modify
-     * @param onPropertyChanged what to do when the user changes this property
      */
-    public void addBooleanProperty( BooleanProperty p , Runnable onPropertyChanged ) {
-	BooleanField newField = new BooleanField( p , onPropertyChanged );
+    public void addBooleanProperty( BooleanProperty p ) {
+	BooleanField newField = new BooleanField( p );
 	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleBooleanProperty( p.getValue() ) );
 	this.configurationData.add( data );
     }
     
     /**
-     * Adds the given string property as something the ser may configure from a 
-     * list of predefined options. In the dialog, this property will have a label
-     * containing the name of the property and a combobox which the user can
-     * use to change this property.
+     * Adds the given interpolation scheme property as something the user may
+     * configure. In the dialog, this property will have a label containing the
+     * name of the property and a combobox which the user can use to modify
+     * this property.
      * 
-     * @param p a string property that the user may modify
-     * @param list the list of different strings the property may be set to
-     * @param onPropertyChanged what to do when the user changes this property
+     * @param p the interpolation scheme property that the user may modify
+     * @param allowedInterpolations the list of allowed interpolation schemes
      */
-    public void addListProperty( StringProperty p , String[] list , Runnable onPropertyChanged ) {
-	ListField newField = new ListField( p , onPropertyChanged , list );
+    public void addInterpolationSchemeListProperty( Property< InterpolationScheme > p , InterpolationScheme[] allowedInterpolations ) {
+	InterpolationSchemeField newField = new InterpolationSchemeField( p , allowedInterpolations );
 	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
-	ConfigurationData data = new ConfigurationData( newField , new SimpleStringProperty( p.getValue() ) );
+	ConfigurationData data = new ConfigurationData( newField , new SimpleObjectProperty< InterpolationScheme >( p.getValue() ) );
 	this.configurationData.add( data );
     }
     
@@ -257,17 +263,8 @@ public class ConfigurationDialog extends Stage {
 	 * @param property the property the user may configure
 	 * @param onPropertyChanged what to do if the user changes the property
 	 */
-	public ConfigurationField( Property< T > property , Runnable onPropertyChanged) {
+	public ConfigurationField( Property< T > property ) {
 	    this.m_property = property;
-	    
-	    this.m_property.addListener( new ChangeListener< T >() {
-
-		@Override
-		public void changed(ObservableValue<? extends T> observable, T oldValue, T newValue) {
-		    onPropertyChanged.run();
-		}
-
-	    });
 	}
 	
 	public Property< T > property() {
@@ -315,10 +312,9 @@ public class ConfigurationDialog extends Stage {
 	 * a text-based property
 	 * 
 	 * @param p the property the user can configure
-	 * @param onChange what to do when the user modifies the property
 	 */
-	public StringField( StringProperty p , Runnable onChange ) {
-	    super( p , onChange );
+	public StringField( StringProperty p ) {
+	    super( p );
 	    this.lblName = defaultNameLabel( p.getName() );
 	    this.txtValue = new TextField( "         " );
 	    this.txtValue.textProperty().bindBidirectional( p );
@@ -347,10 +343,9 @@ public class ConfigurationDialog extends Stage {
 	 * a boolean property 
 	 * 
 	 * @param p the property the user can configure
-	 * @param onChange what to do when the property changes
 	 */
-	public BooleanField( BooleanProperty p , Runnable onChange ) {
-	    super( p , onChange );
+	public BooleanField( BooleanProperty p ) {
+	    super( p );
 	    this.lblName = defaultNameLabel( p.getName() );
 	    this.chkValue = new CheckBox();
 	    this.chkValue.selectedProperty().bindBidirectional( p );
@@ -359,28 +354,37 @@ public class ConfigurationDialog extends Stage {
 	}
     }
     
-    private class ListField extends ConfigurationField< String > {
+    /**
+     * Provides the user with the ability to select an InterpolationScheme
+     */
+    private class InterpolationSchemeField extends ConfigurationField< InterpolationScheme > {
 
 	final private Label lblName;
-	final private ComboBox< String > cboList;
+	final private ComboBox< InterpolationScheme > interpolations;
 	
-	public ListField( Property<String> property , Runnable onPropertyChanged ) {
-	    super( property , onPropertyChanged );
-	    this.lblName = defaultNameLabel( property.getName() );
-	    this.cboList = new ComboBox< String >();
-	    this.cboList.valueProperty().bindBidirectional( property );
-	    this.cboList.setEditable( false );
-	    this.getChildren().addAll( this.lblName , this.cboList );
+	/**
+	 * Creates an InterpolationSchemeField that allows the user to configure
+	 * an interpolation scheme property by selecting an interpolation scheme
+	 * from a list of allowed interpolation schemes.
+	 * 
+	 * @param p the interpolation scheme property the user can configure
+	 * @param interpolationSchemes the list of allowed interpolation schemes,
+	 * which must be nonempty
+	 * @throws IllegalArgumentException if the list of allowed interpolation
+	 * schemes is empty
+	 */
+	public InterpolationSchemeField( Property<InterpolationScheme> p , InterpolationScheme[] interpolationSchemes ) {
+	    super( p );
+	    if ( interpolationSchemes.length == 0 ) {
+		throw new IllegalArgumentException( "Must have at least 1 allowed interpolation scheme." );
+	    }
+	    this.lblName = defaultNameLabel( p.getName() );
+	    this.interpolations = new ComboBox< InterpolationScheme >();
+	    this.interpolations.getItems().addAll( interpolationSchemes );
+	    this.interpolations.valueProperty().bindBidirectional( p );
+	    this.interpolations.setValue( interpolationSchemes[ 0 ] );
+	    this.getChildren().addAll( this.lblName , this.interpolations );
 	}
-	
-	public ListField( Property< String > p , Runnable onPropertyChanged , String... options ) {
-	    this( p , onPropertyChanged );
-	    addListOptions( options );
-	}
-	
-	final public void addListOptions( String... options ) {
-	    this.cboList.getItems().addAll( options );
-	}
-	
+    
     }
 }
