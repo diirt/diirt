@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import org.diirt.graphene.InterpolationScheme;
+import org.diirt.graphene.NumberColorMap;
 
 /**
  * Allows the user to configure the properties of a graph (e.g. the x column of
@@ -208,6 +209,22 @@ public class ConfigurationDialog extends Stage {
     }
     
     /**
+     * Adds the given number-color mapping property as something the user may 
+     * configure. In the dialog, this property will have a label containing the
+     * name of the property and a combobox which the user can use to modify
+     * this property.
+     * 
+     * @param p the number-color mapping property that the user may modify
+     * @param allowedMappings the list of allowed number-color mappings
+     */
+    public void addNumberColorMapListProperty( Property< NumberColorMap > p , NumberColorMap[] allowedMappings ) {
+	NumberColorMapField newField = new NumberColorMapField( p , allowedMappings );
+	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
+	ConfigurationData data = new ConfigurationData( newField , new SimpleObjectProperty< NumberColorMap >( p.getValue() ) );
+	this.configurationData.add( data );
+    }
+    
+    /**
      * Saves the current configuration state so that the user may revert to it
      * later if necessary
      */
@@ -318,6 +335,7 @@ public class ConfigurationDialog extends Stage {
 	    this.lblName = defaultNameLabel( p.getName() );
 	    this.txtValue = new TextField( "         " );
 	    this.txtValue.textProperty().bindBidirectional( p );
+	    this.txtValue.setText( p.getValue() );
 	    this.getChildren().addAll( this.lblName , this.txtValue );
 	}
     }
@@ -349,7 +367,7 @@ public class ConfigurationDialog extends Stage {
 	    this.lblName = defaultNameLabel( p.getName() );
 	    this.chkValue = new CheckBox();
 	    this.chkValue.selectedProperty().bindBidirectional( p );
-	    
+	    this.chkValue.setSelected( p.getValue() );
 	    this.getChildren().addAll( this.lblName , this.chkValue );
 	}
     }
@@ -360,7 +378,7 @@ public class ConfigurationDialog extends Stage {
     private class InterpolationSchemeField extends ConfigurationField< InterpolationScheme > {
 
 	final private Label lblName;
-	final private ComboBox< InterpolationScheme > interpolations;
+	final private ComboBox< InterpolationScheme > cboInterpolations;
 	
 	/**
 	 * Creates an InterpolationSchemeField that allows the user to configure
@@ -379,12 +397,41 @@ public class ConfigurationDialog extends Stage {
 		throw new IllegalArgumentException( "Must have at least 1 allowed interpolation scheme." );
 	    }
 	    this.lblName = defaultNameLabel( p.getName() );
-	    this.interpolations = new ComboBox< InterpolationScheme >();
-	    this.interpolations.getItems().addAll( interpolationSchemes );
-	    this.interpolations.valueProperty().bindBidirectional( p );
-	    this.interpolations.setValue( interpolationSchemes[ 0 ] );
-	    this.getChildren().addAll( this.lblName , this.interpolations );
+	    this.cboInterpolations = new ComboBox< InterpolationScheme >();
+	    this.cboInterpolations.getItems().addAll( interpolationSchemes );
+	    this.cboInterpolations.valueProperty().bindBidirectional( p );
+	    this.cboInterpolations.setValue( p.getValue() );
+	    this.getChildren().addAll( this.lblName , this.cboInterpolations );
 	}
+    }
     
+    /**
+     * Provides the user with the ability to select a NumberColorMap property
+     */
+    private class NumberColorMapField extends ConfigurationField< NumberColorMap > {
+	
+	final private Label lblName;
+	final private ComboBox< NumberColorMap > cboColorMaps = new ComboBox< NumberColorMap >();
+	
+	/**
+	 * Creates a NumberColorMapField that allows the user to configure a
+	 * number-color mapping by selecting one from a list of allowed 
+	 * mappings
+	 * 
+	 * @param p the property the user can configure
+	 * @param maps the allowed mappings the user can select
+	 * @throws IllegalArugmentException if there are no allowed mapping from which the user can select
+	 */
+	public NumberColorMapField( Property< NumberColorMap > p , NumberColorMap[] maps ) {
+	    super( p );
+	    if ( maps.length == 0 ) {
+		throw new IllegalArgumentException( "Must have at least 1 allowed number-color mapping" );
+	    }
+	    this.lblName = defaultNameLabel( p.getName() );
+	    this.cboColorMaps.getItems().addAll( maps );
+	    this.cboColorMaps.valueProperty().bindBidirectional( p );
+	    this.cboColorMaps.setValue( p.getValue() );
+	    this.getChildren().addAll( this.lblName , this.cboColorMaps );
+	}
     }
 }
