@@ -5,6 +5,7 @@
 package org.diirt.service.jdbc;
 
 import javax.sql.DataSource;
+import org.diirt.service.Service;
 import org.diirt.service.ServiceDescription;
 
 /**
@@ -48,5 +49,10 @@ public class JDBCServiceDescription extends ServiceDescription {
         }
         this.dataSource = dataSource;
         return this;
+    }
+    
+    @Override
+    public Service createService(){
+        return new JDBCService(this);
     }
 }

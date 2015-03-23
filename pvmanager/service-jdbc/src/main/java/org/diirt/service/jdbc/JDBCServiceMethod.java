@@ -170,10 +170,4 @@ class JDBCServiceMethod extends ServiceMethod {
         return ValueFactory.newVTable(types, names, data);
     }
     
-    //TODO what happens when this is called multiple times!
-    //how can this be enforced to be called (make it abstract, Service closes
-    //service methods
-    public void close() throws SQLException{
-        dataSource.getConnection().close();
-    }
 }

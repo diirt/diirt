@@ -39,6 +39,9 @@ public class JDBCSampleClient {
         CSVIO io = new CSVIO();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out);
         io.export(table, outputStreamWriter);
-        outputStreamWriter.flush();
+        outputStreamWriter.flush();        
+        
+        // TODO I am unable to test this
+        ServiceRegistry.getDefault().findService("jdbcSample").close();
     }
 }
