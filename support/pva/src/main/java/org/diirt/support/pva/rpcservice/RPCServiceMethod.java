@@ -86,7 +86,7 @@ class RPCServiceMethod extends ServiceMethod {
     private final Map<String, String> fieldNames;
     private final String operationName;
 
-    private final Map<String, DataDescription> strictArguments;
+    private final Map<String, Class> strictArguments;
     
     /**
      * Creates a new rpcservice method.
@@ -107,7 +107,7 @@ class RPCServiceMethod extends ServiceMethod {
 
         this.requestStructure = createRequestStructure(serviceMethodDescription.structureId);
         
-        this.strictArguments = serviceMethodDescription.getStrictArguments();
+        this.strictArguments = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.strictArguments));
     }
 
     private Structure createRequestStructure(String structureId) {
@@ -170,7 +170,7 @@ class RPCServiceMethod extends ServiceMethod {
         
         // non-relaxed argument types
         for (String parameterName : this.parameterNames.keySet()) {
-            fieldList.add(convertToPvType(strictArguments.get(parameterName).getClass()));
+            fieldList.add(convertToPvType(strictArguments.get(parameterName)));
         }
 
         return fieldList.toArray(new Field[fieldList.size()]);

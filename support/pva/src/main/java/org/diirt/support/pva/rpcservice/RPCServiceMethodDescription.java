@@ -39,8 +39,8 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
     final String structureId;
     final boolean isResultStandalone;
     final String operationName;
-
-    final ServiceMethodDescription strictMethodDescription;
+    
+    final Map<String, Class> strictArguments = new HashMap<>();
     
     final static String FIELD_NAME_EQUALS_NAME = "__NOALIAS__";
 
@@ -60,23 +60,6 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
         this.operationName = operationName;
         this.structureId = structureId;
         this.isResultStandalone = isResultStandalone;
-        
-        // TODO this is awful
-        this.strictMethodDescription = new ServiceMethodDescription(name, description){
-
-            @Override
-            public ServiceMethod createServiceMethod(ServiceDescription serviceDescription) {
-                return new ServiceMethod(this, serviceDescription){
-
-                    @Override
-                    protected Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
-                        return super.syncExecImpl(parameters);
-                    }
-                    
-                };
-            }
-            
-        };
     }
 
     /**
@@ -137,8 +120,7 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
      */
     public RPCServiceMethodDescription addArgument(String name, String fieldName, String description, Class<?> type) {
         super.addArgument(name, description, relaxArgumentType(type));
-        
-        strictMethodDescription.addArgument(name, description, type);
+        strictArguments.put(name, type);
         
         orderedParameterNames.put(name, fieldName != null ? fieldName : FIELD_NAME_EQUALS_NAME);
         return this;
@@ -156,8 +138,6 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
             throw new IllegalArgumentException("The pvAccess RPC rpcservice can only have one result");
         }
 
-        strictMethodDescription.addResult(name, description, type);
-
         if (fieldName != null) {
             this.fieldNames.put(name, fieldName);
         }
@@ -169,10 +149,5 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
     @Override
     public ServiceMethod createServiceMethod(ServiceDescription serviceDescription) {
         return new RPCServiceMethod(this, (RPCServiceDescription) serviceDescription);
-    }
-    
-    protected Map<String, ServiceMethod.DataDescription> getStrictArguments(){
-        // TODO this is awful
-        return strictMethodDescription.createServiceMethod(null).getArgumentMap();
     }
 }
