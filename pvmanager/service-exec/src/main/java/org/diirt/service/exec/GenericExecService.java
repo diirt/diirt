@@ -14,19 +14,20 @@ import org.diirt.vtype.VString;
 import org.diirt.vtype.VType;
 
 /**
- * A utility class to create service method and services for exec services.
- * 
+ * A utility class to create service method and services for general exec
+ * services.
+ *
  * @author carcassi
  */
 public class GenericExecService {
 
     static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Exec services"));
-    
+
     /**
-     * Creates a service method description for the run service method, which
-     * simply runs the command on the shell and returns the output.
-     * 
-     * @return run service method description
+     * Creates description for the "run" service method; which simply runs the
+     * command on the shell and returns the output.
+     *
+     * @return service method description for exec
      */
     public static ServiceMethodDescription runMethod() {
         return new ServiceMethodDescription("run", "Executes a command.") {
@@ -41,7 +42,7 @@ public class GenericExecService {
     }
 
     /**
-     * Creates a service for generic shell execution, containing the run service
+     * Creates a service for generic shell execution, containing the "run" service
      * method.
      * 
      * @return generic exec service

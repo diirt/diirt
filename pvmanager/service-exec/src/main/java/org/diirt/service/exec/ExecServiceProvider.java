@@ -6,11 +6,8 @@ package org.diirt.service.exec;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
 import org.diirt.service.AbstractFileServiceProvider;
 import org.diirt.service.Service;
 import org.diirt.util.config.Configuration;
@@ -22,8 +19,6 @@ import org.diirt.util.config.Configuration;
  * @author carcassi
  */
 public class ExecServiceProvider extends AbstractFileServiceProvider {
-
-    private static final Logger log = Logger.getLogger(ExecServiceProvider.class.getName());
 
     private final boolean includeGenericExecService;
 

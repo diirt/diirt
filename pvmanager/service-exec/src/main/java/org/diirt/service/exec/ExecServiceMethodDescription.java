@@ -25,24 +25,27 @@ public class ExecServiceMethodDescription extends ServiceMethodDescription {
     /**
      * A new service method with the given name and description.
      *
-     * @param name the method name
-     * @param description the method description
+     * @param name the method name; can't be null
+     * @param description the method description; can't be null
      */
     public ExecServiceMethodDescription(String name, String description) {
         super(name, description);
     }
 
     /**
-     * Adds a result for the script.
+     * Adds a result for the script; cannot have multiple query results.
      *
-     * @param name the result name
-     * @param description the result description
+     * @param name the result name; can't be null
+     * @param description the result description; can't be null
      * @return this
      */
     public ExecServiceMethodDescription queryResult(String name, String description) {
         if (resultAdded) {
             throw new IllegalArgumentException("The query can only have one result");
         }
+        // TODO verify correctness
+        resultAdded = true;
+        
         addResult(name, description, VType.class);
         return this;
     }
@@ -50,10 +53,13 @@ public class ExecServiceMethodDescription extends ServiceMethodDescription {
     /**
      * Add a command for the script.
      * 
-     * @param command the shell command
+     * @param command the shell command; can't be null
      * @return this description
      */
     public ExecServiceMethodDescription command(String command) {
+        if (command == null){
+            throw new IllegalArgumentException("Command must not be null");
+        }
         this.command = command;
         return this;
     }

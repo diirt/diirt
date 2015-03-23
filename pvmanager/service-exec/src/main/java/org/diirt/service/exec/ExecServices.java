@@ -6,8 +6,6 @@ package org.diirt.service.exec;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -30,19 +28,24 @@ import org.xml.sax.SAXException;
  *
  * @author carcassi
  */
-public class ExecServices {
+public final class ExecServices {
 
     private ExecServices() {
-        // Prevent instanciation
+        // Prevent instantiation
     }
     
     /**
-     * Creates a JDBCService based on the description of an XML file.
-     * 
-     * @param input a stream with an xml file
-     * @return the new service
+     * Creates a service with exec arguments based on the description of an XML
+     * file.
+     *
+     * @param input a stream with an xml file; can't be null
+     * @return the new service for exec commands
      */
     public static Service createFromXml(InputStream input) {
+        if (input == null){
+            throw new IllegalArgumentException("Input must not be null");
+        }
+        
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

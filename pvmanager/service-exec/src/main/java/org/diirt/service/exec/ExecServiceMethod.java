@@ -9,20 +9,24 @@ import org.diirt.service.ServiceMethod;
 import org.diirt.vtype.VString;
 
 /**
- * The implementation of an executor service method.
+ * The implementation of an exec service method: for execution of shell
+ * commands (both synchronously and asynchronously).
  *
  * @author carcassi
  */
 class ExecServiceMethod extends ServiceMethod {
-    
+
     private final String shell;
     private final String shellArg;
     private final String command;
 
     /**
-     * Creates a new service method.
-     * 
-     * @param serviceMethodDescription a method description
+     * Creates a new exec service method, for executing shell commands.
+     *
+     * @param serviceMethodDescription the description of the exec service
+     * method; can't be null
+     * @param serviceDescription the description of the exec service; can't be
+     * null
      */
     ExecServiceMethod(ExecServiceMethodDescription serviceMethodDescription, ExecServiceDescription serviceDescription) {
         super(serviceMethodDescription, serviceDescription);

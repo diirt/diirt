@@ -18,12 +18,14 @@ import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.io.CSVIO;
 
 /**
- *
+ * The implementation of a generic exec service method: for execution of shell
+ * commands through command line.
+ * 
  * @author carcassi
  */
 class GenericExecServiceMethod extends ServiceMethod {
 
-    public GenericExecServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
+    GenericExecServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
         super(serviceMethodDescription, serviceDescription);
     }
 

@@ -7,12 +7,12 @@ package org.diirt.service.exec;
 import org.diirt.service.ServiceDescription;
 
 /**
- * The description on how to construct an exec service.
+ * The description setting attributes to construct an exec service.
  * <p>
- * This class encapsulate the description of a service, including:
+ * Gathers elements to define the exec service, including:
  * <ul>
- * <li>A number of commands</li>
- * <li>The arguments for each command and how should they be mapped</li>
+ * <li>Command to run the shell</li>
+ * <li>Shell arguments</li>
  * <li>The results of each command</li>
  * </ul>
  *
@@ -24,33 +24,41 @@ public class ExecServiceDescription extends ServiceDescription {
     String shellArg = GenericExecServiceMethod.defaultShellArg();
 
     /**
-     * A new service description with the given service name and description.
+     * Creates exec service description with the given service name and
+     * description.
      *
-     * @param name the name of the service
-     * @param description a brief description
+     * @param name the name of the service; can't be null
+     * @param description a brief description; can't be null
      */
     public ExecServiceDescription(String name, String description) {
         super(name, description);
     }
 
     /**
-     * Adds the shell to this service description.
-     * 
-     * @param shell command to open terminal shell
+     * Adds the shell command for the service.
+     *
+     * @param shell command to open shell; can't be null
      * @return this description
      */
     public ExecServiceDescription shell(String shell) {
+        if (shell == null) {
+            throw new IllegalArgumentException("Shell must not be null");
+        }
+
         this.shell = shell;
         return this;
     }
 
     /**
-     * Adds the shell argument to this service description.
-     * 
-     * @param shellArg argument to apply to the shell
+     * Adds the argument to the shell for the service.
+     *
+     * @param shellArg argument to apply to the terminal/shell; can't be null
      * @return this description
      */
     public ExecServiceDescription shellArg(String shellArg) {
+        if (shellArg == null) {
+            throw new IllegalArgumentException("Shell argument must not be null");
+        }
         this.shellArg = shellArg;
         return this;
     }
