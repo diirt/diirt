@@ -105,6 +105,13 @@ public abstract class ServiceMethod {
      * @param serviceDescription the description of the service; can't be null
      */
     public ServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
+        if (serviceMethodDescription == null) {
+            throw new IllegalArgumentException("Service method description should not be null.");
+        }
+        if (serviceDescription == null){
+            throw new IllegalArgumentException("Service description should not be null.");            
+        }    
+        
         this.name = serviceMethodDescription.name;
         this.description = serviceMethodDescription.description;
         this.executor = serviceDescription.executorService;
@@ -133,7 +140,7 @@ public abstract class ServiceMethod {
 
         // Validates that the subclass contains an implementation
         if (!asyncExecute && !syncExecute){
-            throw new RuntimeException("Must implement the method \"syncExecImpl\" or \"asyncExecImpl\".");
+            throw new RuntimeException("Neither synchronous or asynchronous implementation was provided.");
         }
     }
 
@@ -338,6 +345,10 @@ public abstract class ServiceMethod {
      * @throws RuntimeException if the method execution is unsuccessful
      */
     public Map<String, Object> executeSync(Map<String, Object> parameters) {
+        if (parameters == null){
+            throw new IllegalArgumentException("Parameters should not be null.");
+        }
+        
         validateParameters(parameters);
 
         if (syncExecute) {
@@ -351,7 +362,7 @@ public abstract class ServiceMethod {
         } else if (asyncExecute) {
             return wrapAsSync(parameters);
         } else {
-            throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
+            throw new RuntimeException("Neither synchronous or asynchronous implementation was provided.");
         }
     }
 
@@ -365,19 +376,24 @@ public abstract class ServiceMethod {
      * @param errorCallback the error callback, for failures; can't be null
      */    
     public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
+        if (parameters == null){
+            throw new IllegalArgumentException("Parameters should not be null.");
+        }
+        if (callback == null){
+            throw new IllegalArgumentException("Callback should not be null.");
+        }
+        if (errorCallback == null){
+            throw new IllegalArgumentException("Error callback should not be null.");
+        }
+        
         validateParameters(parameters);
-        // TODO check for null
 
         if (asyncExecute) {
             asyncExecImpl(parameters, callback, errorCallback);
         } else if (syncExecute) {
-            if (executor != null) {
-                wrapAsAsync(executor, parameters, callback, errorCallback);
-            } else {
-                throw new RuntimeException("Attempts asyncExecImpl with no executor.");
-            }
+            wrapAsAsync(executor, parameters, callback, errorCallback);
         } else {
-            throw new RuntimeException("Unimplemented syncExecImpl or asyncExecImpl.");
+            throw new RuntimeException("Neither synchronous or asynchronous implementation was provided.");
         }
     }
 }
