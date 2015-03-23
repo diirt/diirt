@@ -4,38 +4,79 @@
   <meta charset="utf-8">
   <title>TEST</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
 <script src="js/webpods-client.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
+   
+    <div class="panel panel-default">
+        <div class="panel-heading">Socket Info</div>
+        <div class="panel-body">
+            <div class="form-group">
+              <input type="text" class="form-control" id="server" required>
+            </div>
+              <button class="btn" id="connect">CONNECT</button>
+              <button class="btn" id="disconnect">DISCONNECT</button>
+        </div>
+    </div>
+   
+    <div class="row">
+        <div class="col-md-5"> 
+            <div class="panel panel-default">
+                <div class="panel-heading">Subscription Info</div>
+                <div class="panel-body" id="subInfo">
+                  <div class="form-group">
+                  <input type="text" class="form-control" id="channel" placeholder="CHANNEL" required>
+                  </div>
+                  <div class="form-group">
+                  <input type="text" class="form-control" id="idNum" placeholder="ID" required>
+                  </div>
+                  <button class="btn" id="subscribe">SUBSCRIBE</button>
+                </div>
+            </div>
+        </div>
 
-  <div id="page-wrapper">
-    <p id="testVal"></p>
-    <form id="message-form" action="#" method="post">
-      <textarea id="server" placeholder="SERVER" required></textarea>
-      <button type="button" id="connect">CONNECT</button>
-      <button type="button" id="disconnect">DISCONNECT</button>
-      <br><br>
-      <textarea id="channel" placeholder="CHANNEL" required></textarea>
-      <textarea id="idNum" placeholder="ID" required></textarea>
-      <button type="button" id="subscribe">SUBSCRIBE</button>
-    </form>
-    <select size="4" id="subscriptions"></select>
-    <button type="button" id="pause">PAUSE</button>
-    <button type="button" id="resume">RESUME</button>
-    <br>
-    <button type="button" id="unsubscribe">UNSUBSCRIBE</button>
-    <br>  
-    <button type="button" id="filter">FILTER</button>
-    <button type="button" id="showAll">SHOW ALL</button>
-    <br><br><br>
-    <button type="button" id="clear">CLEAR</button> 
-    <br>
-    <select size="15" id="results">
-    </select>
-    <div id="details"></div>
-    <ul id="table"></ul>
-  </div>
+        <div class="col-md-7">
+            <div class="panel panel-default">
+                <div class="panel-heading">Current Subscriptions</div>
+                <div class="panel-body">
+                    <select class="input-medium" size="4" id="subscriptions"></select>
+                    <button class="btn" id="pause">PAUSE</button>
+                    <button class="btn" id="resume">RESUME</button>
+                    <br>
+                    <button class="btn" id="unsubscribe">UNSUBSCRIBE</button>
+                    <br>  
+                    <button class="btn" id="filter">FILTER</button>
+                    <button class="btn" id="showAll">SHOW ALL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">Events</div>
+                <div class="panel-body">
+                    <button class="btn" id="clear">CLEAR</button> 
+                    <br>
+                    <select class="form-control" size="15" id="results">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div id="details"></div>
+        </div>
+    </div>
     
     <script src="clientTEST.js"></script>
 

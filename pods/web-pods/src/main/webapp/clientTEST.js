@@ -28,8 +28,6 @@ window.onload = function() {
     var eventDetailsFiltered = [];
     
     // TODO: organize functions and triggers
-    // TODO: add css triggers to pause, resume, unsubscribe
-    // TODO: add some indication of current filter
     
     // TODO: successful subscripton callback to change subscription list class
 
@@ -160,12 +158,18 @@ window.onload = function() {
         clearDisplay();
         for (var i = 0; i < events[0].length; i++) {
             var newEvent = document.createElement('option');
+            if (newEvent.selected) {
+                console.log('this event is selected (1): ' + events[0][i]);
+            }     
             results.appendChild(newEvent);
+            newEvent.selected = events[2][i];
+            if (newEvent.selected) {
+                console.log('this event is selected (2): ' + events[0][i]);
+            }            
             newEvent.appendChild(document.createTextNode(events[0][i]));
             var attId = document.createAttribute('eventId');
             attId.value = events[1][i];
             newEvent.setAttributeNode(attId);
-            newEvent.selected = events[2][i];
         }
     }
     
