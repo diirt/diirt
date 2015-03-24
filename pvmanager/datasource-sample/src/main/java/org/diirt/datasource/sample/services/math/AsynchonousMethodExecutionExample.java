@@ -6,15 +6,8 @@ package org.diirt.datasource.sample.services.math;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceRegistry;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.ValueFactory;
 
 /**

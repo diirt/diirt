@@ -9,10 +9,6 @@ import java.util.Map;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.ValueFactory;
 
@@ -25,11 +21,10 @@ import org.diirt.vtype.ValueFactory;
 public class AddServiceMethod extends ServiceMethod {
 
     /**
-     * Creates a service method for adding {@code VNumber}s together. Service
-     * method guarantees immutability.
+     * Creates a service method for adding {@code VNumber}s together.
      *
      * @param serviceMethodDescription the description of the add service
-     * method, can't be null
+     * method; can't be null
      * @param serviceDescription the description of the math service; can't be
      * null
      */
@@ -40,15 +35,22 @@ public class AddServiceMethod extends ServiceMethod {
     @Override
     public Map<String, Object> syncExecImpl(Map<String, Object> parameters) {
         // Method implementation: this is what the service method actually does
+        // Here we are choosing a synchronous implementation, that is the
+        // calculation is done on the thread inside this method call.
         
-        // Data from parameters
+        // Extract data from parameters
         VNumber arg1 = (VNumber) parameters.get("arg1");
         VNumber arg2 = (VNumber) parameters.get("arg2");
         
-        // Operation
+        // Check for nulls
+        if (arg1 == null || arg2 == null) {
+            return new HashMap<>();
+        }
+        
+        // Perform calculation
         VNumber result = ValueFactory.newVDouble(arg1.getValue().doubleValue() + arg2.getValue().doubleValue());
         
-        // Results for caller
+        // Prepare the result
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", result);
         return resultMap;
