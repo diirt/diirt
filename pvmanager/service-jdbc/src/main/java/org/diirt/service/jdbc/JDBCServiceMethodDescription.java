@@ -25,8 +25,8 @@ public class JDBCServiceMethodDescription extends ServiceMethodDescription {
     /**
      * A new service method with the given name and description.
      *
-     * @param name the method name
-     * @param description the method description
+     * @param name the method name; can't be null
+     * @param description the method description; can't be null
      */
     public JDBCServiceMethodDescription(String name, String description) {
         super(name, description);
@@ -39,25 +39,32 @@ public class JDBCServiceMethodDescription extends ServiceMethodDescription {
      * SELECT) and must not be specified if the query does not return data (i.e.
      * INSERT, UPDATE, DELETE, ...).
      *
-     * @param name the result name
-     * @param description the result description
+     * @param name the result name; can't be null
+     * @param description the result description; can't be null
      * @return this
      */
     public JDBCServiceMethodDescription queryResult(String name, String description) {
         if (resultAdded) {
             throw new IllegalArgumentException("The query can only have one result");
         }
+        // TODO verify correctness
+        resultAdded = true;
+        
         addResult(name, description, VTable.class);
         return this;
     }
 
     /**
-     * The query mapped to this service method.
+     * The query mapped to this service method; cannot have multiple query
+     * commands.
      *
-     * @param query the query
+     * @param query the query to execute; can't be null
      * @return this
      */
     public JDBCServiceMethodDescription query(String query) {
+        if (query == null){
+            throw new IllegalArgumentException("Query must not be null");
+        }
         if (this.query != null) {
             throw new IllegalArgumentException("Query was already set");
         }

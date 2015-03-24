@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 public class JDBCServices {
 
     private JDBCServices() {
-        // Prevent instanciation
+        // Prevent instantiation
     }
     
     private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
@@ -41,10 +41,13 @@ public class JDBCServices {
     /**
      * Creates a JDBCService based on the description of an XML file.
      * 
-     * @param input a stream with an xml file
+     * @param input a stream with an xml file; can't be null
      * @return the new service
      */
     public static Service createFromXml(InputStream input) {
+        if (input == null){
+            throw new IllegalArgumentException("Input must not be null");
+        }
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

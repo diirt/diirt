@@ -37,9 +37,12 @@ class JDBCServiceMethod extends ServiceMethod {
     private final List<String> parameterNames;
 
     /**
-     * Creates a new service method.
-     * 
-     * @param serviceMethodDescription a method description
+     * Creates a new JDBC service method, for querying a JDBC datasource.
+     *
+     * @param serviceMethodDescription the description of the JDBC service
+     * method; can't be null
+     * @param serviceDescription the description of the JDBC service; can't be
+     * null
      */
     JDBCServiceMethod(JDBCServiceMethodDescription serviceMethodDescription, JDBCServiceDescription serviceDescription) {
         super(serviceMethodDescription, serviceDescription);
@@ -52,14 +55,24 @@ class JDBCServiceMethod extends ServiceMethod {
         return dataSource;
     }
 
+    /**
+     * Gets the query command to execute on the JDBC datasource.
+     *
+     * @return query command
+     */
     protected String getQuery() {
         return query;
     }
-    
+
     private boolean isResultQuery() {
         return !getResults().isEmpty();
     }
 
+    /**
+     * Gets the list of ordered parameter names.
+     *
+     * @return parameter names
+     */
     protected List<String> getParameterNames() {
         return parameterNames;
     }
@@ -95,7 +108,7 @@ class JDBCServiceMethod extends ServiceMethod {
     }
 
     /**
-     * Maps a result set to a VTable
+     * Maps a result set to a VTable.
      */
     static VTable resultSetToVTable(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();

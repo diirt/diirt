@@ -9,20 +9,40 @@ import javax.sql.DataSource;
 import org.diirt.service.Service;
 
 /**
- * TODO
+ * Group of request/response operations sharing resources (a Service); applied
+ * to querying a <a
+ * href="http://www.oracle.com/technetwork/java/javase/jdbc/index.html">JDBC
+ * datasource</a>.
+ * <p>
+ * It is important to {@link JDBCService#close()} the service to close shared
+ * resources.
+ *
  * @author asbarber
  */
 public class JDBCService extends Service {
 
     private final DataSource dataSource;
 
+    /**
+     * Creates a new service for JDBC operations.
+     *
+     * @param serviceDescription the description of the JDBC service; can't be
+     * null
+     */
     public JDBCService(JDBCServiceDescription serviceDescription) {
         super(serviceDescription);
         dataSource = serviceDescription.dataSource;
     }
 
+    /**
+     * Closes the shared resources: executor and JDBC datasource.
+     */
     @Override
     public void close() {
+        // Executor close
+        super.close();
+
+        // Datasource close
         try {
             dataSource.getConnection().close();
         } catch (SQLException ex) {

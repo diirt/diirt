@@ -40,7 +40,7 @@ public class JDBCServiceDescription extends ServiceDescription {
      * <p>
      * Use {@link SimpleDataSource} if you have a JDBC url.
      * 
-     * @param dataSource a JDBC datasource
+     * @param dataSource a JDBC datasource; can't be null
      * @return this
      */
     public JDBCServiceDescription dataSource(DataSource dataSource) {
