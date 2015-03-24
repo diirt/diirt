@@ -21,10 +21,13 @@ import org.diirt.vtype.next.VNumber;
  */
 public class MathService {
 
+    /**
+     * Used to execute the service methods asynchronously.
+     */
     private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Math services"));
     
     /**
-     * Generates the service method description for the addition service method.
+     * Creates the service method description for the addition service method.
      *
      * @return addition service method description
      */
@@ -42,7 +45,7 @@ public class MathService {
     }
 
     /**
-     * Generates the service method description for the multiplication service
+     * Creates the service method description for the multiplication service
      * method.
      *
      * @return multiplication service method description
@@ -61,7 +64,7 @@ public class MathService {
     }
 
     /**
-     * Generates the service description that creates the math service.
+     * Creates the the math service.
      *
      * @return math service
      */

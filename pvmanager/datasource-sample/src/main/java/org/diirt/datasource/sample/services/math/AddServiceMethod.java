@@ -16,8 +16,7 @@ import org.diirt.vtype.next.VDouble;
 import org.diirt.vtype.next.VNumber;
 
 /**
- * An example service method for the addition of
- * {@link org.diirt.vtype.next.VNumber}s.
+ * An example service method for the addition of {@link VNumber}s.
  *
  * @author carcassi
  * @author asbarber 
@@ -25,15 +24,13 @@ import org.diirt.vtype.next.VNumber;
 public class AddServiceMethod extends ServiceMethod {
 
     /**
-     * Creates a {@link org.diirt.vtype.next.VNumber} addition service method
-     * with the given description. All properties are copied out of the
-     * description, guaranteeing the immutability of objects of this class.
-     * Nonetheless, service method descriptions should not be reused for
-     * different services.
+     * Creates a service method for adding {@code VNumber}s together. Service
+     * method guarantees immutability.
      *
-     * @param serviceMethodDescription the description of the service method,
-     * can't be null
-     * @param serviceDescription the description of the service; can't be null
+     * @param serviceMethodDescription the description of the add service
+     * method, can't be null
+     * @param serviceDescription the description of the math service; can't be
+     * null
      */
     public AddServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
         super(serviceMethodDescription, serviceDescription);
@@ -41,14 +38,21 @@ public class AddServiceMethod extends ServiceMethod {
 
     @Override
     public Map<String, Object> syncExecImpl(Map<String, Object> parameters) {
+        // Method implementation: this is what the service method actually does
+        
+        // Data from parameters
         VNumber arg1 = (VNumber) parameters.get("arg1");
         VNumber arg2 = (VNumber) parameters.get("arg2");
+        
+        // Operation
         VNumber result = (VNumber) VDouble.create(
                 arg1.getValue().doubleValue() + arg2.getValue().doubleValue(),
                 Alarm.noValue(),
                 Time.now(),
                 Display.none()
         );
+        
+        // Results for caller
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", result);
         return resultMap;

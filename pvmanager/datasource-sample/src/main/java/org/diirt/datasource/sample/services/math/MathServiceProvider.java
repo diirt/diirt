@@ -10,7 +10,7 @@ import org.diirt.service.Service;
 import org.diirt.service.ServiceProvider;
 
 /**
- * A service factory for the simple generation of the Math sample service.
+ * A factory for generation of the Math sample service.
  *
  * @author asbarber
  */
