@@ -206,7 +206,7 @@ public abstract class ServiceMethod {
             if (parameterType == null) {
                 throw new IllegalArgumentException("ServiceMethod " + name + ": unexpected parameter " + parameterName);
             }
-            if (!parameterType.isInstance(parameterValue)) {
+            if (parameterValue != null &&!parameterType.isInstance(parameterValue)) {
                 throw new IllegalArgumentException("ServiceMethod " + name + ": parameter " + parameterName + " should be of type " + parameterType.getSimpleName() + " but was " + parameterValue.getClass().getSimpleName());
             }
         }
