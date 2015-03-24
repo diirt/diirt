@@ -10,7 +10,7 @@ import org.diirt.service.Service;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.next.VNumber;
+import org.diirt.vtype.VNumber;
 
 /**
  * Utility class for the creation of service descriptions and service method

@@ -8,12 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
-import org.diirt.vtype.next.Alarm;
-import org.diirt.vtype.next.Display;
-import org.diirt.vtype.next.Time;
-import org.diirt.vtype.next.VDouble;
-import org.diirt.vtype.next.VInt;
-import org.diirt.vtype.next.VNumber;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VInt;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * An example use of {@link org.diirt.service.Service} utilities. Performs
@@ -28,7 +29,7 @@ import org.diirt.vtype.next.VNumber;
 public class MathExample {
 
     /**
-     * Sample driver for Math services.
+     * Sample execution of Math services.
      *
      * @param args ignored
      */
@@ -51,8 +52,8 @@ public class MathExample {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
 
         // Creates data
-        VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
-        VNumber arg2 = VInt.create(2, Alarm.noValue(), Time.now(), Display.none());
+        VNumber arg1 = ValueFactory.newVDouble(1.0);
+        VNumber arg2 = ValueFactory.newVDouble(2.0);
         
         // Formats data into correct parameters (two numbers)
         Map<String, Object> parameters = new HashMap<>();
@@ -81,8 +82,8 @@ public class MathExample {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
 
         // Creates data
-        VNumber arg1 = VDouble.create(2, Alarm.noValue(), Time.now(), Display.none());
-        VNumber arg2 = VInt.create(3, Alarm.noValue(), Time.now(), Display.none());
+        VNumber arg1 = ValueFactory.newVDouble(2.0);
+        VNumber arg2 = ValueFactory.newVDouble(3.0);
 
         // Formats data into correct parameters (two numbers)
         Map<String, Object> parameters = new HashMap<>();
@@ -111,8 +112,8 @@ public class MathExample {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
 
         // Creates data
-        VNumber arg1 = VDouble.create(1, Alarm.noValue(), Time.now(), Display.none());
-        VNumber arg2 = VInt.create(2, Alarm.noValue(), Time.now(), Display.none());
+        VNumber arg1 = ValueFactory.newVDouble(1.0);
+        VNumber arg2 = ValueFactory.newVDouble(2.0);
 
         // Formats data into correct parameters (two numbers)
         Map<String, Object> parameters = new HashMap<>();
@@ -149,8 +150,8 @@ public class MathExample {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
 
         // Creates data
-        VNumber arg1 = VDouble.create(2, Alarm.noValue(), Time.now(), Display.none());
-        VNumber arg2 = VInt.create(3, Alarm.noValue(), Time.now(), Display.none());
+        VNumber arg1 = ValueFactory.newVDouble(2.0);
+        VNumber arg2 = ValueFactory.newVDouble(3.0);
 
         // Formats data into correct parameters (two numbers)
         Map<String, Object> parameters = new HashMap<>();

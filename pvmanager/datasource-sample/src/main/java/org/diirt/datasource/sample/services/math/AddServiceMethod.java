@@ -9,11 +9,12 @@ import java.util.Map;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.next.Alarm;
-import org.diirt.vtype.next.Display;
-import org.diirt.vtype.next.Time;
-import org.diirt.vtype.next.VDouble;
-import org.diirt.vtype.next.VNumber;
+import org.diirt.vtype.Alarm;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.Time;
+import org.diirt.vtype.VDouble;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * An example service method for the addition of {@link VNumber}s.
@@ -45,12 +46,7 @@ public class AddServiceMethod extends ServiceMethod {
         VNumber arg2 = (VNumber) parameters.get("arg2");
         
         // Operation
-        VNumber result = (VNumber) VDouble.create(
-                arg1.getValue().doubleValue() + arg2.getValue().doubleValue(),
-                Alarm.noValue(),
-                Time.now(),
-                Display.none()
-        );
+        VNumber result = ValueFactory.newVDouble(arg1.getValue().doubleValue() + arg2.getValue().doubleValue());
         
         // Results for caller
         Map<String, Object> resultMap = new HashMap<>();
