@@ -28,7 +28,7 @@ import org.xml.sax.SAXException;
  *
  * @author carcassi
  */
-public final class ExecServices {
+public class ExecServices {
 
     private ExecServices() {
         // Prevent instantiation
