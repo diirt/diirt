@@ -340,27 +340,27 @@ public abstract class ServiceMethod {
      * Executes the service method with the given parameters, and waits for the
      * response (synchronous execution of this service method).
      *
-     * @param parameters the parameters for the service; can't be null
+     * @param arguments the parameters for the service; can't be null
      * @return the result callback, for success; can't be null
      * @throws RuntimeException if the method execution is unsuccessful
      */
-    public Map<String, Object> executeSync(Map<String, Object> parameters) {
-        if (parameters == null){
+    public Map<String, Object> executeSync(Map<String, Object> arguments) {
+        if (arguments == null){
             throw new IllegalArgumentException("Parameters should not be null.");
         }
         
-        validateParameters(parameters);
+        validateParameters(arguments);
 
         if (syncExecute) {
             try {
-                return syncExecImpl(parameters);
+                return syncExecImpl(arguments);
             } catch (RuntimeException ex) {
                 throw ex;
             } catch (Exception ex) {
                 throw new RuntimeException("Method execution failed", ex);
             }
         } else if (asyncExecute) {
-            return wrapAsSync(parameters);
+            return wrapAsSync(arguments);
         } else {
             throw new RuntimeException("Neither synchronous or asynchronous implementation was provided.");
         }
@@ -371,12 +371,12 @@ public abstract class ServiceMethod {
      * which will be communicated through the callbacks (asynchronous execution
      * of this service method).
      *
-     * @param parameters the parameters for the service; can't be null
+     * @param arguments the parameters for the service; can't be null
      * @param callback the result callback, for success; can't be null
      * @param errorCallback the error callback, for failures; can't be null
      */    
-    public void executeAsync(Map<String, Object> parameters, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
-        if (parameters == null){
+    public void executeAsync(Map<String, Object> arguments, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
+        if (arguments == null){
             throw new IllegalArgumentException("Parameters should not be null.");
         }
         if (callback == null){
@@ -386,12 +386,12 @@ public abstract class ServiceMethod {
             throw new IllegalArgumentException("Error callback should not be null.");
         }
         
-        validateParameters(parameters);
+        validateParameters(arguments);
 
         if (asyncExecute) {
-            asyncExecImpl(parameters, callback, errorCallback);
+            asyncExecImpl(arguments, callback, errorCallback);
         } else if (syncExecute) {
-            wrapAsAsync(executor, parameters, callback, errorCallback);
+            wrapAsAsync(executor, arguments, callback, errorCallback);
         } else {
             throw new RuntimeException("Neither synchronous or asynchronous implementation was provided.");
         }
