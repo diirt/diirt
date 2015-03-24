@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 /**
- * Group of request/response operation that share the same resources. Each service is a collection of one of more methods.
+ * Group of request/response operations that share the same resources. Each service is a collection of one of more methods.
  * Each method can be executed with a set of parameters, and returns with a set
  * of results.
  * <p>

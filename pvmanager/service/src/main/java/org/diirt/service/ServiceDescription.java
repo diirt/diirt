@@ -33,7 +33,7 @@ public class ServiceDescription {
      * both of which are mandatory attributes of the service.
      *
      * @param name the service name, can't be null
-     * @param description the service description, can't be null
+     * @param description the service description; can't be null
      */
     public ServiceDescription(String name, String description) {
         // Validate the parameters (non-null and non-empty)
