@@ -16,7 +16,6 @@ import org.diirt.vtype.ValueFactory;
  * An example service method for the addition of {@link VNumber}s.
  *
  * @author carcassi
- * @author asbarber 
  */
 public class AddServiceMethod extends ServiceMethod {
 
