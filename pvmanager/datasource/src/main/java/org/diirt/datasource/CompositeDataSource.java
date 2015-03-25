@@ -24,8 +24,7 @@ public class CompositeDataSource extends DataSource {
     private final Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
     private final Map<String, DataSourceProvider> dataSourceProviders = new ConcurrentHashMap<>();
 
-    private volatile String delimiter = "://";
-    private volatile String defaultDataSource;
+    private volatile CompositeDataSourceConfiguration conf = new CompositeDataSourceConfiguration();
 
     /**
      * Creates a new CompositeDataSource.
@@ -35,23 +34,27 @@ public class CompositeDataSource extends DataSource {
     }
 
     /**
-     * Returns the delimeter that divides the data source name from the
-     * channel name. Default is "://" so that "epics://pv1" corresponds
-     * to the "pv1" channel from the "epics" datasource.
+     * The configuration used for the composite data source.
      *
-     * @return data source delimeter; can't be null
+     * @return the configuration; can't be null
      */
-    public String getDelimiter() {
-        return delimiter;
+    public CompositeDataSourceConfiguration getConfiguration() {
+        return conf;
     }
 
     /**
-     * Changes the data source delimiter.
+     * Changes the composite data source configuration.
+     * <p>
+     * NOTE: the configuration should be changed before any channel
+     * is opened. The result of later changes is not well defined.
      *
-     * @param delimiter new data source delimiter; can't be null
+     * @param conf the new configuration; can't be null
      */
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
+    public void setConfiguration(CompositeDataSourceConfiguration conf) {
+        if (conf == null) {
+            throw new NullPointerException("Configuration can't be null.");
+        }
+        this.conf = conf;
     }
 
     /**
@@ -85,16 +88,6 @@ public class CompositeDataSource extends DataSource {
         dataSources.remove(dataSourceProvider.getName());
         dataSourceProviders.put(dataSourceProvider.getName(), dataSourceProvider);
     }
-
-    /**
-     * Returns which data source is used if no data source is specified in the
-     * channel name.
-     *
-     * @return the default data source, or null if it was never set
-     */
-    public String getDefaultDataSource() {
-        return defaultDataSource;
-    }
     
     /**
      * Returns the data sources used by this composite data source.
@@ -117,21 +110,9 @@ public class CompositeDataSource extends DataSource {
     public Map<String, DataSourceProvider> getDataSourceProviders() {
         return Collections.unmodifiableMap(dataSourceProviders);
     }
-
-    /**
-     * Sets the data source to be used if the channel does not specify
-     * one explicitely. The data source must have already been added.
-     *
-     * @param defaultDataSource the default data source
-     */
-    public void setDefaultDataSource(String defaultDataSource) {
-        if (!dataSourceProviders.containsKey(defaultDataSource))
-            throw new IllegalArgumentException("The data source " + defaultDataSource + " was not previously added, and therefore cannot be set as default");
-
-        this.defaultDataSource = defaultDataSource;
-    }
     
-    private String nameOf(String channelName) {
+    private  String nameOf(String channelName) {
+        String delimiter = conf.delimiter;
         int indexDelimiter = channelName.indexOf(delimiter);
         if (indexDelimiter == -1) {
             return channelName;
@@ -141,10 +122,14 @@ public class CompositeDataSource extends DataSource {
     }
     
     private String sourceOf(String channelName) {
+        String delimiter = conf.delimiter;
+        String defaultDataSource = conf.defaultDataSource;
         int indexDelimiter = channelName.indexOf(delimiter);
         if (indexDelimiter == -1) {
             if (defaultDataSource == null)
-                throw new IllegalArgumentException("Channel " + channelName + " uses the default data source but one was never set.");
+                throw new IllegalArgumentException("Channel " + channelName + " uses default data source but one was never set.");
+            if (!dataSourceProviders.containsKey(defaultDataSource))
+                throw new IllegalArgumentException("Channel " + channelName + " uses default data source " + defaultDataSource + " which was not found.");
             return defaultDataSource;
         } else {
             String source = channelName.substring(0, indexDelimiter);
@@ -242,11 +227,11 @@ public class CompositeDataSource extends DataSource {
         if (dataSource == null) {
             DataSourceProvider factory = dataSourceProviders.get(name);
             if (factory == null) {
-                throw new IllegalArgumentException("DataSource '" + name + delimiter + "' was not configured.");
+                throw new IllegalArgumentException("DataSource '" + name + conf.delimiter + "' was not configured.");
             } else {
                 dataSource = factory.createInstance();
                 if (dataSource == null) {
-                    throw new IllegalStateException("DataSourceProvider '" + name + delimiter + "' did not create a valid datasource.");
+                    throw new IllegalStateException("DataSourceProvider '" + name + conf.delimiter + "' did not create a valid datasource.");
                 }
                 dataSources.put(name, dataSource);
                 log.log(Level.CONFIG, "Created instance for data source {0} ({1})", new Object[]{name, dataSource.getClass().getSimpleName()});
@@ -308,7 +293,7 @@ public class CompositeDataSource extends DataSource {
             for (Entry<String, ChannelHandler> channelEntry : dataSource.getChannels().entrySet()) {
                 String channelName = channelEntry.getKey();
                 ChannelHandler channelHandler = channelEntry.getValue();
-                channels.put(dataSourceName + delimiter + channelName, channelHandler);
+                channels.put(dataSourceName + conf.delimiter + channelName, channelHandler);
             }
         }
         

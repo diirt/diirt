@@ -24,7 +24,7 @@ public class PVFieldToVEnum extends AlarmTimeExtractor implements VEnum {
 	{
 		super(pvField, disconnected);
 	
-		PVStructure enumField = pvField.getStructureField("value");
+		PVStructure enumField = pvField.getField().getID().equals("enum_t") ? pvField : pvField.getStructureField("value");
 		if (enumField != null)
 		{
 			PVStringArray labelsField =

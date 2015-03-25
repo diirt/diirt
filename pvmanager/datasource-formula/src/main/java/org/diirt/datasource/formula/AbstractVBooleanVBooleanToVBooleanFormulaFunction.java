@@ -13,12 +13,12 @@ import org.diirt.vtype.ValueUtil;
 
 
 /**
- * Abstract class for formula functions that take two VBoolean as arguments
- * and return a VBoolean.
+ * Abstract class for formula functions that take two {@link VBoolean}s as arguments
+ * and return a {@link VBoolean}.
  * <p>
  * This class takes care of:
  * <ul>
- *    <li>extracting the Boolean from the VBooleans</li>
+ *    <li>extracting boolean value from {@code VBoolean}</li>
  *    <li>null handling - returns null if one argument is null</li>
  *    <li>alarm handling - returns highest alarm</li>
  *    <li>time handling - returns latest time, or now if no time is available</li>
@@ -37,12 +37,26 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
     /**
      * Creates a new function.
      * 
-     * @param name the name of the function
-     * @param description a short description
-     * @param arg1Name first argument name
-     * @param arg2Name second argument name
+     * @param name function name; can't be null
+     * @param description function description; can't be null
+     * @param arg1Name first argument name; can't be null
+     * @param arg2Name second argument name; can't be null
      */
     public AbstractVBooleanVBooleanToVBooleanFormulaFunction(String name, String description, String arg1Name, String arg2Name) {
+        // Validate parameters
+        if (name == null) {
+            throw new NullPointerException("Function name can't be null");
+        }
+        if (description == null) {
+            throw new NullPointerException("Function description can't be null");
+        }
+        if (arg1Name == null) {
+            throw new NullPointerException("First argument name can't be null");
+        }
+        if (arg2Name == null) {
+            throw new NullPointerException("Second argument name can't be null");
+        }
+        
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VBoolean.class, VBoolean.class);
@@ -107,6 +121,6 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
      * @param arg2 the second argument
      * @return the result
      */
-    abstract boolean calculate(boolean arg1, boolean arg2);
+    public abstract boolean calculate(boolean arg1, boolean arg2);
     
 }

@@ -28,7 +28,7 @@ import static org.diirt.util.time.TimeDuration.*;
  */
 public class JCAClientConnectDisconnectDetail {
     public static void main(String[] args) throws Exception {
-        JCADataSource jca = new JCADataSource();
+        JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
         
         String channelName = "TEST_1";

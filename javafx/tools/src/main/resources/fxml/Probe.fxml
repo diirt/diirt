@@ -6,9 +6,9 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.diirt.ui.tools.*?>
+<?import org.diirt.javafx.tools.*?>
 
-<VBox prefHeight="373.0" prefWidth="413.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.diirt.ui.tools.ProbeController">
+<fx:root prefHeight="373.0" prefWidth="413.0" type="VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.diirt.javafx.tools.ProbeController">
    <children>
       <GridPane hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0" VBox.vgrow="NEVER">
          <columnConstraints>
@@ -19,6 +19,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Label text="Channel:" />
@@ -27,6 +28,8 @@
             <Label text="Value:" GridPane.rowIndex="1" />
             <Label text="New value:" GridPane.rowIndex="2" />
             <TextField fx:id="newValueField" disable="true" editable="false" onAction="#onNewValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="errorField" disable="true" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Last error:" GridPane.rowIndex="3" />
          </children>
          <VBox.margin>
             <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
@@ -44,7 +47,12 @@
                   <EventLogViewer fx:id="eventLogViewer" />
             </content>
           </Tab>
+            <Tab text="Expression">
+              <content>
+                  <ExpressionProbe fx:id="expressionProbe" />
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
    </children>
-</VBox>
+</fx:root>

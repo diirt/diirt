@@ -1,0 +1,53 @@
+/**
+ * LED widget
+ *
+ * By default, the LED is desined to be mixed with the text. It is a square
+ * inline-block, the size of a text line, vertically aligned in the middle.
+ */
+.wp-led {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+}
+
+/**
+ * LED states
+ *
+ * off: no connection, no value or a value of 0
+ * on: connection, and a non-zero value
+ * error: an error
+ * value-n: if the channel is an enum, the 
+ */
+.wp-led .off {
+    color: lightGray;
+}
+
+.wp-led .on {
+    color: lime;
+}
+
+.wp-led.alarm .value-none {
+    color: lime;
+}
+
+.wp-led.alarm .value-minor {
+    color: yellow;
+}
+
+.wp-led.alarm .value-major {
+    color: red;
+}
+
+.wp-led.alarm .value-invalid {
+    color: magenta;
+}
+
+.wp-led.alarm .value-undefined {
+    color: magenta;
+}
+
+.wp-led .error {
+    color: magenta;
+}
+

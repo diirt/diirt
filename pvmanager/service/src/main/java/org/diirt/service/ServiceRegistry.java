@@ -35,14 +35,7 @@ public class ServiceRegistry {
     }
     
     static {
-        log.config("Fetching service providers");
-        int count = 0;
-        for (ServiceProvider factory : ServiceLoaderOSGiWrapper.load(ServiceProvider.class)) {
-            log.log(Level.CONFIG, "Registering service provider ({0})", new Object[] {factory.getClass().getSimpleName()});
-            registry.registerServices(factory);
-            count++;
-        }
-        log.log(Level.CONFIG, "Registered {0} service providers", count);
+        ServiceLoaderOSGiWrapper.load(ServiceProvider.class, log, registry::registerServices);
     }
     
     private final Map<String, Service> services = new ConcurrentHashMap<>();

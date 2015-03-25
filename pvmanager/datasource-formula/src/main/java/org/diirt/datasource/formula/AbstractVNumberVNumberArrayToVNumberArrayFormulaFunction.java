@@ -17,12 +17,14 @@ import static org.diirt.vtype.ValueFactory.newVNumberArray;
 import org.diirt.vtype.ValueUtil;
 
 /**
- * Abstract class for formula functions that take a VNumberArray and a VNumber as arguments
- * and return a VNumberArray.
+ * Abstract class for formula functions that take a {@link VNumberArray} and a
+ * {@link VNumber} as arguments
+ * and return a {@code VNumberArray}.
  * <p>
  * This class takes care of:
  * <ul>
- *    <li>extracting the Number and ListNumber from the VNumber and VNumberArray</li>
+ *    <li>extracting double value from {@code VNumber}</li>
+ *    <li>extracting ListNumber value from {@code VNumberArray}</li>
  *    <li>null handling - returns null if one argument is null</li>
  *    <li>alarm handling - returns highest alarm</li>
  *    <li>time handling - returns latest time, or now if no time is available</li>
@@ -44,55 +46,69 @@ public abstract class AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction i
     /**
      * Creates a new function.
      * 
-     * @param name the name of the function
-     * @param description a short description
-     * @param arg1Name first argument name
-     * @param arg2Name second argument name
+     * @param name function name; can't be null
+     * @param description function description; can't be null
+     * @param arg1Name first argument name; can't be null
+     * @param arg2Name second argument name; can't be null
      */
     public AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction(String name, String description,
 	    String arg1Name, String arg2Name) {
+        // Validate parameters
+        if (name == null) {
+            throw new NullPointerException("Function name can't be null");
+        }
+        if (description == null) {
+            throw new NullPointerException("Function description can't be null");
+        }
+        if (arg1Name == null) {
+            throw new NullPointerException("First argument name can't be null");
+        }
+        if (arg2Name == null) {
+            throw new NullPointerException("Second argument name can't be null");
+        }
+        
 	this.name = name;
 	this.description = description;
 	this.argumentNames = Arrays.asList(arg1Name, arg2Name);
     }
 
     @Override
-    public boolean isPure() {
+    public final boolean isPure() {
 	return true;
     }
 
     @Override
-    public boolean isVarArgs() {
+    public final boolean isVarArgs() {
 	return false;
     }
 
     @Override
-    public String getName() {
+    public final String getName() {
 	return name;
     }
 
     @Override
-    public String getDescription() {
+    public final String getDescription() {
 	return description;
     }
 
     @Override
-    public List<Class<?>> getArgumentTypes() {
+    public final List<Class<?>> getArgumentTypes() {
 	return argumentTypes;
     }
 
     @Override
-    public List<String> getArgumentNames() {
+    public final List<String> getArgumentNames() {
 	return argumentNames;
     }
 
     @Override
-    public Class<?> getReturnType() {
+    public final Class<?> getReturnType() {
 	return VNumberArray.class;
     }
 
     @Override
-    public Object calculate(List<Object> args) {
+    public final Object calculate(List<Object> args) {
         if (NullUtils.containsNull(args)) {
             return null;
         }
@@ -101,7 +117,7 @@ public abstract class AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction i
         VNumberArray arg2 = (VNumberArray) args.get(1);
 
         return newVNumberArray(
-		calculate(arg1.getValue(), arg2.getData()),
+		calculate(arg1.getValue().doubleValue(), arg2.getData()),
                 ValueUtil.highestSeverityOf(args, false),
 		ValueUtil.latestValidTimeOrNowOf(args),
                 displayNone());
@@ -111,10 +127,10 @@ public abstract class AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction i
      * Calculates the result based on the two arguments. This is the only
      * method one has to implement.
      * 
-     * @param arg1 the first argument; not null
+     * @param arg1 the first argument
      * @param arg2 the second argument; not null
      * @return the result; not null
      */
-    abstract ListNumber calculate(Number arg1, ListNumber arg2);
+    public abstract ListNumber calculate(double arg1, ListNumber arg2);
 
 }

@@ -15,16 +15,17 @@ import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 
 /**
+ * Function that connects to the Channel Finder server, runs the query,
+ * and returns the result.
  * 
  * @author Kunal Shroff
- *
  */
 public class CFQueryFunction extends StatefulFormulaFunction {
-    
+
+    // Function state (will be different for each use of the function)
     private VString currentQuery;
     private volatile VTable currentResult;
     private volatile Exception currentException;
-    
     private ServiceMethod serviceMethod;    
 
     @Override
@@ -70,6 +71,13 @@ public class CFQueryFunction extends StatefulFormulaFunction {
                         currentException = newValue;
                         currentResult = null;
                     });
+        }
+        if (currentException != null) {
+            if (currentException instanceof RuntimeException) {
+                throw (RuntimeException) currentException;
+            } else {
+                throw new RuntimeException("Call to ChannelFinder service failed", currentException);
+            }
         }
         return currentResult;
     }

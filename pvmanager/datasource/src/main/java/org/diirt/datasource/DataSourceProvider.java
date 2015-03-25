@@ -4,9 +4,11 @@
  */
 package org.diirt.datasource;
 
-import java.util.ServiceLoader;
+import java.io.InputStream;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.diirt.util.config.Configuration;
 import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 
 /**
@@ -48,15 +50,19 @@ public abstract class DataSourceProvider {
      * @return a new DataSource
      */
     public static CompositeDataSource createDataSource() {
-        log.config("Fetching data source providers");
         CompositeDataSource composite = new CompositeDataSource();
-        int count = 0;
-        for (DataSourceProvider factory : ServiceLoaderOSGiWrapper.load(DataSourceProvider.class)) {
-            log.log(Level.CONFIG, "Adding data source provider ''{0}'' ({1})", new Object[] {factory.getName(), factory.getClass().getSimpleName()});
-            composite.putDataSource(factory);
-            count++;
-        }
-        log.log(Level.CONFIG, "Found {0} data source providers", count);
+        composite.setConfiguration(readConfiguration(composite, "datasources"));
+        ServiceLoaderOSGiWrapper.load(DataSourceProvider.class, log, composite::putDataSource);
         return composite;
+    }
+    
+    private static CompositeDataSourceConfiguration readConfiguration(CompositeDataSource dataSource, String confPath) {
+        try (InputStream input = Configuration.getFileAsStream(confPath + "/datasources.xml", dataSource, "datasources.default.xml")) {
+            CompositeDataSourceConfiguration conf = new CompositeDataSourceConfiguration(input);
+            return conf;
+        } catch (Exception ex) {
+            Logger.getLogger(CompositeDataSourceConfiguration.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/" + confPath + "/datasources.xml", ex);
+            return null;
+        }
     }
 }

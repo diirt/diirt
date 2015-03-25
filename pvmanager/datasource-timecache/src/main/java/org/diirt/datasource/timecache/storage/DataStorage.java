@@ -50,4 +50,6 @@ public interface DataStorage extends DataSource {
 	 */
 	public void removeListener(DataStorageListener listener);
 
+	public void clearAll();
+
 }

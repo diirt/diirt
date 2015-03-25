@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import org.diirt.datasource.expression.WriteExpression;
-import org.diirt.datasource.util.Executors;
+import static org.diirt.util.concurrent.Executors.*;
 import org.diirt.util.time.TimeDuration;
 
 /**
@@ -125,7 +125,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     
     void preparePvWriter(boolean syncWrite) {
         // Create PVReader and connect
-        pvWriter = new PVWriterImpl<>(syncWrite, Executors.localThread() == notificationExecutor);
+        pvWriter = new PVWriterImpl<>(syncWrite, localThread() == notificationExecutor);
         for (PVWriterListener<T> pVWriterListener : writeListeners) {
             pvWriter.addPVWriterListener(pVWriterListener);
         }

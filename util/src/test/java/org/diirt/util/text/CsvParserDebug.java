@@ -24,14 +24,18 @@ public class CsvParserDebug {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fc.getSelectedFile();
             CsvParserResult parseResult = CsvParser.AUTOMATIC.parse(new FileReader(selectedFile));
-            for (int i = 0; i < parseResult.getColumnNames().size(); i++) {
-                String columnName = parseResult.getColumnNames().get(i);
-                Class<?> columnType = parseResult.getColumnTypes().get(i);
-                if (columnType == String.class) {
-                    System.out.println(columnName + " - " + columnType + " - " + nonNumberMatching((List<String>) parseResult.getColumnValues().get(i)));
-                } else {
-                    System.out.println(columnName + " - " + columnType);
+            if (parseResult.isParsingSuccessful()) {
+                for (int i = 0; i < parseResult.getColumnNames().size(); i++) {
+                    String columnName = parseResult.getColumnNames().get(i);
+                    Class<?> columnType = parseResult.getColumnTypes().get(i);
+                    if (columnType == String.class) {
+                        System.out.println(columnName + " - " + columnType + " - " + nonNumberMatching((List<String>) parseResult.getColumnValues().get(i)));
+                    } else {
+                        System.out.println(columnName + " - " + columnType);
+                    }
                 }
+            } else {
+                System.out.println(parseResult.getMessage());
             }
         }
     }

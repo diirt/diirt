@@ -30,7 +30,39 @@ import org.diirt.util.text.StringUtil;
  * @author carcassi
  */
 public class FormulaAst {
-    public enum Type {OP, STRING, INTEGER, FLOATING_POINT, CHANNEL, ID};
+    /**
+     * The type of a formula AST node.
+     */
+    public enum Type {
+        /**
+         * An operator/function node
+         */
+        OP,
+        
+        /**
+         * A String literal node
+         */
+        STRING,
+        
+        /**
+         * An integer literal node
+         */
+        INTEGER,
+        
+        /**
+         * A floating point literal node
+         */
+        FLOATING_POINT,
+        
+        /**
+         * A channel node
+         */
+        CHANNEL,
+        
+        /**
+         * An id node
+         */
+        ID};
     
     private final Type type;
     private final List<FormulaAst> children;

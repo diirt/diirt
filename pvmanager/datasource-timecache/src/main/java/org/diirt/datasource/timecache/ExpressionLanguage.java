@@ -16,6 +16,8 @@ import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
 import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
+import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
+import org.diirt.datasource.timecache.impl.SimpleMemoryStorage;
 import org.diirt.datasource.timecache.query.Query;
 import org.diirt.datasource.timecache.query.QueryData;
 import org.diirt.datasource.timecache.query.QueryParameters;
@@ -55,7 +57,13 @@ public class ExpressionLanguage {
 	 */
 	public static DesiredRateExpression<VTable> timeTableOf(
 			final String channelName, QueryParameters parameters) {
-		final Cache cache = CacheFactory.getCache();
+		// TODO: Cache & query should not be created here in order to be
+		// configured / closed
+		CacheConfig config = new CacheConfig();
+		config.addSource(new SimpleFileDataSource("src/test/resources/archive-export.csv"));
+		config.addSource(new SimpleFileDataSource("src/test/resources/archive-export-singlePV.csv"));
+		config.setStorage(new SimpleMemoryStorage());
+		final Cache cache = CacheFactory.getCache(config);
 		final Query query = cache.createQuery(channelName, VType.class, parameters);
 		return new DesiredRateExpressionImpl<VTable>(new DesiredRateExpressionListImpl<Object>(),
 				new ReadFunction<VTable>() {

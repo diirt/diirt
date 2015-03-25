@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.timecache.query;
 
+import org.diirt.datasource.timecache.Parameter;
 import org.diirt.util.time.TimeRelativeInterval;
 
 /**
@@ -12,6 +13,7 @@ import org.diirt.util.time.TimeRelativeInterval;
 public class QueryParameters {
 
 	TimeRelativeInterval timeInterval;
+	public Parameter config = Parameter.Default;
 
 	public QueryParameters timeInterval(TimeRelativeInterval timeInterval) {
 		this.timeInterval = timeInterval;

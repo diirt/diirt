@@ -25,8 +25,14 @@ public interface Cache {
 	public <V extends VType> Query createQuery(String channelName,
 			Class<V> type, QueryParameters parameters);
 
+	public void addConfig(Parameter p, CacheConfig config);
+
+	public void removeConfig(Parameter p);
+
 	public void setStatisticsEnabled(boolean enabled);
 
 	public CacheStatistics getStatistics();
+
+	public void flush();
 
 }

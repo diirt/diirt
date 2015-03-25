@@ -27,7 +27,7 @@ public class JCABase {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        jca = new JCADataSource();
+        jca = new JCADataSourceConfiguration().create();
         PVManager.setDefaultDataSource(jca);
     }
 

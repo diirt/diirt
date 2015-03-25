@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.vtype.DataTypeSupport;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.namedPool;
 
 /**
  * Data source to monitor system information.

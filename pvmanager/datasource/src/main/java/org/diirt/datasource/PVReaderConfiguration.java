@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import org.diirt.datasource.expression.DesiredRateExpression;
-import org.diirt.datasource.util.Executors;
+import static org.diirt.util.concurrent.Executors.*;
 import org.diirt.util.time.TimeDuration;
 
 /**
@@ -174,7 +174,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     }
     
     void preparePvReader() {
-        pv = new PVReaderImpl<>(aggregatedPVExpression.getName(), Executors.localThread() == notificationExecutor);
+        pv = new PVReaderImpl<>(aggregatedPVExpression.getName(), localThread() == notificationExecutor);
         for (PVReaderListener<T> pVReaderListener : readListeners) {
             pv.addPVReaderListener(pVReaderListener);
         }

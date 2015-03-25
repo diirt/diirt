@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.diirt.datasource.ExpressionLanguage.*;
-import static org.diirt.datasource.util.Executors.*;
+import static org.diirt.util.concurrent.Executors.*;
 import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;

@@ -5,7 +5,7 @@
 package org.diirt.datasource.integration;
 
 import org.diirt.datasource.PVManager;
-import org.diirt.support.ca.JCADataSourceBuilder;
+import org.diirt.support.ca.JCADataSourceConfiguration;
 
 /**
  * Tests reconnects caused by a network outage.
@@ -21,7 +21,7 @@ public class OutageTestPhase extends DisconnectTestPhase {
     }
 
     public static void main(String[] args) {
-        PVManager.setDefaultDataSource(new JCADataSourceBuilder().dbePropertySupported(true).build());
+        PVManager.setDefaultDataSource(new JCADataSourceConfiguration().dbePropertySupported(true).create());
         //LogManager.getLogManager().readConfiguration(new FileInputStream(new File("logging.properties")));
         TestPhase phase1 = new OutageTestPhase();
         phase1.execute();

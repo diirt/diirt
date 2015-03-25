@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +36,21 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 public class ServiceLoaderOSGiWrapper {
+    
+    public static <T> void load(Class<T> serviceClazz, Logger log, Consumer<T> consumer) {
+        log.log(Level.CONFIG, "Fetching {0}s", serviceClazz.getSimpleName());
+        int count = 0;
+        for (T service : ServiceLoaderOSGiWrapper.load(serviceClazz)) {
+            log.log(Level.CONFIG, "Found {0} ({1})", new Object[] {serviceClazz.getSimpleName(), service.getClass().getSimpleName()});
+            try {
+                consumer.accept(service);
+                count++;
+            } catch (RuntimeException ex) {
+                log.log(Level.WARNING, "Couldn't register " + serviceClazz.getSimpleName() + " (" + service.getClass().getSimpleName() + ")", ex);
+            }
+        }
+        log.log(Level.CONFIG, "Found {0} {1}s", new Object[] {count, serviceClazz.getSimpleName()});
+    }
 
     public static <T> Iterable<T> load(Class<T> serviceClazz) {
         if (isOSGi(serviceClazz)) {
@@ -44,8 +60,14 @@ public class ServiceLoaderOSGiWrapper {
         }
     }
 
-    private static boolean isOSGi(Class<?> clazz) {
-        return osgi.frameworkUtilClass != null;
+    private static boolean isOSGi(Class<?> serviceClazz) {
+        try {
+            if (osgi.frameworkUtilClass != null && osgi.getBundle(serviceClazz) != null) {
+                return true;
+            }
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     private static <T> List<T> loadOSGi(Class<T> serviceClazz) {
@@ -99,6 +121,13 @@ public class ServiceLoaderOSGiWrapper {
         private final Method getBundlesMethod = loadMethod(bundleContextClass, "getBundles");
         private final Method loadClassMethod = loadMethod(bundleClass, "loadClass", String.class);
         private final Method getEntryMethod = loadMethod(bundleClass, "getEntry", String.class);
+        private final boolean osgiEnabled;
+
+        public OSGiReflection() {
+            this.osgiEnabled = false;
+        }
+        
+        
         
         private Class<?> loadClass(String name) {
             try {

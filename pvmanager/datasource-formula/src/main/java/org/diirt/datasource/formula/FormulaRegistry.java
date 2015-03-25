@@ -4,13 +4,17 @@
  */
 package org.diirt.datasource.formula;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 import org.diirt.vtype.ValueFactory;
 
 /**
@@ -21,12 +25,11 @@ import org.diirt.vtype.ValueFactory;
 public class FormulaRegistry {
     private final static FormulaRegistry registry = new FormulaRegistry();
     
+    private static final Logger log = Logger.getLogger(FormulaRegistry.class.getName());
+    
     static {
         // Find formula functions to register using the ServiceLoader
-        ServiceLoader<FormulaFunctionSet> sl = ServiceLoader.load(FormulaFunctionSet.class);
-        for (FormulaFunctionSet functionSet : sl) {
-            registry.registerFormulaFunctionSet(functionSet);
-        }
+        ServiceLoaderOSGiWrapper.load(FormulaFunctionSet.class, log, registry::registerFormulaFunctionSet);
     }
 
     /**
@@ -62,6 +65,8 @@ public class FormulaRegistry {
     }
     
     private void registerFormulaFunction(FormulaFunction formulaFunction) {
+        validateFormulaFunction(formulaFunction);
+        
         // Get the map based by name
         Map<Integer, Collection<FormulaFunction>> functionForName = formulaFunctions.get(formulaFunction.getName());
         if (functionForName == null) {
@@ -78,6 +83,24 @@ public class FormulaRegistry {
         
         // Add formula
         functionsForNArguments.add(formulaFunction);
+    }
+    
+    static void validateFormulaFunction(FormulaFunction formulaFunction)  {
+        if (formulaFunction instanceof StatefulFormulaFunction) {
+            StatefulFormulaFunction function = (StatefulFormulaFunction) formulaFunction;
+            StatefulFormulaFunction instance;
+            try {
+                instance = function.getClass().newInstance();
+            } catch (SecurityException | InstantiationException | IllegalAccessException ex) {
+                throw new IllegalArgumentException("StatefulFormulaFunction " + formulaFunction.getClass().getName() + " must be public and have a public no-arg constructor.", ex);
+            }
+            try {
+                instance.dispose();
+            } catch (Exception ex) {
+                throw new RuntimeException("StatefulFormulaFunction " + formulaFunction.getClass().getName() + " fails on dispose.", ex);
+            }
+            
+        }
     }
 
     /**
@@ -121,6 +144,12 @@ public class FormulaRegistry {
         return functions;
     }
     
+    /**
+     * Returns the value of the constant with the given name
+     * 
+     * @param constantName the constant name
+     * @return the value of the name
+     */
     public Object findNamedConstant(String constantName) {
         return constants.get(constantName);
     }

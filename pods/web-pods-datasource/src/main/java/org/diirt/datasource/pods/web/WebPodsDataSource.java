@@ -16,7 +16,7 @@ import javax.websocket.WebSocketContainer;
 
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
-import static org.diirt.datasource.util.Executors.namedPool;
+import static org.diirt.util.concurrent.Executors.namedPool;
 import org.diirt.datasource.vtype.DataTypeSupport;
 
 /**
@@ -37,19 +37,11 @@ public final class WebPodsDataSource extends DataSource {
     private static final Logger log = Logger.getLogger(WebPodsDataSource.class.getName());
 
     /**
-     * Creates a new data source with the default configuration.
-     */
-    public WebPodsDataSource() {
-        this(new WebPodsDataSourceProvider().readDefaultConfiguration());
-        reconnect();
-    }
-
-    /**
      * Creates a new data source with the given configuration.
      * 
      * @param configuration data source configuration
      */
-    public WebPodsDataSource(WebPodsDataSourceConfiguration configuration) {
+    WebPodsDataSource(WebPodsDataSourceConfiguration configuration) {
         super(true);
         client = new WebPodsClient();
         this.socketLocation = configuration.getSocketLocation();

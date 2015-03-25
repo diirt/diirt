@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>diirt-all</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>diirt-util</artifactId>
     <name>org.diirt.util</name>
@@ -33,7 +33,7 @@
                         accessed through introspection, so no maven dependency
                         is needed. But it is required when in OSGi so that
                         the introspection actually works.-->
-                        <Import-Package>javax.swing,org.osgi.framework</Import-Package>
+                        <Import-Package>org.osgi.framework,*</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

@@ -1,0 +1,24 @@
+.wp-text-monitor {
+    display: inline-block;
+}
+
+.wp-text-monitor .alarm-none {
+    background-color: white;
+}
+
+.wp-text-monitor .alarm-minor {
+    background-color: yellow;
+}
+
+.wp-text-monitor .alarm-major {
+    background-color: red;
+}
+
+.wp-text-monitor .alarm-invalid {
+    background-color: magenta;
+}
+
+.wp-text-monitor .alarm-undefined {
+    background-color: magenta;
+}
+
