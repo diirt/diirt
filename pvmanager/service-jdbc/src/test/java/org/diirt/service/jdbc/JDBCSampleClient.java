@@ -41,7 +41,7 @@ public class JDBCSampleClient {
         io.export(table, outputStreamWriter);
         outputStreamWriter.flush();        
         
-        // TODO I am unable to test this
+        // TODO verify correctness
         ServiceRegistry.getDefault().findService("jdbcSample").close();
     }
 }

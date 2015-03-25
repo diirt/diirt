@@ -46,7 +46,6 @@ public class JDBCService extends Service {
         try {
             dataSource.getConnection().close();
         } catch (SQLException ex) {
-            // TODO does this need logging?
             throw new RuntimeException("Unable to close the JDBC data source connection", ex);
         }
     }
