@@ -2,9 +2,10 @@
  * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
-package org.diirt.ui.tools;
+package org.diirt.javafx.tools;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,19 +17,16 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.HBox;
-import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.datasource.formula.FormulaFunctionSet;
-import org.diirt.datasource.formula.FormulaFunctions;
-import org.diirt.datasource.formula.FormulaRegistry;
 import org.diirt.service.Service;
 import org.diirt.service.ServiceMethod;
+import org.diirt.service.ServiceMethod.DataDescription;
 import org.diirt.service.ServiceRegistry;
 
 /**
- *
+ * 
  * @author asbarber
  */
-public final class ServiceMethodViewer extends HBox {
+public final class ServiceViewer extends HBox {
 
     @FXML
     private TreeTableView<BrowserItem> servicesTreeTable;
@@ -61,16 +59,16 @@ public final class ServiceMethodViewer extends HBox {
         public List<BrowserItem> createChildren() {
             return ServiceRegistry.getDefault()
                     .getRegisteredServiceNames().stream().sorted()
-                    .map(name -> new ServiceFunctionSetBrowserItem(ServiceRegistry.getDefault().findService(name)))
+                    .map(name -> new ServiceBrowserItem(ServiceRegistry.getDefault().findService(name)))
                     .collect(Collectors.toList());
         }
         
     }
     
-    public static class ServiceFunctionSetBrowserItem implements BrowserItem {
+    public static class ServiceBrowserItem implements BrowserItem {
         private final Service service;
 
-        public ServiceFunctionSetBrowserItem(Service service) {
+        public ServiceBrowserItem(Service service) {
             this.service = service;
         }
 
@@ -93,16 +91,16 @@ public final class ServiceMethodViewer extends HBox {
         public List<BrowserItem> createChildren() {
             return service.getServiceMethods().entrySet().stream()
                     .sorted((f1, f2) -> f1.getValue().getName().compareTo(f2.getValue().getName()))
-                    .map((f) -> new ServiceFunctionDataBrowserItem(f.getValue()))
+                    .map((f) -> new ServiceMethodBrowserItem(f.getValue()))
                     .collect(Collectors.toList());
         }
         
     }
     
-    public static class ServiceFunctionDataBrowserItem implements BrowserItem {
+    public static class ServiceMethodBrowserItem implements BrowserItem {
         private final ServiceMethod method;
 
-        public ServiceFunctionDataBrowserItem(ServiceMethod method) {
+        public ServiceMethodBrowserItem(ServiceMethod method) {
             this.method = method;
         }
 
@@ -118,6 +116,49 @@ public final class ServiceMethodViewer extends HBox {
 
         @Override
         public boolean isLeaf() {
+            return false;
+        }
+
+        @Override
+        public List<BrowserItem> createChildren() {
+            List<BrowserItem> items = new ArrayList<>();
+            
+            items.addAll( method.getArguments().stream()
+                    .sorted((m1, m2) -> m1.getName().compareTo(m2.getName()))
+                    .map((m) -> new ServiceMethodArgumentBrowserItem(m, " (Argument)"))
+                    .collect(Collectors.toList()) );
+            
+            items.addAll( method.getResults().stream()
+                    .sorted((m1, m2) -> m1.getName().compareTo(m2.getName()))
+                    .map((m) -> new ServiceMethodArgumentBrowserItem(m, " (Result)"))
+                    .collect(Collectors.toList()) );
+            
+            return items;
+        }
+        
+    }
+    
+    public static class ServiceMethodArgumentBrowserItem implements BrowserItem {
+        private final DataDescription parameter;
+        private final String type;
+        
+        public ServiceMethodArgumentBrowserItem(DataDescription parameter, String type){
+            this.parameter = parameter;
+            this.type = type;
+        }
+
+        @Override
+        public String getName() {
+            return parameter.getName() + type;
+        }
+
+        @Override
+        public String getDescription() {
+            return parameter.getDescription();
+        }
+
+        @Override
+        public boolean isLeaf() {
             return true;
         }
 
@@ -125,6 +166,7 @@ public final class ServiceMethodViewer extends HBox {
         public List<BrowserItem> createChildren() {
             return Collections.emptyList();
         }
+        
         
     }
     
@@ -152,9 +194,9 @@ public final class ServiceMethodViewer extends HBox {
     }
     
 
-    public ServiceMethodViewer() {
+    public ServiceViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("ServiceMethodViewer.fxml"));
+                getClass().getResource("ServiceViewer.fxml"));
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
@@ -180,6 +222,6 @@ public final class ServiceMethodViewer extends HBox {
     }
     
     public static void main(String[] args) {
-        //JavaFXLaunchUtil.launch("Diirt - Service Browser", ServiceMethodViewer.class, args);
+        JavaFXLaunchUtil.launch("Diirt - Service Browser", ServiceViewer.class, args);
     }    
 }
