@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
  */
 public class RPCServices {
 
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.datasource.util.Executors.namedPool("pvAccess RPC services"));
+    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("pvAccess RPC services"));
 
     /**
      * Creates a pvAccess RPC Service based on the description in the XML file.

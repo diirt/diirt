@@ -24,7 +24,6 @@ import org.diirt.support.pva.adapters.PVFieldToVStatistics;
 import org.diirt.support.pva.adapters.PVFieldToVStringArray;
 import org.diirt.support.pva.adapters.PVFieldToVTable;
 import org.diirt.support.pva.rpcservice.rpcclient.PooledRPCClientFactory;
-import org.diirt.service.ServiceMethod;
 import org.diirt.util.array.CollectionNumbers;
 import org.diirt.util.array.ListBoolean;
 import org.diirt.util.array.ListByte;
@@ -357,7 +356,6 @@ class RPCServiceMethod extends ServiceMethod {
         String resultName = getResults().get(0).getName();
         String fieldName = fieldNames.get(resultName);
 
-        // TODO missing ValueFactory.newVLong
         if (resultType.isAssignableFrom(VDouble.class)) {
             return ValueFactory.newVDouble(pvResult.getDoubleField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
         } else if (resultType.isAssignableFrom(VFloat.class)) {
@@ -373,23 +371,27 @@ class RPCServiceMethod extends ServiceMethod {
         } else if (resultType.isAssignableFrom(VBoolean.class)) {
             return ValueFactory.newVBoolean(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
         } else if (resultType.isAssignableFrom(VDoubleArray.class)) {
-            if ("ev4:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID())) {
+
+            if ("epics:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID())) {
                 return new PVFieldNTMatrixToVDoubleArray(pvResult, false);
             } else {
-                return new PVFieldToVDoubleArray(pvResult, fieldName != null ? fieldName : resultName, true);
+                return new PVFieldToVDoubleArray(fieldName != null ? fieldName : resultName, pvResult, true);
             }
+
         } else if (resultType.isAssignableFrom(VFloatArray.class)) {
-            return new PVFieldToVFloatArray(pvResult, fieldName != null ? fieldName : resultName, true);
+            return new PVFieldToVFloatArray(fieldName != null ? fieldName : resultName, pvResult, true);
         } else if (resultType.isAssignableFrom(VIntArray.class)) {
-            return new PVFieldToVIntArray(pvResult, fieldName != null ? fieldName : resultName, true);
+            return new PVFieldToVIntArray(fieldName != null ? fieldName : resultName, pvResult, true);
         } else if (resultType.isAssignableFrom(VShortArray.class)) {
-            return new PVFieldToVShortArray(pvResult, fieldName != null ? fieldName : resultName, true);
+            return new PVFieldToVShortArray(fieldName != null ? fieldName : resultName, pvResult, true);
         } else if (resultType.isAssignableFrom(VByteArray.class)) {
-            return new PVFieldToVByteArray(pvResult, fieldName != null ? fieldName : resultName, true);
+            return new PVFieldToVByteArray(fieldName != null ? fieldName : resultName, pvResult, true);
         } else if (resultType.isAssignableFrom(VStringArray.class)) {
-            return new PVFieldToVStringArray(pvResult, fieldName != null ? fieldName : resultName, true);
+            return new PVFieldToVStringArray(fieldName != null ? fieldName : resultName, pvResult, true);
+        } else if (resultType.isAssignableFrom(VBooleanArray.class)) {
+        return new PVFieldToVBooleanArray(fieldName != null ? fieldName : resultName, pvResult, true);
         } else if (resultType.isAssignableFrom(VTable.class)) {
-            if ("ev4:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID())) {
+            if ("epics:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID())) {
                 return new PVFieldNTNameValueToVTable(pvResult, false);
             } else {
                 return new PVFieldToVTable(pvResult, false);
@@ -402,6 +404,7 @@ class RPCServiceMethod extends ServiceMethod {
         }
 
         throw new IllegalArgumentException("Result type " + resultType.getSimpleName() + " not supported in pvAccess RPC rpcservice");
+
     }
     
     public String getStructureID(){
