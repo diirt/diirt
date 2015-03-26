@@ -158,7 +158,7 @@ public class NumberColorMaps {
     private static void createMapsLocal(File path, Logger log){
         
         //files to be copied 
-        String [] mapNames ={"BONE.xml","GRAY.xml","HOT.xml","HSV.xml","JET.xml"}; 
+        String [] mapNames ={"BONE.xml","GRAY.xml","HOT.xml","HSV.xml","HSVRadian.xml","JET.xml"}; 
         
 
         for(String map: mapNames)
