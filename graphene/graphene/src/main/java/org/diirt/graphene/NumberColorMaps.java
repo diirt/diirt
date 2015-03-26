@@ -300,6 +300,28 @@ public class NumberColorMaps {
          
     }
     
+    public static final String DEFAULT_NUMBER_COLOR_MAP_NAME = "JET";
+    
+    /**
+     * Returns the default {@code NumberColorMap}. It searches for {@link #DEFAULT_NUMBER_COLOR_MAP_NAME}
+     * within the registered maps, and if not found it uses a hard coded version.
+     * 
+     * @return a color map; never null
+     */
+    public static NumberColorMap defaultNumberColorMap() {
+        NumberColorMap colorMap = null;
+        try {
+            colorMap = getRegisteredColorSchemes().get(DEFAULT_NUMBER_COLOR_MAP_NAME);
+        } catch(Exception ex) {
+            // Loading failed
+        }
+        if (colorMap != null) {
+            return colorMap;
+        } else {
+            return JET;
+        }
+    }
+    
     /**
      * A set of registered color maps available to all applications.
      * 
