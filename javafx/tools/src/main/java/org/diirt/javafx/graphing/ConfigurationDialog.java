@@ -63,9 +63,6 @@ import org.diirt.graphene.NumberColorMap;
  * </code>
  * </pre>
  * <p>
- * Note: Fields may only have 2 components: a label and some sort of input method, e.g.
- * a combobox or text field. This is necessary to maintain an appealing look
- * for the dialog box
  * 
  * @author mjchao
  */
@@ -290,7 +287,11 @@ public class ConfigurationDialog extends Stage {
     }
     
     /**
-     * Provides the user with the ability to configure one property
+     * Provides the user with the ability to configure one property.
+     * <p>
+     * Note: Fields may only have 2 components: a label and some sort of input method, e.g.
+     * a combobox or text field. This is necessary to maintain an appealing look
+     * for the dialog box
      * 
      * @param <T> the type of property this field allows the user to modify
      */
@@ -403,7 +404,7 @@ public class ConfigurationDialog extends Stage {
 	    this.chkValue = new CheckBox();
 	    this.chkValue.selectedProperty().bindBidirectional( p );
 	    this.chkValue.setSelected( p.getValue() );
-	    this.getChildren().addAll( this.lblName , this.chkValue );
+	    this.chkValue.setMaxWidth( Double.MAX_VALUE );
 	}
 	
 	@Override
@@ -441,7 +442,7 @@ public class ConfigurationDialog extends Stage {
 	    this.cboInterpolations.getItems().addAll( interpolationSchemes );
 	    this.cboInterpolations.valueProperty().bindBidirectional( p );
 	    this.cboInterpolations.setValue( p.getValue() );
-	    this.getChildren().addAll( this.lblName , this.cboInterpolations );
+	    this.cboInterpolations.setMaxWidth( Double.MAX_VALUE );
 	}
 	
 	@Override
@@ -476,7 +477,7 @@ public class ConfigurationDialog extends Stage {
 	    this.cboColorMaps.getItems().addAll( maps );
 	    this.cboColorMaps.valueProperty().bindBidirectional( p );
 	    this.cboColorMaps.setValue( p.getValue() );
-	    this.getChildren().addAll( this.lblName , this.cboColorMaps );
+	    this.cboColorMaps.setMaxWidth( Double.MAX_VALUE );
 	}
 	
 	@Override
