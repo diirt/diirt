@@ -14,6 +14,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -21,8 +23,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -58,6 +62,11 @@ import org.diirt.graphene.NumberColorMap;
  * configurationDialog.addNumberColorMapListProperty( p );
  * </code>
  * </pre>
+ * <p>
+ * Note: Fields may only have 2 components: a label and some sort of input method, e.g.
+ * a combobox or text field. This is necessary to maintain an appealing look
+ * for the dialog box
+ * 
  * @author mjchao
  */
 public class ConfigurationDialog extends Stage {
@@ -108,10 +117,17 @@ public class ConfigurationDialog extends Stage {
     public ConfigurationDialog() {
 	this.initStyle( StageStyle.UTILITY );
 	Scene s = new Scene( pnlMain );
+	
 	pnlMain.setCenter( pnlConfigurations );
+	
+	//we assume that there will only ever be 2 columns: 1 to label the
+	//property and 1 for the input method for that property
+	this.pnlConfigurations.getColumnConstraints().addAll( new ColumnConstraints() , new ColumnConstraints() );
+	this.pnlConfigurations.getColumnConstraints().get( 1 ).setHgrow( Priority.ALWAYS );
+	
 	pnlMain.setBottom( pnlSaveCancel );
 	
-	Button cmdConfigure = new Button( "Configure" );
+	Button cmdConfigure = new Button( "OK" );
 	cmdConfigure.setOnAction( new EventHandler< ActionEvent >() {
 
 	    @Override
@@ -121,14 +137,24 @@ public class ConfigurationDialog extends Stage {
 	    }
 	});
 	
-	Button cmdCancel = new Button( "Cancel" );
-	cmdCancel.setOnAction( new EventHandler< ActionEvent >() {
+	Button cmdRevert = new Button( "Revert" );
+	cmdRevert.setOnAction( new EventHandler< ActionEvent >() {
 
 	    @Override
 	    public void handle(ActionEvent event) {
 		cancelChanges();
 	    }
 	});
+	
+	Button cmdCancel = new Button( "Cancel" );
+	cmdCancel.setOnAction( new EventHandler< ActionEvent >() {
+	    
+	    @Override
+	    public void handle( ActionEvent event ) {
+		ConfigurationDialog.this.hide();
+	    }
+	});
+	
 	
 	this.setOnHidden( new EventHandler< WindowEvent >() {
 
@@ -140,8 +166,32 @@ public class ConfigurationDialog extends Stage {
 	});
 	
 	pnlSaveCancel.add( cmdConfigure , 0 , 0 );
-	pnlSaveCancel.add( cmdCancel , 1 , 0 );
+	pnlSaveCancel.add( cmdRevert , 1 , 0 );
+	pnlSaveCancel.add( cmdCancel , 2 , 0 );
+	
+	pnlSaveCancel.getColumnConstraints().addAll( new ColumnConstraints() , new ColumnConstraints() , new ColumnConstraints() );
+	pnlSaveCancel.getColumnConstraints().get( 0 ).setHgrow( Priority.ALWAYS );
+	pnlSaveCancel.getColumnConstraints().get( 0 ).setHalignment( HPos.CENTER );
+	pnlSaveCancel.getColumnConstraints().get( 1 ).setHgrow( Priority.ALWAYS );
+	pnlSaveCancel.getColumnConstraints().get( 1 ).setHalignment( HPos.CENTER );
+	pnlSaveCancel.getColumnConstraints().get( 2 ).setHgrow( Priority.ALWAYS );
+	pnlSaveCancel.getColumnConstraints().get( 2 ).setHalignment( HPos.CENTER );
 	this.setScene( s );
+    }
+    
+    /**
+     * Adds a property field to this configuration dialog. The graphical components
+     * are displayed in the dialog box, and the configuration data will be modified
+     * as the user changes the property.
+     * 
+     * @param graphicalComponents the graphical components of which the property field consists
+     * @param data the data related to the property field to be added
+     */
+    private void addPropertyField( Node[] graphicalComponents , ConfigurationData data ) {
+	for ( int i=0 ; i<graphicalComponents.length ; i++ ) {
+	    this.pnlConfigurations.add( graphicalComponents[ i ] , i , this.configurationData.size() );
+	}
+	this.configurationData.add( data );
     }
     
     /**
@@ -154,9 +204,8 @@ public class ConfigurationDialog extends Stage {
      */
     public void addStringProperty( StringProperty p ) {
 	StringField newField = new StringField( p );
-	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleStringProperty( p.getValue() ) );
-	this.configurationData.add( data );
+	addPropertyField( newField.getComponents() , data );
     }
     
     /**
@@ -168,9 +217,8 @@ public class ConfigurationDialog extends Stage {
      */
     public void addBooleanProperty( BooleanProperty p ) {
 	BooleanField newField = new BooleanField( p );
-	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleBooleanProperty( p.getValue() ) );
-	this.configurationData.add( data );
+	addPropertyField( newField.getComponents() , data );
     }
     
     /**
@@ -184,9 +232,8 @@ public class ConfigurationDialog extends Stage {
      */
     public void addInterpolationSchemeListProperty( Property< InterpolationScheme > p , InterpolationScheme[] allowedInterpolations ) {
 	InterpolationSchemeField newField = new InterpolationSchemeField( p , allowedInterpolations );
-	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleObjectProperty< InterpolationScheme >( p.getValue() ) );
-	this.configurationData.add( data );
+	addPropertyField( newField.getComponents() , data );
     }
     
     /**
@@ -200,9 +247,8 @@ public class ConfigurationDialog extends Stage {
      */
     public void addNumberColorMapListProperty( Property< NumberColorMap > p , NumberColorMap[] allowedMappings ) {
 	NumberColorMapField newField = new NumberColorMapField( p , allowedMappings );
-	this.pnlConfigurations.add( newField , 0 , this.configurationData.size() );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleObjectProperty< NumberColorMap >( p.getValue() ) );
-	this.configurationData.add( data );
+	addPropertyField( newField.getComponents() , data );
     }
     
     /**
@@ -276,6 +322,10 @@ public class ConfigurationDialog extends Stage {
 	public T getValue() {
 	    return this.m_property.getValue();
 	}
+	
+	public Node[] getComponents() {
+	    return new Node[]{};
+	}
     }
     
     /**
@@ -317,7 +367,11 @@ public class ConfigurationDialog extends Stage {
 	    this.txtValue = new TextField( "         " );
 	    this.txtValue.textProperty().bindBidirectional( p );
 	    this.txtValue.setText( p.getValue() );
-	    this.getChildren().addAll( this.lblName , this.txtValue );
+	}
+	
+	@Override
+	public Node[] getComponents() {
+	    return new Node[]{ this.lblName , this.txtValue };
 	}
     }
     
@@ -350,6 +404,11 @@ public class ConfigurationDialog extends Stage {
 	    this.chkValue.selectedProperty().bindBidirectional( p );
 	    this.chkValue.setSelected( p.getValue() );
 	    this.getChildren().addAll( this.lblName , this.chkValue );
+	}
+	
+	@Override
+	public Node[] getComponents() {
+	    return new Node[]{ this.lblName , this.chkValue };
 	}
     }
     
@@ -384,6 +443,11 @@ public class ConfigurationDialog extends Stage {
 	    this.cboInterpolations.setValue( p.getValue() );
 	    this.getChildren().addAll( this.lblName , this.cboInterpolations );
 	}
+	
+	@Override
+	public Node[] getComponents() {
+	    return new Node[]{this.lblName , this.cboInterpolations};
+	}
     }
     
     /**
@@ -413,6 +477,11 @@ public class ConfigurationDialog extends Stage {
 	    this.cboColorMaps.valueProperty().bindBidirectional( p );
 	    this.cboColorMaps.setValue( p.getValue() );
 	    this.getChildren().addAll( this.lblName , this.cboColorMaps );
+	}
+	
+	@Override
+	public Node[] getComponents() {
+	    return new Node[]{ this.lblName , this.cboColorMaps };
 	}
     }
 }
