@@ -15,6 +15,7 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -121,10 +123,15 @@ public class ConfigurationDialog extends Stage {
 	//property and 1 for the input method for that property
 	this.pnlConfigurations.getColumnConstraints().addAll( new ColumnConstraints() , new ColumnConstraints() );
 	this.pnlConfigurations.getColumnConstraints().get( 1 ).setHgrow( Priority.ALWAYS );
+
+	FlowPane pnlBottom = new FlowPane();
+	pnlBottom.setAlignment( Pos.CENTER_RIGHT );
+	pnlBottom.getChildren().add( pnlSaveCancel );
+	pnlMain.setBottom( pnlBottom );
 	
-	pnlMain.setBottom( pnlSaveCancel );
-	
-	Button cmdConfigure = new Button( "OK" );
+	Button cmdConfigure = new Button( "Accept" );
+	cmdConfigure.setMinSize( 0 , 0 );
+	cmdConfigure.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
 	cmdConfigure.setOnAction( new EventHandler< ActionEvent >() {
 
 	    @Override
@@ -135,6 +142,8 @@ public class ConfigurationDialog extends Stage {
 	});
 	
 	Button cmdRevert = new Button( "Revert" );
+	cmdRevert.setMinSize( 0 , 0 );
+	cmdRevert.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
 	cmdRevert.setOnAction( new EventHandler< ActionEvent >() {
 
 	    @Override
@@ -144,6 +153,8 @@ public class ConfigurationDialog extends Stage {
 	});
 	
 	Button cmdCancel = new Button( "Cancel" );
+	cmdCancel.setMinSize( 0 , 0 );
+	cmdCancel.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
 	cmdCancel.setOnAction( new EventHandler< ActionEvent >() {
 	    
 	    @Override
@@ -162,17 +173,18 @@ public class ConfigurationDialog extends Stage {
 	    
 	});
 	
+	pnlSaveCancel.setHgap( 5 );
 	pnlSaveCancel.add( cmdConfigure , 0 , 0 );
-	pnlSaveCancel.add( cmdRevert , 1 , 0 );
-	pnlSaveCancel.add( cmdCancel , 2 , 0 );
+	pnlSaveCancel.add( cmdCancel , 1 , 0 );
+	pnlSaveCancel.add( cmdRevert , 2 , 0 );
 	
 	pnlSaveCancel.getColumnConstraints().addAll( new ColumnConstraints() , new ColumnConstraints() , new ColumnConstraints() );
 	pnlSaveCancel.getColumnConstraints().get( 0 ).setHgrow( Priority.ALWAYS );
-	pnlSaveCancel.getColumnConstraints().get( 0 ).setHalignment( HPos.CENTER );
+	pnlSaveCancel.getColumnConstraints().get( 0 ).setHalignment( HPos.RIGHT );
 	pnlSaveCancel.getColumnConstraints().get( 1 ).setHgrow( Priority.ALWAYS );
-	pnlSaveCancel.getColumnConstraints().get( 1 ).setHalignment( HPos.CENTER );
+	pnlSaveCancel.getColumnConstraints().get( 1 ).setHalignment( HPos.RIGHT );
 	pnlSaveCancel.getColumnConstraints().get( 2 ).setHgrow( Priority.ALWAYS );
-	pnlSaveCancel.getColumnConstraints().get( 2 ).setHalignment( HPos.CENTER );
+	pnlSaveCancel.getColumnConstraints().get( 2 ).setHalignment( HPos.RIGHT );
 	this.setScene( s );
     }
     

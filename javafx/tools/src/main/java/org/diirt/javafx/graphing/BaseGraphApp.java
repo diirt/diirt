@@ -6,7 +6,6 @@
 package org.diirt.javafx.graphing;
 
 import javafx.application.Application;
-import javafx.beans.property.Property;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -17,7 +16,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
 /**
@@ -118,12 +119,18 @@ abstract public class BaseGraphApp extends Application {
 	 */
 	final private Label lblData = new Label( "Data:" );
 	final private ComboBox<String> cboSelectData = new ComboBox<String>();
-	final private Button cmdConfigure = new Button( "Configure" );
+	final private Button cmdConfigure = new Button( "Configure..." );
 	
 	public DataSelectionPanel() {
-	    FlowPane pnlCenter = new FlowPane();
-	    this.cboSelectData.setPrefWidth( 375 );
-	    pnlCenter.getChildren().addAll( this.lblData , this.cboSelectData , this.cmdConfigure );
+	    GridPane pnlCenter = new GridPane();
+	    pnlCenter.setHgap( 5 );
+	    this.cboSelectData.setPrefWidth( 0 );
+	    pnlCenter.addRow( 0 , this.lblData , this.cboSelectData , this.cmdConfigure );
+	    
+	    ColumnConstraints allowResize = new ColumnConstraints();
+	    allowResize.setHgrow( Priority.ALWAYS );
+	    ColumnConstraints noResize = new ColumnConstraints();
+	    pnlCenter.getColumnConstraints().addAll( noResize , allowResize , noResize );
 	    
 	    this.setCenter( pnlCenter );
 	    
