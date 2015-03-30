@@ -21,6 +21,7 @@ import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListNumbers;
+import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
@@ -601,5 +602,48 @@ public class VTableFactory {
         }
         
         return extractRows(table, indexes);
+    }
+    
+    public static void validateTable(VTable vTable) {
+        for (int i = 0; i < vTable.getColumnCount(); i++) {
+            Class<?> type = null;
+            String name = null;
+            Object data = null;
+            
+            try {
+                type = vTable.getColumnType(i);
+            } catch (RuntimeException ex) {
+                throw new IllegalArgumentException("Can't get column " + i + " type", ex);
+            }
+            
+            try {
+                name = vTable.getColumnName(i);
+            } catch (RuntimeException ex) {
+                throw new IllegalArgumentException("Can't get column " + i + " name", ex);
+            }
+            
+            try {
+                data = vTable.getColumnData(i);
+            } catch (RuntimeException ex) {
+                throw new IllegalArgumentException("Can't get column " + i + " data", ex);
+            }
+            
+            if (String.class.equals(type)) {
+                if (!(data instanceof List)) {
+                    throw new IllegalArgumentException("Data for column " + i + " (" + name + ") is not a List<String> (" + data + ")");
+                }
+            } else if (type.equals(double.class) || type.equals(float.class) || type.equals(long.class) ||
+                    type.equals(int.class) || type.equals(short.class) || type.equals(byte.class)) {
+                if (!(data instanceof ListNumber)) {
+                    throw new IllegalArgumentException("Data for column " + i + " (" + name + ") is not a ListNumber (" + data + ")");
+                }
+            } else if (type.equals(Timestamp.class)) {
+                if (!(data instanceof List)) {
+                    throw new IllegalArgumentException("Data for column " + i + " (" + name + ") is not a List<Timestamp> (" + data + ")");
+                }
+            } else {
+                throw new IllegalArgumentException("Column type " + type.getSimpleName() + " not supported");
+            }
+        }
     }
 }
