@@ -33,15 +33,18 @@ class NumberColorMapGradient implements NumberColorMap {
      */
     public NumberColorMapGradient(List<Color> colors, ListNumber positions,
             boolean relative, Color nanColor, String name) {
+        // TODO: check that the number of colors is the same as the number of positions
+        // Check that nanColorInt is not null
+        // Check that the name is not null and not empty
 
         for (int i =0; i<positions.size(); ++i)   {
             //if using a relative scale, value should be bewteen 0.0 and 1.0
             if(relative && !(positions.getDouble(i) >=0 && positions.getDouble(i) <=1)){
-                throw new RuntimeException("Position Value for relative scale should be between 0.0 and 1.0");
+                throw new RuntimeException("Position for relative scale should be between 0.0 and 1.0");
             }
             //check position values are in strictly increasing order
             if (i!=0 && positions.getDouble(i-1) >= positions.getDouble(i)){
-                throw new RuntimeException("Position value should be strictly increasing");
+                throw new RuntimeException("Position should be strictly increasing");
             }
         }
 
@@ -50,66 +53,54 @@ class NumberColorMapGradient implements NumberColorMap {
         this.name = name;
         this.nanColor = nanColor;
         this.positions = positions;
-
     }
 
-    // TODO: add javadocs
     public List<Color> getColors() {
         return colors;
     }
 
     @Override
     public NumberColorMapInstance createInstance(Range range) {
-        return new ValueColorSchemeInstanceGradient(colors,positions, range,nanColor,relative);
+        // TODO: check that the range is not null
+        return new ValueColorSchemeInstanceGradient(range);
     }
 
     class ValueColorSchemeInstanceGradient implements NumberColorMapInstance {
 
-        protected List<Color> colors;
-        protected ListNumber positions;
-        protected int nanColor;
+        protected int nanColorInt;
         protected Range range;
-        private final boolean relative;
 
-        public ValueColorSchemeInstanceGradient(List<Color> colors,ListNumber positions, Range range,Color nanColor,boolean relative) {
+        public ValueColorSchemeInstanceGradient(Range range) {
             this.range = range;
-            this.colors = colors;
-            this.positions = positions;
             int red = (int)(255*nanColor.getRed()); 
             int green = (int)(255*nanColor.getGreen()); 
             int blue = (int)(255*nanColor.getBlue()); 
-            this.nanColor = (255 << 24) | (red<< 16) | (green<< 8) | blue;
-            this.relative = relative;
+            this.nanColorInt = (255 << 24) | (red<< 16) | (green<< 8) | blue;
         }
 
         @Override
         public int colorFor(double value) {
-
             if (Double.isNaN(value)) {
-                return nanColor;
-            }
-            if (range == null) {
-                throw new NullPointerException("range can not be null.");
+                return nanColorInt;
             }
 
-            //Relative scale
             if (relative) {
+                // Relative scale
                 return relativeColorFor(value);
-            } //Absolute scale
-            else {
+            } else {
+                // Absolute scale
                 return absoluteColorFor(value);
             }
 
         }
 
-        private int relativeColorFor(double value){
-
+        private int relativeColorFor(double value) {
             int alpha = 0, red = 0, green = 0, blue = 0;
+            // TODO: calculate the full range in the constructor
             double fullRange = range.getMaximum() - range.getMinimum();
 
             if (fullRange > 0) {
                 for (int i = 0; i < positions.size() - 1; i++) {
-
                     if (range.getMinimum() + positions.getDouble(i) * fullRange <= value && value <= range.getMinimum() + positions.getDouble(i + 1) * fullRange) {
                         double normalValue = MathUtil.normalize(value, range.getMinimum() + positions.getDouble(i) * fullRange, range.getMinimum() + positions.getDouble(i + 1) * fullRange);
                         normalValue = Math.min(normalValue, 1.0);
@@ -134,6 +125,7 @@ class NumberColorMapGradient implements NumberColorMap {
                 }
             }
 
+            // TODO: move this before the for loop, and return right away
             if (value > range.getMaximum()) {
 
                 alpha = 255;
@@ -147,6 +139,7 @@ class NumberColorMapGradient implements NumberColorMap {
                 green = (int)(255*(colors.get(0).getGreen()));
                 blue = (int)(255*(colors.get(0).getBlue()));
             }
+            
             return (alpha << 24) | (red << 16) | (green << 8) | blue;
         }
 
@@ -166,6 +159,8 @@ class NumberColorMapGradient implements NumberColorMap {
                     blue = (int) (255*(colors.get(i).getBlue() + (colors.get(i + 1).getBlue() - colors.get(i).getBlue()) * normalValue));
                 }
             }
+            
+            // TODO: move this before the for loop, and return right away
             if (value > positions.getDouble(positions.size() - 1)) {
                 alpha = 255;
                 red = (int)(255*(colors.get(colors.size() - 1).getRed()));
@@ -181,8 +176,6 @@ class NumberColorMapGradient implements NumberColorMap {
             }
             return (alpha << 24) | (red << 16) | (green << 8) | blue;
         }
-
-
 
         @Override
         public String toString() {
