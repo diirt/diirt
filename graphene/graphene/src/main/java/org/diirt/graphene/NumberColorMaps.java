@@ -46,22 +46,34 @@ import org.xml.sax.SAXException;
  * @author carcassi
  */
 public class NumberColorMaps {
+    private static final Logger log = Logger.getLogger(NumberColorMaps.class.getName());
     
     private NumberColorMaps() {
         // Utility class. Do not instanciate.
     }
   
+    /**
+     * Loads a {@code NumberColorMap} from a file.
+     * <p>
+     * It must follow one of the supported format, or an
+     * exception is returned. The extension is used to determine
+     * which file format is being used.
+     * 
+     * @param file the color map file
+     * @return the new map
+     */
     public static NumberColorMap load(File file) {
 
-        //Reading from xml 
         if (file.getName().endsWith(".xml")) {
+            // Reading from xml 
             return loadXML(file);
-        } //reading from CMAP
-        else if (file.getName().endsWith(".cmap")) {
+        } else if (file.getName().endsWith(".cmap")) {
+            // Reading from CMAP
             return loadCMAP(file);
         }
-        //File format not recognized
-        throw new RuntimeException("File Format not Recognized"+file);
+        
+        // File format not recognized
+        throw new RuntimeException("File Format not Recognized" + file);
     }
     
     
@@ -71,7 +83,7 @@ public class NumberColorMaps {
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException ex) {
-            throw new RuntimeException("Colormap file "+file+" not found", ex);
+            throw new RuntimeException("Colormap file " + file + " not found", ex);
         }
         String line;
 
@@ -85,22 +97,22 @@ public class NumberColorMaps {
         }
         String colormapName = file.getName(); 
         colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
-        return relative(colors, Color.BLACK, colormapName);//cmap file is automatically relative
+        // cmap file is automatically relative
+        return relative(colors, Color.BLACK, colormapName);
     }
     
-       private static NumberColorMap loadXML(File file){
+    private static NumberColorMap loadXML(File file){
         //if we are reading from a xml file
 
         List<Double> positions = new ArrayList<>();
         List<Color> colors = new ArrayList<>();
-        boolean relative = true; //default positions to be relative 
+        boolean relative;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
         Document doc;
 
         try {
             builder = factory.newDocumentBuilder();
-
         } catch (ParserConfigurationException ex) {
             throw new RuntimeException("Couldn't load color map from file: " + file, ex);
         }
@@ -113,7 +125,9 @@ public class NumberColorMaps {
             throw new RuntimeException("Couldn't load color map from file: "+file, ex);
         }
 
-        Element root = doc.getDocumentElement(); 
+        Element root = doc.getDocumentElement();
+        // TODO: only support relative and absolute as attribute values./
+        // Throw exception if they don't match
         relative = root.getAttribute("position").equals("relative"); 
         Color nanColor = Color.web(root.getAttribute("colorNaN")); 
     
@@ -121,15 +135,14 @@ public class NumberColorMaps {
         NodeList children = root.getChildNodes();
       
         for(int i = 0 ; i<children.getLength();++i){
-             Node child = children.item(i); 
-             if(child instanceof Element){
+            Node child = children.item(i); 
+            if (child instanceof Element) {
                     Element e = (Element)child; 
-                    if(e.getTagName()=="color"){
+                    if (e.getTagName().equals("color")) {
                        positions.add(parseDouble( e.getAttribute("position"))); 
                        colors.add(Color.web(e.getAttribute("value"))); 
-                       
                     }
-             }
+            }
         }
     
         double[] positionsArray = new double[positions.size()];
@@ -140,63 +153,53 @@ public class NumberColorMaps {
         colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
         return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, nanColor, colormapName);
     }
-    private static void createMapsLocal(File path, Logger log){
-        
-        //files to be copied 
-        String [] mapNames ={"BONE.xml","GRAY.xml","HOT.xml","HSV.xml","HSVRadian.xml","JET.xml"}; 
-        
+    
+    
+    private static void initializeColorMapDirectory(File path) {
+        // List of default color maps
+        String [] mapNames = {
+            "BONE.xml",
+            "GRAY.xml",
+            "HOT.xml",
+            "HSV.xml",
+            "HSVRadian.xml",
+            "JET.xml"
+        }; 
 
-        for(String map: mapNames)
-        {
-
+        for (String map: mapNames) {
             File mapFile = new File(path,map);
             try { 
                 mapFile.createNewFile();
             } catch (IOException ex) {
-                log.log(Level.WARNING,"Failed Creating new file{0)",mapFile);
+                log.log(Level.WARNING, "Failed Creating new file " + mapFile, ex);
+                continue;
             }
             
-            InputStream input = null; 
-            OutputStream output = null; 
-            try {
-                
-                input = NumberColorMaps.class.getResourceAsStream(map);
-               // input = new FileInputStream(new File("src/main/resources/org/diirt/graphene/"+map)); 
-                output = new FileOutputStream(mapFile);
+            try (InputStream input = NumberColorMaps.class.getResourceAsStream(map);
+                    OutputStream output = new FileOutputStream(mapFile)) {
                 byte[] buffer = new byte[8*1024];
                 int bytesRead;
                 while ((bytesRead = input.read(buffer)) != -1) {
                     output.write(buffer, 0, bytesRead);
                 }
-                input.close(); 
-                output.close();
-                
-            } catch (FileNotFoundException ex) {
-                log.log(Level.WARNING, "{0} File not found", map);
             } catch (IOException ex) {
-                log.log(Level.WARNING, "Failed Loading {0}", map);
+                log.log(Level.WARNING, "Failed Loading " + map, ex);
             }
-             
-            
           
         }
-
-        
-        
     }
             
     private static List<NumberColorMap> loadMapsFromLocal() {
         List<NumberColorMap> maps = new ArrayList<>();
-        Logger log = Logger.getLogger(NumberColorMaps.class.getName());
         File path = new File(Configuration.getDirectory(), "graphene/colormaps");
-        //if maps are not there, create them first
+        // If maps are not there, create them first
         if (!path.exists()) {
             path.mkdirs();
 
-            log.log(Level.CONFIG, "Creating Path graphene/colormaps under DIIRT_HOME ");
-            createMapsLocal(path, log);
+            log.log(Level.CONFIG, "Creating path graphene/colormaps under DIIRT_HOME ");
+            initializeColorMapDirectory(path);
         }
-        //load maps from local directory
+        // Load maps from local directory
         log.log(Level.CONFIG, "Loading ColorMaps from directory: " + path);
         for (File file : path.listFiles()) {
 
@@ -213,6 +216,8 @@ public class NumberColorMaps {
     }
 
  
+    // TODO: remove hard-coded color maps. They should be loaded by name
+    // from the registered map
     
     /**
      * JET ranges from blue to red, going through cyan and yellow.
@@ -264,24 +269,12 @@ public class NumberColorMaps {
     private static final Map<String, NumberColorMap> registeredColorSchemes
             = new ConcurrentHashMap<>();
    
-    static {
-       /*
-        registeredColorSchemes.put(JET.toString(), JET);
-        registeredColorSchemes.put(GRAY.toString(), GRAY);
-        registeredColorSchemes.put(BONE.toString(), BONE);
-        registeredColorSchemes.put(HOT.toString(), HOT);
-        registeredColorSchemes.put(HSV.toString(), HSV);
-       */
-        // TODO: Load new ones from "DIIRT_HOME/graphene/colormaps/
-        // using Configuration. (see jdbc service)
-        
-        
+    static {        
         List<NumberColorMap> maps = loadMapsFromLocal(); 
         
-        for(NumberColorMap map: maps) {
+        for (NumberColorMap map: maps) {
             registeredColorSchemes.put(map.toString(),map); 
         }
-        
          
     }
     
@@ -331,11 +324,22 @@ public class NumberColorMaps {
     public static NumberColorMapInstance optimize(NumberColorMapInstance instance, Range range){
         return new NumberColorMapInstanceOptimized(instance, range);
     }
+    
     // TODO: add javadocs
+    /**
+     * Creates a new {@code ColorMap} where the color list is equally
+     * spaced.
+     * 
+     * @param colors the list of colors used for the values
+     * @param nanColor the color used for NaN values
+     * @param name the name of the color map
+     * @return the new color map
+     */
     public static NumberColorMap relative(List<Color> colors, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, ListNumbers.linearListFromRange(0.0, 1.0, colors.size()), true, nanColor, name);
     }
     
+    // TODO: add javadoc
     public static NumberColorMap relative(List<Color> colors, ListDouble percentages, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, percentages, true, nanColor, name);
     }
