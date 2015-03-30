@@ -86,6 +86,10 @@ public class VColumn {
                 }
                 
                 int rowIndex = index - offsets.getInt(tableIndex);
+                // TODO: mismatched type should be handled better
+                if (columns.get(tableIndex).getType() != String.class) {
+                    return null;
+                }
                 @SuppressWarnings("unchecked")
                 List<String> values = (List<String>) columns.get(tableIndex).getData();
                 if (rowIndex < values.size()) {
@@ -113,6 +117,10 @@ public class VColumn {
                 }
                 
                 int rowIndex = index - offsets.getInt(tableIndex);
+                // TODO: mismatched type should be handled better
+                if (ListNumber.class.isInstance(columns.get(tableIndex).getData())) {
+                    return Double.NaN;
+                }
                 @SuppressWarnings("unchecked")
                 ListNumber values = (ListNumber) columns.get(tableIndex).getData();
                 if (rowIndex < values.size()) {
