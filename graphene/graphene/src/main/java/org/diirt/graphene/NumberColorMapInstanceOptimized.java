@@ -10,6 +10,7 @@ import org.diirt.util.stats.Range;
  * An optimized instance of a color map, where colors are pre-calculated.
  * <p>
  * TODO: allow choice of number of colors
+ * TODO: review use of NaN colors
  * 
  * @author sjdallst
  */
