@@ -118,7 +118,7 @@ public class VColumn {
                 
                 int rowIndex = index - offsets.getInt(tableIndex);
                 // TODO: mismatched type should be handled better
-                if (ListNumber.class.isInstance(columns.get(tableIndex).getData())) {
+                if (!ListNumber.class.isInstance(columns.get(tableIndex).getData())) {
                     return Double.NaN;
                 }
                 @SuppressWarnings("unchecked")
