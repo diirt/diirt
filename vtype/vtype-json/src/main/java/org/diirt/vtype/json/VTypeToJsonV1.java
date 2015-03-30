@@ -262,6 +262,7 @@ class VTypeToJsonV1 {
     }
     
     static JsonObject toJson(VTable vTable) {
+        VTableFactory.validateTable(vTable);
         return new JsonVTypeBuilder()
                 .addType(vTable)
                 .addListString("columnNames", VTableFactory.columnNames(vTable))
