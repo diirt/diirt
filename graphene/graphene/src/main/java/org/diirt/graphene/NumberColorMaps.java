@@ -30,6 +30,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListNumbers;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -38,32 +39,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * A utility class that provides implementations of {@link NumberColorMap},
- * a set standard utilities and a directory for color maps.
+ * Factory and registry class for {@link NumberColorMap}s.
+ * It allows to create and register new maps, and allows a central place to
+ * find registered color maps by name.
  *
  * @author carcassi
  */
 public class NumberColorMaps {
     
-    // TODO: add more color schemes like the ones that can be found:
-    // http://www.mathworks.com/help/matlab/ref/colormap.html
-    
-    
     private NumberColorMaps() {
         // Utility class. Do not instanciate.
-    }
-    
-    private static ListDouble percentageRange(int size) {
-        double [] percentages = new double[size]; 
-        
-
-        percentages[0]=0.0; 
-
-        for (int i = 1; i <= size-1; i++) {
-            percentages[i]=((double) i / (size-1));
-        }
-
-        return new ArrayDouble(percentages);
     }
   
     public static NumberColorMap load(File file) {
@@ -348,7 +333,7 @@ public class NumberColorMaps {
     }
     // TODO: add javadocs
     public static NumberColorMap relative(List<Color> colors, Color nanColor, String name) {
-        return new NumberColorMapGradient(colors, percentageRange(colors.size()), true, nanColor, name);
+        return new NumberColorMapGradient(colors, ListNumbers.linearListFromRange(0.0, 1.0, colors.size()), true, nanColor, name);
     }
     
     public static NumberColorMap relative(List<Color> colors, ListDouble percentages, Color nanColor, String name) {

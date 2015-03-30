@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 import org.diirt.util.array.ListDouble;
+import org.diirt.util.array.ListNumber;
 
 /**
  * A numeric color map defined by interpolated colors (gradients).
@@ -18,7 +19,7 @@ import org.diirt.util.array.ListDouble;
 class NumberColorMapGradient implements NumberColorMap {
 
     private final List<Color> colors;
-    private final ListDouble positions;
+    private final ListNumber positions;
     private final boolean relative;
     private final Color nanColor;
     private final String name;
@@ -30,7 +31,7 @@ class NumberColorMapGradient implements NumberColorMap {
      *
      * @param colors
      */
-    public NumberColorMapGradient(List<Color> colors, ListDouble positions,
+    public NumberColorMapGradient(List<Color> colors, ListNumber positions,
             boolean relative, Color nanColor, String name) {
 
         for (int i =0; i<positions.size(); ++i)   {
@@ -65,12 +66,12 @@ class NumberColorMapGradient implements NumberColorMap {
     class ValueColorSchemeInstanceGradient implements NumberColorMapInstance {
 
         protected List<Color> colors;
-        protected ListDouble positions;
+        protected ListNumber positions;
         protected int nanColor;
         protected Range range;
         private final boolean relative;
 
-        public ValueColorSchemeInstanceGradient(List<Color> colors,ListDouble positions, Range range,Color nanColor,boolean relative) {
+        public ValueColorSchemeInstanceGradient(List<Color> colors,ListNumber positions, Range range,Color nanColor,boolean relative) {
             this.range = range;
             this.colors = colors;
             this.positions = positions;
