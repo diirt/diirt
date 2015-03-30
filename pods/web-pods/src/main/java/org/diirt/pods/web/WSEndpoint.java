@@ -17,7 +17,6 @@ import org.diirt.pods.web.common.MessageEncoder;
 import org.diirt.pods.web.common.MessageResume;
 import org.diirt.pods.web.common.MessagePause;
 import java.io.InputStream;
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,6 @@ import org.diirt.pods.common.ChannelTranslator;
 import org.diirt.util.config.Configuration;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
-import org.diirt.datasource.PV;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
@@ -289,7 +287,6 @@ public class WSEndpoint {
                     session.getAsyncRemote().sendObject(new MessageConnectionEvent(message.getId(), event.getPvReader().isConnected(), false));
                 }
                 if (event.isValueChanged()) {
-                    System.out.println("Sending value");
                     session.getAsyncRemote().sendObject(new MessageValueEvent(message.getId(), event.getPvReader().getValue()));
                 }
                 if (event.isExceptionChanged()) {
