@@ -120,15 +120,22 @@ public class NumberColorMaps {
         try {
             doc = builder.parse(file);
         } catch (SAXException ex) {
-            throw new RuntimeException("Couldn't parse color map file: "+file, ex);
+            throw new RuntimeException("Couldn't parse color map file: "+ file, ex);
         } catch (IOException ex) {
-            throw new RuntimeException("Couldn't load color map from file: "+file, ex);
+            throw new RuntimeException("Couldn't load color map from file: "+ file, ex);
         }
 
         Element root = doc.getDocumentElement();
         // TODO: only support relative and absolute as attribute values./
         // Throw exception if they don't match
-        relative = root.getAttribute("position").equals("relative"); 
+        if (root.getAttribute("position").equals("relative") || 
+                root.getAttribute("position").equals("absolute")){
+              relative = root.getAttribute("position").equals("relative"); 
+        }else{
+            throw new RuntimeException("Colormap file only supports absoulute and relative scale " + file);
+        }
+        
+            
         Color nanColor = Color.web(root.getAttribute("colorNaN")); 
     
 
@@ -325,7 +332,7 @@ public class NumberColorMaps {
         return new NumberColorMapInstanceOptimized(instance, range);
     }
     
-    // TODO: add javadocs
+
     /**
      * Creates a new {@code ColorMap} where the color list is equally
      * spaced.
@@ -339,11 +346,29 @@ public class NumberColorMaps {
         return new NumberColorMapGradient(colors, ListNumbers.linearListFromRange(0.0, 1.0, colors.size()), true, nanColor, name);
     }
     
-    // TODO: add javadoc
+
+    /**
+     * Creates a new{@code ColorMap} where the color list is spaced out
+     * according to the percentage points specified
+     * @param colors the list of colors used 
+     * @param percentages the list of percentages position that divide up the colors 
+     * @param nanColor the color used for Nan values 
+     * @param name the name of the color map
+     * @return the new color map
+     */
     public static NumberColorMap relative(List<Color> colors, ListDouble percentages, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, percentages, true, nanColor, name);
     }
     
+       /**
+     * Creates a new{@code ColorMap} where the color list is spaced out
+     * according to the absolute points specified
+     * @param colors the list of colors used 
+     * @param values the list of absolute position that divide up the colors 
+     * @param nanColor the color used for Nan values 
+     * @param name the name of the color map
+     * @return the new color map
+     */
     public static NumberColorMap absolute(List<Color> colors, ListDouble values, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, values, false, nanColor, name);
     }
