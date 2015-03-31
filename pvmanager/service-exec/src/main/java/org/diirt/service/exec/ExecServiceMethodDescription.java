@@ -43,7 +43,6 @@ public class ExecServiceMethodDescription extends ServiceMethodDescription {
         if (resultAdded) {
             throw new IllegalArgumentException("The query can only have one result");
         }
-        // TODO verify correctness
         resultAdded = true;
         
         addResult(name, description, VType.class);

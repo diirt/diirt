@@ -40,8 +40,5 @@ public class JDBCSampleClient {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out);
         io.export(table, outputStreamWriter);
         outputStreamWriter.flush();        
-        
-        // TODO verify correctness
-        ServiceRegistry.getDefault().findService("jdbcSample").close();
     }
 }
