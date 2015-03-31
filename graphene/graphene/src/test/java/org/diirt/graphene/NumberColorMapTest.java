@@ -39,7 +39,6 @@ public class NumberColorMapTest {
         Range range = Ranges.range(0.0, 1.0);
         NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
         // TODO: we should better test the optimized version as well.
-        //colorScheme = NumberColorMaps.optimize(colorScheme, range);
         assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.rgb(0,0,0))));
         assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.rgb(0,0,138))));
         assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.rgb(0,0,138))));
@@ -47,6 +46,19 @@ public class NumberColorMapTest {
         assertThat(colorScheme.colorFor(1.1), equalTo(getRGB(Color.rgb(138,0,0))));
     }
 
+    @Test 
+    public void jetSchemeOptimized(){
+        Range range = Ranges.range(0.0, 1.0);
+        NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
+        //ensure that the optimized colormap handles nan
+        colorScheme = NumberColorMaps.optimize(colorScheme, range);
+        assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.rgb(0,0,0))));
+        assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.rgb(0,0,138))));
+        assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.rgb(0,0,138))));
+        assertThat(colorScheme.colorFor(1.0), equalTo(getRGB(Color.rgb(138,0,0))));
+        assertThat(colorScheme.colorFor(1.1), equalTo(getRGB(Color.rgb(138,0,0))));
+    }
+    
     @Test
     public void optimizedScheme() {
         Range range = Ranges.range(0.0, 1.0);
