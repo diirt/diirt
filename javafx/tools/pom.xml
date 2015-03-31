@@ -113,8 +113,6 @@
             <version>${project.version}</version>
         </dependency>
         
-        <!-- Services -->
-        <!-- TODO how to register all services -->
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>service-exec</artifactId>

@@ -106,7 +106,7 @@ public final class ServiceViewer extends HBox {
 
         @Override
         public String getName() {
-            return method.getName();
+            return method.toString();
         }
 
         @Override
@@ -124,13 +124,11 @@ public final class ServiceViewer extends HBox {
             List<BrowserItem> items = new ArrayList<>();
             
             items.addAll( method.getArguments().stream()
-                    .sorted((m1, m2) -> m1.getName().compareTo(m2.getName()))
-                    .map((m) -> new ServiceMethodArgumentBrowserItem(m, " (Argument)"))
+                    .map((m) -> new ServiceMethodArgumentBrowserItem(m))
                     .collect(Collectors.toList()) );
             
             items.addAll( method.getResults().stream()
-                    .sorted((m1, m2) -> m1.getName().compareTo(m2.getName()))
-                    .map((m) -> new ServiceMethodArgumentBrowserItem(m, " (Result)"))
+                    .map((m) -> new ServiceMethodArgumentBrowserItem(m))
                     .collect(Collectors.toList()) );
             
             return items;
@@ -140,16 +138,14 @@ public final class ServiceViewer extends HBox {
     
     public static class ServiceMethodArgumentBrowserItem implements BrowserItem {
         private final DataDescription parameter;
-        private final String type;
         
-        public ServiceMethodArgumentBrowserItem(DataDescription parameter, String type){
+        public ServiceMethodArgumentBrowserItem(DataDescription parameter){
             this.parameter = parameter;
-            this.type = type;
         }
 
         @Override
         public String getName() {
-            return parameter.getName() + type;
+            return parameter.getName();
         }
 
         @Override
@@ -185,8 +181,8 @@ public final class ServiceViewer extends HBox {
         @Override
         public ObservableList<TreeItem<BrowserItem>> getChildren() {
             if (!initializedChildren) {
-                super.getChildren().setAll(getValue().createChildren().stream().map(bi -> new TreeBrowserItem(bi)).collect(Collectors.toList()));
                 initializedChildren = true;
+                super.getChildren().setAll(getValue().createChildren().stream().map(bi -> new TreeBrowserItem(bi)).collect(Collectors.toList()));
             }
             return super.getChildren();
         }
