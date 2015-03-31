@@ -34,8 +34,14 @@ class NumberColorMapGradient implements NumberColorMap {
     public NumberColorMapGradient(List<Color> colors, ListNumber positions,
             boolean relative, Color nanColor, String name) {
         // TODO: check that the number of colors is the same as the number of positions
+        if(colors.size()!=positions.size()) 
+            throw new RuntimeException("Number of colors and number of positions don't match"); 
         // Check that nanColorInt is not null
+        if(nanColor==null)
+            throw new RuntimeException("NanColor should not be null"); 
         // Check that the name is not null and not empty
+        if(name.isEmpty() || name==null)
+            throw new RuntimeException("Name should not be empty or null"); 
 
         for (int i =0; i<positions.size(); ++i)   {
             //if using a relative scale, value should be bewteen 0.0 and 1.0
@@ -62,6 +68,8 @@ class NumberColorMapGradient implements NumberColorMap {
     @Override
     public NumberColorMapInstance createInstance(Range range) {
         // TODO: check that the range is not null
+        if(range==null) throw new RuntimeException("Range cannot be null"); 
+          
         return new ValueColorSchemeInstanceGradient(range);
     }
 
@@ -69,9 +77,10 @@ class NumberColorMapGradient implements NumberColorMap {
 
         protected int nanColorInt;
         protected Range range;
-
+        private final double fullRange; 
         public ValueColorSchemeInstanceGradient(Range range) {
             this.range = range;
+            fullRange = range.getMaximum() - range.getMinimum();
             int red = (int)(255*nanColor.getRed()); 
             int green = (int)(255*nanColor.getGreen()); 
             int blue = (int)(255*nanColor.getBlue()); 
@@ -96,8 +105,25 @@ class NumberColorMapGradient implements NumberColorMap {
 
         private int relativeColorFor(double value) {
             int alpha = 0, red = 0, green = 0, blue = 0;
+            
+            if (value > range.getMaximum()) {
+
+                alpha = 255;
+                red = (int) (255 * (colors.get(colors.size() - 1).getRed()));
+                green = (int) (255 * (colors.get(colors.size() - 1).getGreen()));
+                blue = (int) (255 * (colors.get(colors.size() - 1).getBlue()));
+                return (alpha << 24) | (red << 16) | (green << 8) | blue;
+            }
+            if (value < range.getMinimum()) {
+                alpha = 255;
+                red = (int) (255 * (colors.get(0).getRed()));
+                green = (int) (255 * (colors.get(0).getGreen()));
+                blue = (int) (255 * (colors.get(0).getBlue()));
+                return (alpha << 24) | (red << 16) | (green << 8) | blue;
+            }
+            
             // TODO: calculate the full range in the constructor
-            double fullRange = range.getMaximum() - range.getMinimum();
+           
 
             if (fullRange > 0) {
                 for (int i = 0; i < positions.size() - 1; i++) {
@@ -125,21 +151,6 @@ class NumberColorMapGradient implements NumberColorMap {
                 }
             }
 
-            // TODO: move this before the for loop, and return right away
-            if (value > range.getMaximum()) {
-
-                alpha = 255;
-                red = (int)(255*(colors.get(colors.size() - 1).getRed()));
-                green = (int)(255*(colors.get(colors.size() - 1).getGreen()));
-                blue = (int)(255*(colors.get(colors.size() - 1).getBlue()));
-            }
-            if (value < range.getMinimum()) {
-                alpha = 255;
-                red = (int)(255*(colors.get(0).getRed()));
-                green = (int)(255*(colors.get(0).getGreen()));
-                blue = (int)(255*(colors.get(0).getBlue()));
-            }
-            
             return (alpha << 24) | (red << 16) | (green << 8) | blue;
         }
 
@@ -147,6 +158,22 @@ class NumberColorMapGradient implements NumberColorMap {
 
             int alpha = 0, red = 0, green = 0, blue = 0;
 
+            if (value > positions.getDouble(positions.size() - 1)) {
+                alpha = 255;
+                red = (int) (255 * (colors.get(colors.size() - 1).getRed()));
+                green = (int) (255 * (colors.get(colors.size() - 1).getGreen()));
+                blue = (int) (255 * (colors.get(colors.size() - 1).getBlue()));
+                return (alpha << 24) | (red << 16) | (green << 8) | blue;
+            }
+
+            if (value < positions.getDouble(0)) {
+                alpha = 255;
+                red = (int) (255 * (colors.get(0).getRed()));
+                green = (int) (255 * (colors.get(0).getGreen()));
+                blue = (int) (255 * (colors.get(0).getBlue()));
+                return (alpha << 24) | (red << 16) | (green << 8) | blue;
+            }
+            
             for (int i = 0; i < positions.size() - 1; ++i) {
                 if (positions.getDouble(i) <= value && value <= positions.getDouble(i + 1)) {
                     double normalValue = MathUtil.normalize(value, positions.getDouble(i), positions.getDouble(i + 1));
@@ -160,20 +187,8 @@ class NumberColorMapGradient implements NumberColorMap {
                 }
             }
             
-            // TODO: move this before the for loop, and return right away
-            if (value > positions.getDouble(positions.size() - 1)) {
-                alpha = 255;
-                red = (int)(255*(colors.get(colors.size() - 1).getRed()));
-                green = (int)(255*(colors.get(colors.size() - 1).getGreen()));
-                blue = (int)(255*(colors.get(colors.size() - 1).getBlue()));
-            }
-
-            if (value < positions.getDouble(0)) {
-                alpha = 255;
-                red = (int)(255*(colors.get(0).getRed()));
-                green = (int)(255*(colors.get(0).getGreen()));
-                blue = (int)(255*(colors.get(0).getBlue()));
-            }
+            
+         
             return (alpha << 24) | (red << 16) | (green << 8) | blue;
         }
 
