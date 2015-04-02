@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.diirt.javafx.tools.*?>
+<!-- fx:controller="org.diirt.ui.tools.EventLogViewer" -->
+
+<fx:root type="VBox" prefHeight="433.0" prefWidth="953.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <GridPane hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0" VBox.vgrow="NEVER">
+      <children>
+        <Label text="Service" />
+        <Label text="Service Method" GridPane.rowIndex="1" />
+        <ComboBox fx:id="serviceField" GridPane.columnIndex="1" />
+        <ComboBox fx:id="methodField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+      <VBox.margin>
+        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+      </VBox.margin>
+    </GridPane>
+    <Separator prefWidth="200.0" />
+    <VBox prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <Label text="Arguments" />
+        <ListView fx:id="argumentField" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </VBox>
+    <Button fx:id="executeField" mnemonicParsing="false" text="Execute" />
+    <VBox prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <Label text="Results" />
+        <ListView fx:id="resultField" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </VBox>
+    <VBox prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <Label text="Console" />
+        <TextArea fx:id="consoleField" editable="false"  prefWidth="200.0" wrapText="true" />
+      </children>
+    </VBox>
+  </children>
+</fx:root>
