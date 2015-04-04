@@ -15,11 +15,11 @@ import org.diirt.util.stats.Range;
  */
 class NumberColorMapInstanceOptimized implements NumberColorMapInstance {
 
-    private int arrayLength = 1000;
-    private int[] colors = new int[arrayLength];
-    private int nanColor;
-    private Range range;
-    private double max, min, total;
+    private final int arrayLength = 1000;
+    private final int[] colors = new int[arrayLength];
+    private final int nanColor;
+    private final Range range;
+    private final double max, min, total;
     private final String name;
 
     NumberColorMapInstanceOptimized(NumberColorMapInstance instance, Range range) {
@@ -36,6 +36,7 @@ class NumberColorMapInstanceOptimized implements NumberColorMapInstance {
         }
         this.range = range;
         this.name = instance.toString() + " opt(" + arrayLength + ")";
+        this.nanColor = instance.colorFor(Double.NaN);
     }
 
     // TODO: what is this doing?
@@ -56,10 +57,15 @@ class NumberColorMapInstanceOptimized implements NumberColorMapInstance {
         total = max - min;
         this.range = newRange;
         this.name = instance.toString() + " opt2(" + arrayLength + ")";
+        this.nanColor = instance.colorFor(Double.NaN);
     }
 
     @Override
     public int colorFor(double value) {
+        if (Double.isNaN(value)) {
+            return nanColor;
+        }
+        
         int index = (int) ((value - min) / total * (arrayLength - 1));
         if (index < 0) {
             index = 0;
