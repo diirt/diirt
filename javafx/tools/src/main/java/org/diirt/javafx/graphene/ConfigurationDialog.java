@@ -123,6 +123,8 @@ public class ConfigurationDialog extends Stage {
 	//property and 1 for the input method for that property
 	this.pnlConfigurations.getColumnConstraints().addAll( new ColumnConstraints() , new ColumnConstraints() );
 	this.pnlConfigurations.getColumnConstraints().get( 1 ).setHgrow( Priority.ALWAYS );
+	this.pnlConfigurations.setVgap( 5 );
+	this.pnlConfigurations.setHgap( 5 );
 
 	FlowPane pnlBottom = new FlowPane();
 	pnlBottom.setAlignment( Pos.CENTER_RIGHT );
@@ -174,9 +176,10 @@ public class ConfigurationDialog extends Stage {
 	});
 	
 	pnlSaveCancel.setHgap( 5 );
+	pnlSaveCancel.setVgap( 5 );
 	pnlSaveCancel.add( cmdConfigure , 0 , 0 );
-	pnlSaveCancel.add( cmdCancel , 1 , 0 );
-	pnlSaveCancel.add( cmdRevert , 2 , 0 );
+	pnlSaveCancel.add( cmdRevert , 1 , 0 );
+	pnlSaveCancel.add( cmdCancel , 2 , 0 );
 	
 	pnlSaveCancel.getColumnConstraints().addAll( new ColumnConstraints() , new ColumnConstraints() , new ColumnConstraints() );
 	pnlSaveCancel.getColumnConstraints().get( 0 ).setHgrow( Priority.ALWAYS );
@@ -349,7 +352,7 @@ public class ConfigurationDialog extends Stage {
      * @return a label with the default name display
      */
     private static Label defaultNameLabel( String propertyName ) {
-	return new Label( propertyName + ":     " );
+	return new Label( propertyName + ":" );
     }
     
     /**

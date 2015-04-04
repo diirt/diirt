@@ -11,6 +11,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -122,6 +123,8 @@ abstract public class BaseGraphApp extends Application {
 	final private Button cmdConfigure = new Button( "Configure..." );
 	
 	public DataSelectionPanel() {
+	    this.setPadding( new Insets( 5 , 5 , 5 , 5 ) );
+	    
 	    GridPane pnlCenter = new GridPane();
 	    pnlCenter.setHgap( 5 );
 	    this.cboSelectData.setPrefWidth( 0 );
