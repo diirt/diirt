@@ -15,6 +15,7 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -27,7 +28,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -115,9 +115,11 @@ public class ConfigurationDialog extends Stage {
      */
     public ConfigurationDialog() {
 	this.initStyle( StageStyle.UTILITY );
+	this.setTitle( "Configure..." );
 	Scene s = new Scene( pnlMain );
 	
 	pnlMain.setCenter( pnlConfigurations );
+	pnlMain.setPadding( new Insets( 5 , 5 , 5 , 5 ) );
 	
 	//we assume that there will only ever be 2 columns: 1 to label the
 	//property and 1 for the input method for that property
@@ -188,6 +190,8 @@ public class ConfigurationDialog extends Stage {
 	pnlSaveCancel.getColumnConstraints().get( 1 ).setHalignment( HPos.RIGHT );
 	pnlSaveCancel.getColumnConstraints().get( 2 ).setHgrow( Priority.ALWAYS );
 	pnlSaveCancel.getColumnConstraints().get( 2 ).setHalignment( HPos.RIGHT );
+	
+	pnlSaveCancel.setPadding( new Insets( 5 , 0 , 0 , 0 ) );
 	this.setScene( s );
     }
     
