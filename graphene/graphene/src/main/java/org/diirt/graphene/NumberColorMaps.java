@@ -126,8 +126,7 @@ public class NumberColorMaps {
         }
 
         Element root = doc.getDocumentElement();
-        // TODO: only support relative and absolute as attribute values./
-        // Throw exception if they don't match
+        // Throw exception if they don't match format supported 
         if (root.getAttribute("position").equals("relative") || 
                 root.getAttribute("position").equals("absolute")){
               relative = root.getAttribute("position").equals("relative"); 
