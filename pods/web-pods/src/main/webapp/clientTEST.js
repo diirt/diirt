@@ -23,14 +23,11 @@ window.onload = function() {
     var selectedId;
     var filter = 'none';
     
-    var events = [[],[], []]; // [eventDisplay, id, selected (bool)]
+    var events = [[], [], []]; // [eventDisplay, id, selected (bool)]
     var eventDetails = [];
     var eventDetailsFiltered = [];
     
-    // TODO: organize functions and triggers
     
-    // TODO: successful subscripton callback to change subscription list class
-
     serverField.value = "ws://" + window.location.host + "/web-pods/socket";
     
     function addNewSubscription(channel, id) {
@@ -46,12 +43,19 @@ window.onload = function() {
     }
     
     function displayEvent(eventDisplay, event) {
+        var scrollVal = results.scrollTop;
         var newEvent = document.createElement('option');
         results.insertBefore(newEvent, results.childNodes[0]);
         newEvent.appendChild(document.createTextNode(eventDisplay));
         var attId = document.createAttribute('eventId');
         attId.value = event.id;
         newEvent.setAttributeNode(attId);
+        if (scrollVal == 0) {
+            results.scrollTop = 0;
+        }
+        else {
+            results.scrollTop = scrollVal + 17; // height of an option elt added
+        }
     }
     
     function getEventDisplay(event) {
@@ -157,15 +161,9 @@ window.onload = function() {
     function resetEventDisplay() {
         clearDisplay();
         for (var i = 0; i < events[0].length; i++) {
-            var newEvent = document.createElement('option');
-            if (newEvent.selected) {
-                console.log('this event is selected (1): ' + events[0][i]);
-            }     
+            var newEvent = document.createElement('option');   
             results.appendChild(newEvent);
-            newEvent.selected = events[2][i];
-            if (newEvent.selected) {
-                console.log('this event is selected (2): ' + events[0][i]);
-            }            
+            newEvent.selected = events[2][i];          
             newEvent.appendChild(document.createTextNode(events[0][i]));
             var attId = document.createAttribute('eventId');
             attId.value = events[1][i];
@@ -187,7 +185,7 @@ window.onload = function() {
         }
     }
     
-    showAllBtn.onclick = function() { // TODO: fix this--still deletes selection on filtered --> unfiltered
+    showAllBtn.onclick = function() {
         if (filter != 'none') {
             resetEventDisplay();
         }
