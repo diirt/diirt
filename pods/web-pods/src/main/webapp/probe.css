@@ -1,0 +1,40 @@
+.open{
+  color: green;
+}
+
+.closed {
+  color: red;
+}
+
+.unsubscribed {
+  text-decoration: line-through;
+}
+
+select {
+    margin-right: 5px;
+}
+
+button {
+  display: inline-block;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  color: white;
+  text-align: center;
+  background: #BABABA;
+}
+
+select{
+    width: 400px;
+    font-size: 1em;
+    float: left;
+}
+
+input {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+#subscriptions {
+    padding-right: 20px;
+}
+
