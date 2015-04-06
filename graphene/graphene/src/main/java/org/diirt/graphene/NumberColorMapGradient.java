@@ -33,15 +33,13 @@ class NumberColorMapGradient implements NumberColorMap {
      */
     public NumberColorMapGradient(List<Color> colors, ListNumber positions,
             boolean relative, Color nanColor, String name) {
-        // TODO: check that the number of colors is the same as the number of positions
+
         if(colors.size()!=positions.size()) 
-            throw new RuntimeException("Number of colors and number of positions don't match"); 
-        // Check that nanColorInt is not null
+            throw new IllegalArgumentException("Number of colors and number of positions don't match"); 
         if(nanColor==null)
-            throw new RuntimeException("NanColor should not be null"); 
-        // Check that the name is not null and not empty
-        if(name.isEmpty() || name==null)
-            throw new RuntimeException("Name should not be empty or null"); 
+            throw new IllegalArgumentException("NanColor should not be null"); 
+        if(name==null || name.isEmpty() )
+            throw new IllegalArgumentException("Name should not be empty or null"); 
 
         for (int i =0; i<positions.size(); ++i)   {
             //if using a relative scale, value should be bewteen 0.0 and 1.0
@@ -67,8 +65,8 @@ class NumberColorMapGradient implements NumberColorMap {
 
     @Override
     public NumberColorMapInstance createInstance(Range range) {
-        // TODO: check that the range is not null
-        if(range==null) throw new RuntimeException("Range cannot be null"); 
+
+        if(range==null) throw new NullPointerException("Range cannot be null"); 
           
         return new ValueColorSchemeInstanceGradient(range);
     }
@@ -122,7 +120,6 @@ class NumberColorMapGradient implements NumberColorMap {
                 return (alpha << 24) | (red << 16) | (green << 8) | blue;
             }
             
-            // TODO: calculate the full range in the constructor
            
 
             if (fullRange > 0) {
