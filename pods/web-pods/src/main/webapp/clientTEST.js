@@ -1,7 +1,6 @@
 window.onload = function() {
     
     // References to elements on the page
-    var form = document.getElementById('message-form');
     var serverField = document.getElementById('server');
     var channelField = document.getElementById('channel');
     var idField = document.getElementById('idNum');
@@ -54,7 +53,7 @@ window.onload = function() {
             results.scrollTop = 0;
         }
         else {
-            results.scrollTop = scrollVal + 17; // height of an option elt added
+            results.scrollTop = scrollVal + 17; // Height of an option elt added
         }
     }
     
@@ -136,7 +135,7 @@ window.onload = function() {
   
     results.onchange = function() {
         selectedEvent = results.selectedIndex;
-        for (var i = 0; i < events[2].length; i++) { // TODO: this can definitely be more efficient
+        for (var i = 0; i < events[2].length; i++) { // Sets all events to be unselected - this can probabl be more efficient
             events[2][i] = false;
         }
         events[2][selectedEvent] = true;
