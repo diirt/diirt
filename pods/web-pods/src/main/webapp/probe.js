@@ -26,8 +26,8 @@ window.onload = function() {
     var eventDetails = [];
     var eventDetailsFiltered = [];
     
-    
-    serverField.value = "ws://" + window.location.host + "/web-pods/socket";
+    serverField.value = document.location.protocol.replace("http", "ws") + "//" +
+            document.location.host + "/" + document.location.pathname.split("/")[1] + "/socket";
     
     function addNewSubscription(channel, id) {
         var newChannel = document.createElement('option');
