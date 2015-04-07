@@ -63,7 +63,7 @@ public class CFQueryFunction extends StatefulFormulaFunction {
         if (currentQuery == null || !((VString) args.get(0)).getValue().equals(currentQuery.getValue())) {
             currentQuery = (VString) args.get(0);
             serviceMethod = ServiceRegistry.getDefault().findServiceMethod("cf/find");            
-            serviceMethod.execute(Collections.<String, Object>singletonMap("query", currentQuery),
+            serviceMethod.executeAsync(Collections.<String, Object>singletonMap("query", currentQuery),
                     (Map<String, Object> newValue) -> {
                         currentResult = (VTable) newValue.get("result");
                         currentException = null;

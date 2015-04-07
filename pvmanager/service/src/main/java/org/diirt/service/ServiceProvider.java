@@ -9,8 +9,8 @@ import java.util.Collection;
 /**
  * Provides a set of services that can be registered to the framework.
  * <p>
- * Instances of this class made available to the ServiceLoader are automatically
- * added to the ServiceRegistry at startup.
+ * Instances of this class made available to the <code>ServiceLoader</code> are automatically
+ * added to the {@link ServiceRegistry} at startup.
  *
  * @author carcassi
  */

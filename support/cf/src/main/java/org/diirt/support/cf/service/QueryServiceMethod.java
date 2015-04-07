@@ -4,12 +4,13 @@
  */
 package org.diirt.support.cf.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import gov.bnl.channelfinder.api.Channel;
 import gov.bnl.channelfinder.api.ChannelQuery;
 import gov.bnl.channelfinder.api.ChannelQuery.Result;
 import gov.bnl.channelfinder.api.ChannelQueryListener;
 import gov.bnl.channelfinder.api.ChannelUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,7 +18,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.function.Consumer;
+import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
 import org.diirt.vtype.VNumber;
@@ -25,27 +27,18 @@ import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.ValueFactory;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import java.util.function.Consumer;
-
 /**
  * @author shroffk
  * 
  */
 public class QueryServiceMethod extends ServiceMethod {
 
-    /**
-     */
-    public QueryServiceMethod() {
-	super(new ServiceMethodDescription("find", "Find Channels")
-		.addArgument("query", "Query String", VString.class)
-		.addResult("result", "Query Result", VTable.class)
-		.addResult("result_size", "Query Result size", VNumber.class));
+    public QueryServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription){
+        super(serviceMethodDescription, serviceDescription);
     }
-
+    
     @Override
-    public void executeMethod(Map<String, Object> parameters,
+    public void asyncExecImpl(Map<String, Object> parameters,
 	    final Consumer<Map<String, Object>> callback,
 	    final Consumer<Exception> errorCallback) {
 	String query = ((VString) parameters.get("query")).getValue();

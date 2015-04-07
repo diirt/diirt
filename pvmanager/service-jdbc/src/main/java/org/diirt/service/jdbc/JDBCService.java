@@ -4,25 +4,49 @@
  */
 package org.diirt.service.jdbc;
 
+import java.sql.SQLException;
+import javax.sql.DataSource;
 import org.diirt.service.Service;
 
 /**
- * A pvmanager service based on database queries.
+ * Group of request/response operations sharing resources (a Service); applied
+ * to querying a <a
+ * href="http://www.oracle.com/technetwork/java/javase/jdbc/index.html">JDBC
+ * datasource</a>.
+ * <p>
+ * It is important to {@link JDBCService#close()} the service to close shared
+ * resources.
  *
- * @author carcassi
+ * @author asbarber
  */
 public class JDBCService extends Service {
 
+    private final DataSource dataSource;
+
     /**
-     * Creates a new database service from the given service description.
-     * <p>
-     * The description will consist of connection parameters, queries
-     * and how arguments and results should be mapped.
-     * 
-     * @param serviceDescription the service description; can't be null
+     * Creates a new service for JDBC operations.
+     *
+     * @param serviceDescription the description of the JDBC service; can't be
+     * null
      */
     public JDBCService(JDBCServiceDescription serviceDescription) {
-        super(serviceDescription.createService());
+        super(serviceDescription);
+        dataSource = serviceDescription.dataSource;
     }
-    
+
+    /**
+     * Closes the shared resources: executor and JDBC datasource.
+     */
+    @Override
+    public void close() {
+        // Executor close
+        super.close();
+
+        // Datasource close
+        try {
+            dataSource.getConnection().close();
+        } catch (SQLException ex) {
+            throw new RuntimeException("Unable to close the JDBC data source connection", ex);
+        }
+    }
 }

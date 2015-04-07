@@ -8,39 +8,35 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import org.diirt.service.ServiceMethod;
-import org.diirt.service.ServiceMethodDescription;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
+import org.diirt.service.ServiceDescription;
+import org.diirt.service.ServiceMethodDescription;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.io.CSVIO;
 
 /**
- *
+ * The implementation of a generic exec service method: for execution of shell
+ * commands through command line.
+ * 
  * @author carcassi
  */
 class GenericExecServiceMethod extends ServiceMethod {
 
-    public GenericExecServiceMethod() {
-        super(new ServiceMethodDescription("run", "Executes a command.")
-                .addArgument("command", "The command", VString.class)
-                .addResult("output", "The output of the command", VType.class));
+    GenericExecServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription) {
+        super(serviceMethodDescription, serviceDescription);
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+    public Map<String, Object> syncExecImpl(final Map<String, Object> parameters) throws Exception{
         String shell = defaultShell();
         String shellArg = defaultShellArg();
         String command = ((VString) parameters.get("command")).getValue();
-        executeCommand(parameters, callback, errorCallback, executor, shell, shellArg, command);
+        return syncExecuteCommand(parameters, shell, shellArg, command);
     }
-    
+
     static String defaultShell() {
         if (isWindows()) {
             return "cmd";
@@ -48,7 +44,7 @@ class GenericExecServiceMethod extends ServiceMethod {
             return "/bin/bash";
         }
     }
-    
+
     static String defaultShellArg() {
         if (isWindows()) {
             return "/c";
@@ -56,59 +52,51 @@ class GenericExecServiceMethod extends ServiceMethod {
             return "-c";
         }
     }
-    
+
     static boolean isWindows() {
-        return System.getProperties().get("os.name").toString().toLowerCase().indexOf("win") >= 0;
+        return System.getProperties().get("os.name").toString().toLowerCase().contains("win");
     }
 
-    static void executeCommand(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback,
-            final ExecutorService executor, final String shell, final String shellArg, final String command) {
-        executor.submit(new Runnable() {
+    static Map<String, Object> syncExecuteCommand(final Map<String, Object> parameters, final String shell, final String shellArg, final String command) throws Exception {
+        Process process = null;
+        try {
+            process = new ProcessBuilder(shell, shellArg, command).start();
 
-            @Override
-            public void run() {
-                Process process = null;
+            // Read output to a text buffer
+            StringBuilder buffer = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line).append("\n");
+            }
+            String output = buffer.toString();
+
+            // Try parsing output as a table
+            try {
+                CSVIO io = new CSVIO();
+                VTable table = io.importVTable(new StringReader(output));
+                Map<String, Object> resultMap = new HashMap<>();
+                resultMap.put("output", table);
+                return resultMap;
+            } catch (Exception ex) {
+                // Can't parse output to a table
+            }
+
+            // Return output as a String
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("output", ValueFactory.newVString(output, ValueFactory.alarmNone(), ValueFactory.timeNow()));
+            return resultMap;
+
+        } catch (Exception ex) {
+            if (process != null) {
+                // Try to kill the process if it was created
                 try {
-                    process = new ProcessBuilder(shell, shellArg, command).start();
-                    
-                    // Read output to a text buffer
-                    StringBuilder buffer = new StringBuilder();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line).append("\n");
-                    }
-                    String output = buffer.toString();
-                    
-                    // Try parsing output as a table
-                    try {
-                        CSVIO io = new CSVIO();
-                        VTable table = io.importVTable(new StringReader(output));
-                        Map<String, Object> resultMap = new HashMap<>();
-                        resultMap.put("output", table);
-                        callback.accept(resultMap);
-                        return;
-                    } catch(Exception ex) {
-                        // Can't parse output to a table
-                    }
-                    
-                    // Return output as a String
-                    Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put("output", ValueFactory.newVString(output, ValueFactory.alarmNone(), ValueFactory.timeNow()));
-                    callback.accept(resultMap);
-
-                } catch (Exception ex) {
-                    if (process != null) {
-                        // Try to kill the process if it was created
-                        try {
-                            process.destroy();
-                        } catch (Exception ex1) {
-                            // Ignore any error
-                        }
-                    }
-                    errorCallback.accept(ex);
+                    process.destroy();
+                } catch (Exception ex1) {
+                    // Ignore any error
                 }
             }
-        });
+            throw new RuntimeException(ex);
+        }
     }
 }

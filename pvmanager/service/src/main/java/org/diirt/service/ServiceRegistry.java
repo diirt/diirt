@@ -116,4 +116,18 @@ public class ServiceRegistry {
         }
         return method;
     }
+    
+    /**
+     * Closes all registered services using {@link Service#close()}.
+     */
+    public void close(){
+        services.keySet().stream().forEach(serviceName -> {
+            try {
+                Service service = services.remove(serviceName);
+                service.close();
+            } catch (Exception e) {
+                log.log(Level.SEVERE, null, e);
+            }
+        });
+    }
 }

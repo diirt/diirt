@@ -4,8 +4,13 @@
  */
 package org.diirt.support.pva.rpcservice;
 
-import org.diirt.support.pva.rpcservice.RPCService;
-import org.diirt.support.pva.rpcservice.RPCServices;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.diirt.service.Service;
+import org.diirt.support.pva.rpcservice.rpcclient.PoolConfiguration;
+import org.diirt.support.pva.rpcservice.rpcclient.PoolStatistics;
+import org.diirt.support.pva.rpcservice.rpcclient.PooledRPCClientFactory;
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.client.rpc.RPCClient;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
@@ -13,21 +18,13 @@ import org.epics.pvaccess.server.rpc.RPCServer;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.*;
-import org.diirt.support.pva.rpcservice.rpcclient.PoolConfiguration;
-import org.diirt.support.pva.rpcservice.rpcclient.PoolStatistics;
-import org.diirt.support.pva.rpcservice.rpcclient.PooledRPCClientFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import org.junit.After;
 import static org.junit.Assert.*;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Testing a RPC client pooling
@@ -54,7 +51,7 @@ public class PooledRPCClientTest implements Runnable {
     InputStream stream = getClass().getResourceAsStream("RPCSumServiceWithPoolConfiguration.xml");
 
     //the rpcservice will read the pool configuration from the rpcservice description xml and set it on the PooledRPCClientFactory
-    RPCService service = RPCServices.createFromXml(stream);
+    Service service = RPCServices.createFromXml(stream);
 
     PoolConfiguration poolConfiguration = PooledRPCClientFactory.getPoolConfiguration();
 

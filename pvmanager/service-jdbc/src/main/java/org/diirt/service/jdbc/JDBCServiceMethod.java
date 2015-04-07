@@ -16,8 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
 import javax.sql.DataSource;
 import org.diirt.service.ServiceMethod;
 import org.diirt.util.array.CircularBufferDouble;
@@ -35,19 +33,20 @@ import org.diirt.vtype.ValueFactory;
 class JDBCServiceMethod extends ServiceMethod {
     
     private final DataSource dataSource;
-    private final ExecutorService executorService;
     private final String query;
     private final List<String> parameterNames;
 
     /**
-     * Creates a new service method.
-     * 
-     * @param serviceMethodDescription a method description
+     * Creates a new JDBC service method, for querying a JDBC datasource.
+     *
+     * @param serviceMethodDescription the description of the JDBC service
+     * method; can't be null
+     * @param serviceDescription the description of the JDBC service; can't be
+     * null
      */
-    JDBCServiceMethod(JDBCServiceMethodDescription serviceMethodDescription) {
-        super(serviceMethodDescription.serviceMethodDescription);
-        this.dataSource = serviceMethodDescription.dataSource;
-        this.executorService = serviceMethodDescription.executorService;
+    JDBCServiceMethod(JDBCServiceMethodDescription serviceMethodDescription, JDBCServiceDescription serviceDescription) {
+        super(serviceMethodDescription, serviceDescription);
+        this.dataSource = serviceDescription.dataSource;
         this.query = serviceMethodDescription.query;
         this.parameterNames = serviceMethodDescription.orderedParameterNames;
     }
@@ -56,59 +55,60 @@ class JDBCServiceMethod extends ServiceMethod {
         return dataSource;
     }
 
-    private ExecutorService getExecutorService() {
-        return executorService;
-    }
-
+    /**
+     * Gets the query command to execute on the JDBC datasource.
+     *
+     * @return query command
+     */
     protected String getQuery() {
         return query;
     }
-    
+
     private boolean isResultQuery() {
         return !getResults().isEmpty();
     }
 
+    /**
+     * Gets the list of ordered parameter names.
+     *
+     * @return parameter names
+     */
     protected List<String> getParameterNames() {
         return parameterNames;
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
-        getExecutorService().submit(new Runnable() {
-            @Override
-            public void run() {
-                try (Connection connection = getDataSource().getConnection())  {
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(getQuery())) {
-                        int i = 0;
-                        for (String parameterName : getParameterNames()) {
-                            Object value = parameters.get(parameterName);
-                            if (value instanceof VString) {
-                                preparedStatement.setString(i+1, ((VString) value).getValue());
-                            } else if (value instanceof VNumber) {
-                                preparedStatement.setDouble(i+1, ((VNumber) value).getValue().doubleValue());
-                            } else {
-                                throw new RuntimeException("JDBC mapping support for " + value.getClass().getSimpleName() + " not implemented");
-                            }
-                            i++;
-                        }
-                        if (isResultQuery()) {
-                            ResultSet resultSet = preparedStatement.executeQuery();
-                            VTable table = resultSetToVTable(resultSet);
-                            callback.accept(Collections.<String, Object>singletonMap(getResults().get(0).getName(), table));
-                        } else {
-                            preparedStatement.execute();
-                            callback.accept(new HashMap<String, Object>());
-                        }
+    public Map<String, Object> syncExecImpl(Map<String, Object> parameters) throws Exception {
+        try (Connection connection = getDataSource().getConnection())  {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(getQuery())) {
+                int i = 0;
+                for (String parameterName : getParameterNames()) {
+                    Object value = parameters.get(parameterName);
+                    if (value instanceof VString) {
+                        preparedStatement.setString(i+1, ((VString) value).getValue());
+                    } else if (value instanceof VNumber) {
+                        preparedStatement.setDouble(i+1, ((VNumber) value).getValue().doubleValue());
+                    } else {
+                        throw new RuntimeException("JDBC mapping support for " + value.getClass().getSimpleName() + " not implemented");
                     }
-                } catch (Exception ex) {
-                    errorCallback.accept(ex);
+                    i++;
+                }
+                if (isResultQuery()) {
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    VTable table = resultSetToVTable(resultSet);
+                    return Collections.<String, Object>singletonMap(getResults().get(0).getName(), table);
+                } else {
+                    preparedStatement.execute();
+                    return new HashMap<>();
                 }
             }
-        });
+        } catch (Exception ex) {
+            throw ex;
+        }
     }
 
     /**
-     * Maps a result set to a VTable
+     * Maps a result set to a VTable.
      */
     static VTable resultSetToVTable(ResultSet resultSet) throws SQLException {
         ResultSetMetaData metaData = resultSet.getMetaData();
@@ -139,18 +139,18 @@ class JDBCServiceMethod extends ServiceMethod {
                 case Types.BOOLEAN:
                 case Types.BIT:
                     types.add(String.class);
-                    data.add(new ArrayList<String>());
+                    data.add(new ArrayList<>());
                     break;
                     
                 case Types.TIMESTAMP:
                     types.add(Timestamp.class);
-                    data.add(new ArrayList<Timestamp>());
+                    data.add(new ArrayList<>());
                     break;
                     
                 default:
                     if ("java.lang.String".equals(metaData.getColumnClassName(j))) {
                         types.add(String.class);
-                        data.add(new ArrayList<String>());
+                        data.add(new ArrayList<>());
                     } else {
                         throw new IllegalArgumentException("Unsupported type " + metaData.getColumnTypeName(j));
                     }
@@ -182,4 +182,5 @@ class JDBCServiceMethod extends ServiceMethod {
         
         return ValueFactory.newVTable(types, names, data);
     }
+    
 }

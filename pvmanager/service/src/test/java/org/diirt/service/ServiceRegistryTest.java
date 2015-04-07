@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -25,11 +26,11 @@ public class ServiceRegistryTest {
         Service service = registry.findService("math");
         assertThat(service, nullValue());
 
-        registry.registerService(new MathService());
+        registry.registerService(MathService.createMathService());
         service = registry.findService("test");
         assertThat(service, nullValue());
         service = registry.findService("math");
-        assertThat(service, instanceOf(MathService.class));
+        assertThat(service, instanceOf(Service.class));
     }
 
     @Test
@@ -38,7 +39,7 @@ public class ServiceRegistryTest {
         ServiceMethod serviceMethod = registry.findServiceMethod("math", "add");
         assertThat(serviceMethod, nullValue());
 
-        registry.registerService(new MathService());
+        registry.registerService(MathService.createMathService());
         serviceMethod = registry.findServiceMethod("test", "add");
         assertThat(serviceMethod, nullValue());
         serviceMethod = registry.findServiceMethod("math", "add");
@@ -59,7 +60,7 @@ public class ServiceRegistryTest {
     public void findServiceMethod3() {
         ServiceRegistry registry = new ServiceRegistry();
 
-        registry.registerService(new MathService());
+        registry.registerService(MathService.createMathService());
         ServiceMethod serviceMethod = registry.findServiceMethod("math/add");
         assertThat(serviceMethod, instanceOf(AddServiceMethod.class));
         serviceMethod = registry.findServiceMethod("math/multiply");
@@ -69,7 +70,7 @@ public class ServiceRegistryTest {
     @Test(expected = IllegalArgumentException.class)
     public void findServiceMethod4() {
         ServiceRegistry registry = new ServiceRegistry();
-        registry.registerService(new MathService());
+        registry.registerService(MathService.createMathService());
         registry.findServiceMethod("math/invent");
     }
 
@@ -88,7 +89,7 @@ public class ServiceRegistryTest {
 
             @Override
             public Collection<Service> createServices() {
-                return Arrays.<Service>asList(new MathService());
+                return Arrays.<Service>asList(MathService.createMathService());
             }
         });
         serviceMethod = registry.findServiceMethod("test", "add");
@@ -99,5 +100,18 @@ public class ServiceRegistryTest {
         assertThat(serviceMethod, instanceOf(MultiplyServiceMethod.class));
         serviceMethod = registry.findServiceMethod("math", "invent");
         assertThat(serviceMethod, nullValue());
+    }
+
+    @Test
+    public void close1() {
+        Service mockService = spy(MathService.createMathService());
+        
+        ServiceRegistry registry = new ServiceRegistry();
+        registry.registerService(mockService);
+        assertThat(registry.findService("math"), equalTo(mockService));
+        registry.close();
+        assertThat(registry.findService("math"), nullValue());
+        
+        verify(mockService).close();
     }
 }

@@ -6,9 +6,15 @@ package org.diirt.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  *
@@ -21,55 +27,88 @@ public class ServiceMethodTest {
 
     @Test
     public void execute1() {
-        ServiceMethod method = new AddServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", 1);
         parameters.put("arg2", 2);
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
+        Map<String, Object> result = method.executeSync(parameters);
         
-        assertThat(cache.get().get("result"), equalTo((Object) 3.0));
-        assertThat(exceptionCache.get(), nullValue());
+        assertThat(result.get("result"), equalTo((Object) 3.0));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void execute2() {
-        ServiceMethod method = new AddServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", 1);
         parameters.put("arg2", "test");
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
-        
-        assertThat(cache.get(), nullValue());
-        assertThat(exceptionCache.get(), instanceOf(IllegalArgumentException.class));
+        method.executeSync(parameters);
     }
 
     @Test
     public void execute3() {
-        ServiceMethod method = new MultiplyServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("arg1", 1);
         parameters.put("arg2", 2);
-        ValueCache<Map<String, Object>> cache = new ValueCache<>();
-        ValueCache<Exception> exceptionCache = new ValueCache<>();
-        method.execute(parameters, cache, exceptionCache);
+        Map<String, Object> result = method.executeSync(parameters);
         
-        assertThat(cache.get().get("result"), equalTo((Object) 2.0));
-        assertThat(exceptionCache.get(), nullValue());
+        assertThat(result.get("result"), equalTo((Object) 2.0));
     }
     
     @Test
     public void toString1() {
-        ServiceMethod method = new MultiplyServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
         assertThat(method.toString(), equalTo("multiply(Number arg1, Number arg2): Number result"));
     }
     
     @Test
     public void toString2() {
-        ServiceMethod method = new AddServiceMethod();
+        ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         assertThat(method.toString(), equalTo("add(Number arg1, Number arg2): Number result"));
+    }
+    
+    @Test
+    public void executeAsyncVsSync(){
+        ServiceMethod method = TimerWaitServiceMethod.createTimerService().getServiceMethods().get("wait");
+        
+        // Time measurement
+        long startTimeSync, endTimeSync;
+        long startTimeAsync, endTimeAsync, postLatchTimeAsync;
+        
+        // ASYNC setup
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicReference<Map<String, Object>> result = new AtomicReference<>();
+        
+        Consumer<Map<String, Object>> callback = (Map<String, Object> newValue) -> {
+            result.set(newValue);
+            latch.countDown();
+        };
+        Consumer<Exception> errorCallback = (Exception ex) -> {
+            fail("Unexpected async exception");
+        };
+        
+        // ASYNC execution        
+        startTimeAsync = System.currentTimeMillis();
+        method.executeAsync(new HashMap<>(), callback, errorCallback);
+        endTimeAsync = System.currentTimeMillis();
+        
+        // await latch
+        try {
+            latch.await(60, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            fail("Unable to finish async execution");
+        }
+        postLatchTimeAsync = System.currentTimeMillis();
+        
+        // SYNC execution
+        startTimeSync = System.currentTimeMillis();
+        method.executeSync(new HashMap<>());
+        endTimeSync = System.currentTimeMillis();
+        
+        // Test
+        assertTrue(endTimeAsync - startTimeAsync < 1000);
+        assertTrue(postLatchTimeAsync - startTimeAsync >= 1000);
+        assertTrue(endTimeSync - startTimeSync >= 1000);
     }
 }

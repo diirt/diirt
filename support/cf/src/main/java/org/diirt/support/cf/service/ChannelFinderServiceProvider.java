@@ -23,7 +23,7 @@ public class ChannelFinderServiceProvider implements ServiceProvider {
 
     @Override
     public Collection<Service> createServices() {
-        return Collections.singleton(new ChannelFinderService());
+        return Collections.singleton(ChannelFinderService.createService());
     }
 
 }

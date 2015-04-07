@@ -17,6 +17,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.diirt.service.Service;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.w3c.dom.Document;
@@ -32,18 +33,21 @@ import org.xml.sax.SAXException;
 public class JDBCServices {
 
     private JDBCServices() {
-        // Prevent instanciation
+        // Prevent instantiation
     }
     
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
+    private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
 
     /**
      * Creates a JDBCService based on the description of an XML file.
      * 
-     * @param input a stream with an xml file
+     * @param input a stream with an xml file; can't be null
      * @return the new service
      */
-    public static JDBCService createFromXml(InputStream input) {
+    public static Service createFromXml(InputStream input) {
+        if (input == null){
+            throw new IllegalArgumentException("Input must not be null");
+        }
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -100,7 +104,7 @@ public class JDBCServices {
                 service.addServiceMethod(jdbcMethod);
             }
             
-            return new JDBCService(service);
+            return service.createService();
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(JDBCServices.class.getName()).log(Level.FINEST, "Couldn't create service", ex);
             throw new IllegalArgumentException("Couldn't create service", ex);

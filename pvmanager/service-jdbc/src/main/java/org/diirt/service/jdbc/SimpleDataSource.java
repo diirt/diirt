@@ -22,6 +22,11 @@ public class SimpleDataSource implements DataSource {
     private final String jdbcUrl;
     private PrintWriter logWriter;
 
+    /**
+     * Creates the simple DataSource that wraps around a JDBC url.
+     * 
+     * @param jdbcUrl source to wrap around
+     */
     public SimpleDataSource(String jdbcUrl) {
         this.jdbcUrl = jdbcUrl;
     }

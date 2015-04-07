@@ -7,11 +7,12 @@ package org.diirt.service;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 /**
- * Provides access to command/response type of communication for sources of
- * data or RPC-like services. Each service is a collection of one of more methods.
+ * Group of request/response operations that share the same resources. Each service is a collection of one of more methods.
  * Each method can be executed with a set of parameters, and returns with a set
  * of results.
  * <p>
@@ -26,7 +27,8 @@ public class Service {
     private final String name;
     private final String description;
     private final Map<String, ServiceMethod> serviceMethods;
-
+    private final ExecutorService executorService;
+    
     /**
      * Creates a new service given the description. All properties
      * are copied out of the description, guaranteeing the immutability
@@ -35,10 +37,17 @@ public class Service {
      * 
      * @param serviceDescription the description of the service, can't be null
      */
-    public Service(ServiceDescription serviceDescription) {
+    protected Service(ServiceDescription serviceDescription) {
         this.name = serviceDescription.name;
         this.description = serviceDescription.description;
-        this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.serviceMethods));
+
+        // If no executor is attached to the description, we create one
+        if (serviceDescription.executorService == null){
+            serviceDescription.executorService = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool(this.name + " services"));
+        }
+        this.executorService = serviceDescription.executorService;
+        
+        this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.createServiceMethods()));
     }
 
     /**
@@ -68,4 +77,11 @@ public class Service {
         return serviceMethods;
     }
     
+    /**
+     * Shutdown procedure for the service, closing resources (e.g. executor
+     * service).
+     */
+    public void close(){
+        this.executorService.shutdown();
+    }
 }

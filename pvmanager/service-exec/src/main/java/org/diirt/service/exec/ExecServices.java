@@ -6,8 +6,6 @@ package org.diirt.service.exec;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -17,6 +15,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.diirt.service.Service;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.w3c.dom.Document;
@@ -25,25 +24,28 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Utility class to create JDBCServices.
+ * Utility class to create ExecServices.
  *
  * @author carcassi
  */
 public class ExecServices {
 
     private ExecServices() {
-        // Prevent instanciation
+        // Prevent instantiation
     }
     
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
-
     /**
-     * Creates a JDBCService based on the description of an XML file.
-     * 
-     * @param input a stream with an xml file
-     * @return the new service
+     * Creates a service with exec arguments based on the description of an XML
+     * file.
+     *
+     * @param input a stream with an xml file; can't be null
+     * @return the new service for exec commands
      */
-    public static ExecService createFromXml(InputStream input) {
+    public static Service createFromXml(InputStream input) {
+        if (input == null){
+            throw new IllegalArgumentException("Input must not be null");
+        }
+        
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -60,7 +62,7 @@ public class ExecServices {
             }
             
             ExecServiceDescription service = new ExecServiceDescription(serviceName, serviceDesecription);
-            service.executorService(defaultExecutor);
+            service.executorService(GenericExecService.defaultExecutor);
 
             NodeList methods = (NodeList) xPath.evaluate("/execService/methods/method", document, XPathConstants.NODESET);
             for (int i = 0; i < methods.getLength(); i++) {
@@ -71,10 +73,10 @@ public class ExecServices {
                 String resultName = xPath.evaluate("result/@name", method);
                 String resultDescription = xPath.evaluate("result/@description", method);
                 
-                ExecServiceMethodDescription jdbcMethod = new ExecServiceMethodDescription(methodName, methodDescription);
-                jdbcMethod.command(command);
+                ExecServiceMethodDescription execMethod = new ExecServiceMethodDescription(methodName, methodDescription);
+                execMethod.command(command);
                 if (!resultName.trim().isEmpty()) {
-                    jdbcMethod.queryResult(resultName, resultDescription);
+                    execMethod.queryResult(resultName, resultDescription);
                 }
                 
                 NodeList arguments = (NodeList) xPath.evaluate("argument", method, XPathConstants.NODESET);
@@ -92,13 +94,13 @@ public class ExecServices {
                         default: throw new IllegalArgumentException("Type " + argType + " not supported.");
                     }
                     if (!argName.trim().isEmpty()) {
-                        jdbcMethod.addArgument(argName, argDescription, argClass);
+                        execMethod.addArgument(argName, argDescription, argClass);
                     }
                 }
-                service.addServiceMethod(jdbcMethod);
+                service.addServiceMethod(execMethod);
             }
             
-            return new ExecService(service);
+            return service.createService();
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(ExecServices.class.getName()).log(Level.FINEST, "Couldn't create service", ex);
             throw new IllegalArgumentException("Couldn't create service", ex);

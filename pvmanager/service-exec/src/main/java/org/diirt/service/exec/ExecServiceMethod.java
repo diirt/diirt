@@ -5,38 +5,38 @@
 package org.diirt.service.exec;
 
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
 import org.diirt.vtype.VString;
 
 /**
- * The implementation of an executor service method.
+ * The implementation of an exec service method: for execution of shell
+ * commands (both synchronously and asynchronously).
  *
  * @author carcassi
  */
 class ExecServiceMethod extends ServiceMethod {
-    
-    private final ExecutorService executorService;
+
     private final String shell;
     private final String shellArg;
     private final String command;
 
     /**
-     * Creates a new service method.
-     * 
-     * @param serviceMethodDescription a method description
+     * Creates a new exec service method, for executing shell commands.
+     *
+     * @param serviceMethodDescription the description of the exec service
+     * method; can't be null
+     * @param serviceDescription the description of the exec service; can't be
+     * null
      */
-    ExecServiceMethod(ExecServiceMethodDescription serviceMethodDescription) {
-        super(serviceMethodDescription.serviceMethodDescription);
-        this.executorService = serviceMethodDescription.executorService;
-        this.shell = serviceMethodDescription.shell;
-        this.shellArg = serviceMethodDescription.shellArg;
+    ExecServiceMethod(ExecServiceMethodDescription serviceMethodDescription, ExecServiceDescription serviceDescription) {
+        super(serviceMethodDescription, serviceDescription);
+        this.shell = serviceDescription.shell;
+        this.shellArg = serviceDescription.shellArg;
         this.command = serviceMethodDescription.command;
     }
 
     @Override
-    public void executeMethod(final Map<String, Object> parameters, final Consumer<Map<String, Object>> callback, final Consumer<Exception> errorCallback) {
+    public Map<String, Object> syncExecImpl(final Map<String, Object> parameters) throws Exception {
         String expandedCommand = command;
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             String name = entry.getKey();
@@ -47,11 +47,10 @@ class ExecServiceMethod extends ServiceMethod {
             } else if (object == null) {
                 value = "";
             } else {
-                errorCallback.accept(new IllegalArgumentException("Can't map parameter '" + name + "': was " + object));
-                return;
+                throw new IllegalArgumentException("Can't map parameter '" + name + "': was " + object);
             }
             expandedCommand = expandedCommand.replaceAll("#" + name + "#", value);
         }
-        GenericExecServiceMethod.executeCommand(parameters, callback, errorCallback, executorService, shell, shellArg, expandedCommand);
+        return GenericExecServiceMethod.syncExecuteCommand(parameters, shell, shellArg, expandedCommand);
     }
 }
