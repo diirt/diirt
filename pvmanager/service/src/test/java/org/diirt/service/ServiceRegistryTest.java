@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -99,5 +100,18 @@ public class ServiceRegistryTest {
         assertThat(serviceMethod, instanceOf(MultiplyServiceMethod.class));
         serviceMethod = registry.findServiceMethod("math", "invent");
         assertThat(serviceMethod, nullValue());
+    }
+
+    @Test
+    public void close1() {
+        Service mockService = spy(MathService.createMathService());
+        
+        ServiceRegistry registry = new ServiceRegistry();
+        registry.registerService(mockService);
+        assertThat(registry.findService("math"), equalTo(mockService));
+        registry.close();
+        assertThat(registry.findService("math"), nullValue());
+        
+        verify(mockService).close();
     }
 }
