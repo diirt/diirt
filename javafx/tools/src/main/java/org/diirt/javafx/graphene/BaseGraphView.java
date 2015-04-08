@@ -151,7 +151,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * default, this does nothing. Override this method to provide custom
      * functionality.
      * 
-     * @param e 
+     * @param e the event associated with the mouse movement
      */
     protected void onMouseMove( MouseEvent e ) {
 	//do nothing by default
