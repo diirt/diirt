@@ -446,4 +446,108 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.degenerate.2", image);
     }
+    
+    @Test
+    public void testSpringForward() throws Exception {
+        Timestamp start = TimeScalesTest.create(2015, 3, 8, 1, 0, 0, 0);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 90,34,58,66,61,16,90,24,87,61,97,89,4,89,63,70,67,66,64,2 ),
+                Arrays.asList(start,
+		    start.plus(TimeDuration.ofMinutes(2.4)),
+		    start.plus(TimeDuration.ofMinutes(3.3)),
+		    start.plus(TimeDuration.ofMinutes(4.3)),
+		    start.plus(TimeDuration.ofMinutes(21.1)),
+		    start.plus(TimeDuration.ofMinutes(21.2)),
+		    start.plus(TimeDuration.ofMinutes(27.9)),
+		    start.plus(TimeDuration.ofMinutes(30.5)),
+		    start.plus(TimeDuration.ofMinutes(34.2)),
+		    start.plus(TimeDuration.ofMinutes(45.7)),
+		    start.plus(TimeDuration.ofMinutes(46.9)),
+		    start.plus(TimeDuration.ofMinutes(51.9)),
+		    start.plus(TimeDuration.ofMinutes(60.0)),
+		    start.plus(TimeDuration.ofMinutes(60.8)),
+		    start.plus(TimeDuration.ofMinutes(67.0)),
+		    start.plus(TimeDuration.ofMinutes(75.4)),
+		    start.plus(TimeDuration.ofMinutes(81.1)),
+		    start.plus(TimeDuration.ofMinutes(82.7)),
+		    start.plus(TimeDuration.ofMinutes(85.3)),
+		    start.plus(TimeDuration.ofMinutes(94.8))
+		));
+        BufferedImage image = new BufferedImage(500, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(500, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.springForward.1", image);
+    }
+    
+    @Test
+    public void testMultilineLabels() throws Exception {
+        Timestamp start = TimeScalesTest.create(2014, 12, 31, 23, 30, 0, 0);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 929,333,542,304,153,631,562,98,187,285,710,688,399,528,679,102,533,156,526,941 ),
+                Arrays.asList(start,
+		    start.plus(TimeDuration.ofMinutes(2.4)),
+		    start.plus(TimeDuration.ofMinutes(3.3)),
+		    start.plus(TimeDuration.ofMinutes(4.3)),
+		    start.plus(TimeDuration.ofMinutes(21.1)),
+		    start.plus(TimeDuration.ofMinutes(21.2)),
+		    start.plus(TimeDuration.ofMinutes(27.9)),
+		    start.plus(TimeDuration.ofMinutes(30.5)),
+		    start.plus(TimeDuration.ofMinutes(34.2)),
+		    start.plus(TimeDuration.ofMinutes(45.7)),
+		    start.plus(TimeDuration.ofMinutes(46.9)),
+		    start.plus(TimeDuration.ofMinutes(51.9)),
+		    start.plus(TimeDuration.ofMinutes(60.0)),
+		    start.plus(TimeDuration.ofMinutes(60.8)),
+		    start.plus(TimeDuration.ofMinutes(67.0)),
+		    start.plus(TimeDuration.ofMinutes(75.4)),
+		    start.plus(TimeDuration.ofMinutes(81.1)),
+		    start.plus(TimeDuration.ofMinutes(82.7)),
+		    start.plus(TimeDuration.ofMinutes(85.3)),
+		    start.plus(TimeDuration.ofMinutes(94.8))
+		));
+        BufferedImage image = new BufferedImage(500, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(700, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.multiLineLabels.1", image);
+    }
+    
+    @Test
+    public void testMultilineLabelsEnd() throws Exception {
+	//tests what happens if we have a date and time for the last label
+	//on the graph
+        Timestamp start = TimeScalesTest.create(2014, 12, 31, 23, 30, 0, 0);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 1 , 2 , 3 , 4 ),
+                Arrays.asList(start,
+			start.plus( TimeDuration.ofMinutes( 10 ) ) ,
+			start.plus( TimeDuration.ofMinutes( 20 ) ) ,
+			start.plus( TimeDuration.ofMinutes( 30 ) )
+		));
+        BufferedImage image = new BufferedImage(500, 200, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(500, 200);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.multiLineLabels.2", image);
+    }
+    
+    @Test
+    public void testMultilineLabelsStartMiddleEnd() throws Exception {
+	//tests what happens if we have a date and time for the first, last labels
+	//on the graph, and many in the middle
+        Timestamp start = TimeScalesTest.create(2015, 4, 1, 0, 0, 0, 0);
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 1 , 2 , 3 , 4 ),
+                Arrays.asList(start,
+			start.plus( TimeDuration.ofHours( 720 ) ) , /*go past all of April*/
+			start.plus( TimeDuration.ofHours( 720 + 744 ) ) , /*go past all of May*/
+			start.plus( TimeDuration.ofHours( 720 + 744 + 720 ) ) /*go past all of June*/
+		));
+        BufferedImage image = new BufferedImage(30000, 100, BufferedImage.TYPE_3BYTE_BGR);
+        LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(30000, 100);
+        renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        renderer.draw(graphics, data);
+        ImageAssert.compareImages("lineTimeGraph.multiLineLabels.3", image);
+    }
 }

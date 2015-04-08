@@ -738,12 +738,33 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(0)),
                 drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, true, false);
 	    
-	    //TODO last label may have two parts that needs to be
+	    //XXX last label may have two parts that needs to be
 	    //drawn on two different lines
-            drawVerticalReferenceLabel(g, metrics, timeReferenceLabels.get(timeReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
-                drawRange, yTop, false, false);
+	    //this is only a hack
+	    String lastLabel = timeReferenceLabels.get( timeReferenceLabels.size()-1 );
+	    if ( lastLabel.contains( " " ) ) {
+		firstHalf = lastLabel.substring( 0 , lastLabel.indexOf( " " ) );
+		secondHalf = lastLabel.substring( lastLabel.indexOf( " " ) );
+	    }
+	    else {
+		firstHalf = lastLabel;
+		secondHalf = "";
+	    }
+	    if ( secondHalf.equals( "" ) ) {
+		drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+		    drawRange, yTop, false, false);
+	    }
+	    else {
+		int tmp = drawRange[ 1 ];
+		drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+		    drawRange, yTop, false, false);
+		drawRange[ 1 ] = tmp;
+		drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+		    drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, false, false);
+	    }
             
-	    //TODO label splitting needs to be reviewed
+	    //XXX label splitting needs to be reviewed and reimplemented
+	    //more elegantly/concisely
             for (int i = 1; i < timeReferenceLabels.size() - 1; i++) {
 		if ( !timeReferenceLabels.get( i ).contains( " " ) ) {
 		    firstHalf = timeReferenceLabels.get( i );
