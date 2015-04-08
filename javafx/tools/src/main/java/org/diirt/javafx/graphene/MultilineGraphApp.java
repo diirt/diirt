@@ -10,15 +10,15 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author mjchao
+ * @author Mickey
  */
-public class MultiAxisLineGraphApp extends BaseGraphApp {
+public class MultilineGraphApp extends BaseGraphApp {
 
-    final private MultiAxisLineGraphView multiAxislineGraphView = new MultiAxisLineGraphView();
+    final private MultilineGraphView multiLineGraphView = new MultilineGraphView();
     
     @Override
     public BaseGraphView getGraphView() {
-	return this.multiAxislineGraphView;
+	return this.multiLineGraphView;
     }
     
     @Override
@@ -34,7 +34,7 @@ public class MultiAxisLineGraphApp extends BaseGraphApp {
     
     @Override
     public void openConfigurationPanel() {
-	this.multiAxislineGraphView.getDefaultConfigurationDialog().open();
+	this.multiLineGraphView.getDefaultConfigurationDialog().open();
     }
     
     final public static void main( String[] args ) {
