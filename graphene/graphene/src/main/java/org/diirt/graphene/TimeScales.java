@@ -32,8 +32,8 @@ public class TimeScales {
     }
     
     static class TimePeriod {
-        public int fieldId;
-        public double amount;
+        public final int fieldId;
+        public final double amount;
 
         public TimePeriod(int fieldId, double amount) {
             this.fieldId = fieldId;
@@ -74,7 +74,7 @@ public class TimeScales {
     }
 
     static TimePeriod nextUp(TimePeriod period) {
-	//TODO nanoseconds rounding up
+	//TODO nanoseconds and year rounding up
 	switch(period.fieldId) {
             case GregorianCalendar.MILLISECOND:
                 if (period.amount < 2) {
@@ -262,7 +262,6 @@ public class TimeScales {
 	}
 	cal.set( GregorianCalendar.YEAR , 0 );
 	
-        return;
     }
     
     static TimePeriod nextDown(TimePeriod period) {
@@ -369,7 +368,7 @@ public class TimeScales {
         }
         return new TimePeriod( GregorianCalendar.MILLISECOND , 1 );
 	
-	//TODO nanoseconds rounding down
+	//TODO nanoseconds and year rounding down
     }
     
     static TimePeriod toTimePeriod(double seconds) {
@@ -417,84 +416,6 @@ public class TimeScales {
         List<String> result = new ArrayList<>(timestamps.size());
         for (Timestamp timestamp : timestamps) {
             result.add(format.format(timestamp));
-        }
-        
-        return result;
-    }
-    
-    static int commonEnd(String a, String b) {
-        int currentStopFromEnd = 0;
-        while(a.charAt(b.length() - 1 - currentStopFromEnd) == b.charAt(b.length() - 1 - currentStopFromEnd)) {
-            currentStopFromEnd++;
-        }
-        return currentStopFromEnd;
-    }
-    
-    static int commonStart(String a, String b) {
-        int commonStart = 0;
-        while(a.charAt(commonStart) == b.charAt(commonStart)) {
-            commonStart++;
-        }
-        return commonStart;
-    }
-    
-    /**
-     * Use trimLabels()
-     */
-    @Deprecated
-    static List<String> trimLabelsRight(List<String> labels) {
-        if (labels.isEmpty()) {
-            return labels;
-        }
-        
-        // Calculate the useless part common to all strings
-        int currentStopFromEnd = zeroFormat.length();
-        for (int i = 0; i < labels.size(); i++) {
-            String otherLabel = labels.get(i);
-            currentStopFromEnd = Math.min(currentStopFromEnd, commonEnd(otherLabel, zeroFormat));
-        }
-        
-        // Round down to a possible stop
-        int finalStop = 0;
-        for (int i = 0; possibleStopFromEnd.getInt(i) <= currentStopFromEnd; i++) {
-            finalStop = possibleStopFromEnd.getInt(i);
-        }
-        
-        if (finalStop == 0) {
-            return labels;
-        }
-        
-        // Trim labels
-        List<String> result = new ArrayList<>(labels.size());
-        for (String label : labels) {
-            result.add(label.substring(0, zeroFormat.length() - finalStop));
-        }
-        
-        return result;
-    }
-    
-    /**
-     * Use trimLabels()
-     */
-    @Deprecated
-    static List<String> trimLabelsLeft(List<String> labels) {
-        if (labels.isEmpty()) {
-            return labels;
-        }
-        
-        List<String> result = new ArrayList<>(labels.size());
-        String previousLabel = labels.get(0);
-        result.add(previousLabel);
-        
-        for (int i = 1; i < labels.size(); i++) {
-            String nextLabel = labels.get(i);
-            int commonStart = commonStart(previousLabel, nextLabel);
-            int finalStart = 0;
-            for (int j = 0; possibleStopFromStart.getInt(j) <= commonStart; j++) {
-                finalStart = possibleStopFromStart.getInt(j);
-            }
-            result.add(nextLabel.substring(finalStart, nextLabel.length()));
-            previousLabel = nextLabel;
         }
         
         return result;
@@ -732,13 +653,13 @@ public class TimeScales {
 	 */
 	public DateTrimmer( String date ) {
 	    int[] fields = parseFields( date );
-	    this.m_year = fields[ 0 ];
-	    this.m_month = fields[ 1 ];
-	    this.m_day = fields[ 2 ];
-	    this.m_hour = fields[ 3 ];
-	    this.m_minute = fields[ 4 ];
-	    this.m_second = fields[ 5 ];
-	    this.m_nanosecond = fields[ 6 ];
+	    this.m_year = fields.length >= 1 ? fields[ 0 ] : 0;
+	    this.m_month = fields.length >= 2 ? fields[ 1 ] : 0;
+	    this.m_day = fields.length >= 3 ? fields[ 2 ] : 0;
+	    this.m_hour = fields.length >= 4 ? fields[ 3 ] : 0;
+	    this.m_minute = fields.length >= 5 ? fields[ 4 ] : 0;
+	    this.m_second = fields.length >= 6 ? fields[ 5 ] : 0;
+	    this.m_nanosecond = fields.length >= 7 ? fields[ 6 ] : 0;
 	}
 	
 	/**

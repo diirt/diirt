@@ -19,10 +19,10 @@ import org.diirt.util.time.Timestamp;
  */
 public class TimeAxis {
     
-    private TimeInterval timeInterval;
-    private List<Timestamp> timeStamps;
-    private ListDouble normalizedValues;
-    private List<String> tickLabels;
+    private final TimeInterval timeInterval;
+    private final List<Timestamp> timeStamps;
+    private final ListDouble normalizedValues;
+    private final List<String> tickLabels;
 
     public TimeAxis(TimeInterval timeInterval, List<Timestamp> timeStamps, ListDouble normalizedValues, List<String> tickLabels) {
         this.timeInterval = timeInterval;
@@ -52,10 +52,6 @@ public class TimeAxis {
     }
     
     private static final DecimalFormat defaultFormat = new DecimalFormat("0.###");
-    
-    private static final DecimalFormat decimal0 = new DecimalFormat("0");
-    private static final DecimalFormat decimal1 = new DecimalFormat("0.0");
-    private static final DecimalFormat decimal2 = new DecimalFormat("0.00");
     
     private static final Map<Integer, DecimalFormat> formats = new ConcurrentHashMap<Integer, DecimalFormat>();
     
