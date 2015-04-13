@@ -93,7 +93,9 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         super.update(update);
         if(update.getValueColorScheme() != null){
             valueColorScheme = update.getValueColorScheme();
-            valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
+            if (datasetRange != null) {
+                valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
+            }
         }
         if (update.getInterpolation() != null) {
             interpolation = update.getInterpolation();
