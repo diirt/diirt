@@ -904,78 +904,78 @@ public class TimeScalesTest {
     }
     
     @Test
-    public void trimLabelsRight1() {
-        List<String> labels = TimeScales.trimLabelsRight(Arrays.asList("2013/03/12 01:30:15.123000000",
+    public void trimLabels1() {
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30:15.123000000",
                 "2013/03/12 01:30:16.123000000",
                 "2013/03/12 01:30:17.123000000"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30:15.123",
-                "2013/03/12 01:30:16.123",
-                "2013/03/12 01:30:17.123")));
+                "01:30:16.123",
+                "01:30:17.123")));
     }
     
     @Test
-    public void trimLabelsRight2() {
-        List<String> labels = TimeScales.trimLabelsRight(Arrays.asList("2013/03/12 01:30:15.123456789",
+    public void trimLabels2() {
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30:15.123456789",
                 "2013/03/12 01:30:16.123456790",
                 "2013/03/12 01:30:17.123456791"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30:15.123456789",
-                "2013/03/12 01:30:16.123456790",
-                "2013/03/12 01:30:17.123456791")));
+                "01:30:16.123456790",
+                "01:30:17.123456791")));
     }
     
     @Test
-    public void trimLabelsRight3() {
-        List<String> labels = TimeScales.trimLabelsRight(Arrays.asList("2013/03/12 01:30:15.123000000",
+    public void trimLabels3() {
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30:15.123000000",
                 "2013/03/12 01:30:16.123100000",
                 "2013/03/12 01:30:17.123200000"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30:15.1230",
-                "2013/03/12 01:30:16.1231",
-                "2013/03/12 01:30:17.1232")));
+                "01:30:16.1231",
+                "01:30:17.1232")));
     }
     
     @Test
-    public void trimLabelsRight4() {
-        List<String> labels = TimeScales.trimLabelsRight(Arrays.asList("2013/03/12 01:30:15.100000000",
+    public void trimLabels4() {
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30:15.100000000",
                 "2013/03/12 01:30:16.200000000",
                 "2013/03/12 01:30:17.300000000"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30:15.1",
-                "2013/03/12 01:30:16.2",
-                "2013/03/12 01:30:17.3")));
+                "01:30:16.2",
+                "01:30:17.3")));
     }
     
     @Test
-    public void trimLabelsRight5() {
-        List<String> labels = TimeScales.trimLabelsRight(Arrays.asList("2013/03/12 01:30:15.000000000",
+    public void trimLabels5() {
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30:15.000000000",
                 "2013/03/12 01:30:16.000000000",
                 "2013/03/12 01:30:17.000000000"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30:15",
-                "2013/03/12 01:30:16",
-                "2013/03/12 01:30:17")));
+                "01:30:16",
+                "01:30:17")));
     }
     
     @Test
-    public void trimLabelsRight6() {
-        List<String> labels = TimeScales.trimLabelsRight(Arrays.asList("2013/03/12 01:30:00.000000000",
+    public void trimLabels6() {
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30:00.000000000",
                 "2013/03/12 01:30:10.000000000",
                 "2013/03/12 01:30:20.000000000"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30:00",
-                "2013/03/12 01:30:10",
-                "2013/03/12 01:30:20")));
+                "01:30:10",
+                "01:30:20")));
     }
     
     @Test
-    public void trimLabelsRightRight7() {
-        List<String> labels = TimeScales.trimLabelsRight(Arrays.asList("2013/03/12 01:30:00.000000000",
+    public void trimLabels7() {
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30:00.000000000",
                 "2013/03/12 01:31:00.000000000",
                 "2013/03/12 01:32:00.000000000"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30",
-                "2013/03/12 01:31",
-                "2013/03/12 01:32")));
+                "01:31",
+                "01:32")));
     }
     
     @Test
     public void trimLabelsRightLeft1() {
-        List<String> labels = TimeScales.trimLabelsLeft(Arrays.asList("2013/03/12 01:30",
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 01:30",
                 "2013/03/12 01:31",
                 "2013/03/12 01:32"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 01:30",
@@ -985,17 +985,21 @@ public class TimeScalesTest {
     
     @Test
     public void trimLabelsRightLeft2() {
-        List<String> labels = TimeScales.trimLabelsLeft(Arrays.asList("2013/03/12 00:00",
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 00:00",
                 "2013/03/12 12:00",
                 "2013/03/13 00:00"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 00:00",
                 "12:00",
-                "2013/03/13 00:00")));
+                "03/13 00:00")));
     }
     
+    @Ignore
     @Test
     public void trimLabelsRightLeft3() {
-        List<String> labels = TimeScales.trimLabelsLeft(Arrays.asList("2013/03/12 00:00:00.9",
+        //TODO Trimming should remove the hour/min/sec if common,
+        // And should also handle the case where the sub-second precision
+        // is not fully specified
+        List<String> labels = TimeScales.trimLabels(Arrays.asList("2013/03/12 00:00:00.9",
                 "2013/03/12 00:00:01.0",
                 "2013/03/12 00:00:01.1"));
         assertThat(labels, equalTo(Arrays.asList("2013/03/12 00:00:00.9",
@@ -1005,7 +1009,7 @@ public class TimeScalesTest {
     
     
     @Test
-    public void trimLabels1() {
+    public void trimLabels100() {
 	//Tests just 1 label. Since there is only 1 label, there should not
 	//be any common parts, and the entire thing should be displayed
 	List< String > input = Arrays.asList(
