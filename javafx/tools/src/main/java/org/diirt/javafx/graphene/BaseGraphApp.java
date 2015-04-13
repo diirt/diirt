@@ -80,23 +80,6 @@ abstract public class BaseGraphApp extends Application {
     }
     
     /**
-     * Reconnects to the data source with whatever data formula
-     * is currently in use.
-     */
-    public void reconnect() {
-	this.pnlGraph.setFormula( this.pnlData.getSelectedFormula() );
-    }
-    
-    /**
-     * Reconnects to the data source using the given data formula.
-     * 
-     * @param dataFormula the data formula to use
-     */
-    public void reconnect( String dataFormula ) {
-	this.pnlGraph.setFormula( dataFormula );
-    }
-    
-    /**
      * Adds the given data formulae to the list of acceptable data formulae
      * for this graphing application.
      * 
@@ -141,11 +124,11 @@ abstract public class BaseGraphApp extends Application {
 	    this.cboSelectData.setEditable( true );
 	    
 	    //watches for when the user selects a new data formula
-	    this.cboSelectData.valueProperty().addListener( new ChangeListener< String >() {
+	    cboSelectData.valueProperty().addListener( new ChangeListener< String >() {
 
 		@Override
 		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		    reconnect( newValue );
+                    pnlGraph.setFormula(newValue);
 		}
 		
 	    });
@@ -154,7 +137,7 @@ abstract public class BaseGraphApp extends Application {
 
 		@Override
 		public void handle(ActionEvent event) {
-		    BaseGraphApp.this.openConfigurationPanel();
+		    openConfigurationPanel();
 		}
 		
 	    });
@@ -172,14 +155,6 @@ abstract public class BaseGraphApp extends Application {
 		this.cboSelectData.setValue( this.cboSelectData.getItems().get( 0 ) );
 	    }
 	}
-	
-	/**
-	 * @return the formula the user has currently selected to be displayed
-	 * in the graph
-	 */
-	final public String getSelectedFormula() {
-	    return this.cboSelectData.getValue();
-	}
     }
     
     /**
@@ -188,6 +163,7 @@ abstract public class BaseGraphApp extends Application {
      * this to show custom configuration panels for specific graph types.
      */
     public void openConfigurationPanel() {
+        // TODO: we should have BaseGraphView have a standard openConfigurationDialog
 	//do nothing, by default
     }
     

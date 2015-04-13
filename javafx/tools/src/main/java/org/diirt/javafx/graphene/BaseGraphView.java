@@ -58,15 +58,14 @@ import static org.diirt.util.time.TimeDuration.ofHertz;
  */
 abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > extends BorderPane {
 
-    VImageView imagePanel = new VImageView();
-    
-    StringProperty formula = new SimpleStringProperty( "" );
+    private final VImageView imagePanel = new VImageView();
+    private final StringProperty formula = new SimpleStringProperty("");
     
     /**
-     * stores the last exception that was reported by PVManager when it tried
+     * Stores the last exception that was reported by PVManager when it tried
      * to graph
      */
-    final private Property< Exception > lastException = new SimpleObjectProperty< Exception >();
+    private final Property<Exception> lastException = new SimpleObjectProperty<>();
     
     public BaseGraphView() {
 	
@@ -76,13 +75,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
         setCenter(imagePanel);
 	
 	//watch for mouse movements, if necessary
-	this.imagePanel.setOnMouseMoved( new EventHandler< MouseEvent >() {
-
-	    @Override
-	    public void handle(MouseEvent event) {
-		onMouseMove( event );
-	    }
-	});
+	this.imagePanel.setOnMouseMoved(this::onMouseMove);
 	
 	this.imagePanel.widthProperty().addListener(new ChangeListener< Number >() {
 

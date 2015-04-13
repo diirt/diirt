@@ -24,13 +24,14 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
  */
 public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate > {
 
-    private StringProperty xColumn = new SimpleStringProperty( this , "X Column" , null );
-    private StringProperty yColumn = new SimpleStringProperty( this , "Y Column" , null );
-    private StringProperty sizeColumn = new SimpleStringProperty( this , "Size Column" , null );
-    private StringProperty colorColumn = new SimpleStringProperty( this , "Color Column" , null );
-    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "Highlight Focus" , false );
+    // FIXME: The property names should match the code
+    private final StringProperty xColumn = new SimpleStringProperty( this , "X Column" , null );
+    private final StringProperty yColumn = new SimpleStringProperty( this , "Y Column" , null );
+    private final StringProperty sizeColumn = new SimpleStringProperty( this , "Size Column" , null );
+    private final StringProperty colorColumn = new SimpleStringProperty( this , "Color Column" , null );
+    private final BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "Highlight Focus" , false );
    
-    private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
+    private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression<BubbleGraph2DRendererUpdate> createExpression(String dataFormula) {
@@ -95,7 +96,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 	    }
 	});
 	
-	this.defaultConfigurationDialog.addStringProperty( this.xColumn );
+	this.defaultConfigurationDialog.addStringProperty(this.xColumn );
 	this.defaultConfigurationDialog.addStringProperty( this.yColumn );
 	this.defaultConfigurationDialog.addStringProperty( this.sizeColumn );
 	this.defaultConfigurationDialog.addStringProperty( this.colorColumn );
