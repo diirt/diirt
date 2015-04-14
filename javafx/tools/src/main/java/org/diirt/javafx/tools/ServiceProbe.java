@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,7 +37,7 @@ import org.diirt.service.Service;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethod.DataDescription;
 import org.diirt.service.ServiceRegistry;
-import org.diirt.vtype.Alarm;
+import org.diirt.vtype.VInt;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VType;
@@ -73,8 +75,10 @@ public final class ServiceProbe extends VBox {
                 .collect(Collectors.toList());
     }
 
+    // Inputting data
     static class Editors {
 
+        // Generic editor to place in panes
         public static abstract class Editor<T> {
 
             public abstract Region getRegion();
@@ -82,14 +86,63 @@ public final class ServiceProbe extends VBox {
             public abstract T parseInput();
         }
 
+        // Validation on a text field
+        static abstract class ValidateEditor<T> extends Editor<T> {
+
+            private static final String styleError = "-fx-text-box-border-color: red;-fx-focus-color: red;";
+            private static final String styleDefault = "";
+            protected final TextField field;
+
+            ValidateEditor() {
+                field = new TextField() {
+
+                    @Override
+                    public void replaceText(int start, int end, String text) {
+                        super.replaceText(start, end, text);
+
+                        if (!validateInput(getText())) {
+                            this.setStyle(styleError);
+                        } else {
+                            this.setStyle(styleDefault);
+                        }
+                    }
+
+                    @Override
+                    public void replaceSelection(String text) {
+                        super.replaceSelection(text);
+
+                        if (!validateInput(getText())) {
+                            this.setStyle(styleError);
+                        } else {
+                            this.setStyle(styleDefault);
+                        }
+                    }
+
+                };
+            }
+
+            @Override
+            public Region getRegion() {
+                return field;
+            }
+
+            protected abstract boolean validateInput(String text);
+        }
+
+        // Factory to make editors
         public static Editor makeEditor(Class type) {
-            if (type.equals(VString.class)) {
+            if (VString.class.isAssignableFrom(type)) {
                 return new StringEditor();
+            } else if (VInt.class.isAssignableFrom(type)){
+                return new IntegerEditor();
+            } else if (VNumber.class.isAssignableFrom(type)) {
+                return new NumberEditor();
             }
 
             throw new IllegalArgumentException("Unsupported class type");
         }
 
+        // String
         static class StringEditor extends Editor<VString> {
 
             private final TextField field;
@@ -109,31 +162,53 @@ public final class ServiceProbe extends VBox {
             }
 
         }
-        
-        static class NumberEditor extends Editor<VNumber> {
 
-            private final TextField field;
+        // Integer
+        static class IntegerEditor extends ValidateEditor<VInt> {
 
-            NumberEditor() {
-                field = new TextField();
+            @Override
+            public VInt parseInput() {
+                return ValueFactory.newVInt(Integer.parseInt(field.getText()), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
             }
 
             @Override
-            public Region getRegion() {
-                return field;
+            protected boolean validateInput(String text) {
+                try {
+                    Double.parseDouble(text);
+                    return true;
+                } catch (NumberFormatException ex) {
+                    return false;
+                }
             }
+
+        }
+
+        // Number
+        static class NumberEditor extends ValidateEditor<VNumber> {
 
             @Override
             public VNumber parseInput() {
                 return ValueFactory.newVNumber(Double.parseDouble(field.getText()), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
             }
 
+            @Override
+            protected boolean validateInput(String text) {
+                try {
+                    Double.parseDouble(text);
+                    return true;
+                } catch (NumberFormatException ex) {
+                    return false;
+                }
+            }
+
         }
- 
+
     }
 
+    // Viewing data
     static class Viewers {
 
+        // Generic viewer to place in panes
         public static abstract class Viewer<T> {
 
             public abstract Region getRegion();
@@ -141,24 +216,38 @@ public final class ServiceProbe extends VBox {
             public abstract void putInput(T input);
         }
 
+        // Factory to make viewers
         public static Viewer makeViewer(Class type) {
-            if (type.equals(VString.class)) {
-                return new StringViewer();
+//            if (VString.class.isAssignableFrom(type)) {
+//                return new TextViewer<VString>(i -> i.getValue());
+//            } else if (VNumber.class.isAssignableFrom(type)) {
+//                return new TextViewer<VNumber>(i -> i.getValue().toString());
+//            } else if (VType.class.isAssignableFrom(type)) {
+//                return new TextViewer<VType>(i -> i.toString());
+//            }
+
+            if (VType.class.isAssignableFrom(type)) {
+                return new TextViewer<>(value -> {
+                    if (VString.class.isAssignableFrom(value.getClass())) {
+                        return ((VString)value).getValue();
+                    } else if (VNumber.class.isAssignableFrom(type)) {
+                        return ((VNumber)value).getValue().toString();
+                    } else{
+                        return value.toString();
+                    }
+                });
             }
-            else if (type.equals(VNumber.class)){
-                return new NumberViewer();
-            }
-            if (type.equals(VType.class)){
-                return new TypeViewer();
-            }
-            throw new IllegalArgumentException("Unsupported class type");            
+            throw new IllegalArgumentException("Unsupported class type");
         }
 
-        static class StringViewer extends Viewer<VString> {
+        // Generic implementation with simple textfield
+        static class TextViewer<T> extends Viewer<T> {
 
             private final TextField field;
+            private final Function<T, String> mapping;
 
-            public StringViewer() {
+            public TextViewer(Function<T, String> mapping) {
+                this.mapping = mapping;
                 field = new TextField();
                 field.setEditable(false);
             }
@@ -169,55 +258,15 @@ public final class ServiceProbe extends VBox {
             }
 
             @Override
-            public void putInput(VString input) {
-                field.setText(input.getValue());
+            public void putInput(T input) {
+                Platform.runLater(() -> {
+                    field.setText(mapping.apply(input));
+                });
             }
-
         }
-        
-        static class NumberViewer extends Viewer<VNumber> {
-
-            private final TextField field;
-
-            public NumberViewer() {
-                field = new TextField();
-                field.setEditable(false);
-            }
-
-            @Override
-            public Region getRegion() {
-                return field;
-            }
-
-            @Override
-            public void putInput(VNumber input) {
-                field.setText(input.getValue().toString());
-            }
-
-        }
-     
-        static class TypeViewer extends Viewer<VType> {
-
-            private final TextField field;
-
-            public TypeViewer() {
-                field = new TextField();
-                field.setEditable(false);
-            }
-
-            @Override
-            public Region getRegion() {
-                return field;
-            }
-
-            @Override
-            public void putInput(VType input) {
-                field.setText(input.toString());
-            }
-
-        }        
     }
 
+    // Method arguments
     static class ArgumentPane extends HBox {
 
         private final Label title;
@@ -231,11 +280,15 @@ public final class ServiceProbe extends VBox {
 
             title.setText(data.getName());
 
+            title.setPrefWidth(100);
+            value.getRegion().setPrefWidth(200);
+            
             this.getChildren().add(title);
             this.getChildren().add(value.getRegion());
         }
     }
 
+    // Method results
     static class ResultPane extends HBox {
 
         private final Label title;
@@ -249,11 +302,15 @@ public final class ServiceProbe extends VBox {
 
             title.setText(data.getName());
 
+            title.setPrefWidth(100);
+            value.getRegion().setPrefWidth(200);
+            
             this.getChildren().add(title);
             this.getChildren().add(value.getRegion());
         }
     }
     
+    // Form creation
     public ServiceProbe() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ServiceProbe.fxml"));
 
@@ -265,14 +322,15 @@ public final class ServiceProbe extends VBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-
-        // TODO auto-select combo boxes
-        // TODO validate argument input
+        
+        // SERVICE combo box
         serviceField.getItems().addAll(FXCollections.observableList(listServices()));
         serviceField.valueProperty().addListener(new ChangeListener<Service>() {
 
             @Override
             public void changed(ObservableValue<? extends Service> observable, Service oldValue, Service newValue) {
+                argumentField.getItems().clear();
+                resultField.getItems().clear();
                 methodField.setItems(FXCollections.observableList(listServiceMethods(newValue)));
             }
 
@@ -290,10 +348,16 @@ public final class ServiceProbe extends VBox {
             }
 
         });
+        
+        // METHOD combo box
         methodField.valueProperty().addListener(new ChangeListener<ServiceMethod>() {
 
             @Override
             public void changed(ObservableValue<? extends ServiceMethod> observable, ServiceMethod oldValue, ServiceMethod newValue) {
+                if (newValue == null){
+                    return;
+                }
+                
                 argumentField.setItems(FXCollections.observableList(
                         newValue.getArguments().stream()
                         .map(arg -> (new ArgumentPane(arg)))
@@ -319,6 +383,7 @@ public final class ServiceProbe extends VBox {
 
         });
 
+        // EXECUTE button
         executeField.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -329,7 +394,7 @@ public final class ServiceProbe extends VBox {
                     Map<String, Object> arguments = new HashMap<>();
                     argumentField.getItems().stream()
                             .forEach(pane -> arguments.put(pane.data.getName(), pane.value.parseInput()));
-
+                
                     // Results
                     Consumer<Map<String, Object>> callback = (Map<String, Object> results) -> {
                         results.entrySet().stream().forEach(set -> {
@@ -344,7 +409,6 @@ public final class ServiceProbe extends VBox {
                     };
                     
                     // Execution
-                    consoleField.appendText("Service method executing.\n");
                     item.executeAsync(arguments, callback, ex -> consoleField.appendText("Exception:\n" + ex.toString() + "\n"));
                 }
                 else{

@@ -16,8 +16,8 @@
       <children>
         <Label text="Service" />
         <Label text="Service Method" GridPane.rowIndex="1" />
-        <ComboBox fx:id="serviceField" GridPane.columnIndex="1" />
-        <ComboBox fx:id="methodField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <ComboBox fx:id="serviceField" prefWidth="150.0" maxWidth="150.0" GridPane.columnIndex="1" />
+        <ComboBox fx:id="methodField" prefWidth="150.0" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
