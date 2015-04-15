@@ -16,8 +16,8 @@
       <children>
         <Label text="Service" />
         <Label text="Service Method" GridPane.rowIndex="1" />
-        <ComboBox fx:id="serviceField" prefWidth="150.0" maxWidth="150.0" GridPane.columnIndex="1" />
-        <ComboBox fx:id="methodField" prefWidth="150.0" maxWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <ComboBox fx:id="serviceField" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="1" />
+        <ComboBox fx:id="methodField" maxWidth="150.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       </children>
       <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -28,27 +28,39 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <VBox.margin>
-        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
       </VBox.margin>
     </GridPane>
     <Separator prefWidth="200.0" />
     <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
-        <Label text="Arguments" />
-        <ListView fx:id="argumentField" prefHeight="200.0" prefWidth="200.0" />
+        <Label text="Arguments">
+          <VBox.margin>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" fx:id="x1" />
+          </VBox.margin>
+        </Label>
+        <ListView fx:id="argumentField" prefHeight="200.0" prefWidth="200.0">
+          <VBox.margin>
+            <Insets left="10.0" right="10.0" fx:id="x2" />
+          </VBox.margin>
+        </ListView>
       </children>
     </VBox>
-    <Button fx:id="executeField" mnemonicParsing="false" text="Execute" />
+    <Button fx:id="executeField" disable="true" mnemonicParsing="false" text="Execute" VBox.margin="$x1" />
     <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
-        <Label text="Results" />
-        <ListView fx:id="resultField" prefHeight="200.0" prefWidth="200.0" />
+        <Label text="Results" VBox.margin="$x1" />
+        <ListView fx:id="resultField" prefHeight="200.0" prefWidth="200.0" VBox.margin="$x2" />
       </children>
     </VBox>
     <VBox prefHeight="200.0" prefWidth="100.0">
       <children>
-        <Label text="Console" />
-        <TextArea fx:id="consoleField" editable="false"  prefWidth="200.0" wrapText="true" />
+        <Label text="Errors" VBox.margin="$x1" />
+        <TextArea fx:id="errorField" editable="false" prefWidth="200.0" wrapText="true">
+          <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+          </VBox.margin>
+        </TextArea>
       </children>
     </VBox>
   </children>

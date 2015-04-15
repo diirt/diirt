@@ -5,11 +5,14 @@
 package org.diirt.javafx.tools;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -28,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 import javafx.util.StringConverter;
 import org.diirt.javafx.tools.ServiceProbe.Editors.Editor;
 import static org.diirt.javafx.tools.ServiceProbe.Editors.makeEditor;
@@ -60,8 +64,8 @@ public final class ServiceProbe extends VBox {
     @FXML
     private Button executeField;
     @FXML
-    private TextArea consoleField;
-    
+    private TextArea errorField;
+
     private static List<Service> listServices() {
         return ServiceRegistry.getDefault()
                 .getRegisteredServiceNames().stream().sorted()
@@ -84,6 +88,8 @@ public final class ServiceProbe extends VBox {
             public abstract Region getRegion();
 
             public abstract T parseInput();
+
+            public abstract boolean isValid();
         }
 
         // Validation on a text field
@@ -133,7 +139,7 @@ public final class ServiceProbe extends VBox {
         public static Editor makeEditor(Class type) {
             if (VString.class.isAssignableFrom(type)) {
                 return new StringEditor();
-            } else if (VInt.class.isAssignableFrom(type)){
+            } else if (VInt.class.isAssignableFrom(type)) {
                 return new IntegerEditor();
             } else if (VNumber.class.isAssignableFrom(type)) {
                 return new NumberEditor();
@@ -161,6 +167,12 @@ public final class ServiceProbe extends VBox {
                 return ValueFactory.newVString(field.getText(), ValueFactory.alarmNone(), ValueFactory.timeNow());
             }
 
+            @Override
+            public boolean isValid() {
+                // String input is always valid
+                return true;
+            }
+
         }
 
         // Integer
@@ -181,6 +193,11 @@ public final class ServiceProbe extends VBox {
                 }
             }
 
+            @Override
+            public boolean isValid() {
+                return validateInput(field.getText());
+            }
+
         }
 
         // Number
@@ -199,6 +216,11 @@ public final class ServiceProbe extends VBox {
                 } catch (NumberFormatException ex) {
                     return false;
                 }
+            }
+
+            @Override
+            public boolean isValid() {
+                return validateInput(field.getText());
             }
 
         }
@@ -229,10 +251,10 @@ public final class ServiceProbe extends VBox {
             if (VType.class.isAssignableFrom(type)) {
                 return new TextViewer<>(value -> {
                     if (VString.class.isAssignableFrom(value.getClass())) {
-                        return ((VString)value).getValue();
+                        return ((VString) value).getValue();
                     } else if (VNumber.class.isAssignableFrom(type)) {
-                        return ((VNumber)value).getValue().toString();
-                    } else{
+                        return ((VNumber) value).getValue().toString();
+                    } else {
                         return value.toString();
                     }
                 });
@@ -282,7 +304,7 @@ public final class ServiceProbe extends VBox {
 
             title.setPrefWidth(100);
             value.getRegion().setPrefWidth(200);
-            
+
             this.getChildren().add(title);
             this.getChildren().add(value.getRegion());
         }
@@ -304,12 +326,12 @@ public final class ServiceProbe extends VBox {
 
             title.setPrefWidth(100);
             value.getRegion().setPrefWidth(200);
-            
+
             this.getChildren().add(title);
             this.getChildren().add(value.getRegion());
         }
     }
-    
+
     // Form creation
     public ServiceProbe() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ServiceProbe.fxml"));
@@ -322,6 +344,8 @@ public final class ServiceProbe extends VBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
+        List<Thread> editors = new ArrayList<>();
         
         // SERVICE combo box
         serviceField.getItems().addAll(FXCollections.observableList(listServices()));
@@ -348,16 +372,16 @@ public final class ServiceProbe extends VBox {
             }
 
         });
-        
+
         // METHOD combo box
         methodField.valueProperty().addListener(new ChangeListener<ServiceMethod>() {
 
             @Override
             public void changed(ObservableValue<? extends ServiceMethod> observable, ServiceMethod oldValue, ServiceMethod newValue) {
-                if (newValue == null){
+                if (newValue == null) {
                     return;
                 }
-                
+
                 argumentField.setItems(FXCollections.observableList(
                         newValue.getArguments().stream()
                         .map(arg -> (new ArgumentPane(arg)))
@@ -366,6 +390,68 @@ public final class ServiceProbe extends VBox {
                         newValue.getResults().stream()
                         .map(result -> (new ResultPane(result)))
                         .collect(Collectors.toList())));
+
+                // Stops current validation
+                editors.stream().forEach((thread) -> {
+                    thread.interrupt();
+                });
+                editors.clear();
+
+                // Adds new validation
+                Thread t = new Thread() {
+
+                    private void action(boolean validity) {
+                        if (validity) {
+                            // Not enabled, then enable
+                            if (executeField.disableProperty().getValue()) {
+                                Platform.runLater(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        executeField.disableProperty().setValue(Boolean.FALSE);
+                                    }
+
+                                });
+                            }
+                        } else {
+                            // Not disabled, then disable
+                            if (!executeField.disableProperty().getValue()) {
+                                Platform.runLater(new Runnable() {
+
+                                    @Override
+                                    public void run() {
+                                        executeField.disableProperty().setValue(Boolean.TRUE);
+                                    }
+
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void run() {
+                        while (!this.isInterrupted()) {
+                            // Detects validity
+                            boolean valid = true;
+                            for (ArgumentPane pane : argumentField.getItems()) {
+                                if (!pane.value.isValid()) {
+                                    valid = false;
+                                    break;
+                                }
+                            }
+                            action(valid);
+
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException ex) {
+                            }
+                        }
+                    }
+
+                };
+                editors.add(t);
+                t.setDaemon(true);
+                t.start();
             }
 
         });
@@ -394,7 +480,7 @@ public final class ServiceProbe extends VBox {
                     Map<String, Object> arguments = new HashMap<>();
                     argumentField.getItems().stream()
                             .forEach(pane -> arguments.put(pane.data.getName(), pane.value.parseInput()));
-                
+
                     // Results
                     Consumer<Map<String, Object>> callback = (Map<String, Object> results) -> {
                         results.entrySet().stream().forEach(set -> {
@@ -407,13 +493,12 @@ public final class ServiceProbe extends VBox {
                         }
                         );
                     };
-                    
+
                     // Execution
-                    item.executeAsync(arguments, callback, ex -> consoleField.appendText("Exception:\n" + ex.toString() + "\n"));
-                }
-                else{
+                    item.executeAsync(arguments, callback, ex -> errorField.appendText("Exception:\n" + ex.toString() + "\n"));
+                } else {
                     // Nothing to execute
-                    consoleField.appendText("No method selected.\n");
+                    errorField.appendText("No method selected.\n");
                 }
             }
 
