@@ -21,7 +21,7 @@ import org.diirt.graphene.LineGraph2DRendererUpdate;
  */
 public class LineGraphView extends BaseGraphView< LineGraph2DRendererUpdate > {
 
-    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NEAREST_NEIGHBOR );
+    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "Interpolation Scheme" , InterpolationScheme.NEAREST_NEIGHBOR );
     final private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
@@ -44,7 +44,7 @@ public class LineGraphView extends BaseGraphView< LineGraph2DRendererUpdate > {
 	    
 	});
 	
-	this.defaultConfigurationDialog.addInterpolationSchemeListProperty( "Interpolation Scheme" , this.interpolationScheme , new InterpolationScheme[]{ InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
+	this.defaultConfigurationDialog.addInterpolationSchemeListProperty( this.interpolationScheme , new InterpolationScheme[]{ InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
     }
     
     public void setInterpolationScheme( InterpolationScheme scheme ) {

@@ -21,7 +21,7 @@ import org.diirt.graphene.AreaGraph2DRendererUpdate;
  */
 public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate > {
 
-    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "highlightFocusValue" , false );
+    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "Highlight Focus" , false );
     
     private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
@@ -41,7 +41,7 @@ public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate
 	    }
 	});
 	
-	this.defaultConfigurationDialog.addBooleanProperty( "Highlight Focus" , this.highlightFocusValue );
+	this.defaultConfigurationDialog.addBooleanProperty( this.highlightFocusValue );
     }
     
     @Override

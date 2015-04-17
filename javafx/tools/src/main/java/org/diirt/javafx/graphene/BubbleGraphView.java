@@ -24,11 +24,11 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
  */
 public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate > {
 
-    private StringProperty xColumn = new SimpleStringProperty( this , "xColumn" , null );
-    private StringProperty yColumn = new SimpleStringProperty( this , "yColumn" , null );
-    private StringProperty sizeColumn = new SimpleStringProperty( this , "sizeColumn" , null );
-    private StringProperty colorColumn = new SimpleStringProperty( this , "colorColumn" , null );
-    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "highlightFocusValue" , false );
+    private StringProperty xColumn = new SimpleStringProperty( this , "X Column" , null );
+    private StringProperty yColumn = new SimpleStringProperty( this , "Y Column" , null );
+    private StringProperty sizeColumn = new SimpleStringProperty( this , "Size Column" , null );
+    private StringProperty colorColumn = new SimpleStringProperty( this , "Color Column" , null );
+    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "Highlight Focus" , false );
    
     private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
@@ -95,11 +95,11 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
 	    }
 	});
 	
-	this.defaultConfigurationDialog.addStringProperty( "X Column" , this.xColumn );
-	this.defaultConfigurationDialog.addStringProperty( "Y Column" , this.yColumn );
-	this.defaultConfigurationDialog.addStringProperty( "Size Column" , this.sizeColumn );
-	this.defaultConfigurationDialog.addStringProperty( "Color Column" , this.colorColumn );
-	this.defaultConfigurationDialog.addBooleanProperty( "Highlight Focus" , this.highlightFocusValue );
+	this.defaultConfigurationDialog.addStringProperty( this.xColumn );
+	this.defaultConfigurationDialog.addStringProperty( this.yColumn );
+	this.defaultConfigurationDialog.addStringProperty( this.sizeColumn );
+	this.defaultConfigurationDialog.addStringProperty( this.colorColumn );
+	this.defaultConfigurationDialog.addBooleanProperty( this.highlightFocusValue );
     }
     
     @Override

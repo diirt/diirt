@@ -21,7 +21,7 @@ import org.diirt.graphene.LineGraph2DRendererUpdate;
  */
 public class MultilineGraphView extends BaseGraphView< LineGraph2DRendererUpdate > {
 
-    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NEAREST_NEIGHBOR );
+    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "Interpolation Scheme" , InterpolationScheme.NEAREST_NEIGHBOR );
     final private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     @Override
     public Graph2DExpression<LineGraph2DRendererUpdate> createExpression(String dataFormula) {
@@ -42,7 +42,7 @@ public class MultilineGraphView extends BaseGraphView< LineGraph2DRendererUpdate
 	    
 	});
 	
-	defaultConfigurationDialog.addInterpolationSchemeListProperty( "Interpolation Scheme" , this.interpolationScheme , new InterpolationScheme[] { InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
+	defaultConfigurationDialog.addInterpolationSchemeListProperty( this.interpolationScheme , new InterpolationScheme[] { InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
     }
     
     public void setInterpolationScheme( InterpolationScheme scheme ) {

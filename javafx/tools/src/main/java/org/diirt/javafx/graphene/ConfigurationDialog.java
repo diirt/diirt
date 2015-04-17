@@ -215,11 +215,10 @@ public class ConfigurationDialog extends Stage {
      * text field in which the user can enter his/her configuration for this
      * property.
      * 
-     * @param name the textual name of the property (e.g. "X Column")
      * @param p the string property that the user may modify
      */
-    public void addStringProperty( String name , StringProperty p ) {
-	StringField newField = new StringField( name , p );
+    public void addStringProperty( StringProperty p ) {
+	StringField newField = new StringField( p );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleStringProperty( p.getValue() ) );
 	addPropertyField( newField.getComponents() , data );
     }
@@ -229,11 +228,10 @@ public class ConfigurationDialog extends Stage {
      * this property will have a label containing the name of the property and a 
      * check box which the user can use to toggle this property to true or false.
      * 
-     * @param name the textual name of the property (e.g. "X Column")
      * @param p the boolean property that the user may modify
      */
-    public void addBooleanProperty( String name , BooleanProperty p ) {
-	BooleanField newField = new BooleanField( name , p );
+    public void addBooleanProperty( BooleanProperty p ) {
+	BooleanField newField = new BooleanField( p );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleBooleanProperty( p.getValue() ) );
 	addPropertyField( newField.getComponents() , data );
     }
@@ -244,12 +242,11 @@ public class ConfigurationDialog extends Stage {
      * name of the property and a combobox which the user can use to modify
      * this property.
      * 
-     * @param name the textual name of the property (e.g. "X Column")
      * @param p the interpolation scheme property that the user may modify
      * @param allowedInterpolations the list of allowed interpolation schemes
      */
-    public void addInterpolationSchemeListProperty( String name , Property< InterpolationScheme > p , InterpolationScheme[] allowedInterpolations ) {
-	InterpolationSchemeField newField = new InterpolationSchemeField( name , p , allowedInterpolations );
+    public void addInterpolationSchemeListProperty( Property< InterpolationScheme > p , InterpolationScheme[] allowedInterpolations ) {
+	InterpolationSchemeField newField = new InterpolationSchemeField( p , allowedInterpolations );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleObjectProperty< InterpolationScheme >( p.getValue() ) );
 	addPropertyField( newField.getComponents() , data );
     }
@@ -260,12 +257,11 @@ public class ConfigurationDialog extends Stage {
      * name of the property and a combobox which the user can use to modify
      * this property.
      * 
-     * @param name the textual name of the property (e.g. "X Column")
      * @param p the number-color mapping property that the user may modify
      * @param allowedMappings the list of allowed number-color mappings
      */
-    public void addNumberColorMapListProperty( String name , Property< NumberColorMap > p , NumberColorMap[] allowedMappings ) {
-	NumberColorMapField newField = new NumberColorMapField( name , p , allowedMappings );
+    public void addNumberColorMapListProperty( Property< NumberColorMap > p , NumberColorMap[] allowedMappings ) {
+	NumberColorMapField newField = new NumberColorMapField( p , allowedMappings );
 	ConfigurationData data = new ConfigurationData( newField , new SimpleObjectProperty< NumberColorMap >( p.getValue() ) );
 	addPropertyField( newField.getComponents() , data );
     }
@@ -382,12 +378,11 @@ public class ConfigurationDialog extends Stage {
 	 * Creates a default string field that allows the user to configure
 	 * a text-based property
 	 * 
-	 * @param name the textual name of the property (e.g. "X Column")
 	 * @param p the property the user can configure
 	 */
-	public StringField( String name , StringProperty p ) {
+	public StringField( StringProperty p ) {
 	    super( p );
-	    this.lblName = defaultNameLabel( name );
+	    this.lblName = defaultNameLabel( p.getName() );
 	    this.txtValue = new TextField( "         " );
 	    this.txtValue.textProperty().bindBidirectional( p );
 	    this.txtValue.setText( p.getValue() );
@@ -419,12 +414,11 @@ public class ConfigurationDialog extends Stage {
 	 * Creates a default boolean field that allows the user to configure
 	 * a boolean property 
 	 * 
-	 * @param name the textual name of the property (e.g. "X Column")
 	 * @param p the property the user can configure
 	 */
-	public BooleanField( String name , BooleanProperty p ) {
+	public BooleanField( BooleanProperty p ) {
 	    super( p );
-	    this.lblName = defaultNameLabel( name );
+	    this.lblName = defaultNameLabel( p.getName() );
 	    this.chkValue = new CheckBox();
 	    this.chkValue.selectedProperty().bindBidirectional( p );
 	    this.chkValue.setSelected( p.getValue() );
@@ -450,19 +444,18 @@ public class ConfigurationDialog extends Stage {
 	 * an interpolation scheme property by selecting an interpolation scheme
 	 * from a list of allowed interpolation schemes.
 	 * 
-	 * @param name the textual name of the property (e.g. "X Column")
 	 * @param p the interpolation scheme property the user can configure
 	 * @param interpolationSchemes the list of allowed interpolation schemes,
 	 * which must be nonempty
 	 * @throws IllegalArgumentException if the list of allowed interpolation
 	 * schemes is empty
 	 */
-	public InterpolationSchemeField( String name , Property<InterpolationScheme> p , InterpolationScheme[] interpolationSchemes ) {
+	public InterpolationSchemeField( Property<InterpolationScheme> p , InterpolationScheme[] interpolationSchemes ) {
 	    super( p );
 	    if ( interpolationSchemes.length == 0 ) {
 		throw new IllegalArgumentException( "Must have at least 1 allowed interpolation scheme." );
 	    }
-	    this.lblName = defaultNameLabel( name );
+	    this.lblName = defaultNameLabel( p.getName() );
 	    this.cboInterpolations = new ComboBox< InterpolationScheme >();
 	    this.cboInterpolations.getItems().addAll( interpolationSchemes );
 	    this.cboInterpolations.valueProperty().bindBidirectional( p );
@@ -489,17 +482,16 @@ public class ConfigurationDialog extends Stage {
 	 * number-color mapping by selecting one from a list of allowed 
 	 * mappings
 	 * 
-	 * @param name the textual name of the property (e.g. "X Column")
 	 * @param p the property the user can configure
 	 * @param maps the allowed mappings the user can select
 	 * @throws IllegalArugmentException if there are no allowed mapping from which the user can select
 	 */
-	public NumberColorMapField( String name , Property< NumberColorMap > p , NumberColorMap[] maps ) {
+	public NumberColorMapField( Property< NumberColorMap > p , NumberColorMap[] maps ) {
 	    super( p );
 	    if ( maps.length == 0 ) {
 		throw new IllegalArgumentException( "Must have at least 1 allowed number-color mapping" );
 	    }
-	    this.lblName = defaultNameLabel( name );
+	    this.lblName = defaultNameLabel( p.getName() );
 	    this.cboColorMaps.getItems().addAll( maps );
 	    this.cboColorMaps.valueProperty().bindBidirectional( p );
 	    this.cboColorMaps.setValue( p.getValue() );

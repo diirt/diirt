@@ -23,8 +23,8 @@ import org.diirt.graphene.MultiAxisLineGraph2DRendererUpdate;
  */
 public class MultiAxisLineGraphView extends BaseGraphView< MultiAxisLineGraph2DRendererUpdate > {
 
-    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NEAREST_NEIGHBOR );
-    private BooleanProperty separateAreas = new SimpleBooleanProperty( this , "separateAreas" , false );
+    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "Interpolation Scheme" , InterpolationScheme.NEAREST_NEIGHBOR );
+    private BooleanProperty separateAreas = new SimpleBooleanProperty( this , "Separate Areas" , false );
     final private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
@@ -56,8 +56,8 @@ public class MultiAxisLineGraphView extends BaseGraphView< MultiAxisLineGraph2DR
 	    
 	});
 	
-	defaultConfigurationDialog.addInterpolationSchemeListProperty( "Interpolation Scheme" , this.interpolationScheme , new InterpolationScheme[] { InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
-	defaultConfigurationDialog.addBooleanProperty( "Separate Areas" , this.separateAreas );
+	defaultConfigurationDialog.addInterpolationSchemeListProperty( this.interpolationScheme , new InterpolationScheme[] { InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
+	defaultConfigurationDialog.addBooleanProperty( this.separateAreas );
     }
     
     public void setInterpolationScheme( InterpolationScheme scheme ) {
