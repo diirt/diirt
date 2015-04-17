@@ -13,7 +13,7 @@ import org.diirt.graphene.InterpolationScheme;
  */
 public class LineGraphApp extends BaseGraphApp {
 
-    final private LineGraphView lineGraphView = new LineGraphView();
+    private final LineGraphView lineGraphView = new LineGraphView();
 
     @Override
     public BaseGraphView getGraphView() {

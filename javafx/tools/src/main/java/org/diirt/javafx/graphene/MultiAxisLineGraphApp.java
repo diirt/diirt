@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class MultiAxisLineGraphApp extends BaseGraphApp {
 
-    final private MultiAxisLineGraphView multiAxislineGraphView = new MultiAxisLineGraphView();
+    private final MultiAxisLineGraphView multiAxislineGraphView = new MultiAxisLineGraphView();
     
     @Override
     public BaseGraphView getGraphView() {

@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class BubbleGraphApp extends BaseGraphApp {
     
-    final private BubbleGraphView bubbleGraphView = new BubbleGraphView();
+    private final BubbleGraphView bubbleGraphView = new BubbleGraphView();
 
     @Override
     public BaseGraphView getGraphView() {

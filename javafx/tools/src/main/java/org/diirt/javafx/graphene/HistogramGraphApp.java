@@ -12,7 +12,7 @@ import javafx.stage.Stage;
  */
 public class HistogramGraphApp extends BaseGraphApp {
 
-    private HistogramGraphView histogramGraphView = new HistogramGraphView();
+    private final HistogramGraphView histogramGraphView = new HistogramGraphView();
     
     @Override
     public BaseGraphView getGraphView() {

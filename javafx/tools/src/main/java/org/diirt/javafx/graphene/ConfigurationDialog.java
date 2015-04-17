@@ -90,24 +90,24 @@ public class ConfigurationDialog extends Stage {
     /**
      * stores the data for all the properties in this configuration dialog
      */
-    final private ArrayList< ConfigurationData > configurationData = new ArrayList< ConfigurationData >();
+    private final ArrayList< ConfigurationData > configurationData = new ArrayList< ConfigurationData >();
     
     /**
      * panel containing everything in this dialog
      */
-    final private BorderPane pnlMain = new BorderPane();
+    private final BorderPane pnlMain = new BorderPane();
     
     /**
      * panel containing the configuration fields in which the user enters
      * his/her choices
      */
-    final private GridPane pnlConfigurations = new GridPane();
+    private final GridPane pnlConfigurations = new GridPane();
     
     /**
      * panel providing options for the user to save the current configurations
      * or cancel and revert to the previously saved configuration
      */
-    final private GridPane pnlSaveCancel = new GridPane();
+    private final GridPane pnlSaveCancel = new GridPane();
     
     /**
      * Creates a default configuration dialog with no configurations available

@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class MultilineGraphApp extends BaseGraphApp {
 
-    final private MultilineGraphView multiLineGraphView = new MultilineGraphView();
+    private final MultilineGraphView multiLineGraphView = new MultilineGraphView();
     
     @Override
     public BaseGraphView getGraphView() {

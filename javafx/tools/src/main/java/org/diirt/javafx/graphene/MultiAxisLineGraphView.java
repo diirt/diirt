@@ -23,9 +23,9 @@ import org.diirt.graphene.MultiAxisLineGraph2DRendererUpdate;
  */
 public class MultiAxisLineGraphView extends BaseGraphView< MultiAxisLineGraph2DRendererUpdate > {
 
-    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NEAREST_NEIGHBOR );
-    private BooleanProperty separateAreas = new SimpleBooleanProperty( this , "separateAreas" , false );
-    final private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
+    private final Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NEAREST_NEIGHBOR );
+    private final BooleanProperty separateAreas = new SimpleBooleanProperty( this , "separateAreas" , false );
+    private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression<MultiAxisLineGraph2DRendererUpdate> createExpression(String dataFormula) {

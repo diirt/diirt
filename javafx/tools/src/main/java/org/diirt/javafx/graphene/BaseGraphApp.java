@@ -48,7 +48,7 @@ import javafx.stage.Stage;
  */
 abstract public class BaseGraphApp extends Application {
     
-    final private DataSelectionPanel pnlData = new DataSelectionPanel();
+    private final DataSelectionPanel pnlData = new DataSelectionPanel();
     private BaseGraphView pnlGraph;
     private MessagePanel pnlError;
     

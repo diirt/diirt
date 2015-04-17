@@ -25,9 +25,9 @@ import org.diirt.graphene.NumberColorMaps;
  */
 public class IntensityGraphView extends BaseGraphView< IntensityGraph2DRendererUpdate >{
 
-    private Property< NumberColorMap > colorMap = new SimpleObjectProperty< NumberColorMap >( this , "colorMap" , IntensityGraph2DRenderer.DEFAULT_COLOR_MAP );
-    private BooleanProperty drawLegend = new SimpleBooleanProperty( this , "drawLegend" , IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND );
-    private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
+    private final Property< NumberColorMap > colorMap = new SimpleObjectProperty< NumberColorMap >( this , "colorMap" , IntensityGraph2DRenderer.DEFAULT_COLOR_MAP );
+    private final BooleanProperty drawLegend = new SimpleBooleanProperty( this , "drawLegend" , IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND );
+    private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression<IntensityGraph2DRendererUpdate> createExpression(String dataFormula) {

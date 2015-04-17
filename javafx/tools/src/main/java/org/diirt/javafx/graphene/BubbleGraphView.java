@@ -24,13 +24,13 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
  */
 public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate > {
 
-    private StringProperty xColumn = new SimpleStringProperty( this , "xColumn" , null );
-    private StringProperty yColumn = new SimpleStringProperty( this , "yColumn" , null );
-    private StringProperty sizeColumn = new SimpleStringProperty( this , "sizeColumn" , null );
-    private StringProperty colorColumn = new SimpleStringProperty( this , "colorColumn" , null );
-    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "highlightFocusValue" , false );
+    private final StringProperty xColumn = new SimpleStringProperty( this , "xColumn" , null );
+    private final StringProperty yColumn = new SimpleStringProperty( this , "yColumn" , null );
+    private final StringProperty sizeColumn = new SimpleStringProperty( this , "sizeColumn" , null );
+    private final StringProperty colorColumn = new SimpleStringProperty( this , "colorColumn" , null );
+    private final BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "highlightFocusValue" , false );
    
-    private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
+    private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression<BubbleGraph2DRendererUpdate> createExpression(String dataFormula) {

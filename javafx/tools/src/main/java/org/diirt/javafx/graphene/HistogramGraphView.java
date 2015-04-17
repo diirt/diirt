@@ -21,9 +21,9 @@ import org.diirt.graphene.AreaGraph2DRendererUpdate;
  */
 public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate > {
 
-    private BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "highlightFocusValue" , false );
+    private final BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "highlightFocusValue" , false );
     
-    private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
+    private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression createExpression(String dataFormula) {

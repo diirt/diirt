@@ -21,8 +21,8 @@ import org.diirt.graphene.ScatterGraph2DRendererUpdate;
  */
 public class ScatterGraphView extends BaseGraphView< ScatterGraph2DRendererUpdate > {
 
-    private Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NONE );
-    final private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
+    private final Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NONE );
+    private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
     public Graph2DExpression<ScatterGraph2DRendererUpdate> createExpression(String dataFormula) {

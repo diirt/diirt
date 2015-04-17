@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class ScatterGraphApp extends BaseGraphApp {
 
-    final private ScatterGraphView scatterGraphView = new ScatterGraphView();
+    private final ScatterGraphView scatterGraphView = new ScatterGraphView();
     
     @Override
     public BaseGraphView getGraphView() {

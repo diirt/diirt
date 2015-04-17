@@ -12,7 +12,7 @@ import javafx.stage.Stage;
  */
 public class IntensityGraphApp extends BaseGraphApp {
     
-    final private IntensityGraphView intensityGraphView = new IntensityGraphView();
+    private final IntensityGraphView intensityGraphView = new IntensityGraphView();
 
     @Override
     public BaseGraphView getGraphView() {
