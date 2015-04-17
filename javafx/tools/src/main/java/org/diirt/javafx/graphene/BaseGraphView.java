@@ -58,9 +58,9 @@ import static org.diirt.util.time.TimeDuration.ofHertz;
  */
 abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > extends BorderPane {
 
-    VImageView imagePanel = new VImageView();
+    private final VImageView imagePanel = new VImageView();
     
-    StringProperty formula = new SimpleStringProperty( "" );
+    private final StringProperty formula = new SimpleStringProperty( "" );
     
     /**
      * stores the last exception that was reported by PVManager when it tried
