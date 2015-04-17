@@ -25,8 +25,8 @@ import org.diirt.graphene.NumberColorMaps;
  */
 public class IntensityGraphView extends BaseGraphView< IntensityGraph2DRendererUpdate >{
 
-    private Property< NumberColorMap > colorMap = new SimpleObjectProperty< NumberColorMap >( this , "Color Map" , IntensityGraph2DRenderer.DEFAULT_COLOR_MAP );
-    private BooleanProperty drawLegend = new SimpleBooleanProperty( this , "Draw Legend" , IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND );
+    private Property< NumberColorMap > colorMap = new SimpleObjectProperty< NumberColorMap >( this , "colorMap" , IntensityGraph2DRenderer.DEFAULT_COLOR_MAP );
+    private BooleanProperty drawLegend = new SimpleBooleanProperty( this , "drawLegend" , IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND );
     private ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     
     @Override
@@ -62,8 +62,8 @@ public class IntensityGraphView extends BaseGraphView< IntensityGraph2DRendererU
 	Collection< NumberColorMap > maps = NumberColorMaps.getRegisteredColorSchemes().values();
 	NumberColorMap[] allowedMappings = new NumberColorMap[ maps.size() ];
 	allowedMappings = maps.toArray( allowedMappings );
-	this.defaultConfigurationDialog.addNumberColorMapListProperty( colorMap , allowedMappings );
-	this.defaultConfigurationDialog.addBooleanProperty( this.drawLegend );
+	this.defaultConfigurationDialog.addNumberColorMapListProperty( "Color Map" , colorMap , allowedMappings );
+	this.defaultConfigurationDialog.addBooleanProperty( "Draw Legend" , this.drawLegend );
     }
     
     public NumberColorMap getColorMap() {
