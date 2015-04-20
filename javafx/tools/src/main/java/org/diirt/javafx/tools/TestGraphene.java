@@ -6,7 +6,6 @@ package org.diirt.javafx.tools;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,15 +15,17 @@ public class TestGraphene extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = new BaseGraphView();
+	throw new RuntimeException( "Do not run... use IntensityGraphApp" );
+        /*BaseGraphView root;
+	root.reconnect( "sim://sine2DWaveform(1,50,45,100,100,0.1)" );
         
         Scene scene = new Scene(root);
-        
+	
         stage.setTitle("diirt - Graphene");
         stage.setScene(scene);
         stage.setWidth(300);
         stage.setWidth(400);
-        stage.show();
+        stage.show();*/
     }
 
     /**

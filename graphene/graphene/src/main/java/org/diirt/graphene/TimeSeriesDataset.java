@@ -39,9 +39,10 @@ public interface TimeSeriesDataset {
      * <p>
      * If the dataset is empty, it returns an empty list.
      * 
+     * @param normalizationRange the interval over which the data is going to be displayed
      * @return normalized time; never null
      */
-    public ListNumber getNormalizedTime();
+    public ListNumber getNormalizedTime( TimeInterval normalizationRange );
     
     /**
      * The statistical information of the values.

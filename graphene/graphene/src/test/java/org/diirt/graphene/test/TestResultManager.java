@@ -14,7 +14,7 @@ import java.util.List;
  * @author carcassi
  */
 public class TestResultManager {
-    private File outputDirectory = new File("src/test/resources/org/epics/graphene");
+    private File outputDirectory = new File("src/test/resources/org/diirt/graphene");
 
     public TestResultManager() {
         refresh();

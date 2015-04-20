@@ -7,8 +7,9 @@ package org.diirt.graphene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Arrays;
+import org.diirt.util.array.ArrayDouble;
+import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.SortedListView;
 
 /**
  * Renderer for a line graph.
@@ -71,8 +72,19 @@ public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGra
         drawBackground();
         drawGraphArea();
         
-        ListNumber xValues = data.getNormalizedTime();
+        ListNumber xValues = data.getNormalizedTime( super.getPlotTimeInterval() );
         ListNumber yValues = data.getValues();
+	
+	//if necessary, extend the last data point to the end of the graph, 
+	//so that we don't have a random empty gap with no graph
+	if ( xValues.getDouble( xValues.size()-1 ) != 1.0 ) {
+	    if ( super.getAggregatedTimeInterval().getEnd().compareTo( super.getPlotTimeInterval().getEnd() ) < 0 ) {
+		double lastX = 1.0;
+		xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {lastX} ) );
+		double lastY = yValues.getDouble( yValues.size()-1 );
+		yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
+	    }
+	}
 
         setClip(g);
         g.setColor(Color.BLACK);

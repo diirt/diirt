@@ -6,12 +6,15 @@ package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
 import org.junit.Test;
 import org.diirt.util.array.*;
 import org.diirt.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import org.diirt.graphene.NumberColorMaps; 
+import org.diirt.graphene.NumberColorMapGradient; 
 
 /**
  *
@@ -65,7 +68,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         return data;
     }
 
-    private Cell2DDataset rectangleDataset() {
+    public static Cell2DDataset rectangleDataset() {
         double listOfData[] = new double[10 * 10];
         for (int i = 0; i < (10 * 10); i++) {
             listOfData[i] = i;
@@ -454,4 +457,5 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         assertThat(renderer.getYIndexSelectionRange().getMaximum(), equalTo(135.0));
         ImageAssert.compareImages("intensityGraph2D.selectedRegion.1", graphBuffer.getImage());
     }
+
 }

@@ -28,7 +28,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     /**
      * Default color map: JET.
      */
-    public static NumberColorMap DEFAULT_COLOR_MAP = NumberColorMaps.JET;
+    public static NumberColorMap DEFAULT_COLOR_MAP = NumberColorMaps.defaultNumberColorMap();
     
     /**
      * Default draw legend: false.

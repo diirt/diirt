@@ -9,6 +9,7 @@ import org.diirt.util.stats.Statistics;
 import java.util.List;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
 
@@ -26,7 +27,8 @@ public class TimeSeriesDatasets {
      */
     public static TimeSeriesDataset timeSeriesOf(final ListNumber values, final List<Timestamp> timestamps) {
         // TODO: make sure timestamps are monotinic
-        final TimeInterval timeInterval = TimeInterval.between(timestamps.get(0), timestamps.get(timestamps.size() - 1));
+	final TimeInterval timeInterval = TimeInterval.between(timestamps.get(0), timestamps.get(timestamps.size() - 1));
+	
         final Statistics stats = StatisticsUtil.statisticsOf(values);
         return new TimeSeriesDataset() {
 
@@ -41,12 +43,13 @@ public class TimeSeriesDatasets {
             }
 
             @Override
-            public ListNumber getNormalizedTime() {
-                return new ListDouble() {
+            public ListNumber getNormalizedTime( final TimeInterval normalizationRange ) {
+		
+		return new ListDouble() {
 
                     @Override
                     public double getDouble(int index) {
-                        return TimeScales.normalize(timestamps.get(index), timeInterval);
+                        return TimeScales.normalize(timestamps.get(index), normalizationRange );
                     }
 
                     @Override
