@@ -10,14 +10,10 @@
   text-decoration: line-through;
 }
 
-select {
-    margin-right: 5px;
-}
-
 button {
   display: inline-block;
   font-size: 0.9rem;
-  margin-top: 5px;
+  margin-bottom: 10px;
   color: white;
   text-align: center;
   background: #BABABA;
@@ -36,5 +32,9 @@ input {
 
 #subscriptions {
     padding-right: 20px;
+    margin-bottom: 10px;
 }
 
+#results {
+    margin-top: 10px;
+}
