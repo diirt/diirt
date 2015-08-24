@@ -38,7 +38,7 @@
             <plugin>
                 <groupId>eu.somatik.serviceloader-maven-plugin</groupId>
                 <artifactId>serviceloader-maven-plugin</artifactId>
-                <version>1.0.2</version>
+                <version>${serviceloader.maven.plugin.version}</version>
                 <configuration>
                     <services>
                         <param>org.diirt.datasource.formula.FormulaFunctionSet</param>
