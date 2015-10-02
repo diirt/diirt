@@ -7,6 +7,7 @@ package org.diirt.util.time;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.diirt.util.time.TimeDuration.*;
 
 import java.time.Duration;
 
@@ -16,9 +17,9 @@ import org.junit.Test;
  *
  * @author carcassi
  */
-public class DurationTest {
+public class TimeDurationTest {
 
-    public DurationTest() {
+    public TimeDurationTest() {
     }
     
     // Test factory methods
@@ -335,60 +336,60 @@ public class DurationTest {
     @Test
     public void toNanosLong1() {
         Duration duration = TimeDuration.ofSeconds(1.5);
-        assertThat(duration.toNanosLong(), equalTo(1500000000L));
+        assertThat(duration.toNanos(), equalTo(1500000000L));
     }
     
     @Test(expected=ArithmeticException.class)
     public void toNanosLong2() {
         Duration duration = TimeDuration.ofSeconds(9223372036.9);
-        assertThat(duration.toNanosLong(), equalTo(1500000000L));
+        assertThat(duration.toNanos(), equalTo(1500000000L));
     }
     
     @Test
     public void toSeconds1() {
         Duration duration = TimeDuration.ofSeconds(1.5);
-        assertThat(duration.toSeconds(), equalTo(1.5));
+        assertThat(toSecondsDouble(duration), equalTo(1.5));
     }
     
     public void toSeconds2() {
         Duration duration = Duration.ofNanos(1234567890123L);
-        assertThat(duration.toSeconds(), equalTo(1234.567890123));
+        assertThat(toSecondsDouble(duration), equalTo(1234.567890123));
     }
     
     @Test
     public void isPositive1() {
         Duration duration = TimeDuration.ofSeconds(0);
-        assertThat(duration.isPositive(), equalTo(false));
+        assertThat(!duration.isNegative(), equalTo(true));
     }
     
     @Test
     public void isPositive2() {
         Duration duration = TimeDuration.ofSeconds(1.3);
-        assertThat(duration.isPositive(), equalTo(true));
+        assertThat(!duration.isNegative(), equalTo(true));
     }
     
     @Test
     public void isPositive3() {
         Duration duration = TimeDuration.ofSeconds(0.5);
-        assertThat(duration.isPositive(), equalTo(true));
+        assertThat(!duration.isNegative(), equalTo(true));
     }
     
     @Test
     public void isPositive4() {
         Duration duration = TimeDuration.ofSeconds(5.0);
-        assertThat(duration.isPositive(), equalTo(true));
+        assertThat(!duration.isNegative(), equalTo(true));
     }
     
     @Test
     public void isPositive5() {
         Duration duration = TimeDuration.ofSeconds(-0.5);
-        assertThat(duration.isPositive(), equalTo(false));
+        assertThat(!duration.isNegative(), equalTo(false));
     }
     
     @Test
     public void isPositive6() {
         Duration duration = TimeDuration.ofSeconds(-5.5);
-        assertThat(duration.isPositive(), equalTo(false));
+        assertThat(!duration.isNegative(), equalTo(false));
     }
     
     @Test
@@ -423,7 +424,7 @@ public class DurationTest {
     
     @Test
     public void isNegative6() {
-        Duration duration = Duration.ofSeconds(-5.5);
+        Duration duration = TimeDuration.ofSeconds(-5.5);
         assertThat(duration.isNegative(), equalTo(true));
     }
     

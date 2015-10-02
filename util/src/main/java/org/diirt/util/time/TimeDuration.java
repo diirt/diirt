@@ -4,6 +4,8 @@
  */
 package org.diirt.util.time;
 
+import static org.diirt.util.time.TimeDuration.toSecondsDouble;
+
 import java.time.Duration;
 
 /**
@@ -76,6 +78,16 @@ public class TimeDuration {
         double thisDuration = (double) dividendDuration.getSeconds() * (double) NANOSEC_IN_SEC + (double) dividendDuration.getNano();
         double otherDuration = (double) divisorDuration.getSeconds() * (double) NANOSEC_IN_SEC + (double) divisorDuration.getNano();
         return (int) (thisDuration / otherDuration);
+    }
+
+    /**
+     * 
+     * 
+     * @param duration
+     * @return
+     */
+    public static double toSecondsDouble(Duration duration){
+        return duration.getSeconds() + (duration.getNano() / (double) NANOSEC_IN_SEC);
     }
 
 }
