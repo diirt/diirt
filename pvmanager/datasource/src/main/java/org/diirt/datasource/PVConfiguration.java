@@ -4,9 +4,10 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.Executor;
+
 import org.diirt.datasource.expression.DesiredRateReadWriteExpression;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Allows to configure the type of read/write PV to create.
@@ -46,7 +47,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
      * @return this expression
      */
     @Override
-    public PVConfiguration<R, W> timeout(TimeDuration timeout) {
+    public PVConfiguration<R, W> timeout(Duration timeout) {
         pvReaderConfiguration.timeout(timeout);
         pvWriterConfiguration.timeout(timeout);
         return this;
@@ -60,7 +61,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
      * @return this expression
      */
     @Override
-    public PVConfiguration<R, W>  timeout(TimeDuration timeout, String timeoutMessage) {
+    public PVConfiguration<R, W>  timeout(Duration timeout, String timeoutMessage) {
         pvReaderConfiguration.timeout(timeout, timeoutMessage);
         pvWriterConfiguration.timeout(timeout, timeoutMessage);
         return this;
@@ -74,7 +75,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
      * @param writeMessage exception message for the write timeout
      * @return this
      */
-    public PVConfiguration<R, W>  timeout(TimeDuration timeout, String readMessage, String writeMessage) {
+    public PVConfiguration<R, W>  timeout(Duration timeout, String readMessage, String writeMessage) {
         pvReaderConfiguration.timeout(timeout, readMessage);
         pvWriterConfiguration.timeout(timeout, writeMessage);
         return this;
@@ -128,7 +129,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
      * @param period minimum time between read notifications
      * @return a new PV
      */
-    public PV<R, W> synchWriteAndMaxReadRate(TimeDuration period) {
+    public PV<R, W> synchWriteAndMaxReadRate(Duration period) {
         PVReader<R> pvReader = pvReaderConfiguration.maxRate(period);
         PVWriter<W> pvWriter = pvWriterConfiguration.sync();
         return new PV<R, W>(pvReader, pvWriter);
@@ -141,7 +142,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
      * @param period minimum time between read notifications
      * @return a new PV
      */
-    public PV<R, W> asynchWriteAndMaxReadRate(TimeDuration period) {
+    public PV<R, W> asynchWriteAndMaxReadRate(Duration period) {
         PVReader<R> pvReader = pvReaderConfiguration.maxRate(period);
         PVWriter<W> pvWriter = pvWriterConfiguration.async();
         PV<R, W> pv = new PV<R, W>(pvReader, pvWriter);

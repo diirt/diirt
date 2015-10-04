@@ -4,15 +4,17 @@
  */
 package org.diirt.datasource;
 
+import java.time.Instant;
 import java.util.ArrayList;
+
 import org.diirt.datasource.DesiredRateEvent;
 import org.diirt.datasource.SourceDesiredRateDecoupler;
 import org.diirt.datasource.DesiredRateEventListener;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.diirt.util.time.Timestamp;
 
 /**
  *
@@ -23,7 +25,7 @@ import org.diirt.util.time.Timestamp;
     private final Object lock = new Object();
     
     private final List<DesiredRateEvent> events = new ArrayList<>();
-    private final List<Timestamp> timestamps = new ArrayList<>();
+    private final List<Instant> timestamps = new ArrayList<>();
     private SourceDesiredRateDecoupler decoupler;
     private final Integer pause;
 
@@ -51,7 +53,7 @@ import org.diirt.util.time.Timestamp;
     public void desiredRateEvent(DesiredRateEvent event) {
         synchronized(lock) {
             events.add(event);
-            timestamps.add(Timestamp.now());
+            timestamps.add(Instant.now());
         }
         if (pause != null) {
             try {
