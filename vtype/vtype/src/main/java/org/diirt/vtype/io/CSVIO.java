@@ -7,14 +7,18 @@ package org.diirt.vtype.io;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.text.CsvParser;
 import org.diirt.util.text.CsvParserResult;
-import org.diirt.util.time.Timestamp;
-import org.diirt.util.time.TimestampFormat;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.Time;
 import org.diirt.vtype.VEnum;
@@ -34,8 +38,7 @@ import org.diirt.vtype.ValueUtil;
 public class CSVIO {
 
     // TODO: we should take these from a default place
-    private static TimestampFormat timeFormat = new TimestampFormat(
-            "yyyy/MM/dd HH:mm:ss.N Z"); //$NON-NLS-1$
+    private static DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.N Z"); //$NON-NLS-1$
 
     public void export(Object value, Writer writer) {
         if (!canExport(value)) {
@@ -46,7 +49,7 @@ public class CSVIO {
             Time time = ValueUtil.timeOf(value);
             if (time != null && time.getTimestamp() != null) {
                 writer.append("\"")
-                        .append(timeFormat.format(time.getTimestamp()))
+                        .append(timeFormat.format(ZonedDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())))
                         .append("\" ");
             }
 
@@ -70,7 +73,6 @@ public class CSVIO {
 
             if (value instanceof VEnum) {
                 writer.append(" \"")
-                        .append(((VEnum) value).getValue())
                         .append("\"");
             }
 
@@ -157,10 +159,12 @@ public class CSVIO {
         if (clazz.equals(Integer.TYPE)) {
             return Integer.toString(((ListInt) table.getColumnData(column)).getInt(row));
         }
-        if (clazz.equals(Timestamp.class)) {
+        if (clazz.equals(Instant.class)) {
             @SuppressWarnings("unchecked")
             List<?> timestamp = (List<?>) table.getColumnData(column);
-            return "\"" + timeFormat.format(timestamp.get(row)) + "\"";
+            ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant((Instant)(timestamp.get(row)), ZoneId.systemDefault());
+            System.out.println(timeFormat.format(zonedDateTime));
+            return "\"" + timeFormat.format(zonedDateTime) + "\"";
         }
         throw new UnsupportedOperationException("Can't export columns of type " + clazz.getSimpleName());
     }
