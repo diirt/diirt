@@ -4,8 +4,6 @@
  */
 package org.diirt.util.time;
 
-import static org.diirt.util.time.TimeDuration.toSecondsDouble;
-
 import java.text.DecimalFormat;
 import java.time.Duration;
 
@@ -70,7 +68,8 @@ public class TimeDuration {
     /**
      * Returns the number of times the given duration is present in this duration.
      * 
-     * @param duration another duration
+     * @param dividendDuration the duration to be devided
+     * @param divisorDuration the divisor
      * @return the result of the division
      */
     public static int dividedBy(Duration dividendDuration, Duration divisorDuration) {
@@ -82,10 +81,10 @@ public class TimeDuration {
     }
 
     /**
+     *  Convert the entire duration to seconds represented in a double
      * 
-     * 
-     * @param duration
-     * @return
+     * @param duration the duration to be converted
+     * @return the duration in seconds
      */
     public static double toSecondsDouble(Duration duration){
         return duration.getSeconds() + (duration.getNano() / (double) NANOSEC_IN_SEC);

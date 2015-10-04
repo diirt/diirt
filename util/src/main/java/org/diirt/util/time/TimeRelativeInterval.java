@@ -14,7 +14,7 @@ import java.time.Instant;
  * <p>
  * This class stores a reference for start and a reference for end. Each reference
  * can either be absolute, in which case it's a Instant, or relative, in
- * which case it's a TimeDuration. The {@link #toAbsoluteInterval(org.diirt.util.time.Instant) }
+ * which case it's a TimeDuration. The {@link Instant}
  * can be used to transform the relative interval into an absolute one
  * calculated from the reference. This allows to keep the relative interval,
  * and then to convert multiple time to an absolute interval every time

@@ -58,11 +58,11 @@ public class TimeInterval {
      * Returns a time interval that lasts this duration and is centered
      * around the given instant reference.
      * 
-     * @param duration
-     * @param reference
-     * @return
+     * @param duration the duration
+     * @param reference a instant
+     * @return a new time interval
      */
-    public TimeInterval around(Duration duration, Instant reference) {
+    public static TimeInterval around(Duration duration, Instant reference) {
         Duration half = duration.dividedBy(2);
         return TimeInterval.between(reference.minus(half), reference.plus(half));
     }
@@ -71,11 +71,11 @@ public class TimeInterval {
      * Returns a time interval that lasts this duration and starts from the
      * given instant.
      *
-     * @param duration
+     * @param duration the duration
      * @param reference a instant
      * @return a new time interval
      */
-    public TimeInterval after(Duration duration, Instant reference) {
+    public static TimeInterval after(Duration duration, Instant reference) {
         return TimeInterval.between(reference, reference.plus(duration));
     }
 
@@ -83,11 +83,11 @@ public class TimeInterval {
      * Returns a time interval that lasts this duration and ends at the
      * given instant.
      * 
-     * @param duration
+     * @param duration the duration
      * @param reference a instant
      * @return a new time interval
      */
-    public TimeInterval before(Duration duration, Instant reference) {
+    public static TimeInterval before(Duration duration, Instant reference) {
         return TimeInterval.between(reference.minus(duration), reference);
     }
     
