@@ -6,6 +6,7 @@ package org.diirt.util.time;
 
 import static org.diirt.util.time.TimeDuration.toSecondsDouble;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
 
 /**
@@ -30,7 +31,7 @@ public class TimeDuration {
      * @return a new duration
      */
     public static Duration ofHours(double hour) {
-        return Duration.ofNanos((long) (hour * 60 * 60 * 1000000000));
+        return Duration.ofNanos((long) (hour * 60 * 60 * NANOSEC_IN_SEC));
     }
     
     /**
@@ -40,7 +41,7 @@ public class TimeDuration {
      * @return a new duration
      */
     public static Duration ofMinutes(double min) {
-        return Duration.ofNanos((long) (min * 60 * 1000000000));
+        return Duration.ofNanos((long) (min * 60 * NANOSEC_IN_SEC));
     }
     
     /**
@@ -50,7 +51,7 @@ public class TimeDuration {
      * @return a new duration
      */
     public static Duration ofSeconds(double sec) {
-        return Duration.ofNanos((long) (sec * 1000000000));
+        return Duration.ofNanos((long) (sec * NANOSEC_IN_SEC));
     }
 
     /**
@@ -88,6 +89,18 @@ public class TimeDuration {
      */
     public static double toSecondsDouble(Duration duration){
         return duration.getSeconds() + (duration.getNano() / (double) NANOSEC_IN_SEC);
+    }
+
+    private static final DecimalFormat format = new DecimalFormat("000000000");
+
+    /**
+     * The number of seconds concatenated with the number of nanoseconds (12.500000000
+     * for 12.5 seconds).
+     * 
+     * @return the string representation
+     */
+    public static String toSecondString(Duration duration){
+        return duration.getSeconds() + "." + format.format(duration.getNano());
     }
 
 }
