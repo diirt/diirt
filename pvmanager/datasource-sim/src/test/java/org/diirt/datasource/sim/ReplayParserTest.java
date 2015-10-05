@@ -12,8 +12,8 @@ import org.diirt.vtype.AlarmSeverity;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.diirt.util.time.TimeDuration.*;
-import org.diirt.util.time.Timestamp;
+import static java.time.Duration.*;
+import java.time.Instant;
 
 /**
  *
@@ -34,7 +34,7 @@ public class ReplayParserTest {
         // Check first value
         XmlVDouble value = (XmlVDouble) values.getValues().get(0);
         assertThat(value.getValue(), equalTo(0.0));
-        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0)));
+        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0)));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
@@ -50,7 +50,7 @@ public class ReplayParserTest {
         // Check second value
         value = (XmlVDouble) values.getValues().get(1);
         assertThat(value.getValue(), equalTo(1.0));
-        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(100))));
+        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(100))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
         assertThat(value.getAlarmName(), equalTo("RECORD"));
         assertThat(value.getTimeUserTag(), equalTo(0));
@@ -58,7 +58,7 @@ public class ReplayParserTest {
         // Check third value
         value = (XmlVDouble) values.getValues().get(2);
         assertThat(value.getValue(), equalTo(2.0));
-        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(200))));
+        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(200))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
@@ -66,7 +66,7 @@ public class ReplayParserTest {
         // Check fourth value
         value = (XmlVDouble) values.getValues().get(3);
         assertThat(value.getValue(), equalTo(3.0));
-        assertThat(value.getTimestamp(), equalTo(Timestamp.of(0, 0).plus(ofMillis(500))));
+        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(500))));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
         assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));

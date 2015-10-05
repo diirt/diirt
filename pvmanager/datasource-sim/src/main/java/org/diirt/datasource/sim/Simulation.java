@@ -4,11 +4,12 @@
  */
 package org.diirt.datasource.sim;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.logging.Logger;
-import org.diirt.util.time.TimeDuration;
+
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Base class for all simulated signals. It provides the common mechanism for
@@ -22,20 +23,20 @@ abstract class Simulation<T> {
 
     private final long intervalBetweenExecution;
     private final Class<T> classToken;
-    volatile Timestamp lastTime;
+    volatile Instant lastTime;
 
     /**
      * Creates a new simulation.
      *
      * @param secondsBeetwenSamples seconds between each samples
      */
-    Simulation(TimeDuration scanRate, Class<T> classToken) {
+    Simulation(Duration scanRate, Class<T> classToken) {
         // XXX: this is dead code at this point. If needed, use it when setting up
         // the scan job. Ignore otherwise.
-        if (scanRate.compareTo(TimeDuration.ofMillis(1)) < 0) {
+        if (scanRate.compareTo(Duration.ofMillis(1)) < 0) {
             throw new IllegalArgumentException("Scans must be at least every ms (was " + scanRate + ")");
         }
-        this.intervalBetweenExecution = Math.max(scanRate.toNanosLong() / 1000000, 1);
+        this.intervalBetweenExecution = Math.max(scanRate.toNanos() / 1000000, 1);
         this.classToken = classToken;
     }
 
@@ -52,7 +53,7 @@ abstract class Simulation<T> {
      *
      * @param lastTime new timestamp
      */
-    void setLastTime(Timestamp lastTime) {
+    void setLastTime(Instant lastTime) {
         this.lastTime = lastTime;
     }
 

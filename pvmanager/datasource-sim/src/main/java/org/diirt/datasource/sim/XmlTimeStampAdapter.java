@@ -6,22 +6,22 @@ package org.diirt.datasource.sim;
 
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  *
  * @author carcassi
  */
-class XmlTimeStampAdapter extends XmlAdapter<BigDecimal, Timestamp> {
+class XmlTimeStampAdapter extends XmlAdapter<BigDecimal, Instant> {
 
     @Override
-    public Timestamp unmarshal(BigDecimal v) throws Exception {
-        return Timestamp.of(v.longValue(), v.remainder(new BigDecimal(1)).scaleByPowerOfTen(9).intValue());
+    public Instant unmarshal(BigDecimal v) throws Exception {
+        return Instant.ofEpochSecond(v.longValue(), v.remainder(new BigDecimal(1)).scaleByPowerOfTen(9).intValue());
     }
 
     @Override
-    public BigDecimal marshal(Timestamp v) throws Exception {
-        return new BigDecimal(v.getNanoSec()).scaleByPowerOfTen(-9).add(new BigDecimal(v.getSec()));
+    public BigDecimal marshal(Instant v) throws Exception {
+        return new BigDecimal(v.getNano()).scaleByPowerOfTen(-9).add(new BigDecimal(v.getEpochSecond()));
     }
 
 }

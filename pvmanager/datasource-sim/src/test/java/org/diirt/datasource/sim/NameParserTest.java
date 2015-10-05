@@ -10,14 +10,20 @@ import org.diirt.datasource.sim.Sine;
 import org.diirt.datasource.sim.GaussianNoise;
 import org.diirt.datasource.sim.Replay;
 import org.diirt.datasource.sim.NameParser;
+
 import java.util.Arrays;
 import java.util.List;
+
+import org.diirt.util.time.TimeDuration;
+import org.diirt.util.time.TimeInterval;
 import org.diirt.vtype.VDouble;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.diirt.util.time.TimeDuration.*;
-import org.diirt.util.time.Timestamp;
+import static java.time.Duration.*;
+
+import java.time.Instant;
 
 /**
  * Test simulated pv function names parsing
@@ -121,12 +127,12 @@ public class NameParserTest {
 
     @Test
     public void replay() {
-        Timestamp start = Timestamp.now();
+        Instant start = Instant.now();
         Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/diirt/datasource/replay/parse1.xml\")");
-        List<VDouble> values = replay.createValues(ofMillis(1000).after(start));
+        List<VDouble> values = replay.createValues(TimeInterval.after(ofMillis(1000), start));
         assertThat(values.size(), equalTo(4));
 
-        values = replay.createValues(ofMillis(100).after(start));
+        values = replay.createValues(TimeInterval.after(ofMillis(1000), start));
         assertThat(values.size(), equalTo(1));
     }
 

@@ -8,8 +8,11 @@ import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.ValueFactory;
+
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Function to simulate a waveform containing a triangle wave.
@@ -21,7 +24,7 @@ public class TriangleWaveform extends SimFunction<VDoubleArray> {
     private double periodInSeconds;
     private double wavelengthInSamples;
     private int nSamples;
-    private Timestamp initialRefernce;
+    private Instant initialRefernce;
 
     /**
      * Creates a triangle wave of 100 samples, with period of 1 second, wavelength of
@@ -83,7 +86,7 @@ public class TriangleWaveform extends SimFunction<VDoubleArray> {
         if (initialRefernce == null) {
             initialRefernce = lastTime;
         }
-        double t = lastTime.durationFrom(initialRefernce).toSeconds();
+        double t = initialRefernce.until(lastTime, ChronoUnit.SECONDS);
         double omega = 2 * Math.PI / periodInSeconds;
         double k = 2 * Math.PI / wavelengthInSamples;
         double min = 1.0;
