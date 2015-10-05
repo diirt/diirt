@@ -25,18 +25,22 @@ import org.diirt.vtype.VFloat;
 import org.diirt.vtype.VByte;
 import org.diirt.vtype.VShort;
 import org.diirt.vtype.VIntArray;
+
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Channel.ConnectionState;
 import gov.aps.jca.dbr.*;
 import gov.aps.jca.event.*;
+
+import java.time.Instant;
 import java.util.Arrays;
+
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.ValueCacheImpl;
 import org.diirt.util.array.CollectionNumbers;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VTypeToString;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -105,7 +109,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -135,7 +139,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -192,7 +196,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -222,7 +226,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -279,7 +283,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -309,7 +313,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -366,7 +370,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -396,7 +400,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -453,7 +457,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVInt;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -483,7 +487,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVInt;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -540,7 +544,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"32"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
         
@@ -561,7 +565,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"32"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
         
@@ -613,7 +617,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 20, ConnectionState.CONNECTED, true);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         byte[] data = "Testing".getBytes();
         data = Arrays.copyOf(data, data.length + 1);
         DBR_TIME_Byte value = createDBRTimeByte(data, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
@@ -636,7 +640,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload("mypv.NAME$", DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         byte[] data = "Testing".getBytes();
         data = Arrays.copyOf(data, data.length + 1);
         DBR_TIME_Byte value = createDBRTimeByte(data, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
@@ -686,7 +690,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBREnumToVEnum;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Enum.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Enum value = createDBRTimeEnum(new short[]{2}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_LABELS_Enum meta = createMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -708,7 +712,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBREnumToVEnum;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Enum.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Enum value = createDBRTimeEnum(new short[]{2}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_LABELS_Enum meta = createMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -757,7 +761,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F, 3.75F, 4.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -787,7 +791,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -844,7 +848,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25, 3.75, 4.25}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -874,7 +878,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -932,7 +936,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByteArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{3, 4, 5}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -962,7 +966,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByteArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{3}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -1019,7 +1023,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShortArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{3, 4, 5}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -1048,7 +1052,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShortArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{3}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -1105,7 +1109,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVIntArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{3, 4, 5}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -1135,7 +1139,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVIntArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{3}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -1192,7 +1196,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.CONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"Zero", "One", "Two"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -1214,7 +1218,7 @@ public class JCAVTypeAdapterSetTest {
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
         
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"Only"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
@@ -1249,59 +1253,59 @@ public class JCAVTypeAdapterSetTest {
         return meta;
     }
 
-    public static DBR_TIME_Float createDBRTimeFloat(float[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.diirt.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Float createDBRTimeFloat(float[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, java.time.Instant timestamp) {
         DBR_TIME_Float value = new DBR_TIME_Float(data);
         value.setSeverity(severity);
         value.setStatus(status);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        value.setTimeStamp(new TimeStamp(timestamp.getEpochSecond() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNano()));
         return value;
     }
 
-    public static DBR_TIME_Double createDBRTimeDouble(double[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.diirt.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Double createDBRTimeDouble(double[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, java.time.Instant timestamp) {
         DBR_TIME_Double value = new DBR_TIME_Double(data);
         value.setSeverity(severity);
         value.setStatus(status);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        value.setTimeStamp(new TimeStamp(timestamp.getEpochSecond() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNano()));
         return value;
     }
 
-    public static DBR_TIME_Byte createDBRTimeByte(byte[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.diirt.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Byte createDBRTimeByte(byte[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, java.time.Instant timestamp) {
         DBR_TIME_Byte value = new DBR_TIME_Byte(data);
         value.setSeverity(severity);
         value.setStatus(status);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        value.setTimeStamp(new TimeStamp(timestamp.getEpochSecond() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNano()));
         return value;
     }
 
-    public static DBR_TIME_Short createDBRTimeShort(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.diirt.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Short createDBRTimeShort(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, java.time.Instant timestamp) {
         DBR_TIME_Short value = new DBR_TIME_Short(data);
         value.setSeverity(severity);
         value.setStatus(status);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        value.setTimeStamp(new TimeStamp(timestamp.getEpochSecond() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNano()));
         return value;
     }
 
-    public static DBR_TIME_Int createDBRTimeInt(int[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.diirt.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Int createDBRTimeInt(int[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, java.time.Instant timestamp) {
         DBR_TIME_Int value = new DBR_TIME_Int(data);
         value.setSeverity(severity);
         value.setStatus(status);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        value.setTimeStamp(new TimeStamp(timestamp.getEpochSecond() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNano()));
         return value;
     }
 
-    public static DBR_TIME_String createDBRTimeString(String[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.diirt.util.time.Timestamp timestamp) {
+    public static DBR_TIME_String createDBRTimeString(String[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, java.time.Instant timestamp) {
         DBR_TIME_String value = new DBR_TIME_String(data);
         value.setSeverity(severity);
         value.setStatus(status);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        value.setTimeStamp(new TimeStamp(timestamp.getEpochSecond() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNano()));
         return value;
     }
 
-    public static DBR_TIME_Enum createDBRTimeEnum(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, org.diirt.util.time.Timestamp timestamp) {
+    public static DBR_TIME_Enum createDBRTimeEnum(short[] data, gov.aps.jca.dbr.Severity severity, gov.aps.jca.dbr.Status status, java.time.Instant timestamp) {
         DBR_TIME_Enum value = new DBR_TIME_Enum(data);
         value.setSeverity(severity);
         value.setStatus(status);
-        value.setTimeStamp(new TimeStamp(timestamp.getSec() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNanoSec()));
+        value.setTimeStamp(new TimeStamp(timestamp.getEpochSecond() - DataUtils.TS_EPOCH_SEC_PAST_1970, timestamp.getNano()));
         return value;
     }
 }
