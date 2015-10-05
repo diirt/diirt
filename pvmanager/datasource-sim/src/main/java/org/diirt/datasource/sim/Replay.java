@@ -35,7 +35,7 @@ public class Replay extends Simulation<VDouble> {
     public Replay(String uri) {
         super(Duration.ofMillis(10), VDouble.class);
         values = ReplayParser.parse(URI.create(uri));
-        offset = Duration.between(reference, ((VDouble) values.getValues().get(0)).getTimestamp());
+        offset = Duration.between(reference, ((VDouble) values.getValues().get(0)).getTimestamp()).abs();
     }
 
     @Override

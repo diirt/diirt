@@ -132,8 +132,8 @@ public class NameParserTest {
         List<VDouble> values = replay.createValues(TimeInterval.after(ofMillis(1000), start));
         assertThat(values.size(), equalTo(4));
 
-        values = replay.createValues(TimeInterval.after(ofMillis(1000), start));
-        assertThat(values.size(), equalTo(1));
+        values = replay.createValues(TimeInterval.after(ofMillis(100), start));
+        assertThat(values.size(), equalTo(2));
     }
 
 }
