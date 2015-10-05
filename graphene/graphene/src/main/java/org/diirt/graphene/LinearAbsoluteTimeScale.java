@@ -46,8 +46,13 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         
         // First guess at the time between references.
         // Get the smallest required period, and then round down
-        Duration rangeDuration = Duration.between(range.getStart(), range.getEnd());
-        double minPeriodInSec = TimeDuration.toSecondsDouble(rangeDuration.dividedBy(maxRefs));
+        
+        double minPeriodInSec;
+        if( maxRefs == 0){
+            minPeriodInSec = 0.0;
+        }else{
+            minPeriodInSec = range.getStart().until(range.getEnd(), ChronoUnit.SECONDS) / maxRefs;
+        }
         TimeScales.TimePeriod timePeriod = TimeScales.toTimePeriod(minPeriodInSec);
         timePeriod = TimeScales.nextDown(timePeriod);
         
