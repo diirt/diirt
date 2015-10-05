@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -133,9 +133,9 @@ public class TimeScalesTest {
     public void createReferences1() {
         GregorianCalendar cal = new GregorianCalendar(2013, 2, 14, 14, 23, 15);
         cal.set(GregorianCalendar.MILLISECOND, 123);
-        Timestamp start = Timestamp.of(cal.getTime());
-        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(2)));
-        List<Timestamp> references = TimeScales.createReferences(timeInterval, new TimePeriod(MILLISECOND, 50));
+        Instant start = cal.getTime().toInstant();
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofSeconds(2)));
+        List<Instant> references = TimeScales.createReferences(timeInterval, new TimePeriod(MILLISECOND, 50));
         assertThat(references.size(), equalTo(40));
         assertThat(references.get(0), equalTo(create(2013, 3, 14, 14, 23, 15, 150)));
         assertThat(references.get(1), equalTo(create(2013, 3, 14, 14, 23, 15, 200)));
@@ -146,9 +146,9 @@ public class TimeScalesTest {
     public void createReferences2() {
         GregorianCalendar cal = new GregorianCalendar(2013, 2, 14, 14, 23, 15);
         cal.set(GregorianCalendar.MILLISECOND, 123);
-        Timestamp start = Timestamp.of(cal.getTime());
-        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(2)));
-        List<Timestamp> references = TimeScales.createReferences(timeInterval, new TimePeriod(MILLISECOND, 100));
+        Instant start = cal.getTime().toInstant();
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofSeconds(2)));
+        List<Instant> references = TimeScales.createReferences(timeInterval, new TimePeriod(MILLISECOND, 100));
         assertThat(references.size(), equalTo(20));
         assertThat(references.get(0), equalTo(create(2013, 3, 14, 14, 23, 15, 200)));
         assertThat(references.get(1), equalTo(create(2013, 3, 14, 14, 23, 15, 300)));
@@ -159,9 +159,9 @@ public class TimeScalesTest {
     public void createReferences3() {
         GregorianCalendar cal = new GregorianCalendar(2013, 2, 14, 14, 23, 15);
         cal.set(GregorianCalendar.MILLISECOND, 123);
-        Timestamp start = Timestamp.of(cal.getTime());
-        TimeInterval timeInterval = TimeInterval.between(start, start.plus(TimeDuration.ofSeconds(30)));
-        List<Timestamp> references = TimeScales.createReferences(timeInterval, new TimePeriod(SECOND, 10));
+        Instant start = cal.getTime().toInstant();
+        TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofSeconds(30)));
+        List<Instant> references = TimeScales.createReferences(timeInterval, new TimePeriod(SECOND, 10));
         assertThat(references.size(), equalTo(3));
         assertThat(references.get(0), equalTo(create(2013, 3, 14, 14, 23, 20, 0)));
         assertThat(references.get(1), equalTo(create(2013, 3, 14, 14, 23, 30, 0)));
@@ -174,9 +174,9 @@ public class TimeScalesTest {
 	//test lower boundary case: 2 references 1 millisecond apart
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 1 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 1 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 1 ) ) );
@@ -188,9 +188,9 @@ public class TimeScalesTest {
 	//test lower boundary case: 2 references, milliseconds roll over to next second
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 1 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 1 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 999 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
@@ -202,9 +202,9 @@ public class TimeScalesTest {
 	//test lower boundary case: 2 references, milliseconds roll over to next second
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 2 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 2 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 2 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 2 ) );
 	assertThat( references.size() , equalTo(1) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
@@ -213,9 +213,9 @@ public class TimeScalesTest {
     public void createReferencesLowerBoundary4() {
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 999 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 2 ) ) );
@@ -225,9 +225,9 @@ public class TimeScalesTest {
     public void createReferencesLowerBoundary5() {
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 998 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 4 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 4 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(1) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
@@ -236,9 +236,9 @@ public class TimeScalesTest {
     public void createReferencesLowerBoundary6() {
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 4 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 4 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(1) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
@@ -249,9 +249,9 @@ public class TimeScalesTest {
 	//test two references, doesn't fit perfectly into time periods
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 998 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 6 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 6 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
@@ -264,9 +264,9 @@ public class TimeScalesTest {
 	//to be a perfect multiple of the time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 996 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 6 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 6 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 996 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
@@ -278,9 +278,9 @@ public class TimeScalesTest {
 	//to be a perfect multiple of the time period, and so does the time interval
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 996 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 8 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 8 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(3) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 996 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
@@ -293,9 +293,9 @@ public class TimeScalesTest {
 	//one unit extra space on each side of the graph
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 6 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 6 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
@@ -307,9 +307,9 @@ public class TimeScalesTest {
 	//one unit extra space on left (smaller numbers) side only
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 5 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 5 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
@@ -321,9 +321,9 @@ public class TimeScalesTest {
 	//one unit extra space on right (larger numbers) side only
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 5 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 5 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
@@ -334,9 +334,9 @@ public class TimeScalesTest {
 	//test end before start
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( -5 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( -5 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(0) );
     }
     
@@ -345,9 +345,9 @@ public class TimeScalesTest {
 	//test end equals start and is not a multiple of the time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 1 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 0 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 0 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(0) );
     }
     
@@ -356,9 +356,9 @@ public class TimeScalesTest {
 	//test end equals start and is a multiple of the time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 0 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 0 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(1) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
@@ -369,9 +369,9 @@ public class TimeScalesTest {
 	//time period is 0
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 1 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 0 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 1 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 0 ) );
 	assertThat( references.size() , equalTo(0) );
     }
     
@@ -381,9 +381,9 @@ public class TimeScalesTest {
 		//test end equals start and is a multiple of the time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 0 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 0 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 4 ) );
 	assertThat( references.size() , equalTo(1) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
@@ -393,9 +393,9 @@ public class TimeScalesTest {
 	//test time period too big
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 1 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( -5 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( -5 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1 ) );
 	assertThat( references.size() , equalTo(0) );
     }
     
@@ -404,9 +404,9 @@ public class TimeScalesTest {
 	//test units do not get mixed up
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 3 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 3 ) );
 	assertThat( references.size() , equalTo(0) );
     }
     
@@ -415,9 +415,9 @@ public class TimeScalesTest {
 	//test units do not get mixed up
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMillis( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3000 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMillis( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3000 ) );
 	assertThat( references.size() , equalTo(0) );
     }
     
@@ -427,9 +427,9 @@ public class TimeScalesTest {
 	//and they can overflow into a larger unit
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3000 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 3000 ) );
 	assertThat( references.size() , equalTo(1) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 3 , 0 ) ) );
     }
@@ -440,9 +440,9 @@ public class TimeScalesTest {
 	//a larger unit
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 999 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
 	assertThat( references.size() , equalTo(3) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 333 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 666 ) ) );
@@ -456,9 +456,9 @@ public class TimeScalesTest {
 	//reference line
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 998 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
 	assertThat( references.size() , equalTo(2) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 333 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 666 ) ) );
@@ -471,9 +471,9 @@ public class TimeScalesTest {
 	//reference line
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MILLISECOND , 1333 ) );
 	assertThat( references.size() , equalTo(3) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 333 ) ) );
@@ -485,9 +485,9 @@ public class TimeScalesTest {
 	//test seconds: straightforward, 5 seconds interval over 1 second periods
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 5 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 5 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 1 ) );
 	assertThat( references.size() , equalTo(6) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
@@ -502,9 +502,9 @@ public class TimeScalesTest {
 	//test seconds: straightforward, 10 second interval over 2 second periods
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 10 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 2 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 10 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 2 ) );
 	assertThat( references.size() , equalTo(6) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 0 ) ) );
@@ -520,9 +520,9 @@ public class TimeScalesTest {
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 1 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 30 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 5 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 30 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 5 ) );
 	assertThat( references.size() , equalTo(6) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 5 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 10 , 0 ) ) );
@@ -538,9 +538,9 @@ public class TimeScalesTest {
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 500 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofSeconds( 50 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 10 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofSeconds( 50 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( SECOND , 10 ) );
 	assertThat( references.size() , equalTo(5) );
 	assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 10 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 20 , 0 ) ) );
@@ -555,9 +555,9 @@ public class TimeScalesTest {
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 500 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMinutes( 10 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MINUTE , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMinutes( 10 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MINUTE , 1 ) );
 	assertThat( references.size() , equalTo(10) );
 
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 22 , 11 , 31 , 0 , 0 ) ) );
@@ -578,9 +578,9 @@ public class TimeScalesTest {
 	//starts on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofMinutes( 50 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MINUTE , 10 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofMinutes( 50 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MINUTE , 10 ) );
 	assertThat( references.size() , equalTo(6) );
 
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
@@ -597,9 +597,9 @@ public class TimeScalesTest {
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 679 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo(3) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 22 , 12 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 22 , 13 , 0 , 0 , 0 ) ) );
@@ -614,9 +614,9 @@ public class TimeScalesTest {
 	//starts on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 0 , 0 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 30 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 5 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 30 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 5 ) );
 	assertThat( references.size() , equalTo(7) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 22 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 22 , 5 , 0 , 0 , 0 ) ) );
@@ -632,10 +632,10 @@ public class TimeScalesTest {
 	//Test spring forward daylight savings time (DST)
 	//Start: Sat Mar 07 23:00:00 EST 2015
 	//End: Sun Mar 08 3:00:00 EST 2015 (right after spring forward DST)
-	Timestamp start = create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 );
-	Timestamp end = start.plus( TimeDuration.ofHours( 3 ) );
+	Instant start = create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 );
+	Instant end = start.plus( Duration.ofHours( 3 ) );
 	TimeInterval timeInterval = TimeInterval.between( start , end );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 4 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2015 , 3 , 8 , 0 , 0 , 0 , 0 ) ) );	
@@ -651,10 +651,10 @@ public class TimeScalesTest {
 	//Test fall back daylight savings time (DST)
 	//Start: Sun Nov 02 00:00:00 EST 2014
 	//End: Sun Nov 02 3:00:00 EST 2014 (right after fall back DST)
-	Timestamp start = create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 );
-	Timestamp end = start.plus( TimeDuration.ofHours( 4 ) );
+	Instant start = create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 );
+	Instant end = start.plus( Duration.ofHours( 4 ) );
 	TimeInterval timeInterval = TimeInterval.between( start , end );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 5 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 ) ) );
 	
@@ -679,9 +679,9 @@ public class TimeScalesTest {
 	//but does not start on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
 	cal.set( GregorianCalendar.MILLISECOND , 234 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*7 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 7 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 28 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 29 , 0 , 0 , 0 , 0 ) ) );
@@ -698,9 +698,9 @@ public class TimeScalesTest {
 	//starts on perfect multiple of time period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 20 , 0 , 0 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*30 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 5 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*30 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 5 ) );
 	assertThat( references.size() , equalTo( 7 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 20 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 25 , 0 , 0 , 0 , 0 ) ) );
@@ -716,9 +716,9 @@ public class TimeScalesTest {
 	//test days wrapping over to next year
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 11 , 27 , 4 , 12 , 24 );
 	cal.set( GregorianCalendar.MILLISECOND , 234 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*7 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 7 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 12 , 28 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2014 , 12 , 29 , 0 , 0 , 0 , 0 ) ) );
@@ -732,9 +732,9 @@ public class TimeScalesTest {
     @Test
     public void createReferencesLeapDay() {
 	//test days wrapping over to March when Feburary is of a leap year
-	Timestamp start = create(2012, 2, 27, 4, 12, 24, 234);
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
+	Instant start = create(2012, 2, 27, 4, 12, 24, 234);
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*7 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.DAY_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 7 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2012 , 2 , 28 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2012 , 2 , 29 , 0 , 0 , 0 , 0 ) ) );
@@ -751,9 +751,9 @@ public class TimeScalesTest {
 	//not starting on perfect multiple of period
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
 	cal.set( GregorianCalendar.MILLISECOND , 234 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7*3 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*7*3 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 3 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 30 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2014 , 12 , 7 , 0 , 0 , 0 , 0 ) ) );
@@ -766,10 +766,10 @@ public class TimeScalesTest {
 	
 	//Start: Thu Jan 01 00:00:00 EST 2015
 	//End: Thu Feb 12 00:00:00 EST 2015
-	Timestamp start = create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 );
-	Timestamp end = start.plus( TimeDuration.ofHours( 24*7*6 ) );
+	Instant start = create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 );
+	Instant end = start.plus( Duration.ofHours( 24*7*6 ) );
 	TimeInterval timeInterval = TimeInterval.between( start , end );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 6 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2015 , 1 , 4 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 11 , 0 , 0 , 0 , 0 ) ) );	
@@ -786,10 +786,10 @@ public class TimeScalesTest {
 	
 	//Start: Sun Feb 01 00:00:00 EST 2015
 	//End: Sun Mar 08 00:00:00 EST 2015
-	Timestamp start = create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 );
-	Timestamp end = start.plus( TimeDuration.ofHours( 24*7*5 ) );
+	Instant start = create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 );
+	Instant end = start.plus( Duration.ofHours( 24*7*5 ) );
 	TimeInterval timeInterval = TimeInterval.between( start , end );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
 	assertThat( references.size() , equalTo( 6 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2015 , 2 , 8 , 0 , 0 , 0 , 0 ) ) );	
@@ -808,9 +808,9 @@ public class TimeScalesTest {
 	//End: Thu May 21 05:12:24 EDT 2015
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
 	cal.set( GregorianCalendar.MILLISECOND , 234 );
-	Timestamp start = Timestamp.of( cal.getTime() );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7*5*5 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 1 ) );
+	Instant start = cal.getTime().toInstant();
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*7*5*5 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 1 ) );
 	assertThat( references.size() , equalTo( 6 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 12 , 1 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );	
@@ -827,9 +827,9 @@ public class TimeScalesTest {
 	
 	//Start: Sat Nov 01 00:00:00 EDT 2014
 	//End: Fri Dec 25 23:00:00 EST 2015
-	Timestamp start = create( 2014 , 11 , 1 , 0 , 0 , 0 , 0 );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*7*5*12 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 2 ) );
+	Instant start = create( 2014 , 11 , 1 , 0 , 0 , 0 , 0 );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*7*5*12 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 2 ) );
 	assertThat( references.size() , equalTo( 7 ) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 1 , 0 , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );	
@@ -847,9 +847,9 @@ public class TimeScalesTest {
 	
 	//Start: Sat Nov 22 11:30:00 EST 2014
 	//End: Mon Dec 29 11:30:00 EST 2064
-	Timestamp start = create( 2014 , 11 , 22 , 11 , 30 , 0 , 500 );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( 24*366*50 ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 10 ) );
+	Instant start = create( 2014 , 11 , 22 , 11 , 30 , 0 , 500 );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( 24*366*50 ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 10 ) );
 	assertThat( references.size() , equalTo( 5 ) );
 	assertThat( references.get( 0 ) , equalTo( create(2020 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
 	assertThat( references.get( 1 ) , equalTo( create(2030 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
@@ -864,13 +864,13 @@ public class TimeScalesTest {
 	//test trying to overflow years
 	GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
 	cal.set( GregorianCalendar.MILLISECOND , 0 );
-	Timestamp start = Timestamp.of( cal.getTime() );
+	Instant start = cal.getTime().toInstant();
 	long hours = 24l * 366l * 999999999l;
 	System.out.println( hours );
-	TimeInterval timeInterval = TimeInterval.between( start , start.plus( TimeDuration.ofHours( hours ) ) );
-	List<Timestamp> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 999999999l ) );
+	TimeInterval timeInterval = TimeInterval.between( start , start.plus( Duration.ofHours( hours ) ) );
+	List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( YEAR , 999999999l ) );
 	System.out.println( new TimePeriod( YEAR , 999999999l ) );
-	System.out.println( TimeDuration.ofHours( hours ) );
+	System.out.println( Duration.ofHours( hours ) );
 	System.out.println( hours + " " + Double.valueOf( hours ).doubleValue() );
 	assertThat( references.size() , equalTo(1) );
 	assertThat( references.get( 0 ) , equalTo( create( 2014+999999999 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
@@ -1479,10 +1479,10 @@ public class TimeScalesTest {
 	assertThat( found , equalTo( expected ) );	
     }
     
-    static Timestamp create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+    static Instant create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
         GregorianCalendar cal = new GregorianCalendar(year, month - 1, day, hour, minute, second);
         cal.set(GregorianCalendar.MILLISECOND, millisecond);
-        return Timestamp.of(cal.getTime());
+        return cal.getTime().toInstant();
     }
     
     /**
@@ -1501,7 +1501,7 @@ public class TimeScalesTest {
      * @param timezone
      * @return 
      */
-    static Timestamp create(int year , int month , int day , int hour , int minute , int second , int millisecond , String timezone ) {
+    static Instant create(int year , int month , int day , int hour , int minute , int second , int millisecond , String timezone ) {
 	GregorianCalendar cal = new GregorianCalendar( TimeZone.getTimeZone( timezone ) );
 	cal.set( YEAR , year );
 	cal.set( MONTH , month-1 );
@@ -1511,7 +1511,7 @@ public class TimeScalesTest {
 	cal.set( MINUTE , minute );
 	cal.set( SECOND , second );
 	cal.set( MILLISECOND , millisecond );
-	return Timestamp.of( cal.getTime() );
+	return cal.getTime().toInstant();
     }
     
     //*MC: Trim labels

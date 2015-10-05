@@ -5,7 +5,7 @@
 package org.diirt.graphene;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  * The scale to be used to create axis references and rescale time.
@@ -14,6 +14,6 @@ import org.diirt.util.time.Timestamp;
  */
 public interface TimeScale {
     double scaleNormalizedTime(double value, double newMinValue, double newMaxValue);
-    double scaleTimestamp(Timestamp value, TimeInterval timeInterval, double newMinValue, double newMaxValue);
+    double scaleTimestamp(Instant value, TimeInterval timeInterval, double newMinValue, double newMaxValue);
     TimeAxis references(TimeInterval range, int minRefs, int maxRefs);
 }
