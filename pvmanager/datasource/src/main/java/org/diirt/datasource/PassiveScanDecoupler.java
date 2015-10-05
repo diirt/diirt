@@ -122,7 +122,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             if (queuedEvent != null) {
                 Instant nextSubmission = lastSubmission.plus(getMaxDuration());
                 delay = Duration.between(Instant.now(), nextSubmission);
-                if (!delay.isNegative()) {
+                if (!delay.isNegative() || !delay.isZero()) {
                     lastSubmission = nextSubmission;
                     if (log.isLoggable(logLevel)) {
                         log.log(logLevel, "Schedule next {0}", Instant.now());
