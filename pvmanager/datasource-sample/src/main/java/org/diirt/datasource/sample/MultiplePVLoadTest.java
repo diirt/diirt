@@ -12,7 +12,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.vtype.ExpressionLanguage;
-import org.diirt.util.time.TimeDuration;
+import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.vtype.VType;
 
 /**
@@ -36,7 +36,7 @@ public class MultiplePVLoadTest {
                 public void pvChanged(PVReaderEvent<VType> event) {
                     counter.incrementAndGet();
                 }
-            }).maxRate(TimeDuration.ofHertz(50));
+            }).maxRate(ofHertz(50));
             readers.add(reader);
         }
 

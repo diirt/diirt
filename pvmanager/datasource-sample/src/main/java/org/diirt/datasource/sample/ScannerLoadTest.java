@@ -5,11 +5,15 @@
 package org.diirt.datasource.sample;
 
 import com.sun.management.OperatingSystemMXBean;
+
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.diirt.datasource.PVManager;
+
 import static org.diirt.datasource.ExpressionLanguage.*;
+
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.loc.LocalDataSource;
 import org.diirt.util.time.TimeDuration;
@@ -68,7 +72,7 @@ public class ScannerLoadTest {
         List<PVReader<Object>> pvs = new ArrayList<>();
         long timeStart = System.currentTimeMillis();
         for (int i = 0; i < nPvs; i++) {
-            //PVReader<Object> pv = PVManager.read(constant(new Object())).maxRate(TimeDuration.ofHertz(50));
+            //PVReader<Object> pv = PVManager.read(constant(new Object())).maxRate(TimeDuration.TimeDuration.ofHertz(50));
             PVReader<Object> pv = PVManager.read(channel("channel " + i)).maxRate(TimeDuration.ofHertz(50));
             pvs.add(pv);
         }

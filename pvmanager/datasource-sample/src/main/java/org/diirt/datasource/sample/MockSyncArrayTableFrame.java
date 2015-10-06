@@ -7,18 +7,24 @@ package org.diirt.datasource.sample;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
+
+import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.VMultiDouble;
 import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
+
 import javax.swing.table.TableModel;
+
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.vtype.VDouble;
+
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.util.concurrent.Executors.swingEDT;
-import static org.diirt.util.time.TimeDuration.*;
+import static java.time.Duration.*;
 
 /**
  *
@@ -142,7 +148,7 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
         // the time between sample multiplied by 5 (so you get at least 5 samples).
         double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
 
-        pv = PVManager.read(synchronizedArrayOf(ofMillis(75), ofSeconds(bufferDepth),
+        pv = PVManager.read(synchronizedArrayOf(ofMillis(75), TimeDuration.ofSeconds(bufferDepth),
                      vDoubles(Collections.nCopies(nPvs, pvName))))
                 .readListener(new PVReaderListener<VMultiDouble>() {
                     @Override
@@ -185,7 +191,7 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
                         }
                     }
                 })
-                .maxRate(ofHertz(scanRate));
+                .maxRate(TimeDuration.ofHertz(scanRate));
 
     }//GEN-LAST:event_createPVButtonActionPerformed
 
