@@ -16,13 +16,16 @@ import org.diirt.pods.web.common.MessageUnsubscribe;
 import org.diirt.pods.web.common.MessageEncoder;
 import org.diirt.pods.web.common.MessageResume;
 import org.diirt.pods.web.common.MessagePause;
+
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
@@ -32,9 +35,11 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
 import org.diirt.pods.common.ChannelTranslation;
 import org.diirt.pods.common.ChannelTranslator;
 import org.diirt.util.config.Configuration;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
@@ -42,11 +47,12 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
+
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+
 import org.diirt.datasource.formula.FormulaAst;
 import org.diirt.pods.common.ChannelRequest;
 import org.diirt.pods.web.common.MessageDecodeException;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
@@ -162,14 +168,14 @@ public class WSEndpoint {
             reader = PVManager.read(ast.toExpression())
                     .readListener(new ReadOnlyListener(session, message))
                     .timeout(TimeDuration.ofSeconds(1.0), "Still connecting...")
-                    .maxRate(TimeDuration.ofMillis(maxRate));
+                    .maxRate(Duration.ofMillis(maxRate));
         } else {
             ReadWriteListener readWriteListener = new ReadWriteListener(session, message);
             reader = PVManager.readAndWrite(formula(ast))
                     .readListener(readWriteListener)
                     .writeListener(readWriteListener)
                     .timeout(TimeDuration.ofSeconds(1.0), "Still connecting...")
-                    .asynchWriteAndMaxReadRate(TimeDuration.ofMillis(maxRate));
+                    .asynchWriteAndMaxReadRate(Duration.ofMillis(maxRate));
         }
         channels.put(message.getId(), reader);
     }
