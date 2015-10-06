@@ -5,10 +5,12 @@
 package org.diirt.javafx.tools;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +21,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+
 import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderEvent;
@@ -91,7 +94,7 @@ public class ProbeController implements Initializable {
                         }
                     }
                 })
-                .timeout(TimeDuration.ofSeconds(1), "Still connecting...", "Still writing...")
+                .timeout(Duration.ofSeconds(1), "Still connecting...", "Still writing...")
                 .notifyOn(Executors.javaFXAT())
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
     }
