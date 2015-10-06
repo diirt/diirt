@@ -4,11 +4,11 @@
  */
 package org.diirt.datasource.timecache.query;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
@@ -43,7 +43,7 @@ public class QueryDataBlank implements QueryData {
 
 	/** {@inheritDoc} */
 	@Override
-	public List<Timestamp> getTimestamps() {
+	public List<Instant> getTimestamps() {
 		return Collections.emptyList();
 	}
 

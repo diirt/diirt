@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.timecache;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,7 +13,6 @@ import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Retrieves chunks from the specified {@link DataSource}, channel name and
@@ -29,7 +29,7 @@ public class DataRequestThread extends Thread {
 	private final String channelName;
 	private final DataSource source;
 	private TimeInterval interval;
-	private Timestamp lastReceived;
+	private Instant lastReceived;
 
 	private List<DataRequestListener> listeners;
 
@@ -113,7 +113,7 @@ public class DataRequestThread extends Thread {
 		return source;
 	}
 
-	public Timestamp getLastReceived() {
+	public Instant getLastReceived() {
 		return lastReceived;
 	}
 

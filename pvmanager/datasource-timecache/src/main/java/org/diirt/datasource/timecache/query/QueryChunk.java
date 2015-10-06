@@ -5,6 +5,7 @@
 package org.diirt.datasource.timecache.query;
 
 import java.io.PrintStream;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.SortedMap;
@@ -15,11 +16,10 @@ import java.util.TreeSet;
 import org.diirt.datasource.timecache.Data;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
- * Represents a chunk of {@link Data} with all {@link Timestamp} within a fixed
+ * Represents a chunk of {@link Data} with all {@link Instant} within a fixed
  * {@link TimeInterval}.
  * @author Fred Arnaud (Sopra Group) - ITER
  */
@@ -106,7 +106,7 @@ public class QueryChunk {
 			// We return only completed chunk
 			return new QueryDataNR(timeInterval);
 		case AllDataReceived:
-			SortedMap<Timestamp, VType> sortedMap = new TreeMap<Timestamp, VType>();
+			SortedMap<Instant, VType> sortedMap = new TreeMap<Instant, VType>();
 			Iterator<Data> itData = dataSet.iterator();
 			while (itData.hasNext()) {
 				Data data = itData.next();

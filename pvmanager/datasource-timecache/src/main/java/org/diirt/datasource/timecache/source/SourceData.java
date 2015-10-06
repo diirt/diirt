@@ -4,8 +4,9 @@
  */
 package org.diirt.datasource.timecache.source;
 
+import java.time.Instant;
+
 import org.diirt.datasource.timecache.Data;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
@@ -14,17 +15,17 @@ import org.diirt.vtype.VType;
  */
 public class SourceData implements Data {
 
-	private final Timestamp timestamp;
+	private final Instant timestamp;
 	private final VType value;
 
-	public SourceData(Timestamp timestamp, VType value) {
+	public SourceData(Instant timestamp, VType value) {
 		this.timestamp = timestamp;
 		this.value = value;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Timestamp getTimestamp() {
+	public Instant getTimestamp() {
 		return timestamp;
 	}
 

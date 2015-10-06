@@ -5,10 +5,10 @@
 package org.diirt.datasource.timecache.util;
 
 import java.text.ParseException;
+import java.time.Instant;
 
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ public class IntervalsListUnitTest {
 					UnitTestUtils.timeIntervalOf("16:00", "16:15"),
 					UnitTestUtils.timeIntervalOf("16:45", "17:00"));
 
-			Assert.assertFalse(iList.contains((Timestamp) null));
+			Assert.assertFalse(iList.contains((Instant) null));
 			Assert.assertFalse(iList.contains(UnitTestUtils.timestampOf("16:30")));
 			Assert.assertTrue(iList.contains(UnitTestUtils.timestampOf("16:00")));
 			Assert.assertTrue(iList.contains(UnitTestUtils.timestampOf("16:50")));

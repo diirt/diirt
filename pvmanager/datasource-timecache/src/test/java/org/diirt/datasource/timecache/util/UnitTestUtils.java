@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Helper for unit tests.
@@ -47,10 +47,10 @@ public class UnitTestUtils {
 		writer.close();
 	}
 
-	public static Timestamp timestampOf(String time) throws ParseException {
+	public static Instant timestampOf(String time) throws ParseException {
 		if (time == null)
 			return null;
-		return Timestamp.of(dateFormat.parse(time));
+		return dateFormat.parse(time).toInstant();
 	}
 
 	public static TimeInterval timeIntervalOf(String start, String end)

@@ -6,9 +6,9 @@ package org.diirt.datasource.timecache.storage;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
+import java.time.Instant;
 
 import org.diirt.datasource.timecache.Data;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
@@ -17,16 +17,16 @@ import org.diirt.vtype.VType;
  */
 public class MemoryStoredData extends SoftReference<VType> implements Data {
 
-	private final Timestamp timestamp;
+	private final Instant timestamp;
 
-	public MemoryStoredData(Timestamp timestamp, VType value, ReferenceQueue<VType> q) {
+	public MemoryStoredData(Instant timestamp, VType value, ReferenceQueue<VType> q) {
 		super(value, q);
 		this.timestamp = timestamp;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Timestamp getTimestamp() {
+	public Instant getTimestamp() {
 		return timestamp;
 	}
 

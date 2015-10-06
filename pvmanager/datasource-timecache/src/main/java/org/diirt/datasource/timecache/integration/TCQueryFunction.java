@@ -5,6 +5,13 @@
 package org.diirt.datasource.timecache.integration;
 
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +32,6 @@ import org.diirt.datasource.timecache.query.QueryResult;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.time.TimeRelativeInterval;
-import org.diirt.util.time.Timestamp;
-import org.diirt.util.time.TimestampFormat;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
@@ -38,7 +43,7 @@ import org.diirt.vtype.ValueFactory;
  */
 public class TCQueryFunction extends StatefulFormulaFunction {
 
-	final private static TimestampFormat tsFormat = new TimestampFormat("yyyy-MM-dd HH:mm");
+	final private static DateTimeFormatter tsFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	final private static String S1 = "src/test/resources/archive-ramps-1H.csv"; // from '2014-12-04 00:00:01' to '2014-12-04 01:00:01'
 	final private static String S2 = "src/test/resources/archive-ramps-1D.csv"; // from '2014-12-03 00:00:00' to '2014-12-04 00:00:00'
@@ -48,14 +53,14 @@ public class TCQueryFunction extends StatefulFormulaFunction {
 	private final Cache cache;
 	private Query currentQuery;
 	private String currentPV;
-	private Timestamp currentBegin;
-	private Timestamp currentEnd;
+	private Instant currentBegin;
+	private Instant currentEnd;
 
-	private NavigableMap<Timestamp, Double> valueMap;
+	private NavigableMap<Instant, Double> valueMap;
 	private VTable previousValue;
 
 	public TCQueryFunction() {
-		valueMap = new ConcurrentSkipListMap<Timestamp, Double>();
+		valueMap = new ConcurrentSkipListMap<Instant, Double>();
 		CacheConfig config = new CacheConfig();
 		config.addSource(new SimpleFileDataSource(S4));
 		config.addSource(new SimpleFileDataSource(S3));
@@ -109,11 +114,11 @@ public class TCQueryFunction extends StatefulFormulaFunction {
 					Arrays.asList(new ArrayList<String>(), new ArrayDouble()));
 		}
 		String newPV = ((VString) args.get(0)).getValue();
-		Timestamp newBegin = null, newEnd = null;
+		Instant newBegin = null, newEnd = null;
 		try {
-			newBegin = tsFormat.parse(((VString) args.get(1)).getValue());
-			newEnd = tsFormat.parse(((VString) args.get(2)).getValue());
-		} catch (ParseException e) {
+			newBegin = LocalDateTime.parse(((VString) args.get(1)).getValue(), tsFormat).toInstant(ZoneOffset.UTC);
+			newEnd = LocalDateTime.parse(((VString) args.get(2)).getValue(), tsFormat).toInstant(ZoneOffset.UTC);
+		} catch (DateTimeParseException e) {
 			return previousValue;
 		}
 		if (currentPV == null || !currentPV.equals(newPV)) {
@@ -153,7 +158,7 @@ public class TCQueryFunction extends StatefulFormulaFunction {
 		index = 0;
 		double[] array = new double[valueMap.size()];
 		List<String> times = new ArrayList<String>();
-		for (Entry<Timestamp, Double> entry : valueMap.entrySet()) {
+		for (Entry<Instant, Double> entry : valueMap.entrySet()) {
 			times.add(CacheHelper.format(entry.getKey()));
 			array[index] = entry.getValue();
 			index++;

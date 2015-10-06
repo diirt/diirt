@@ -7,6 +7,8 @@ package org.diirt.datasource.timecache.query;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -23,10 +25,8 @@ import org.diirt.datasource.timecache.query.QueryResult;
 import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.datasource.timecache.util.PVCacheMock;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.TimeRelativeInterval;
-import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,8 +39,8 @@ public class QueryUnitTests {
 
 	final private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-	private static Timestamp timeOf(String date) throws ParseException {
-		return Timestamp.of(dateFormat.parse(date));
+	private static Instant timeOf(String date) throws ParseException {
+		return dateFormat.parse(date).toInstant();
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class QueryUnitTests {
 	public void testUpdateWithoutStorage() {
 		try {
 			PVCacheMock cache = new PVCacheMock();
-			Timestamp start = timeOf("2014-11-26 00:00");
-			Timestamp end = timeOf("2014-11-27 00:00");
+			Instant start = timeOf("2014-11-26 00:00");
+			Instant end = timeOf("2014-11-27 00:00");
 			QueryParameters params = new QueryParameters()
 					.timeInterval(TimeRelativeInterval.of(start, end));
 
@@ -61,9 +61,8 @@ public class QueryUnitTests {
 			List<QueryChunk> chunks = ((QueryImpl) query).getChunks();
 			Assert.assertEquals(24, chunks.size());
 			for (QueryChunk chunk : chunks) {
-				TimeDuration chunkDuration = chunk.getTimeInterval().getEnd()
-						.durationBetween(chunk.getTimeInterval().getStart());
-				Assert.assertEquals(3600, chunkDuration.toSeconds(), 1);
+				Duration chunkDuration = Duration.between(chunk.getTimeInterval().getEnd(),chunk.getTimeInterval().getStart()).abs();
+				Assert.assertEquals(3600, chunkDuration.getSeconds(), 1);
 			}
 
 			// 100 chunk per 1 day query => 864 seconds per chunk
@@ -72,9 +71,8 @@ public class QueryUnitTests {
 			chunks = ((QueryImpl) query).getChunks();
 			Assert.assertEquals(100, chunks.size());
 			for (QueryChunk chunk : chunks) {
-				TimeDuration chunkDuration = chunk.getTimeInterval().getEnd()
-						.durationBetween(chunk.getTimeInterval().getStart());
-				Assert.assertEquals(864, chunkDuration.toSeconds(), 1);
+			    Duration chunkDuration = Duration.between(chunk.getTimeInterval().getEnd(),chunk.getTimeInterval().getStart()).abs();
+				Assert.assertEquals(864, chunkDuration.getSeconds(), 1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,8 +88,8 @@ public class QueryUnitTests {
 	public void testUpdateWithStorage() {
 		try {
 			PVCacheMock cache = new PVCacheMock();
-			Timestamp start = timeOf("2014-11-26 00:00");
-			Timestamp end = timeOf("2014-11-27 00:00");
+			Instant start = timeOf("2014-11-26 00:00");
+			Instant end = timeOf("2014-11-27 00:00");
 			QueryParameters params = new QueryParameters()
 					.timeInterval(TimeRelativeInterval.of(start, end));
 
@@ -129,9 +127,8 @@ public class QueryUnitTests {
 			List<QueryChunk> chunks = ((QueryImpl) query).getChunks();
 			Assert.assertEquals(100, chunks.size());
 			for (QueryChunk chunk : chunks) {
-				TimeDuration chunkDuration = chunk.getTimeInterval().getEnd()
-						.durationBetween(chunk.getTimeInterval().getStart());
-				Assert.assertEquals(864, chunkDuration.toSeconds(), 1);
+			        Duration chunkDuration = Duration.between(chunk.getTimeInterval().getEnd(),chunk.getTimeInterval().getStart()).abs();
+				Assert.assertEquals(864, chunkDuration.getSeconds(), 1);
 				Assert.assertEquals(432, chunk.getDataCount());
 			}
 		} catch (Exception e) {
@@ -161,8 +158,8 @@ public class QueryUnitTests {
 	private void subTestNewData(int nbOfChunks, int expectedCount)
 			throws Exception {
 		PVCacheMock cache = new PVCacheMock();
-		final Timestamp start = timeOf("2014-11-27 00:00");
-		final Timestamp end = timeOf("2014-11-28 00:00");
+		final Instant start = timeOf("2014-11-27 00:00");
+		final Instant end = timeOf("2014-11-28 00:00");
 		// The query will request for completed intervals in order to mark
 		// chunks as completed, so we define them in the mock
 		cache.addCompletedInterval(TimeInterval.between(start, end));

@@ -24,9 +24,9 @@ import org.diirt.datasource.timecache.storage.DataStorageListener;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.datasource.timecache.util.TimestampsSet;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  * {@link PVCache} first implementation. Handles the communication between a
@@ -49,8 +49,8 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 		public void newData(final DataChunk chunk, final DataRequestThread thread) {
 			if (chunk == null || chunk.isEmpty() || thread == null)
 				return;
-			Timestamp start = thread.getInterval().getStart();
-			Timestamp end = thread.getLastReceived();
+			Instant start = thread.getInterval().getStart();
+			Instant end = thread.getLastReceived();
 			final TimeInterval interval = TimeInterval.between(start, end);
 			updateService.execute(new Runnable() {
 				public void run() {
@@ -121,7 +121,7 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 	private IntervalsList completedIntervals = new IntervalsList();
 	private IntervalsList requestedIntervals = new IntervalsList();
 
-	private TimeDuration retrievalGap = TimeDuration.ofHours(168); // 1 week
+	private Duration retrievalGap = Duration.ofHours(168); // 1 week
 
 	public PVCacheImpl(String channelName, Collection<DataSource> dataSources, DataStorage storage) {
 		this.listeners = Collections.synchronizedList(new LinkedList<PVCacheListener>());
@@ -334,7 +334,7 @@ public class PVCacheImpl implements PVCache, DataStorageListener {
 	}
 
 	// Useful to configuration, TODO: improve (see CacheImpl)
-	public void setRetrievalGap(TimeDuration retrievalGap) {
+	public void setRetrievalGap(Duration retrievalGap) {
 		this.retrievalGap = retrievalGap;
 	}
 

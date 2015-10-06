@@ -10,7 +10,6 @@ import org.diirt.datasource.timecache.Data;
 import org.diirt.datasource.timecache.DataChunk;
 import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Retrieves and stores samples from/to a storage.
@@ -32,9 +31,9 @@ public interface DataStorage extends DataSource {
 
 	/**
 	 * Stores all {@link Data} of the specified {@link DataChunk} and returns
-	 * the corresponding set of {@link Data} ordered by {@link Timestamp}.
+	 * the corresponding set of {@link Data} ordered by {@link Instant}.
 	 * @param chunk to store.
-	 * @return set of {@link Data} ordered by {@link Timestamp}.
+	 * @return set of {@link Data} ordered by {@link Instant}.
 	 */
 	public SortedSet<Data> storeData(DataChunk chunk);
 

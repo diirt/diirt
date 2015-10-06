@@ -5,10 +5,10 @@
 package org.diirt.datasource.timecache.util;
 
 import java.text.ParseException;
+import java.time.Instant;
 
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,8 +25,8 @@ public class CacheHelperUnitTest {
 	@Test
 	public void testMin() {
 		try {
-			Timestamp t1 = UnitTestUtils.timestampOf("16:00");
-			Timestamp t2 = UnitTestUtils.timestampOf("17:00");
+			Instant t1 = UnitTestUtils.timestampOf("16:00");
+			Instant t2 = UnitTestUtils.timestampOf("17:00");
 
 			// test null parameters
 			Assert.assertNull(CacheHelper.min(t1, null));
@@ -42,8 +42,8 @@ public class CacheHelperUnitTest {
 	@Test
 	public void testMax() {
 		try {
-			Timestamp t1 = UnitTestUtils.timestampOf("16:00");
-			Timestamp t2 = UnitTestUtils.timestampOf("17:00");
+			Instant t1 = UnitTestUtils.timestampOf("16:00");
+			Instant t2 = UnitTestUtils.timestampOf("17:00");
 
 			// test null parameters
 			Assert.assertNull(CacheHelper.max(t1, null));

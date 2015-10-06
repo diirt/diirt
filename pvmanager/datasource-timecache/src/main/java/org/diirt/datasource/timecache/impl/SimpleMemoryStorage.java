@@ -5,6 +5,9 @@
 package org.diirt.datasource.timecache.impl;
 
 import java.lang.ref.ReferenceQueue;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,9 +23,7 @@ import org.diirt.datasource.timecache.storage.DataStorageListener;
 import org.diirt.datasource.timecache.storage.MemoryStoredData;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.timecache.util.TimestampsSet;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
@@ -31,7 +32,7 @@ import org.diirt.vtype.VType;
  */
 public class SimpleMemoryStorage implements DataStorage {
 
-	private NavigableMap<Timestamp, MemoryStoredData> cache = new ConcurrentSkipListMap<Timestamp, MemoryStoredData>();
+	private NavigableMap<Instant, MemoryStoredData> cache = new ConcurrentSkipListMap<Instant, MemoryStoredData>();
 
 	/** Reference queue for cleared SoftReference objects. */
 	private final ReferenceQueue<VType> queue = new ReferenceQueue<VType>();
@@ -39,7 +40,7 @@ public class SimpleMemoryStorage implements DataStorage {
 	private List<DataStorageListener> listeners = new ArrayList<DataStorageListener>();
 
 	private int chunkSize = 1000;
-	private TimeDuration minChunkDuration = null;
+	private Duration minChunkDuration = null;
 
 	public SimpleMemoryStorage() {
 	}
@@ -50,10 +51,10 @@ public class SimpleMemoryStorage implements DataStorage {
 
 	/** {@inheritDoc} */
 	@Override
-	public DataChunk getData(String channelName, Timestamp from) {
+	public DataChunk getData(String channelName, Instant from) {
 		processQueue();
 		DataChunk chunk = new DataChunk(chunkSize);
-		Timestamp currentKey = null;
+		Instant currentKey = null;
 		if (from == null) currentKey = cache.firstKey();
 		else currentKey = cache.ceilingKey(from);
 		if (currentKey == null) return chunk;
@@ -73,10 +74,10 @@ public class SimpleMemoryStorage implements DataStorage {
 		if (interval == null)
 			return new TreeSet<Data>();
 		interval = CacheHelper.arrange(interval);
-		Timestamp begin = null;
-		Timestamp end = null;
-		Timestamp intervalStart = interval.getStart();
-		Timestamp intervalEnd = interval.getEnd();
+		Instant begin = null;
+		Instant end = null;
+		Instant intervalStart = interval.getStart();
+		Instant intervalEnd = interval.getEnd();
 		if (intervalStart == null && intervalEnd == null) {
 			begin = cache.firstKey();
 			end = cache.lastKey();
@@ -101,10 +102,10 @@ public class SimpleMemoryStorage implements DataStorage {
 		if (interval == null)
 			return false;
 		interval = CacheHelper.arrange(interval);
-		Timestamp begin = null;
-		Timestamp end = null;
-		Timestamp intervalStart = interval.getStart();
-		Timestamp intervalEnd = interval.getEnd();
+		Instant begin = null;
+		Instant end = null;
+		Instant intervalStart = interval.getStart();
+		Instant intervalEnd = interval.getEnd();
 		if (intervalStart == null && intervalEnd == null) {
 			begin = cache.firstKey();
 			end = cache.lastKey();
@@ -135,8 +136,7 @@ public class SimpleMemoryStorage implements DataStorage {
 			cache.put(data.getTimestamp(), msd);
 			set.add(msd);
 		}
-		TimeDuration chunkDuration = chunk.getInterval().getEnd()
-				.durationFrom(chunk.getInterval().getStart());
+		Duration chunkDuration = Duration.between(chunk.getInterval().getStart(), chunk.getInterval().getEnd());
 		if (minChunkDuration == null) {
 			minChunkDuration = chunkDuration;
 		} else if (chunkDuration.compareTo(minChunkDuration) < 0) {
@@ -187,7 +187,7 @@ public class SimpleMemoryStorage implements DataStorage {
 	public void clearAll() {
 		TimestampsSet lostSet = new TimestampsSet();
 		lostSet.setTolerance(minChunkDuration);
-		Iterator<Timestamp> keyIterator = cache.keySet().iterator();
+		Iterator<Instant> keyIterator = cache.keySet().iterator();
 		while (keyIterator.hasNext())
 			lostSet.add(keyIterator.next());
 		cache.clear();

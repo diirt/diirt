@@ -4,10 +4,11 @@
  */
 package org.diirt.datasource.timecache.query;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.diirt.datasource.timecache.util.CacheHelper;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Statistics of {@link Query}.
@@ -21,9 +22,9 @@ public class QueryStatistics {
 
 	private int storageHit = 0;
 	private int sourceHit = 0;
-	private TimeDuration duration;
+	private Duration duration;
 
-	private Timestamp start;
+	private Instant start;
 
 	public QueryStatistics(String channelName, TimeInterval interval,
 			int queryID) {
@@ -41,11 +42,11 @@ public class QueryStatistics {
 	}
 
 	public void queryStarted() {
-		this.start = Timestamp.now();
+		this.start = Instant.now();
 	}
 
 	public void queryCompleted() {
-		this.duration = Timestamp.now().durationBetween(start);
+		this.duration = Duration.between(start, Instant.now()).abs();
 	}
 
 	public int getStorageHit() {
@@ -56,7 +57,7 @@ public class QueryStatistics {
 		return sourceHit;
 	}
 
-	public TimeDuration getDuration() {
+	public Duration getDuration() {
 		return duration;
 	}
 

@@ -4,10 +4,10 @@
  */
 package org.diirt.datasource.timecache.query;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
@@ -30,7 +30,7 @@ public interface QueryData {
 	/**
 	 * The time for each element.
 	 */
-	public List<Timestamp> getTimestamps();
+	public List<Instant> getTimestamps();
 
 	public List<VType> getData();
 

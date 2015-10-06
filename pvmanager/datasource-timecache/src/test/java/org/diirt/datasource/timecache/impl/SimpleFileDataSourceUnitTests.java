@@ -6,6 +6,7 @@ package org.diirt.datasource.timecache.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,7 +21,6 @@ import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
 import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -33,9 +33,9 @@ public class SimpleFileDataSourceUnitTests {
 
 	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-	private static Map<DataRequestThread, Set<Timestamp>> dataTimes = new HashMap<DataRequestThread, Set<Timestamp>>();
-	private static Timestamp start = null;
-	private static Timestamp end = null;
+	private static Map<DataRequestThread, Set<Instant>> dataTimes = new HashMap<DataRequestThread, Set<Instant>>();
+	private static Instant start = null;
+	private static Instant end = null;
 	private static boolean finished = false;
 
 	// listener that counts data in the requested interval
@@ -64,7 +64,7 @@ public class SimpleFileDataSourceUnitTests {
 	// starts the thread and counts received data
 	private static void startAndCount(DataRequestThread thread) {
 		if (dataTimes.get(thread) == null)
-			dataTimes.put(thread, new TreeSet<Timestamp>());
+			dataTimes.put(thread, new TreeSet<Instant>());
 		dataTimes.get(thread).clear();
 		finished = false;
 		thread.start();
@@ -89,7 +89,7 @@ public class SimpleFileDataSourceUnitTests {
 		DataSource source = new SimpleFileDataSource(
 				"src/test/resources/archive-export.csv");
 		try {
-			start = Timestamp.of(dateFormat.parse("2014-03-14 16:00"));
+			start = dateFormat.parse("2014-03-14 16:00").toInstant();
 			
 			// test wrong parameters
 			DataChunk chunk = null;
@@ -110,8 +110,8 @@ public class SimpleFileDataSourceUnitTests {
 
 			// test values are ordered by timestamp
 			Iterator<Data> itChunk = chunk.getDatas().iterator();
-			Timestamp next = null;
-			Timestamp previous = itChunk.next().getTimestamp();
+			Instant next = null;
+			Instant previous = itChunk.next().getTimestamp();
 			while (itChunk.hasNext()) {
 				next = itChunk.next().getTimestamp();
 				Assert.assertTrue(previous.compareTo(next) < 0);
@@ -135,8 +135,8 @@ public class SimpleFileDataSourceUnitTests {
 				"src/test/resources/mini-archive-export.csv");
 		DataRequestThread thread = null;
 		try {
-			start = Timestamp.of(dateFormat.parse("2014-03-14 16:00"));
-			end = Timestamp.of(dateFormat.parse("2014-03-14 17:00"));
+			start = dateFormat.parse("2014-03-14 16:00").toInstant();
+			end = dateFormat.parse("2014-03-14 17:00").toInstant();
 			
 			thread = new DataRequestThread("TEST-BTY0:AI1", source,
 					TimeInterval.between(start, end));
@@ -152,8 +152,8 @@ public class SimpleFileDataSourceUnitTests {
 			Assert.assertEquals(234, dataTimes.get(thread).size());
 
 			// empty interval => no data
-			start = Timestamp.of(dateFormat.parse("2014-03-14 17:00"));
-			end = Timestamp.of(dateFormat.parse("2014-03-14 18:00"));
+			start = dateFormat.parse("2014-03-14 17:00").toInstant();
+			end = dateFormat.parse("2014-03-14 18:00").toInstant();
 			thread = new DataRequestThread("TEST-BTY0:AI1", source,
 					TimeInterval.between(start, end));
 			thread.addListener(new TUListener());
@@ -161,7 +161,7 @@ public class SimpleFileDataSourceUnitTests {
 			Assert.assertEquals(0, dataTimes.get(thread).size());
 
 			// only start => same result
-			start = Timestamp.of(dateFormat.parse("2014-03-14 16:00"));
+			start = dateFormat.parse("2014-03-14 16:00").toInstant();
 			thread = new DataRequestThread("TEST-BTY0:AI1", source,
 					TimeInterval.between(start, null));
 			thread.addListener(new TUListener());
@@ -169,7 +169,7 @@ public class SimpleFileDataSourceUnitTests {
 			Assert.assertEquals(234, dataTimes.get(thread).size());
 
 			// only end => no data
-			end = Timestamp.of(dateFormat.parse("2014-03-14 17:00"));
+			end = dateFormat.parse("2014-03-14 17:00").toInstant();
 			thread = new DataRequestThread("TEST-BTY0:AI1", source,
 					TimeInterval.between(null, end));
 			thread.addListener(new TUListener());
@@ -177,7 +177,7 @@ public class SimpleFileDataSourceUnitTests {
 			Assert.assertEquals(0, dataTimes.get(thread).size());
 
 			// infinite => no data
-			end = Timestamp.of(dateFormat.parse("2014-03-14 17:00"));
+			end = dateFormat.parse("2014-03-14 17:00").toInstant();
 			thread = new DataRequestThread("TEST-BTY0:AI1", source,
 					TimeInterval.between(null, null));
 			thread.addListener(new TUListener());
@@ -223,8 +223,8 @@ public class SimpleFileDataSourceUnitTests {
 		DataSource source = new SimpleFileDataSource(
 				"src/test/resources/mini-archive-export.csv");
 		try {
-			start = Timestamp.of(dateFormat.parse("2014-03-14 16:00"));
-			end = Timestamp.of(dateFormat.parse("2014-03-14 17:00"));
+			start = dateFormat.parse("2014-03-14 16:00").toInstant();
+			end = dateFormat.parse("2014-03-14 17:00").toInstant();
 
 			DataRequestThread thread1 = new DataRequestThread(
 					"TEST-BTY0:AI1", source, TimeInterval.between(start, end));
@@ -255,8 +255,8 @@ public class SimpleFileDataSourceUnitTests {
 		DataSource source = new SimpleFileDataSource(
 				"src/test/resources/archive-ramps-1H.csv", 10);
 		try {
-			start = Timestamp.of(dateFormat.parse("2014-12-04 00:00"));
-			end = Timestamp.of(dateFormat.parse("2014-12-04 00:30"));
+			start = dateFormat.parse("2014-12-04 00:00").toInstant();
+			end = dateFormat.parse("2014-12-04 00:30").toInstant();
 			DataRequestThread thread = new DataRequestThread("TEST-BTY0:RAMP2",
 					source, TimeInterval.between(start, end));
 			thread.addListener(new TUListener());

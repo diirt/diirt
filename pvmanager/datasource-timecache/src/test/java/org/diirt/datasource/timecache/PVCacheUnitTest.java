@@ -6,6 +6,7 @@ package org.diirt.datasource.timecache;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -24,7 +25,6 @@ import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.storage.DataStorage;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,14 +39,14 @@ public class PVCacheUnitTest {
 
 	private class PVCacheListenerCounter implements PVCacheListener {
 		private final AtomicInteger newDataCount = new AtomicInteger(0);
-		private final Timestamp start;
-		private final Timestamp end;
+		private final Instant start;
+		private final Instant end;
 
 		public PVCacheListenerCounter() {
 			this.start = null;
 			this.end = null;
 		}
-		public PVCacheListenerCounter(Timestamp start, Timestamp end) {
+		public PVCacheListenerCounter(Instant start, Instant end) {
 			this.start = start;
 			this.end = end;
 		}
@@ -113,8 +113,8 @@ public class PVCacheUnitTest {
 		DataStorage storage = new SimpleMemoryStorage(100);
 		try {
 			PVCacheImpl cache = new PVCacheImpl("TEST-BTY0:RAMP2", sourcesList, storage);
-			Timestamp start = Timestamp.of(dateFormat.parse("2014-11-28 00:00"));
-			Timestamp end = Timestamp.of(dateFormat.parse("2014-11-29 00:00"));
+			Instant start = dateFormat.parse("2014-11-28 00:00").toInstant();
+			Instant end = dateFormat.parse("2014-11-29 00:00").toInstant();
 
 			PVCacheListenerCounter pvCache_counter = new PVCacheListenerCounter();
 			cache.addListener(pvCache_counter);
@@ -138,8 +138,8 @@ public class PVCacheUnitTest {
 			DataRequestListenerCounter requestThread_counter = new DataRequestListenerCounter();
 
 			// ask for smaller inner interval and verify no source is requested
-			start = Timestamp.of(dateFormat.parse("2014-11-28 12:00"));
-			end = Timestamp.of(dateFormat.parse("2014-11-29 00:00"));
+			start = dateFormat.parse("2014-11-28 12:00").toInstant();
+			end = dateFormat.parse("2014-11-29 00:00").toInstant();
 			DataRequestThread thread = cache.retrieveDataAsync(TimeInterval.between(start, end));
 			Assert.assertFalse(cache.isProcessingSources());
 			thread.addListener(requestThread_counter);
@@ -151,8 +151,8 @@ public class PVCacheUnitTest {
 			// ask for overlapping interval and verify both source & storage are requested
 			pvCache_counter.reset();
 			requestThread_counter.reset();
-			start = Timestamp.of(dateFormat.parse("2014-11-27 12:00"));
-			end = Timestamp.of(dateFormat.parse("2014-11-28 12:00"));
+			start = dateFormat.parse("2014-11-27 12:00").toInstant();
+			end = dateFormat.parse("2014-11-28 12:00").toInstant();
 			thread = cache.retrieveDataAsync(TimeInterval.between(start, end));
 			Assert.assertTrue(cache.isProcessingSources());
 			limit = 0;
@@ -168,8 +168,8 @@ public class PVCacheUnitTest {
 			completedIntervals = cache.getCompletedIntervalsList();
 			// assert cache has completed the requested interval
 			Assert.assertTrue(completedIntervals.contains(TimeInterval.between(
-					Timestamp.of(dateFormat.parse("2014-11-27 12:00")),
-					Timestamp.of(dateFormat.parse("2014-11-29 00:00")))));
+					dateFormat.parse("2014-11-27 12:00").toInstant(),
+					dateFormat.parse("2014-11-29 00:00").toInstant())));
 			Assert.assertEquals(64800,
 					(((SimpleMemoryStorage) ((PVCacheImpl) cache).getStorage())).getStoredSampleCount());
 			Assert.assertEquals(21600, pvCache_counter.getCount());
@@ -179,8 +179,8 @@ public class PVCacheUnitTest {
 			// ask for interval before previous ones and verify only source is requested
 			pvCache_counter.reset();
 			requestThread_counter.reset();
-			start = Timestamp.of(dateFormat.parse("2014-11-27 00:00"));
-			end = Timestamp.of(dateFormat.parse("2014-11-27 12:00"));
+			start = dateFormat.parse("2014-11-27 00:00").toInstant();
+			end = dateFormat.parse("2014-11-27 12:00").toInstant();
 			thread = cache.retrieveDataAsync(TimeInterval.between(start, end));
 			Assert.assertTrue(cache.isProcessingSources());
 			limit = 0;
@@ -215,10 +215,10 @@ public class PVCacheUnitTest {
 		DataStorage storage = new SimpleMemoryStorage(100);
 		try {
 			PVCacheImpl cache = new PVCacheImpl("TEST-BTY0:RAMP2", sourcesList, storage);
-			final Timestamp start1 = Timestamp.of(dateFormat.parse("2014-11-28 00:00"));
-			final Timestamp end1 = Timestamp.of(dateFormat.parse("2014-11-29 00:00"));
-			final Timestamp start2 = Timestamp.of(dateFormat.parse("2014-11-28 06:00"));
-			final Timestamp end2 = Timestamp.of(dateFormat.parse("2014-11-28 12:00"));
+			final Instant start1 = dateFormat.parse("2014-11-28 00:00").toInstant();
+			final Instant end1 = dateFormat.parse("2014-11-29 00:00").toInstant();
+			final Instant start2 = dateFormat.parse("2014-11-28 06:00").toInstant();
+			final Instant end2 = dateFormat.parse("2014-11-28 12:00").toInstant();
 
 			PVCacheListenerCounter pvCache_counter1 = new PVCacheListenerCounter(start1, end1);
 			PVCacheListenerCounter pvCache_counter2 = new PVCacheListenerCounter(start2, end2);

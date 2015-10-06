@@ -7,6 +7,7 @@ package org.diirt.datasource.timecache.impl;
 import java.lang.ref.SoftReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -26,7 +27,6 @@ import org.diirt.datasource.timecache.storage.DataStorageListener;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.datasource.timecache.util.TimestampsSet;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -53,7 +53,7 @@ public class SimpleMemoryStorageUnitTests {
 		try {
 			// retrieve chunk
 			Date startDate = sdf.parse("2014-03-14 16:00");
-			DataChunk chunk = source.getData("TEST-BTY0:AI1", Timestamp.of(startDate));
+			DataChunk chunk = source.getData("TEST-BTY0:AI1", startDate.toInstant());
 			int chunkSize = chunk.getDatas().size();
 			TimeInterval chunkInterval = chunk.getInterval();
 
@@ -106,8 +106,8 @@ public class SimpleMemoryStorageUnitTests {
 				"src/test/resources/archive-ramps-1W.csv", 1000);
 		final SimpleMemoryStorage storage = new SimpleMemoryStorage();
 		try {
-			Timestamp start = Timestamp.of(dateFormat.parse("2014-11-27 00:00"));
-			Timestamp end = Timestamp.of(dateFormat.parse("2014-12-01 00:00"));
+			Instant start = dateFormat.parse("2014-11-27 00:00").toInstant();
+			Instant end = dateFormat.parse("2014-12-01 00:00").toInstant();
 			DataRequestThread thread = new DataRequestThread("TEST-BTY0:RAMP2",
 					source, TimeInterval.between(start, end));
 

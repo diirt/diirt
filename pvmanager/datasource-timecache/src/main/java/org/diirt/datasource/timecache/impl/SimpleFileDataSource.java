@@ -6,6 +6,7 @@ package org.diirt.datasource.timecache.impl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.Instant;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,6 @@ import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.source.SourceData;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Display;
@@ -46,13 +46,13 @@ public class SimpleFileDataSource implements DataSource {
 	private static final Integer array_nval = 8;
 	private static final Integer array_val = 9;
 
-	private TreeMap<Timestamp, Integer> indexes;
+	private TreeMap<Instant, Integer> indexes;
 
 	private int chunkSize = 1000;
 
 	public SimpleFileDataSource(String csvFilePath) {
 		this.csvFile = csvFilePath;
-		indexes = new TreeMap<Timestamp, Integer>();
+		indexes = new TreeMap<Instant, Integer>();
 	}
 
 	public SimpleFileDataSource(String csvFilePath, int chunkSize) {
@@ -62,7 +62,7 @@ public class SimpleFileDataSource implements DataSource {
 
 	/** {@inheritDoc} */
 	@Override
-	public DataChunk getData(String channelName, Timestamp from) {
+	public DataChunk getData(String channelName, Instant from) {
 		if (channelName == null || channelName.isEmpty() || from == null)
 			return new DataChunk();
 		try {
@@ -73,13 +73,13 @@ public class SimpleFileDataSource implements DataSource {
 		return new DataChunk();
 	}
 
-	private DataChunk readSamples(String channelName, Timestamp from)
+	private DataChunk readSamples(String channelName, Instant from)
 			throws Exception {
 		DataChunk chunk = new DataChunk(chunkSize);
 
 		BufferedReader br = null;
 		String currentLine = "";
-		Timestamp lastIndex = indexes.floorKey(from);
+		Instant lastIndex = indexes.floorKey(from);
 		Integer lineToStart = lastIndex == null ? 1 : indexes.get(lastIndex);
 		Integer lineNumber = -1;
 		try {
@@ -95,7 +95,7 @@ public class SimpleFileDataSource implements DataSource {
 					final java.sql.Timestamp stamp = java.sql.Timestamp
 							.valueOf(columns[smpl_time]);
 					stamp.setNanos(Integer.valueOf(columns[nanosecs]));
-					final Timestamp time = fromSQLTimestamp(stamp);
+					final Instant time = fromSQLTimestamp(stamp);
 					if (time.compareTo(from) >= 0) {
 						final VType value = decodeValue(columns, time);
 						SourceData data = new SourceData(time, value);
@@ -115,7 +115,7 @@ public class SimpleFileDataSource implements DataSource {
 		return chunk;
 	}
 
-	private VType decodeValue(final String[] columns, final Timestamp ts) throws Exception {
+	private VType decodeValue(final String[] columns, final Instant ts) throws Exception {
 		Time time = ValueFactory.newTime(ts);
 		Alarm alarm = ValueFactory.alarmNone();
 		String alarmStr = columns[severity];
@@ -171,11 +171,11 @@ public class SimpleFileDataSource implements DataSource {
 		return array;
 	}
 
-	private Timestamp fromSQLTimestamp(final java.sql.Timestamp sql_time) {
+	private Instant fromSQLTimestamp(final java.sql.Timestamp sql_time) {
 		final long millisecs = sql_time.getTime();
 		final long seconds = millisecs / 1000;
 		final int nanoseconds = sql_time.getNanos();
-		return Timestamp.of(seconds, nanoseconds);
+		return Instant.ofEpochSecond(seconds, nanoseconds);
 	}
 
 	private String[] getColumns(final String line) {

@@ -6,6 +6,10 @@ package org.diirt.datasource.timecache;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -32,8 +36,6 @@ import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.TimeRelativeInterval;
-import org.diirt.util.time.Timestamp;
-import org.diirt.util.time.TimestampFormat;
 import org.diirt.vtype.VType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -53,7 +55,7 @@ public class TestScenarios {
 
 		private boolean finished = false;
 
-		private Set<Timestamp> timestamps;
+		private Set<Instant> timestamps;
 		private IntervalsList receivedIntervals = new IntervalsList();
 		private int receivedChunksCount = 0;
 		private int updateCount = 0;
@@ -63,7 +65,7 @@ public class TestScenarios {
 		public QueryDataCounter(Query query, int timeout) {
 			this.query = query;
 			this.timeout = timeout;
-			this.timestamps = new TreeSet<Timestamp>();
+			this.timestamps = new TreeSet<Instant>();
 		}
 
 		/** {@inheritDoc} */
@@ -80,7 +82,7 @@ public class TestScenarios {
 						receivedChunksCount++;
 						updateCount += data.getCount();
 						receivedIntervals.addToSelf(data.getTimeInterval());
-						for (Timestamp t : data.getTimestamps()) {
+						for (Instant t : data.getTimestamps()) {
 							if (timestamps.contains(t)) doubloonCount++;
 							else timestamps.add(t);
 						}
@@ -152,8 +154,8 @@ public class TestScenarios {
 	}
 
 	private QueryDataCounter createQuery(Cache cache, String PV, String t1, String t2) throws Exception {
-		Timestamp start = Timestamp.of(dateFormat.parse(t1));
-		Timestamp end = Timestamp.of(dateFormat.parse(t2));
+	        Instant start = dateFormat.parse(t1).toInstant();
+	        Instant end = dateFormat.parse(t2).toInstant();
 		Query q = cache.createQuery(PV, VType.class, new QueryParameters()
 				.timeInterval(TimeRelativeInterval.of(start, end)));
 		return new QueryDataCounter(q, 15);
@@ -189,11 +191,11 @@ public class TestScenarios {
 
 	private TimeInterval timeIntervalBetween(String t1, String t2)
 			throws Exception {
-		return TimeInterval.between(tsFormat.parse(t1), tsFormat.parse(t2));
+		return TimeInterval.between(LocalDateTime.parse(t1, tsFormat).toInstant(ZoneOffset.UTC), LocalDateTime.parse(t2, tsFormat).toInstant(ZoneOffset.UTC));
 	}
 
 	final private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-	final private static TimestampFormat tsFormat = new TimestampFormat("yyyy-MM-dd'T'HH:mm:ss");
+	final private static DateTimeFormatter tsFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 	// final private static String PV1 = "TEST-BTY0:RAMP1";
 	final private static String PV2 = "TEST-BTY0:RAMP2";
 	final private static String S1 = "src/test/resources/archive-ramps-1H.csv"; // from '2014-12-04 00:00:01' to '2014-12-04 01:00:01'
@@ -213,13 +215,13 @@ public class TestScenarios {
 			Cache cache = createCache(false);
 			Query query = null;
 
-			Timestamp start = Timestamp.of(dateFormat.parse("2014-11-26 00:00"));
-			Timestamp end = Timestamp.of(dateFormat.parse("2014-12-03 00:00"));
+			Instant start = dateFormat.parse("2014-11-26 00:00").toInstant();
+			Instant end = dateFormat.parse("2014-12-03 00:00").toInstant();
 			long startTime = System.currentTimeMillis();
 			query = cache.createQuery(PV2, VType.class, new QueryParameters()
 					.timeInterval(TimeRelativeInterval.of(start, end)));
 
-			Set<Timestamp> timestamps = new HashSet<Timestamp>();
+			Set<Instant> timestamps = new HashSet<Instant>();
 			QueryResult result = null;
 			int doubloonCount = 0;
 			// 1 week = 302400, let stop at half
@@ -228,7 +230,7 @@ public class TestScenarios {
 					Thread.sleep(1000);
 					result = query.getUpdate();
 					for (QueryData data : result.getData()) {
-						for (Timestamp t : data.getTimestamps()) {
+						for (Instant t : data.getTimestamps()) {
 							if (timestamps.contains(t))
 								doubloonCount++;
 							else timestamps.add(t);
@@ -251,13 +253,13 @@ public class TestScenarios {
 			Assert.assertEquals(0, qs.getStorageHit());
 
 			// Start a new query on a smaller interval
-			start = Timestamp.of(dateFormat.parse("2014-11-26 00:00"));
-			end = Timestamp.of(dateFormat.parse("2014-11-29 00:00"));
+			start = dateFormat.parse("2014-11-26 00:00").toInstant();
+			end = dateFormat.parse("2014-11-29 00:00").toInstant();
 			startTime = System.currentTimeMillis();
 			query = cache.createQuery(PV2, VType.class, new QueryParameters()
 					.timeInterval(TimeRelativeInterval.of(start, end)));
 
-			timestamps = new HashSet<Timestamp>();
+			timestamps = new HashSet<Instant>();
 			result = null;
 			doubloonCount = 0;
 			int limit = 0;
@@ -267,7 +269,7 @@ public class TestScenarios {
 					Thread.sleep(1000);
 					result = query.getUpdate();
 					for (QueryData data : result.getData()) {
-						for (Timestamp t : data.getTimestamps()) {
+						for (Instant t : data.getTimestamps()) {
 							if (timestamps.contains(t))
 								doubloonCount++;
 							else timestamps.add(t);
@@ -595,7 +597,7 @@ public class TestScenarios {
 	public void testCase7() {
 		try {
 			Cache cache = createCache(false);
-			Timestamp case_start = Timestamp.now();
+			Instant case_start = Instant.now();
 
 			Map<String, QueryDataCounter> queryMap = new HashMap<String, QueryDataCounter>();
 			queryMap.put("bi", createQuery(cache, PV2, "2014-11-27 00:00", "2014-12-01 00:00"));
@@ -612,7 +614,7 @@ public class TestScenarios {
 					if (!qdc.isFinished())
 						allFinished = false;
 			}
-			Timestamp case_end = Timestamp.now();
+			Instant case_end = Instant.now();
 
 			PVCacheStatistics cache_stats = queryMap.get("bi").getPVCache().getStatistics();
 			List<DataRequestStatistics> requestStats_list = cache_stats
@@ -658,13 +660,13 @@ public class TestScenarios {
 	public void testCase8() {
 		try {
 			Cache cache = createCache(true);
-			Timestamp case_start = Timestamp.now();
+			Instant case_start = Instant.now();
 
 			Map<String, QueryDataCounter> queryMap = new HashMap<String, QueryDataCounter>();
 			queryMap.put("a", createQuery(cache, PV2, "2014-12-03 00:00", "2014-12-04 00:00"));
 			queryMap.get("a").run();
 
-			Timestamp case_end = Timestamp.now();
+			Instant case_end = Instant.now();
 			PVCacheStatistics cache_stats = queryMap.get("a").getPVCache().getStatistics();
 			List<DataRequestStatistics> requestStats_list = cache_stats
 					.getRequestStatsIn(TimeInterval.between(case_start, case_end));

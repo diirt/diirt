@@ -5,6 +5,8 @@
 package org.diirt.datasource.timecache.query;
 
 import java.io.PrintStream;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -26,9 +28,7 @@ import org.diirt.datasource.timecache.PVCacheListener;
 import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.timecache.util.IntervalsList;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * @author Fred Arnaud (Sopra Group) - ITER
@@ -50,7 +50,7 @@ public class QueryImpl implements Query, PVCacheListener {
 	private TimeInterval interval;
 	private List<QueryChunk> chunks;
 
-	private TimeDuration chunkDuration = TimeDuration.ofSeconds(1);
+	private Duration chunkDuration = Duration.ofSeconds(1);
 	private int nbChunks = 100;
 
 	private DataRequestThread runningThreadToStorage;
@@ -182,17 +182,16 @@ public class QueryImpl implements Query, PVCacheListener {
 	/** {@inheritDoc} */
 	@Override
 	public void update(QueryParameters queryParameters) {
-		TimeInterval newInterval = queryParameters.timeInterval.toAbsoluteInterval(Timestamp.now());
+		TimeInterval newInterval = queryParameters.timeInterval.toAbsoluteInterval(Instant.now());
 		queryStatistics = new QueryStatistics(cache.getChannelName(), newInterval, queryID);
 		// TODO: keep chunks if new interval intersects previous one ?
-		chunkDuration = newInterval.getStart()
-				.durationBetween(newInterval.getEnd()).dividedBy(nbChunks);
+		chunkDuration = Duration.between(newInterval.getStart(), newInterval.getEnd()).dividedBy(nbChunks);
 		synchronized (chunks) {
 			for (QueryChunk chunk : chunks)
 				chunk.clearDataAndStatus();
 			chunks.clear();
-			Timestamp start = newInterval.getStart();
-			Timestamp end = start.plus(chunkDuration);
+			Instant start = newInterval.getStart();
+			Instant end = start.plus(chunkDuration);
 			while (end.compareTo(newInterval.getEnd()) < 0) {
 				chunks.add(new QueryChunk(TimeInterval.between(start, end), this));
 				// exclude first value
@@ -220,8 +219,8 @@ public class QueryImpl implements Query, PVCacheListener {
 		runningThreadToStorage.addListener(new DataRequestListener() {
 			@Override
 			public void newData(DataChunk chunk, DataRequestThread thread) {
-				Timestamp start = thread.getInterval().getStart();
-				Timestamp end = thread.getLastReceived();
+			    Instant start = thread.getInterval().getStart();
+			    Instant end = thread.getLastReceived();
 				TimeInterval completedInterval = TimeInterval.between(start, end);
 				handleNewDataFromStorage(chunk, completedInterval);
 			}

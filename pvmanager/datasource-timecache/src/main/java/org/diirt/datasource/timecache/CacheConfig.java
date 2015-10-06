@@ -4,12 +4,12 @@
  */
 package org.diirt.datasource.timecache;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.storage.DataStorage;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * @author Fred Arnaud (Sopra Group) - ITER
@@ -19,7 +19,7 @@ public class CacheConfig {
 	private List<DataSource> sources = new ArrayList<DataSource>();
 	private DataStorage storage;
 	private int nbOfChunksPerQuery = 100;
-	private TimeDuration retrievalGap = TimeDuration.ofHours(168); // 1 week
+	private Duration retrievalGap = Duration.ofHours(168); // 1 week
 
 	public void addSource(DataSource ds) {
 		sources.add(ds);
@@ -45,11 +45,11 @@ public class CacheConfig {
 		this.nbOfChunksPerQuery = nbOfChunksPerQuery;
 	}
 
-	public TimeDuration getRetrievalGap() {
+	public Duration getRetrievalGap() {
 		return retrievalGap;
 	}
 
-	public void setRetrievalGap(TimeDuration retrievalGap) {
+	public void setRetrievalGap(Duration retrievalGap) {
 		this.retrievalGap = retrievalGap;
 	}
 

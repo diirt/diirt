@@ -4,13 +4,13 @@
  */
 package org.diirt.datasource.timecache.util;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * This class represents an intervals list. <p> An interval list represent a
@@ -21,7 +21,7 @@ import org.diirt.util.time.Timestamp;
  */
 public class IntervalsList {
 
-	public static final TimeDuration minDuration = TimeDuration.ofNanos(1);
+	public static final Duration minDuration = Duration.ofNanos(1);
 
 	/** The list of intervals. */
 	private List<TimeInterval> intervals;
@@ -101,7 +101,7 @@ public class IntervalsList {
 	 * @return lower bound of the list or null if the list does not contain any
 	 *         interval
 	 */
-	public Timestamp getStart() {
+	public Instant getStart() {
 		return intervals.isEmpty() ? null : intervals.get(0).getStart();
 	}
 
@@ -110,7 +110,7 @@ public class IntervalsList {
 	 * @return upper bound of the list or null if the list does not contain any
 	 *         interval
 	 */
-	public Timestamp getEnd() {
+	public Instant getEnd() {
 		return intervals.isEmpty() ? null : intervals.get(intervals.size() - 1)
 				.getEnd();
 	}
@@ -145,7 +145,7 @@ public class IntervalsList {
 	 * @param t point to check
 	 * @return true if the list contains t
 	 */
-	public boolean contains(Timestamp t) {
+	public boolean contains(Instant t) {
 		if (t == null)
 			return false;
 		for (Iterator<TimeInterval> iterator = intervals.iterator(); iterator
@@ -203,8 +203,8 @@ public class IntervalsList {
 		}
 		i = CacheHelper.arrange(i);
 		List<TimeInterval> newIntervals = new ArrayList<TimeInterval>();
-		Timestamp inf = null;
-		Timestamp sup = null;
+		Instant inf = null;
+		Instant sup = null;
 		boolean pending = false;
 		boolean processed = false;
 		for (Iterator<TimeInterval> iterator = intervals.iterator(); iterator
@@ -245,7 +245,7 @@ public class IntervalsList {
 		if (i.getStart() == null && i.getEnd() == null) {
 			newIntervals.add(TimeInterval.between(null, null));
 		} else if (i.getStart() == null && i.getEnd() != null) {
-			Timestamp sup = i.getEnd();
+		    Instant sup = i.getEnd();
 			for (Iterator<TimeInterval> iterator = intervals.iterator(); iterator
 					.hasNext();) {
 				TimeInterval local = iterator.next();
@@ -256,7 +256,7 @@ public class IntervalsList {
 			}
 			newIntervals.add(TimeInterval.between(null, sup));
 		} else if (i.getStart() != null && i.getEnd() == null) {
-			Timestamp inf = i.getStart();
+		    Instant inf = i.getStart();
 			for (Iterator<TimeInterval> iterator = intervals.iterator(); iterator
 					.hasNext();) {
 				TimeInterval local = iterator.next();

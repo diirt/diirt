@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.timecache;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +26,6 @@ import org.diirt.datasource.timecache.query.QueryResult;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
@@ -68,11 +68,11 @@ public class ExpressionLanguage {
 		return new DesiredRateExpressionImpl<VTable>(new DesiredRateExpressionListImpl<Object>(),
 				new ReadFunction<VTable>() {
 
-					private NavigableMap<Timestamp, Double> valueMap;
+					private NavigableMap<Instant, Double> valueMap;
 					private VTable previousValue;
 
 					{
-						valueMap = new ConcurrentSkipListMap<Timestamp, Double>();
+						valueMap = new ConcurrentSkipListMap<Instant, Double>();
 						previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
 								Arrays.asList("Time", "Value"), 
 								Arrays.asList(Arrays.asList(channelName), new ArrayDouble(0)));
@@ -100,7 +100,7 @@ public class ExpressionLanguage {
 						index = 0;
 						double[] array = new double[valueMap.size()];
 						List<String> times = new ArrayList<String>();
-						for (Entry<Timestamp, Double> entry : valueMap.entrySet()) {
+						for (Entry<Instant, Double> entry : valueMap.entrySet()) {
 							times.add(CacheHelper.format(entry.getKey()));
 							array[index] = entry.getValue();
 							index++;

@@ -5,11 +5,10 @@
 package org.diirt.datasource.timecache.util;
 
 import java.text.ParseException;
+import java.time.Duration;
 
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.datasource.timecache.util.TimestampsSet;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,7 +27,7 @@ public class TimestampsSetUnitTest {
 	public void testToIntervalsList() {
 		try {
 			TimestampsSet set = new TimestampsSet();
-			set.setTolerance(TimeDuration.ofMinutes(5));
+			set.setTolerance(Duration.ofMinutes(5));
 
 			set.add(null);
 			IntervalsList result = set.toIntervalsList();

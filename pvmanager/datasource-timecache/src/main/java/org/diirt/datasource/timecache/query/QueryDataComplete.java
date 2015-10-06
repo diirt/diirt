@@ -4,13 +4,13 @@
  */
 package org.diirt.datasource.timecache.query;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
@@ -20,9 +20,9 @@ import org.diirt.vtype.VType;
 public class QueryDataComplete implements QueryData {
 
 	private final TimeInterval timeInterval;
-	private final SortedMap<Timestamp, VType> dataMap;
+	private final SortedMap<Instant, VType> dataMap;
 
-	QueryDataComplete(TimeInterval timeInterval, SortedMap<Timestamp, VType> dataMap) {
+	QueryDataComplete(TimeInterval timeInterval, SortedMap<Instant, VType> dataMap) {
 		this.dataMap = Collections.unmodifiableSortedMap(dataMap);
 		this.timeInterval = timeInterval;
 	}
@@ -47,8 +47,8 @@ public class QueryDataComplete implements QueryData {
 
 	/** {@inheritDoc} */
 	@Override
-	public List<Timestamp> getTimestamps() {
-		return new ArrayList<Timestamp>(dataMap.keySet());
+	public List<Instant> getTimestamps() {
+		return new ArrayList<Instant>(dataMap.keySet());
 	}
 
 }

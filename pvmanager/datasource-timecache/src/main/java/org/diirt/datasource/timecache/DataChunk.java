@@ -8,7 +8,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * A chunk of {@link Data} ordered by {@link Timestamp} with a maximum size.

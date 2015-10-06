@@ -6,6 +6,7 @@ package org.diirt.datasource.timecache;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 import org.diirt.datasource.timecache.Cache;
 import org.diirt.datasource.timecache.CacheConfig;
@@ -23,7 +24,6 @@ import org.diirt.datasource.timecache.query.QueryResult;
 import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.TimeRelativeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,8 +52,8 @@ public class CacheUnitTest {
 			config.addSource(new SimpleFileDataSource("src/test/resources/archive-export-singlePV.csv"));
 			config.setStorage(new SimpleMemoryStorage());
 			Cache cache = CacheFactory.getCache(config);
-			Timestamp start = Timestamp.of(dateFormat.parse("2014-04-03 09:00"));
-			Timestamp end = Timestamp.of(dateFormat.parse("2014-04-03 12:00"));
+			Instant start = dateFormat.parse("2014-04-03 09:00").toInstant();
+			Instant end = dateFormat.parse("2014-04-03 12:00").toInstant();
 			Query query1 = cache.createQuery("TEST-BTY0:AI1", VType.class,
 					new QueryParameters().timeInterval(TimeRelativeInterval.of(start, end)));
 			// test that the cache is holding 1 PV cache

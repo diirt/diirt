@@ -4,11 +4,13 @@
  */
 package org.diirt.datasource.timecache;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.util.CacheHelper;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Statistics of {@link DataRequestThread}
@@ -17,24 +19,24 @@ import org.diirt.util.time.Timestamp;
 public class DataRequestStatistics {
 
 	private final DataSource source;
-	private final Timestamp start;
+	private final Instant start;
 	private TimeInterval interval;
-	private TimeDuration duration;
+	private Duration duration;
 
 	public DataRequestStatistics(final DataSource source) {
-		this.start = Timestamp.now();
+		this.start = Instant.now();
 		this.source = source;
 	}
 
 	public void intervalCompleted() {
-		this.duration = Timestamp.now().durationBetween(start);
+		this.duration = Duration.between(start, Instant.now()).abs();
 	}
 
-	public Timestamp getStart() {
+	public Instant getStart() {
 		return start;
 	}
 
-	public TimeDuration getDuration() {
+	public Duration getDuration() {
 		return duration;
 	}
 

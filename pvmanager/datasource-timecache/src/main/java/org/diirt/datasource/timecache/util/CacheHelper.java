@@ -6,11 +6,15 @@ package org.diirt.datasource.timecache.util;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
-import org.diirt.util.time.TimestampFormat;
 
 /**
  * Cache helper.
@@ -18,7 +22,7 @@ import org.diirt.util.time.TimestampFormat;
  */
 public class CacheHelper {
 
-	private static TimestampFormat tsFormat = new TimestampFormat("yyyy-MM-dd'T'HH:mm:ss.NNNNNNNNNZ");
+	private static DateTimeFormatter tsFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.nnnnnnnnnZ");
 	public static PrintStream ps = System.out;
 
 	static {
@@ -29,14 +33,14 @@ public class CacheHelper {
 	}
 
 	/** Returns the minimum between the two specified {@link Timestamp}. */
-	public static Timestamp min(Timestamp t1, Timestamp t2) {
+	public static Instant min(Instant t1, Instant t2) {
 		if (t1 == null || t2 == null) return null;
 		if (t1.compareTo(t2) <= 0) return t1;
 		else return t2;
 	}
 
 	/** Returns the maximum between the two specified {@link Timestamp}. */
-	public static Timestamp max(Timestamp t1, Timestamp t2) {
+	public static Instant max(Instant t1, Instant t2) {
 		if (t1 == null || t2 == null) return null;
 		if (t1.compareTo(t2) >= 0) return t1;
 		else return t2;
@@ -97,13 +101,13 @@ public class CacheHelper {
 			return null;
 		i1 = arrange(i1);
 		i2 = arrange(i2);
-		Timestamp a = null;
+		Instant a = null;
 		if (i1.getStart() == null && i2.getStart() == null) a = null;
 		else if (i1.getStart() == null && i2.getStart() != null) a = i2.getStart();
 		else if (i1.getStart() != null && i2.getStart() == null) a = i1.getStart();
 		else a = max(i1.getStart(), i2.getStart());
 
-		Timestamp b = null;
+		Instant b = null;
 		if (i1.getEnd() == null && i2.getEnd() == null) b = null;
 		else if (i1.getEnd() == null && i2.getEnd() != null) b = i2.getEnd();
 		else if (i1.getEnd() != null && i2.getEnd() == null) b = i1.getEnd();
@@ -121,8 +125,8 @@ public class CacheHelper {
 	}
 
 	/** Returns a formated {@link String} from the specified {@link Timestamp}. */
-	public static String format(Timestamp t) {
-		return tsFormat.format(t);
+	public static String format(Instant t) {
+		return tsFormat.format(ZonedDateTime.ofInstant(t, ZoneId.systemDefault()));
 	}
 
 	/** Returns a formated {@link String} from the specified {@link TimeInterval}. */
@@ -131,9 +135,9 @@ public class CacheHelper {
 		return "[" + format(i.getStart()) + " - " + format(i.getEnd()) + "]";
 	}
 
-	/** Returns a formated {@link String} from the specified {@link TimeDuration}. */
-	public static String format(TimeDuration d) {
-		double seconds = d.toSeconds();
+	/** Returns a formated {@link String} from the specified {@link Duration}. */
+	public static String format(Duration d) {
+		double seconds = TimeDuration.toSecondsDouble(d);
 		long h = Math.round(seconds / 3600);
 		long m = Math.round((seconds % 3600) / 60);
 		long s = Math.round(seconds % 60);
