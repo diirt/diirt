@@ -409,7 +409,7 @@ public class TimeScales {
         return value / range;
     }
     
-    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.NNNNNNNNN");
+    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.nnnnnnnnn");
     private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25,28);
     private static ArrayInt possibleStopFromStart = new ArrayInt(0,11,19,28);
     private static String zeroFormat = "0000/01/01 00:00:00.000000000";
