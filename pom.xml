@@ -86,7 +86,7 @@
         <module>pvmanager</module>
         <module>graphene</module>
         <module>support</module>
-        <module>pods</module>
+        
         <module>javafx</module>
         <module>p2</module>
     </modules>
