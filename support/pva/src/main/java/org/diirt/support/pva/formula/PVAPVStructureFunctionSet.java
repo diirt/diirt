@@ -55,7 +55,7 @@ import org.diirt.support.pva.adapters.PVFieldToVShort;
 import org.diirt.support.pva.adapters.PVFieldToVShortArray;
 import org.diirt.support.pva.adapters.PVFieldToVString;
 import org.diirt.support.pva.adapters.PVFieldToVStringArray;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 import org.diirt.vtype.VBoolean;
 import org.diirt.vtype.VBooleanArray;
 import org.diirt.vtype.VByte;
@@ -437,7 +437,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
 		
 		if (pvField instanceof PVStructure)
 		{
-			if (vtableClass.equals(Timestamp.class))
+			if (vtableClass.equals(Instant.class))
 				return toVType(pvField, null);
 			else
 				return null;
@@ -523,7 +523,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
 			Structure fieldStructure = (Structure)field;
 			
 			if (fieldStructure.getID().equals("time_t"))
-				return Timestamp.class;
+				return Instant.class;
 			else
 				return String.class;
 		}

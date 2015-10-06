@@ -4,10 +4,11 @@
  */
 package org.diirt.support.pva.adapters;
 
+import java.time.Instant;
+
 import org.epics.pvdata.pv.PVInt;
 import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVStructure;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Time;
@@ -17,13 +18,13 @@ public class AlarmTimeExtractor implements Alarm, Time {
 
 	protected final AlarmSeverity alarmSeverity;
 	protected final String alarmStatus;
-	protected final Timestamp timeStamp;
+	protected final Instant timeStamp;
 	protected final Integer timeUserTag;
 	protected final boolean isTimeValid;
 	
 	private static final Alarm noAlarm = ValueFactory.alarmNone();
 	
-	private static final Timestamp noTimeStamp = org.diirt.util.time.Timestamp.of(0,0);
+	private static final Instant noTimeStamp = java.time.Instant.ofEpochSecond(0,0);
 	private static final Integer noTimeUserTag = null;
 	
 	public AlarmTimeExtractor(PVStructure pvField, boolean disconnected)
@@ -72,7 +73,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
 			if (secsField == null || nanosField == null)
 				timeStamp = noTimeStamp;
 			else
-				timeStamp = org.diirt.util.time.Timestamp.of(secsField.get(), nanosField.get());
+				timeStamp = java.time.Instant.ofEpochSecond(secsField.get(), nanosField.get());
 			
 			PVInt userTagField = timeStampStructure.getIntField("userTag");
 			if (userTagField == null)
@@ -84,7 +85,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
 		}
 		else
 		{
-			timeStamp = org.diirt.util.time.Timestamp.now();
+			timeStamp = java.time.Instant.now();
 			timeUserTag = null;
 			isTimeValid = true;
 		}
@@ -127,7 +128,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
         
 
 	@Override
-	public Timestamp getTimestamp() {
+	public Instant getTimestamp() {
 		return timeStamp;
 	}
 

@@ -10,7 +10,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.util.time.TimeDuration;
+import static org.diirt.util.time.TimeDuration.ofHertz;;
 
 public class PVASimpleExample {
 	
@@ -28,7 +28,7 @@ public class PVASimpleExample {
 							System.out.println(event.toString());
 						
 					}
-				}).maxRate(TimeDuration.ofHertz(10));
+				}).maxRate(ofHertz(10));
 		
 		// forever
 		while (System.currentTimeMillis() != 0)

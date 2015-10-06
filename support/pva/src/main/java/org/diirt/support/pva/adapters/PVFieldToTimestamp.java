@@ -4,14 +4,15 @@
  */
 package org.diirt.support.pva.adapters;
 
+import java.time.Instant;
+
 import org.epics.pvdata.pv.PVInt;
 import org.epics.pvdata.pv.PVLong;
 import org.epics.pvdata.pv.PVStructure;
-import org.diirt.util.time.Timestamp;
 
 public class PVFieldToTimestamp  {
 
-	public static final Timestamp create(PVStructure timeStampStructure)
+	public static final Instant create(PVStructure timeStampStructure)
 	{
 		if (timeStampStructure != null)
 		{
@@ -21,7 +22,7 @@ public class PVFieldToTimestamp  {
 			if (secsField == null || nanosField == null)
 				return null;
 			else
-				return  org.diirt.util.time.Timestamp.of(secsField.get(), nanosField.get());
+				return  Instant.ofEpochSecond(secsField.get(), nanosField.get());
 		}
 		else
 			return null;
