@@ -51,9 +51,6 @@ public class LocalDataSource extends DataSource {
         this.zeroInitialization = zeroInitialization;
     }
 
-    private final String CHANNEL_SYNTAX_ERROR_MESSAGE =
-            "Syntax for local channel must be either name, name(Double) or name(String) (e.g \"foo\", \"foo(2.0)\" or \"foo(\"bar\")";
-
     @Override
     protected ChannelHandler createChannel(String channelName) {
         // Parse the channel name
