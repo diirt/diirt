@@ -21,8 +21,8 @@ import org.epics.util.time.Timestamp;
 public class RrdToolReader {
 
     private static Logger log = Logger.getLogger(RrdToolReader.class.getName());
-    
-    
+
+
     public TimeSeriesMulti readFile(String filename, String cf, Timestamp start, Timestamp end) {
         log.fine("Read " + filename + " cf " + cf + " from " + start + " to " + end);
         List<String> args = new ArrayList<>();
@@ -57,7 +57,7 @@ public class RrdToolReader {
                     Logger.getLogger(RrdToolReader.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
             if (process != null) {
                 process.destroy();
             }

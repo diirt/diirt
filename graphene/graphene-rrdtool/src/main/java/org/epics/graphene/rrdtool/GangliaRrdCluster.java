@@ -27,16 +27,16 @@ import org.epics.util.time.Timestamp;
  * @author carcassi
  */
 public class GangliaRrdCluster {
-    
+
     private static Logger log = Logger.getLogger(GangliaRrdCluster.class.getName());
-    
+
     private final File baseDir;
     private Set<String> machines;
     private Set<String> signals;
     private Map<String, Set<String>> machinesToSignals;
     private Pattern filePattern = rrdFilePattern;
     private Pattern dirPattern = null;
-    
+
     public GangliaRrdCluster(String baseDirectory) {
         log.fine("Reading Ganglia directory at " + baseDirectory);
         baseDir = new File(baseDirectory);
@@ -55,9 +55,9 @@ public class GangliaRrdCluster {
     public Pattern getDirPattern() {
         return dirPattern;
     }
-    
+
     private static Pattern rrdFilePattern = Pattern.compile(".*\\.rrd", Pattern.CASE_INSENSITIVE);
-    
+
     private void scanDirectory() {
         // All the subdirectories are taken to be machine names
         File[] subdirs = baseDir.listFiles(new FileFilter() {
@@ -72,11 +72,11 @@ public class GangliaRrdCluster {
                 return true;
             }
         });
-        
+
         signals = new HashSet<>();
         machines = new HashSet<>();
         machinesToSignals = new HashMap<>();
-        
+
         for (int i = 0; i < subdirs.length; i++) {
             File subdir = subdirs[i];
             String[] rrdFiles = subdir.list(new FilenameFilter() {
@@ -106,28 +106,28 @@ public class GangliaRrdCluster {
     public Set<String> getSignals() {
         return signals;
     }
-    
+
     private RrdToolReader reader = new RrdToolReader();
-    
+
     public Point3DWithLabelDataset dataset(List<String> machineNames, List<String> signals, Timestamp time) {
         if (signals.size() != 3) {
             throw new IllegalArgumentException("3 signal names are required");
         }
-        
+
         if (machineNames.isEmpty()) {
             throw new IllegalArgumentException("Must provide at least one machine");
         }
-        
+
         return Point3DWithLabelDatasets.build(dataset(machineNames, signals.get(0), time),
                 dataset(machineNames, signals.get(1), time),
                 dataset(machineNames, signals.get(2), time),
                 machineNames);
     }
-    
+
     public Point3DWithLabelDataset dataset(List<String> signals, Timestamp time) {
         log.fine("Creating dataset for signals " + signals + " at " + time);
         List<String> machineNames = new ArrayList<>();
-        
+
         for (Map.Entry<String, Set<String>> entry : machinesToSignals.entrySet()) {
             String machine = entry.getKey();
             Set<String> machineSignals = entry.getValue();
@@ -135,10 +135,10 @@ public class GangliaRrdCluster {
                 machineNames.add(machine);
             }
         }
-        
+
         return dataset(machineNames, signals, time);
     }
-    
+
     private ListDouble dataset(List<String> machineNames, String signal, Timestamp time) {
         log.fine("Creating dataset for signal " + signal + " on machines " + machineNames + " at " + time);
         double[] values = new double[machineNames.size()];
@@ -147,7 +147,7 @@ public class GangliaRrdCluster {
         }
         return new ArrayDouble(values);
     }
-    
+
     public double getValue(String machine, String signal, Timestamp time) {
         log.fine("Get value for signal " + signals + " on machine " + machine + " at " + time);
         Set<String> machineSignals = machinesToSignals.get(machine);
@@ -158,7 +158,7 @@ public class GangliaRrdCluster {
                                            "AVERAGE", time.minus(TimeDuration.ofMinutes(30)), time.plus(TimeDuration.ofMinutes(30)));
         ListDouble series = data.getValues().values().iterator().next();
         List<Timestamp> times = data.getTime();
-        
+
         // Get the value that is the one right before the time becomes
         // greater
         int i = 0;
@@ -168,8 +168,8 @@ public class GangliaRrdCluster {
         if (i != 0) {
             i--;
         }
-        
+
         return series.getDouble(i);
     }
-    
+
 }

@@ -11,7 +11,7 @@ package org.diirt.graphene;
 public class LineTimeGraph2DRendererUpdate extends TemporalGraph2DRendererUpdate<LineTimeGraph2DRendererUpdate> {
 
     private InterpolationScheme interpolation;
-    
+
     public LineTimeGraph2DRendererUpdate interpolation(InterpolationScheme scheme) {
         if (scheme == null) {
             throw new NullPointerException("Interpolation scheme can't be null");
@@ -22,9 +22,9 @@ public class LineTimeGraph2DRendererUpdate extends TemporalGraph2DRendererUpdate
         this.interpolation = scheme;
         return this;
     }
-    
+
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }
-    
+
 }

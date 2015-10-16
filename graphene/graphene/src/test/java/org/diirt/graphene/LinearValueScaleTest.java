@@ -65,7 +65,7 @@ public class LinearValueScaleTest {
                 new String[]{"0.0", "0.5", "1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5",
             "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0", "9.5", "10.0"}, axis);
     }
-//    
+//
 //    @Test
 //    public void references4() {
 //         ValueScale linearScale = ValueScales.linearScale();
@@ -169,7 +169,7 @@ public class LinearValueScaleTest {
         assertAxisEquals(234567, 678967, new double[]{300000, 400000, 500000, 600000},
                 new String[]{"3e5", "4e5", "5e5", "6e5"}, axis);
     }
-//    
+//
 //    @Test
 //    public void references17() {
 //         ValueScale linearScale = ValueScales.linearScale();

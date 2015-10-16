@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class CommaSeparatedValueIOTest {
-    
+
     public CommaSeparatedValueIOTest() {
     }
 

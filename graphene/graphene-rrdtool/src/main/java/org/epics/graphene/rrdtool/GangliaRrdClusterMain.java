@@ -15,17 +15,17 @@ import org.epics.util.time.TimestampFormat;
  * @author carcassi
  */
 public class GangliaRrdClusterMain {
-    
+
     private static TimestampFormat format = new TimestampFormat("yyyyMMddHHmmss");
     private static TimestampFormat readFormat = new TimestampFormat("yyyy/MM/dd HH:mm:ss");
-    
+
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             System.out.println("Usage:  list directory (prints the machines and signals found)\n");
             System.out.println("Usage:  plot directory signalX signalY signalSize date outputName linkTemplate (creates a bubble plot)\n");
             System.exit(0);
         }
-        
+
         Pattern filePattern = Pattern.compile(".*\\.local", Pattern.CASE_INSENSITIVE);
         if ("list".equals(args[0])) {
             String path = args[1];
@@ -48,7 +48,7 @@ public class GangliaRrdClusterMain {
             if (time != null) {
                 timeString = readFormat.format(time);
             }
-            System.out.println("Plotting from " + path + " (" + signalX + ", " + signalY 
+            System.out.println("Plotting from " + path + " (" + signalX + ", " + signalY
                     + ", " + signalZ + ") at time " + timeString);
             GangliaRrdCluster cluster = new GangliaRrdCluster(path);
             cluster.setDirPattern(filePattern);

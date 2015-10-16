@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 
 /**
  * Puts the image in a panel.
- * 
+ *
  * @author carcassi
  */
 public class ImagePanel extends JComponent {
@@ -28,7 +28,7 @@ public class ImagePanel extends JComponent {
             setSize(new Dimension(image.getWidth(this), image.getHeight(this)));
             setPreferredSize(new Dimension(image.getWidth(this), image.getHeight(this)));
         } else {
-            
+
         }
         revalidate();
         repaint();

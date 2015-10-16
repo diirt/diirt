@@ -25,8 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.config.Configuration;
-import javax.xml.parsers.DocumentBuilderFactory; 
-import javax.xml.parsers.DocumentBuilder; 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
@@ -47,36 +47,36 @@ import org.xml.sax.SAXException;
  */
 public class NumberColorMaps {
     private static final Logger log = Logger.getLogger(NumberColorMaps.class.getName());
-    
+
     private NumberColorMaps() {
         // Utility class. Do not instanciate.
     }
-  
+
     /**
      * Loads a {@code NumberColorMap} from a file.
      * <p>
      * It must follow one of the supported format, or an
      * exception is returned. The extension is used to determine
      * which file format is being used.
-     * 
+     *
      * @param file the color map file
      * @return the new map
      */
     public static NumberColorMap load(File file) {
 
         if (file.getName().endsWith(".xml")) {
-            // Reading from xml 
+            // Reading from xml
             return loadXML(file);
         } else if (file.getName().endsWith(".cmap")) {
             // Reading from CMAP
             return loadCMAP(file);
         }
-        
+
         // File format not recognized
         throw new RuntimeException("File Format not Recognized" + file);
     }
-    
-    
+
+
     private static NumberColorMap loadCMAP(File file){
         List<Color> colors = new ArrayList<>();
         Scanner scanner;
@@ -95,12 +95,12 @@ public class NumberColorMaps {
             }
             colors.add(Color.rgb(parseInt(tokens[0]), parseInt(tokens[1]), parseInt(tokens[2]),1.0));
         }
-        String colormapName = file.getName(); 
-        colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
+        String colormapName = file.getName();
+        colormapName = colormapName.substring(0,colormapName.lastIndexOf('.'));
         // cmap file is automatically relative
         return relative(colors, Color.BLACK, colormapName);
     }
-    
+
     private static NumberColorMap loadXML(File file){
         //if we are reading from a xml file
 
@@ -126,41 +126,41 @@ public class NumberColorMaps {
         }
 
         Element root = doc.getDocumentElement();
-        // Throw exception if they don't match format supported 
-        if (root.getAttribute("position").equals("relative") || 
+        // Throw exception if they don't match format supported
+        if (root.getAttribute("position").equals("relative") ||
                 root.getAttribute("position").equals("absolute")){
-              relative = root.getAttribute("position").equals("relative"); 
+              relative = root.getAttribute("position").equals("relative");
         }else{
             throw new RuntimeException("Colormap file only supports absoulute and relative scale " + file);
         }
-        
-            
-        Color nanColor = Color.web(root.getAttribute("colorNaN")); 
-    
+
+
+        Color nanColor = Color.web(root.getAttribute("colorNaN"));
+
 
         NodeList children = root.getChildNodes();
-      
+
         for(int i = 0 ; i<children.getLength();++i){
-            Node child = children.item(i); 
+            Node child = children.item(i);
             if (child instanceof Element) {
-                    Element e = (Element)child; 
+                    Element e = (Element)child;
                     if (e.getTagName().equals("color")) {
-                       positions.add(parseDouble( e.getAttribute("position"))); 
-                       colors.add(Color.web(e.getAttribute("value"))); 
+                       positions.add(parseDouble( e.getAttribute("position")));
+                       colors.add(Color.web(e.getAttribute("value")));
                     }
             }
         }
-    
+
         double[] positionsArray = new double[positions.size()];
         for (int i = 0; i < positions.size(); ++i) {
             positionsArray[i] = positions.get(i);
         }
-        String colormapName = file.getName(); 
-        colormapName = colormapName.substring(0,colormapName.lastIndexOf('.')); 
+        String colormapName = file.getName();
+        colormapName = colormapName.substring(0,colormapName.lastIndexOf('.'));
         return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, nanColor, colormapName);
     }
-    
-    
+
+
     private static void initializeColorMapDirectory(File path) {
         // List of default color maps
         String [] mapNames = {
@@ -170,17 +170,17 @@ public class NumberColorMaps {
             "HSV.xml",
             "HSVRadian.xml",
             "JET.xml"
-        }; 
+        };
 
         for (String map: mapNames) {
             File mapFile = new File(path,map);
-            try { 
+            try {
                 mapFile.createNewFile();
             } catch (IOException ex) {
                 log.log(Level.WARNING, "Failed Creating new file " + mapFile, ex);
                 continue;
             }
-            
+
             try (InputStream input = NumberColorMaps.class.getResourceAsStream(map);
                     OutputStream output = new FileOutputStream(mapFile)) {
                 byte[] buffer = new byte[8*1024];
@@ -191,10 +191,10 @@ public class NumberColorMaps {
             } catch (IOException ex) {
                 log.log(Level.WARNING, "Failed Loading " + map, ex);
             }
-          
+
         }
     }
-            
+
     private static List<NumberColorMap> loadMapsFromLocal() {
         List<NumberColorMap> maps = new ArrayList<>();
         File path = new File(Configuration.getDirectory(), "graphene/colormaps");
@@ -218,32 +218,32 @@ public class NumberColorMaps {
 
         }
 
-        return maps;      
+        return maps;
     }
 
- 
+
     // TODO: remove hard-coded color maps. They should be loaded by name
     // from the registered map
-    
+
     /**
      * JET ranges from blue to red, going through cyan and yellow.
      */
-    
-    public static final NumberColorMap JET = relative(Arrays.asList(new Color[]{Color.rgb(0,0,138), 
+
+    public static final NumberColorMap JET = relative(Arrays.asList(new Color[]{Color.rgb(0,0,138),
                                                                                 Color.BLUE,
                                                                                 Color.CYAN,
                                                                                 Color.YELLOW,
                                                                                 Color.RED,
-                                                                                Color.rgb(138,0,0)}), Color.BLACK, "JET"); 
+                                                                                Color.rgb(138,0,0)}), Color.BLACK, "JET");
     /**
      * GRAY ranges from black to white.
      */
-    public static final NumberColorMap GRAY= relative(Arrays.asList(new Color[]{Color.BLACK, 
+    public static final NumberColorMap GRAY= relative(Arrays.asList(new Color[]{Color.BLACK,
                                                                                        Color.WHITE
-                                                                                       }),Color.RED,"GRAY"); 
+                                                                                       }),Color.RED,"GRAY");
     /**
      * BONE ranges from black to white passing from blue.
-     */     
+     */
     public static final NumberColorMap BONE = relative(Arrays.asList(new Color[]{Color.BLACK,
                                                                                        Color.rgb(57, 57, 86),
                                                                                         Color.rgb(107, 115, 140),
@@ -258,7 +258,7 @@ public class NumberColorMaps {
                                                 Color.YELLOW,
                                                 Color.WHITE
                                                 ), Color.BLUE, "HOT");
-            
+
     /**
      * HSV goes through the color wheel: red, yellow, green, cyan, blue, magenta
      * and back to red. Useful for periodic functions.
@@ -270,26 +270,26 @@ public class NumberColorMaps {
                                                                                        Color.BLUE,
                                                                                        Color.MAGENTA,
                                                                                        Color.RED
-                                                                                       } ),Color.BLACK,"HSV"); 
+                                                                                       } ),Color.BLACK,"HSV");
 
     private static final Map<String, NumberColorMap> registeredColorSchemes
             = new ConcurrentHashMap<>();
-   
-    static {        
-        List<NumberColorMap> maps = loadMapsFromLocal(); 
-        
+
+    static {
+        List<NumberColorMap> maps = loadMapsFromLocal();
+
         for (NumberColorMap map: maps) {
-            registeredColorSchemes.put(map.toString(),map); 
+            registeredColorSchemes.put(map.toString(),map);
         }
-         
+
     }
-    
+
     public static final String DEFAULT_NUMBER_COLOR_MAP_NAME = "JET";
-    
+
     /**
      * Returns the default {@code NumberColorMap}. It searches for {@link #DEFAULT_NUMBER_COLOR_MAP_NAME}
      * within the registered maps, and if not found it uses a hard coded version.
-     * 
+     *
      * @return a color map; never null
      */
     public static NumberColorMap defaultNumberColorMap() {
@@ -305,24 +305,24 @@ public class NumberColorMaps {
             return JET;
         }
     }
-    
+
     /**
      * A set of registered color maps available to all applications.
-     * 
+     *
      * @return a set of color maps and their names
      */
 
     public static Map<String, NumberColorMap> getRegisteredColorSchemes() {
         return Collections.unmodifiableMap(registeredColorSchemes);
     }
-    
+
     /**
      * Returns a new optimized instance created by pre-calculating the colors
      * in the given range and storing them in an array.
      * <p>
      * An optimized map will trade off precision for speed. The color will not
      * change smoothly but will be quantized to the size of the array.
-     * 
+     *
      * @param instance the color map instance to optimize
      * @param range the range of values to optimize
      * @return the optimized map
@@ -330,12 +330,12 @@ public class NumberColorMaps {
     public static NumberColorMapInstance optimize(NumberColorMapInstance instance, Range range){
         return new NumberColorMapInstanceOptimized(instance, range);
     }
-    
+
 
     /**
      * Creates a new {@code ColorMap} where the color list is equally
      * spaced.
-     * 
+     *
      * @param colors the list of colors used for the values
      * @param nanColor the color used for NaN values
      * @param name the name of the color map
@@ -344,27 +344,27 @@ public class NumberColorMaps {
     public static NumberColorMap relative(List<Color> colors, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, ListNumbers.linearListFromRange(0.0, 1.0, colors.size()), true, nanColor, name);
     }
-    
+
 
     /**
      * Creates a new{@code ColorMap} where the color list is spaced out
      * according to the percentage points specified
-     * @param colors the list of colors used 
-     * @param percentages the list of percentages position that divide up the colors 
-     * @param nanColor the color used for Nan values 
+     * @param colors the list of colors used
+     * @param percentages the list of percentages position that divide up the colors
+     * @param nanColor the color used for Nan values
      * @param name the name of the color map
      * @return the new color map
      */
     public static NumberColorMap relative(List<Color> colors, ListDouble percentages, Color nanColor, String name) {
         return new NumberColorMapGradient(colors, percentages, true, nanColor, name);
     }
-    
+
        /**
      * Creates a new{@code ColorMap} where the color list is spaced out
      * according to the absolute points specified
-     * @param colors the list of colors used 
-     * @param values the list of absolute position that divide up the colors 
-     * @param nanColor the color used for Nan values 
+     * @param colors the list of colors used
+     * @param values the list of absolute position that divide up the colors
+     * @param nanColor the color used for Nan values
      * @param name the name of the color map
      * @return the new color map
      */

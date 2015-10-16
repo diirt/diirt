@@ -9,7 +9,7 @@ package org.diirt.graphene;
  * @author YifengYang
  */
 public interface ProcessValue {
-    
+
     void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY);
-    
+
 }

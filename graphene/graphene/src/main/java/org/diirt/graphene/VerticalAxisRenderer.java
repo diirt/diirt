@@ -12,21 +12,21 @@ import java.awt.Graphics2D;
 /**
  * A rendering tool that is capable of drawing a vertical (Y) axis
  * with appropriate labels and label spacing.
- * 
+ *
  * <p>The <code>VerticalAxisRenderer</code> is package-private and
  * is inaccessible out of the Graphene package.
- * 
+ *
  * @author carcassi
  */
 class VerticalAxisRenderer {
-    
+
     private ValueAxis   axis;
     private Color       axisTextColor = Color.BLACK;
     private FontMetrics metrics;
-    
+
     private static Font defaultAxisFont = FontUtil.getLiberationSansRegular();
     private Font        axisFont = defaultAxisFont;
-    
+
     private int      axisWidth;
     private int      tickSize = 3;
     private int      textTickMargin = 0;
@@ -46,7 +46,7 @@ class VerticalAxisRenderer {
     VerticalAxisRenderer(ValueAxis valueAxis, int leftMargin, Graphics2D graphics) {
         this.axis = valueAxis;
         metrics = graphics.getFontMetrics(axisFont);
-        
+
         // Compute y axis spacing
         yValueTicks = axis.getTickValues();
         yLabels = axis.getTickLabels();
@@ -57,9 +57,9 @@ class VerticalAxisRenderer {
             yLargestLabel = Math.max(yLargestLabel, yLabelWidths[i]);
         }
         axisWidth = leftMargin + yLargestLabel + textTickMargin + tickSize;
-        
+
     }
-    
+
     /**
      * Draws the tick marks on the vertical axis with each value associated with the tick mark.
      * @param graphics where drawing is done
@@ -72,7 +72,7 @@ class VerticalAxisRenderer {
     public void draw(Graphics2D graphics, int startImage, int startAxis, int endAxis, int endImage, int axisPosition) {
         int plotHeight = endAxis - startAxis;
         int imageHeight = endImage - startImage;
-        
+
         yTicks = new int[yLabels.length];
         for (int i = 0; i < yTicks.length; i++) {
             yTicks[i] = imageHeight - endAxis + (int) (MathUtil.normalize(yValueTicks[i], axis.getMinValue(), axis.getMaxValue()) * plotHeight);
@@ -86,7 +86,7 @@ class VerticalAxisRenderer {
             graphics.drawString(yLabels[i], axisPosition - yLabelWidths[i] - textTickMargin - tickSize, imageHeight - yTicks[i] + halfHeight);
         }
     }
-    
+
     /**
      * Returns the width of the axis.
      * @return width of axis in pixels
@@ -94,7 +94,7 @@ class VerticalAxisRenderer {
     public int getAxisWidth() {
         return axisWidth;
     }
-    
+
     /**
      * Returns the 'tick' positions on the vertical axis.
      * @return set of 'ticks' on the vertical y-axis
@@ -102,5 +102,5 @@ class VerticalAxisRenderer {
     public int[] verticalTickPositions() {
         return yTicks;
     }
-    
+
 }

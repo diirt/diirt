@@ -19,17 +19,17 @@ import org.diirt.util.stats.Ranges;
  * @author carcassi
  */
 class Cell1DHistogramDataset implements Cell1DDataset {
-    
+
     private Statistics statistics;
     private Range xRange;
     private ListNumber xBoundaries;
-    
+
     private double minValueRange;
     private double maxValueRange;
     private int minCountRange;
     private int maxCountRange;
-    
-    
+
+
     private double[] values;
     private boolean autoValueRange = true;
     private int nBins = 100;
@@ -42,7 +42,7 @@ class Cell1DHistogramDataset implements Cell1DDataset {
         if (dataset.getStatistics() == null) {
             throw new NullPointerException("dataset is null");
         }
-        
+
         IteratorNumber newValues = dataset.getValues().iterator();
         if (autoValueRange) {
             this.minValueRange = dataset.getStatistics().getRange().getMinimum();
@@ -57,18 +57,18 @@ class Cell1DHistogramDataset implements Cell1DDataset {
 
         statistics = StatisticsUtil.statisticsOf(new ArrayDouble(values));
     }
-    
+
     private void addValueToBin(double value) {
         // Discard value outsie the binning area
         if (!xRange.contains(value)) {
             return;
         }
-        
+
         int bin = (int) Math.floor(MathUtil.scale(value, xRange.getMinimum(), xRange.getMaximum(), nBins));
         if (bin == nBins) {
             bin--;
         }
-        
+
         values[bin]++;
     }
 
@@ -101,5 +101,5 @@ class Cell1DHistogramDataset implements Cell1DDataset {
     public int getXCount() {
         return values.length;
     }
-    
+
 }

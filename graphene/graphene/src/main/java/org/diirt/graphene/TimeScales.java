@@ -19,18 +19,18 @@ import org.diirt.util.time.TimestampFormat;
  * @author carcassi
  */
 public class TimeScales {
-    
+
     final public static int HOUR_FIELD_ID = GregorianCalendar.HOUR_OF_DAY;
     final public static int FIRST_HOUR = 0;
     final public static int DAY_FIELD_ID = GregorianCalendar.DAY_OF_WEEK;
     final public static int FIRST_DAY = 1;
     final public static int WEEK_FIELD_ID = GregorianCalendar.WEEK_OF_MONTH;
     final public static int FIRST_WEEK = 1;
-    
+
     public static TimeScale linearAbsoluteScale() {
         return new LinearAbsoluteTimeScale();
     }
-    
+
     static class TimePeriod {
         public final int fieldId;
         public final double amount;
@@ -70,7 +70,7 @@ public class TimeScales {
         public String toString() {
             return "TimePeriod{" + "fieldId=" + fieldId + ", amount=" + amount + '}';
         }
-        
+
     }
 
     static TimePeriod nextUp(TimePeriod period) {
@@ -149,7 +149,7 @@ public class TimeScales {
                 if ( period.amount < 12 ) {
                     return new TimePeriod( HOUR_FIELD_ID , 12 );
                 }
-                
+
                 //*MC why is this necessary? otherwise, we get error
                 if ( period.amount < 24 ) {
                     return new TimePeriod( HOUR_FIELD_ID , 24 );
@@ -184,11 +184,11 @@ public class TimeScales {
         }
         return null;
     }
-    
+
     /**
      * Determines the time(s) that will be represented by reference lines on
      * a time graph.
-     * 
+     *
      * @param timeInterval the interval of time spanning the duration of the
      * time graph
      * @param period the interval of time between each reference line
@@ -216,12 +216,12 @@ public class TimeScales {
     }
 
     static void round(GregorianCalendar cal, int field) {
-        
+
         if (GregorianCalendar.MILLISECOND == field) {
             return;
         }
         cal.set(GregorianCalendar.MILLISECOND, 0);
-        
+
         if (GregorianCalendar.SECOND == field) {
             return;
         }
@@ -231,39 +231,39 @@ public class TimeScales {
             return;
         }
         cal.set(GregorianCalendar.MINUTE, 0);
-        
+
         if ( HOUR_FIELD_ID == field ) {
             return;
         }
         cal.set( HOUR_FIELD_ID , FIRST_HOUR );
-        
+
         if ( DAY_FIELD_ID == field ) {
             return;
         }
         cal.set(DAY_FIELD_ID , FIRST_DAY );
-        
+
         if ( WEEK_FIELD_ID == field ) {
             return;
         }
-        
+
         //here, we are rounding down to the first week (i.e. the first day of
-        //the month), so the day of the week and the week of the month no 
+        //the month), so the day of the week and the week of the month no
         //longer matter - we just set the day to be the first day of the month
         cal.set( GregorianCalendar.DAY_OF_MONTH , 1 );
-        
+
         if ( GregorianCalendar.MONTH == field ) {
             return;
         }
-        
+
         cal.set( GregorianCalendar.MONTH , 0 );
-        
+
         if ( GregorianCalendar.YEAR == field ) {
             return;
         }
         cal.set( GregorianCalendar.YEAR , 0 );
-        
+
     }
-    
+
     static TimePeriod nextDown(TimePeriod period) {
         switch(period.fieldId) {
             case GregorianCalendar.YEAR:
@@ -367,10 +367,10 @@ public class TimeScales {
                 }
         }
         return new TimePeriod( GregorianCalendar.MILLISECOND , 1 );
-        
+
         //TODO nanoseconds and year rounding down
     }
-    
+
     static TimePeriod toTimePeriod(double seconds) {
         if ( seconds >= 36288000 ) {
             return new TimePeriod( GregorianCalendar.YEAR , seconds/3024000 );
@@ -395,56 +395,56 @@ public class TimeScales {
         }
         return new TimePeriod(GregorianCalendar.MILLISECOND, 1000*seconds);
     }
-    
+
     static double normalize(Timestamp time, TimeInterval timeInterval) {
         // XXX: if interval is more than 292 years, this will not work
         double range = timeInterval.getEnd().durationFrom(timeInterval.getStart()).toNanosLong();
         double value = time.durationBetween(timeInterval.getStart()).toNanosLong();
         return value / range;
     }
-    
+
     private static TimestampFormat format = new TimestampFormat("yyyy/MM/dd HH:mm:ss.NNNNNNNNN");
     private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25,28);
     private static ArrayInt possibleStopFromStart = new ArrayInt(0,11,19,28);
     private static String zeroFormat = "0000/01/01 00:00:00.000000000";
-    
+
     static List<String> createLabels(List<Timestamp> timestamps) {
         if (timestamps.isEmpty()) {
             return Collections.emptyList();
         }
-        
+
         List<String> result = new ArrayList<>(timestamps.size());
         for (Timestamp timestamp : timestamps) {
             result.add(format.format(timestamp));
         }
-        
+
         return result;
     }
-    
+
     /**
      * Trims a list of time axis labels to remove unnecessary redundancy.
-     * 
+     *
      * @param labels a list of dates that will be displayed on a time axis
      * @return a list of modified dates without redundancy that can be displayed
      * on a time axis
      */
     static List<String> trimLabels( List< String > labels ) {
-        
+
         //special case: if there are 1 or fewer labels, we cannot do redundance
         //checking or precision checking because there aren't enough
         //labels to compare with each other
         if ( labels.size() <= 1 ) {
             return labels;
         }
-        
+
         //first, we calculate the greatest changing precision amongst all the
         //labels. This is the precision that needs to be maintained throughout
         //all the labels
         int greatestChangingPrecision = calculateGreatestChangingField( labels );
-        
+
         ArrayList< String > rtn = new ArrayList< String >( labels.size() );
         DateTrimmer firstDate = new DateTrimmer( labels.get( 0 ) );
-        
+
         //the first date will need to display all information, even if it is
         //redundant; however, we can drop some trailing 0s, up to the
         //precision that is changing
@@ -459,14 +459,14 @@ public class TimeScales {
         }
         return rtn;
     }
-    
+
     /**
      * Calculates the place of greatest precision at which both the last label
      * and the current label are the same
-     * 
+     *
      * @param lastLabel
      * @param currLabel
-     * @return 
+     * @return
      */
     private static int greatestRedundancePrecision( String lastLabel , String currLabel ) {
         int[] lastLabelFields = DateTrimmer.parseFields( lastLabel );
@@ -478,14 +478,14 @@ public class TimeScales {
         }
         return lastLabelFields.length-1;
     }
-    
+
     /**
      * Calculates the greatest precision at which the last label and the
-     * current label are changing. The list of labels must be non-empty. 
+     * current label are changing. The list of labels must be non-empty.
      * If the list of labels is empty, then maximum precision is returned.
-     * 
+     *
      * @param labels
-     * @return 
+     * @return
      */
     private static int calculateGreatestChangingField( List< String > labels ) {
         int[][] fields = new int[ labels.size() ][];
@@ -508,12 +508,12 @@ public class TimeScales {
         if ( rtn == -1 ) {
             return DateTrimmer.NANOSECOND_PRECISIONS[9];
         }
-        
+
         //determine the latest decimal place at which the nanoseconds are nonzero
         //because we will need to maintain precision to that decimal place
         //for all labels
         if ( rtn == DateTrimmer.NANOSECOND_PRECISION ) {
-            
+
             int modulus = 10;
             for ( int decimalPlace = 9; decimalPlace >= 1 ; decimalPlace-- ) {
                 boolean isDecimalPlaceZero = true;
@@ -531,30 +531,30 @@ public class TimeScales {
         }
         return rtn;
     }
-    
+
     /**
-     * Trims a date given specific redundancy and precision bounds. 
-     * 
+     * Trims a date given specific redundancy and precision bounds.
+     *
      * <p>
-     * 
-     * For example, suppose we have the dates 
+     *
+     * For example, suppose we have the dates
      * <ul>
-     * <li> "2014/11/26 09:01:00.000000000" 
+     * <li> "2014/11/26 09:01:00.000000000"
      * <li> "2014/11/26 09:02:00.020000000"
      * <li> "2014/11/26 09:03:00.040000000"
      * <li> "2014/11/26 09:04:00.060000000"
-     * <li> "2014/11/26 09:05:00.080000000" 
+     * <li> "2014/11/26 09:05:00.080000000"
      * </ul>
-     * and we want to use them as labels on a time axis. It would be 
-     * redundant to display "2014/11/26" on every label. Thus, "2014/11/26" 
+     * and we want to use them as labels on a time axis. It would be
+     * redundant to display "2014/11/26" on every label. Thus, "2014/11/26"
      * is redundant and needs to be removed. Similarly, the trailing 0s are
      * redundant and we only need to maintain 2 decimal places of nanosecond
      * precision. <code>DateTrimmer</code> allows us to arbitrarily decide
      * if we want to display years, months, days, etc., and then builds the
      * date label.
-     * 
+     *
      * <p>
-     * 
+     *
      * Precisions are given as follows:
      * <ul>
      * <li> -1 = NO PRECISION
@@ -575,29 +575,29 @@ public class TimeScales {
      * <li> 14 = NANOSECOND, 9 digits of precision
      * <li> 1000 = INFINITE PRECISION
      * </ul>
-     * This ordering can be used for comparison. For example, years are less 
-     * precise than months, so they have a smaller precision value. 
-     * 
+     * This ordering can be used for comparison. For example, years are less
+     * precise than months, so they have a smaller precision value.
+     *
      * <p>
-     * 
-     * When removing redundant parts from the front of a date, all precision 
-     * from YEARS up to the given common precision will be removed. When 
+     *
+     * When removing redundant parts from the front of a date, all precision
+     * from YEARS up to the given common precision will be removed. When
      * removing redundant parts from the end of a date, only a required
      * precision will be requested. The required precision is the most precise
-     * precision that the date must maintain. Everything more precise than the 
+     * precision that the date must maintain. Everything more precise than the
      * required precision will be removed.
-     * 
+     *
      * <p>
-     * 
+     *
      * The <code>DateTrimmer</code> works by allowing redundancy checks to
      * turn off years, months, days, etc. from the display. Any special cases
      * can then be handled afterwards, as years, months, days, ... can be
      * turned on again.
-     * 
+     *
      * @author mjchao
      */
     static class DateTrimmer {
-        
+
         final public static int NO_PRECISION = -1;
         final public static int YEAR_PRECISION = 0;
         final public static int MONTH_PRECISION = 1;
@@ -608,7 +608,7 @@ public class TimeScales {
         final public static int NANOSECOND_PRECISION = 6;
         final public static int[] NANOSECOND_PRECISIONS = { 5 , 6 , 7 , 8 , 9 , 10 , 11 , 12 , 13 , 14 };
         final public static int INFINITE_PRECISION = 1000;
-        
+
         private int m_year;
         private boolean m_showYear = true;
         private int m_month;
@@ -624,17 +624,17 @@ public class TimeScales {
         private int m_nanosecond;
         private int m_nanosecondDecimalPlace = 9;
         private boolean m_showNanosecond = true;
-        
+
         /**
          * Creates a <code>DateTrimmer</code> with the given date fields
-         * 
+         *
          * @param year
          * @param month
          * @param day
          * @param hour
          * @param minute
          * @param second
-         * @param nanosecond 
+         * @param nanosecond
          */
         public DateTrimmer( int year , int month , int day , int hour , int minute , int second , int nanosecond ) {
             this.m_year = year;
@@ -645,11 +645,11 @@ public class TimeScales {
             this.m_second = second;
             this.m_nanosecond = nanosecond;
         }
-        
+
         /**
          * Creates a <code>DateTrimmer</code> for the given date
-         * 
-         * @param date 
+         *
+         * @param date
          */
         public DateTrimmer( String date ) {
             int[] fields = parseFields( date );
@@ -661,13 +661,13 @@ public class TimeScales {
             this.m_second = fields.length >= 6 ? fields[ 5 ] : 0;
             this.m_nanosecond = fields.length >= 7 ? fields[ 6 ] : 0;
         }
-        
+
         /**
          * Parses the years, months, days, etc. from a complete date string.
          * If the date string is not of the form YYYY/MM/DD HH/MM/SS.NNNNNNNNN
-         * (N=Nanoseconds) then there is no guarantee as to what fields are 
+         * (N=Nanoseconds) then there is no guarantee as to what fields are
          * parsed.
-         * 
+         *
          * @param date a date to parse
          * @return the years, months, day, hour, minute, second, and nanosecond
          * of the date. These properties correspond to indices 0, 1, 2, 3, 4, 5,
@@ -681,20 +681,20 @@ public class TimeScales {
             }
             return rtn;
         }
-        
+
         /**
          * Generates a compact form of the date by removing trailing zeroes,
          * while maintaining a required precision and removing redundant
          * information on the left side of the text. if the common precision
          * exceeds the required precision, then an empty label is produced.
-         * 
+         *
          * @param commonPrecision the parts of the date that can be left out because
          * they are common to other dates
          * @param requiredPrecision the minimum precision the compact form must have
          * @return the compact form of the date
          */
         public String getCompactForm( int commonPrecision , int requiredPrecision ) {
-            
+
             //special case when the common precision exceeds the required precision
             //this means that all the labels are identicial, so the labels would be empty
             if ( commonPrecision >= requiredPrecision ) {
@@ -702,16 +702,16 @@ public class TimeScales {
             }
             removeRedundantPrecision( commonPrecision );
             maintainRequiredPrecision( requiredPrecision );
-            
+
             //handle special cases:
-            
+
             //days must be shown with months regardless of redundancies.
             //the label 09 is meaningless because it could be a day or a month;
             //however, the label 05/09 is unambiguous.
             if ( this.m_showDay && !this.m_showMonth ) {
                 this.m_showMonth = true;
             }
-            
+
             //months must be shown with a day or a year, regardless of
             //redundancies. the label 10 is meaningless because it could be
             //a day or a month; however, the labsl 2014/10 and 10/19 are
@@ -724,7 +724,7 @@ public class TimeScales {
                     this.m_showYear = true;
                 }
             }
-            
+
             //hours must be shown with minutes, regardless of redundancies
             //the label 12 is meaningless because it could be a day, month,
             //minute, second, etc; however, the label 12:12 is less ambiguous
@@ -735,7 +735,7 @@ public class TimeScales {
             }
             return buildDateString();
         }
-        
+
         /**
          * Removes redundant precision from a given date string; however, hours,
          * minutes, seconds, and nanoseconds must not be removed for redundancy
@@ -743,35 +743,35 @@ public class TimeScales {
          * 9:15 could then be 9 hours 15 minutes or 9 minutes 15 seconds
          * and we resolve this by defining these ambiguous times to be the
          * least precise possible.
-         * 
+         *
          * @param redundantPrecision the precision to which the date is redundant
          */
         void removeRedundantPrecision( int redundantPrecision ) {
             if ( redundantPrecision >= YEAR_PRECISION ) {
                 this.m_showYear = false;
-                
-                if ( redundantPrecision >= MONTH_PRECISION ) { 
+
+                if ( redundantPrecision >= MONTH_PRECISION ) {
                     this.m_showMonth = false;
-                    
+
                     if ( redundantPrecision >= DAY_PRECISION ) {
                         this.m_showDay = false;
                     }
                 }
             }
         }
-        
+
         /**
          * Ensures that the specified precision is maintained when
          * creating a final, trimmed string
-         * 
-         * @param requiredPrecision the most precise precision this trimmer 
+         *
+         * @param requiredPrecision the most precise precision this trimmer
          * must maintain
          */
         void maintainRequiredPrecision( int requiredPrecision ) {
 
             if ( (this.m_nanosecond == 0) && requiredPrecision < NANOSECOND_PRECISIONS[1] ) {
                 this.m_showNanosecond = false;
-                    
+
                 if ( (this.m_second == 0) && requiredPrecision < SECOND_PRECISION ) {
                     this.m_showSecond = false;
 
@@ -794,7 +794,7 @@ public class TimeScales {
             }
 
             else {
-                
+
                 //if we must display at a nanoseconds detail level,
                 //then we must determine the number of decimal places to display
                 if ( requiredPrecision >= NANOSECOND_PRECISIONS[ 1 ] ) {
@@ -806,7 +806,7 @@ public class TimeScales {
                         }
                     }
                 }
-                
+
                 //if nanoseconds need to be displayed just because they are
                 //nonzero, then we can just remove trailing zeroes
                 else if ( this.m_nanosecond != 0 ) {
@@ -815,12 +815,12 @@ public class TimeScales {
                 }
             }
         }
-        
+
         /**
          * Creates the label for the date stored in this <code>DateTrimmer</code>
          * given the status of the year, month, day, etc. indicators.
-         * 
-         * @return 
+         *
+         * @return
          */
         private String buildDateString() {
             String rtn = "";
@@ -866,10 +866,10 @@ public class TimeScales {
             }
             return rtn;
         }
-        
+
         /**
          * Removes trailing zeros from a string
-         * 
+         *
          * @param value a string
          * @return the inputed string without any trailing zeroes
          */
@@ -884,12 +884,12 @@ public class TimeScales {
             return rtn.substring( 0 , lastIdxOfNonzero+1 );
         }
     }
-    
+
     /**
      * Creates a string from an integer value that has at least the
      * specified length. The integer is padded with 0s to ensure the
      * specified length.
-     * 
+     *
      * @param value the value to convert to a string
      * @param minLength the minimum length the string must have
      * @return the given value as a string with length at least the specified

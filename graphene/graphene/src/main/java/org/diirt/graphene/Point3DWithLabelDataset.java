@@ -14,27 +14,27 @@ import org.diirt.util.stats.Range;
  * @author carcassi
  */
 public interface Point3DWithLabelDataset {
-    
+
     public ListNumber getXValues();
-    
+
     public ListNumber getYValues();
-    
+
     public ListNumber getZValues();
-    
+
     public List<String> getLabels();
-    
+
     public Statistics getXStatistics();
-    
+
     public Statistics getYStatistics();
-    
+
     public Statistics getZStatistics();
-    
+
     public Range getXDisplayRange();
-    
+
     public Range getYDisplayRange();
-    
+
     public Range getZDisplayRange();
-    
+
     public int getCount();
-    
+
 }

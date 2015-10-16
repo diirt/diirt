@@ -17,13 +17,13 @@ import org.diirt.util.stats.Ranges;
  * @author carcassi
  */
 public class Cell1DDatasets {
-    
+
     /**
      * Wraps a {@link ListNumber} into a {@link Point1DDataset}.
      * <p>
      * It assumes the argument is either immutable or mutable but
      * will not be changed in the future.
-     * 
+     *
      * @param values the values for the dataset
      * @param minValue the minimum value
      * @param maxValue the maximum value
@@ -66,13 +66,13 @@ public class Cell1DDatasets {
             }
         };
     }
-    
+
     /**
      * Wraps {@link ListNumber}s for values and boundaries into a {@link Point1DDataset}.
      * <p>
      * It assumes the argument is either immutable or mutable but
      * will not be changed in the future.
-     * 
+     *
      * @param values the values for the dataset
      * @param xBoundaries the cell boundaries
      * @return the dataset from the values; never null
@@ -113,7 +113,7 @@ public class Cell1DDatasets {
             }
         };
     }
-    
+
     public static Cell1DDataset datasetFrom(final ListNumber values, final ListNumber xBoundaries, final Range displayRange) {
         final Statistics statistics = StatisticsUtil.statisticsOf(values);
         final Range range = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
@@ -150,7 +150,7 @@ public class Cell1DDatasets {
             }
         };
     }
-    
+
     public static Cell1DDataset createHistogram(Point1DDataset dataset) {
         Cell1DHistogramDataset histogram = new Cell1DHistogramDataset(dataset);
         return histogram;

@@ -19,9 +19,9 @@ import org.epics.util.time.TimestampFormat;
  * @author carcassi
  */
 public class RrdToolBubbleGraphMain {
-    
+
     private static TimestampFormat format = new TimestampFormat("yyyyMMddHHmmss");
-    
+
     public static void main(String[] args) throws Exception {
         List<String> signals = new ArrayList<>();
         Timestamp start = null;
@@ -48,9 +48,9 @@ public class RrdToolBubbleGraphMain {
             series.put(signals.get(i), data.get(i));
         }
         TimeSeriesMulti correlated = TimeSeriesMulti.synchronizeSeries(series);
-        final Point3DWithLabelDataset dataset = Point3DWithLabelDatasets.build(correlated.getValues().get(signals.get(0)), 
-                                                correlated.getValues().get(signals.get(1)), 
-                                                correlated.getValues().get(signals.get(2)), 
+        final Point3DWithLabelDataset dataset = Point3DWithLabelDatasets.build(correlated.getValues().get(signals.get(0)),
+                                                correlated.getValues().get(signals.get(1)),
+                                                correlated.getValues().get(signals.get(2)),
                                                 Collections.nCopies(correlated.getValues().get(signals.get(0)).size(), "label"));
         BubbleUtil.createBubblePlot(filename, dataset, "DATASETLABEL", "", "", "", "", Timestamp.now());
     }

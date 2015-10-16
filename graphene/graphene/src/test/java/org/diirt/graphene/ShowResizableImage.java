@@ -32,7 +32,7 @@ public class ShowResizableImage extends javax.swing.JFrame {
                 imagePanel.setImage(new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR));
                 redrawHistogram();
             }
-            
+
         });
     }
 
@@ -63,10 +63,10 @@ public class ShowResizableImage extends javax.swing.JFrame {
         pack();
         redrawHistogram();
     }
-    
+
     private int count = 0;
     private long totalTime;
-    
+
     private void redrawHistogram() {
         count++;
         long startTime = System.nanoTime();
@@ -79,8 +79,8 @@ public class ShowResizableImage extends javax.swing.JFrame {
         if (count % 100 == 0)
             System.out.println(count + " " + (totalTime / count));
     }
-    
-    
+
+
 
     public static void showHistogram(final Cell1DDataset hist) {
         java.awt.EventQueue.invokeLater(new Runnable() {

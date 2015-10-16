@@ -26,7 +26,7 @@ import org.junit.Ignore;
  * @author carcassi
  */
 public class LineTimeGraph2DRendererTest {
-    
+
     public LineTimeGraph2DRendererTest() {
     }
 
@@ -37,7 +37,7 @@ public class LineTimeGraph2DRendererTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Test
     public void test1() throws Exception {
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
@@ -55,7 +55,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.1", image);
     }
-    
+
     @Test
     public void test2() throws Exception {
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
@@ -73,7 +73,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.2", image);
     }
-    
+
     @Test
     public void test3() throws Exception {
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
@@ -91,7 +91,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.3", image);
     }
-    
+
     @Test
     public void test4() throws Exception {
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
@@ -109,7 +109,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.4", image);
     }
-    
+
     @Test
     public void testPreviousValueNaNMiddle1() throws Exception {
         Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
@@ -127,7 +127,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.previousValue.NaN.1", image);
     }
-    
+
     @Test
     public void testPreviousValueNaNStart1() throws Exception {
         Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
@@ -145,7 +145,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.previousValue.NaN.2", image);
     }
-    
+
     @Test
     public void testPreviousValueNaNEnd1() throws Exception {
         //Compare with testPreviousValueEndNotNaN() to see difference
@@ -167,7 +167,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.previousValue.NaN.3", image);
     }
-    
+
     @Test
     public void testPreviousValueEndNotNaN1() throws Exception {
         Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 333 );
@@ -185,7 +185,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.previousValue.1", image);
     }
-    
+
     @Test
     public void testPreviousValueStartNaN2() throws Exception {
         //test how previous value deals with NaN with only 2 data points
@@ -200,7 +200,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.previousValue.NaN.4", image);
     }
-    
+
     @Test
     public void testPreviousValueMultiNaNEnd1() throws Exception {
         Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
@@ -218,7 +218,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.previousValue.NaN.5", image);
     }
-    
+
     @Test
     public void testPreviousValueBigFluctuation() throws Exception {
         Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
@@ -266,7 +266,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.1", image);
     }
-    
+
     @Test
     public void extraGraphArea2() throws Exception {
         //test using a small extra graph area gap. The gap is only 1 second in
@@ -289,7 +289,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.2", image);
     }
-    
+
     @Test
     public void extraGraphArea3() throws Exception {
         //test using a huge extra graph area gap. The gap is a minute, while
@@ -312,7 +312,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.3", image);
     }
-    
+
     @Test
     public void extraGraphArea4() throws Exception {
         //test extra graph area with the data points falling perfectly
@@ -335,7 +335,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.4", image);
     }
-    
+
     @Test
     public void lessGraphArea1() throws Exception {
         //test using an absolute time axis that doesn't fit everything.
@@ -357,7 +357,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.lessGraphArea.1", image);
     }
-    
+
     @Test
     public void lessGraphArea2() throws Exception {
         //test using an absolute time axis that barely fits anything.
@@ -379,7 +379,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.lessGraphArea.2", image);
     }
-    
+
         @Test
     public void lessGraphArea3() throws Exception {
         //test using a y-axis that does not fit the data
@@ -401,7 +401,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.lessGraphArea.3", image);
     }
-    
+
     @Test
     public void extraGraphAreaDegenerate1() throws Exception {
         //test going backwards in time. Sure, it's a degenerate graph, but we
@@ -423,7 +423,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.degenerate.1", image);
     }
-    
+
     @Test
     public void extraGraphAreaDegenerate2() throws Exception {
         //test going backwards in time with no extra graph area. Essentially,
@@ -446,7 +446,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.extraGraphArea.degenerate.2", image);
     }
-    
+
     @Test
     public void testSpringForward() throws Exception {
         Timestamp start = TimeScalesTest.create(2015, 3, 8, 1, 0, 0, 0);
@@ -479,7 +479,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.springForward.1", image);
     }
-    
+
     @Test
     public void testMultilineLabels() throws Exception {
         Timestamp start = TimeScalesTest.create(2014, 12, 31, 23, 30, 0, 0);
@@ -512,7 +512,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.multiLineLabels.1", image);
     }
-    
+
     @Test
     public void testMultilineLabelsEnd() throws Exception {
         //tests what happens if we have a date and time for the last label
@@ -531,7 +531,7 @@ public class LineTimeGraph2DRendererTest {
         renderer.draw(graphics, data);
         ImageAssert.compareImages("lineTimeGraph.multiLineLabels.2", image);
     }
-    
+
     @Test
     public void testMultilineLabelsStartMiddleEnd() throws Exception {
         //tests what happens if we have a date and time for the first, last labels

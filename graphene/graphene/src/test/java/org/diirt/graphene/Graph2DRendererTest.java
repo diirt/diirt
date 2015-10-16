@@ -27,14 +27,14 @@ import org.junit.Test;
  * @author carcassi
  */
 public class Graph2DRendererTest {
-    
+
     public Graph2DRendererTest() {
     }
-    
+
     @Test
     public void graphArea1() throws Exception {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
-            
+
             {
                 this.xAreaCoordStart = 4;
                 this.xAreaCoordEnd = 296;
@@ -50,7 +50,7 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
@@ -58,12 +58,12 @@ public class Graph2DRendererTest {
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.1", image);
     }
-    
+
     @Test
     public void graphArea2() throws Exception {
-        
+
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
-            
+
             {
                 this.xAreaCoordStart = 24;
                 this.xAreaCoordEnd = 296;
@@ -80,7 +80,7 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
@@ -88,12 +88,12 @@ public class Graph2DRendererTest {
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.2", image);
     }
-    
+
     @Test
     public void graphArea3() throws Exception {
-        
+
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
-            
+
             {
                 this.xAreaCoordStart = 24;
                 this.xAreaCoordEnd = 296;
@@ -110,7 +110,7 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
@@ -118,11 +118,11 @@ public class Graph2DRendererTest {
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.3", image);
     }
-    
+
     @Test
     public void graphArea4() throws Exception {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
-            
+
             {
                 this.xAreaCoordStart = 4;
                 this.xAreaCoordEnd = 296;
@@ -140,7 +140,7 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
@@ -148,7 +148,7 @@ public class Graph2DRendererTest {
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.4", image);
     }
-    
+
     @Test
     public void graphArea5() throws Exception {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
@@ -158,7 +158,7 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
@@ -169,7 +169,7 @@ public class Graph2DRendererTest {
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.5", image);
     }
-    
+
     @Test
     public void graphArea6() throws Exception {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
@@ -179,7 +179,7 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
@@ -190,7 +190,7 @@ public class Graph2DRendererTest {
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.6", image);
     }
-    
+
     @Test
     public void graphArea7() throws Exception {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
@@ -200,18 +200,18 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
         renderer.calculateRanges(Ranges.range(3, 3), Ranges.range(3, 3), Ranges.range(0, 10), Ranges.range(0, 10));
         renderer.calculateLabels();
-        renderer.calculateGraphArea();   
+        renderer.calculateGraphArea();
         renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.7", image);
     }
-    
+
     @Test
     public void graphArea8() throws Exception {
         Graph2DRenderer renderer = new Graph2DRenderer(300, 200) {
@@ -221,7 +221,7 @@ public class Graph2DRendererTest {
                 return new Graph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
@@ -229,12 +229,12 @@ public class Graph2DRendererTest {
         renderer.yPointMargin = 2.5;
         renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10));
         renderer.calculateLabels();
-        renderer.calculateGraphArea();   
+        renderer.calculateGraphArea();
         renderer.drawBackground();
         renderer.drawGraphArea();
         ImageAssert.compareImages("graph2DArea.8", image);
     }
-    
+
     @Test
     public void inheritance1() throws Exception {
         AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
@@ -242,7 +242,7 @@ public class Graph2DRendererTest {
         assertThat(renderer.getImageWidth(), equalTo(200));
         assertThat(renderer.getImageHeight(), equalTo(100));
     }
-    
+
     @Test
     public void inheritance2() throws Exception {
         ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
@@ -250,7 +250,7 @@ public class Graph2DRendererTest {
         assertThat(renderer.getImageWidth(), equalTo(200));
         assertThat(renderer.getImageHeight(), equalTo(100));
     }
-    
+
     @Test
     public void inheritance3() throws Exception {
         Graph2DRenderer<?> renderer = new ScatterGraph2DRenderer(300, 200);
@@ -258,11 +258,11 @@ public class Graph2DRendererTest {
         assertThat(renderer.getImageWidth(), equalTo(200));
         assertThat(renderer.getImageHeight(), equalTo(100));
     }
-    
+
     public static <T extends Graph2DRendererUpdate<T>> void changeSize(Graph2DRenderer<T> renderer) {
         renderer.update(renderer.newUpdate().imageHeight(100).imageWidth(200));
     }
-    
+
     @Test
     public void processValue1() throws Exception {
         final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
@@ -277,7 +277,7 @@ public class Graph2DRendererTest {
                 assertThat(data.getXValues().getDouble(index), equalTo(valueX));
                 assertThat(data.getYValues().getDouble(index), equalTo(valueY));
             }
-            
+
         };
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
@@ -286,7 +286,7 @@ public class Graph2DRendererTest {
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
-    
+
     @Test
     public void processValue2() throws Exception {
         final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
@@ -301,7 +301,7 @@ public class Graph2DRendererTest {
                 assertThat(data.getXValues().getDouble(index), equalTo(valueX));
                 assertThat(data.getYValues().getDouble(index), equalTo(valueY));
             }
-            
+
         };
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
@@ -310,7 +310,7 @@ public class Graph2DRendererTest {
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
-    
+
     @Test
     public void processValue3() throws Exception {
         final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
@@ -325,7 +325,7 @@ public class Graph2DRendererTest {
                 assertThat(data.getXValues().getDouble(index), equalTo(valueX));
                 assertThat(data.getYValues().getDouble(index), equalTo(valueY));
             }
-            
+
         };
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
@@ -334,7 +334,7 @@ public class Graph2DRendererTest {
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
-    
+
     @Test
     public void processValue4() throws Exception {
         final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
@@ -349,7 +349,7 @@ public class Graph2DRendererTest {
                 assertThat(data.getXValues().getDouble(index), equalTo(valueX));
                 assertThat(data.getYValues().getDouble(index), equalTo(valueY));
             }
-            
+
         };
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();

@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class AxisRangesTest {
-    
+
     public AxisRangesTest() {
     }
 
@@ -96,23 +96,23 @@ public class AxisRangesTest {
         assertThat(range.getMinimum(), equalTo((Number) 3.0));
         assertThat(range.getMaximum(), equalTo((Number) 15.0));
     }
-    
+
     @Test
     public void fixedEquals() {
         assertThat(AxisRanges.fixed(0, 1), equalTo(AxisRanges.fixed(0, 1)));
         assertThat(AxisRanges.fixed(0, 1), not(equalTo(AxisRanges.fixed(0, 5))));
     }
-    
+
     @Test
     public void displayEquals() {
         assertThat(AxisRanges.display(), equalTo(AxisRanges.display()));
     }
-    
+
     @Test
     public void dataEquals() {
         assertThat(AxisRanges.data(), equalTo(AxisRanges.data()));
     }
-    
+
     @Test
     public void autoEquals() {
         assertThat(AxisRanges.auto(), equalTo(AxisRanges.auto()));

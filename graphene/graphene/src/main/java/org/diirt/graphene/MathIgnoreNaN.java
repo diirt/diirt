@@ -13,14 +13,14 @@ public class MathIgnoreNaN {
         if (Double.isNaN(a)) {
             return b;
         }
-        
+
         if (Double.isNaN(b)) {
             return a;
         }
-        
+
         return Math.min(a, b);
     }
-    
+
     /**
      *Returns the max of the two numbers, even if a or b is NaN
      * @param a double, can be NaN
@@ -36,11 +36,11 @@ public class MathIgnoreNaN {
         if (Double.isNaN(a)) {
             return b;
         }
-        
+
         if (Double.isNaN(b)) {
             return a;
         }
-        
+
         return Math.max(a, b);
     }
 }

@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class RrdToolOutputParserTest {
-    
+
     public RrdToolOutputParserTest() {
     }
 

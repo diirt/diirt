@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.*;
  * @author carcassi
  */
 public class MathIgnoreNaNTest {
-    
+
     public MathIgnoreNaNTest() {
     }
 

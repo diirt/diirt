@@ -18,7 +18,7 @@ import org.diirt.util.time.Timestamp;
  * @author carcassi
  */
 public class TimeAxis {
-    
+
     private final TimeInterval timeInterval;
     private final List<Timestamp> timeStamps;
     private final ListDouble normalizedValues;
@@ -50,11 +50,11 @@ public class TimeAxis {
     public static TimeAxis createAutoAxis(double minValue, double maxValue, int maxTicks) {
         return createAutoAxis(minValue, maxValue, maxTicks, Double.MIN_VALUE);
     }
-    
+
     private static final DecimalFormat defaultFormat = new DecimalFormat("0.###");
-    
+
     private static final Map<Integer, DecimalFormat> formats = new ConcurrentHashMap<Integer, DecimalFormat>();
-    
+
     static DecimalFormat formatWithFixedSignificantDigits(int significantDigits) {
         DecimalFormat result = formats.get(significantDigits);
         if (result == null) {
@@ -70,7 +70,7 @@ public class TimeAxis {
         }
         return result;
     }
-    
+
     public static TimeAxis createAutoAxis(double minValue, double maxValue, int maxTicks, double minIncrement) {
         double increment = incrementForRange(minValue, maxValue, maxTicks, minIncrement);
         double[] ticks = createTicks(minValue, maxValue, increment);
@@ -80,7 +80,7 @@ public class TimeAxis {
         int rangeOrder = (int) orderOfMagnitude(minValue, maxValue);
         int incrementOrder = (int) orderOfMagnitude(increment);
         int nDigits = rangeOrder - incrementOrder;
-        
+
         // The format will decide how many significant digit to show
         DecimalFormat format = defaultFormat;
         // The normalization and the exponent will need to agree and
@@ -102,7 +102,7 @@ public class TimeAxis {
             normalization = Math.pow(10.0, rangeOrder);
             exponent = Integer.toString(rangeOrder);
         }
-        
+
         String[] labels = new String[ticks.length];
         for (int i = 0; i < ticks.length; i++) {
             double value = ticks[i];
@@ -111,7 +111,7 @@ public class TimeAxis {
         //return new TimeAxis(minValue, maxValue, ticks, labels);
         return null;// new TimeAxis(minValue, maxValue, ticks, labels);
     }
-    
+
     static String format(double number, DecimalFormat format, String exponent, double normalization) {
         if (exponent != null) {
             return format.format(number/normalization) + "e" + exponent;
@@ -119,18 +119,18 @@ public class TimeAxis {
             return format.format(number/normalization);
         }
     }
-    
+
     static double orderOfMagnitude(double value) {
         return Math.floor(Math.log10(value));
     }
-    
+
     static double orderOfMagnitude(double min, double max) {
         return orderOfMagnitude(Math.max(Math.abs(max), Math.abs(min)));
     }
-    
+
     /**
      * Find the space between ticks given the constraints.
-     * 
+     *
      * @param min range start
      * @param max range end
      * @param maxTick maximum ticks
@@ -143,7 +143,7 @@ public class TimeAxis {
         int order = (int) orderOfMagnitude(increment);
         BigDecimal magnitude = BigDecimal.ONE.scaleByPowerOfTen(order);
         double normalizedIncrement = increment / magnitude.doubleValue();
-        
+
         if (normalizedIncrement <= 1.0) {
             return magnitude.doubleValue();
         } else if (normalizedIncrement <= 2.0) {
@@ -169,13 +169,13 @@ public class TimeAxis {
         } else {
             smallerIncrement = magnitude.multiply(BigDecimal.valueOf(5)).doubleValue();
         }
-        
+
         return createTicks(minValue, maxValue, smallerIncrement);
     }
-    
+
     /**
      * Determines how many ticks would there be in that range using that increment.
-     * 
+     *
      * @param min value range start
      * @param max value range end
      * @param increment space between ticks
@@ -186,10 +186,10 @@ public class TimeAxis {
         int end = (int) Math.floor(max / increment);
         return end - start + 1;
     }
-    
+
     /**
      * Create values for the axis tick given the range and the increment.
-     * 
+     *
      * @param min value range start
      * @param max value range end
      * @param increment space between ticks
@@ -204,5 +204,5 @@ public class TimeAxis {
         }
         return ticks;
     }
-    
+
 }

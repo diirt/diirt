@@ -43,7 +43,7 @@ final class LogValueScale implements ValueScale {
     public ValueAxis references(Range range, int minRefs, int maxRefs) {
         // XXX: Once the range is too short, the log scale should be using
         // a linear scale to determine the references. For example: 100 to 100.1
-        // should be divided linearly as the more we zoom in, the more the 
+        // should be divided linearly as the more we zoom in, the more the
         // difference to a linear scale does not exist. The current code will
         // probably not work well here.
         double minValue = range.getMinimum();
@@ -56,17 +56,17 @@ final class LogValueScale implements ValueScale {
         }
         int minExp = MathUtil.orderOf(minValue);
         int maxExp = MathUtil.orderOf(maxValue);
-        
+
         int expRange = maxExp - minExp + 1;
         int maxRefsPerOrder = maxRefs / expRange;
         int currentFactor = quantize(maxRefsPerOrder);
-        
+
         ListDouble references = generateReferenceValues(range, currentFactor);
         while (references.size() > maxRefs && currentFactor != 1) {
             currentFactor = decreaseFactor(currentFactor);
             references = generateReferenceValues(range, currentFactor);
         }
-        
+
         // Number of digits required after first number
         int orderOfIncrement = MathUtil.orderOf(currentFactor);
         NumberFormat format;
@@ -79,7 +79,7 @@ final class LogValueScale implements ValueScale {
             useExponentialNotation = false;
             format = NumberFormats.format(Math.max(0, orderOfIncrement - minExp));
         }
-        
+
         String[] labels = new String[references.size()];
         for (int i = 0; i < references.size(); i++) {
             double value = references.getDouble(i);
@@ -89,10 +89,10 @@ final class LogValueScale implements ValueScale {
                 labels[i] = format(value, format, null, 1);
             }
         }
-        
+
         return new ValueAxis(minValue, maxValue, CollectionNumbers.doubleArrayCopyOf(references), labels);
     }
-    
+
     static String format(double number, NumberFormat format, String exponent, double normalization) {
         if (exponent != null) {
             return format.format(number/normalization) + "e" + exponent;
@@ -100,7 +100,7 @@ final class LogValueScale implements ValueScale {
             return format.format(number/normalization);
         }
     }
-    
+
     static int decreaseFactor(int factor) {
         if (factor == 1) {
             return 1;
@@ -111,22 +111,22 @@ final class LogValueScale implements ValueScale {
             factor /= 10;
             order *= 10;
         }
-        
+
         if (factor == 1) {
             return order / 2;
         }
-        
+
         if (factor == 5) {
             return order * 2;
         }
-        
+
         if (factor == 2) {
             return order;
         }
-        
+
         throw new IllegalStateException("Logic error: this should be unreachable");
     }
-    
+
     static int quantize(double value) {
         if (value <= 1) {
             return 1;
@@ -135,7 +135,7 @@ final class LogValueScale implements ValueScale {
         int exp = MathUtil.orderOf(value);
         double order = Math.pow(10, exp);
         double normalizedValue = value / order;
-        
+
         if (normalizedValue <= 1) {
             normalizedValue = 1;
         } else if (normalizedValue <= 2) {
@@ -147,17 +147,17 @@ final class LogValueScale implements ValueScale {
         } else {
             throw new IllegalStateException("Logic error: this should be unreachable");
         }
-        
+
         return (int) (normalizedValue * order);
     }
-    
+
     static ListDouble generateReferenceValues(Range range, int subdivisionFactor) {
         CircularBufferDouble values = new CircularBufferDouble(100000);
         double minValue = range.getMinimum();
         double maxValue = range.getMaximum();
         int minExp = MathUtil.orderOf(minValue);
         int maxExp = MathUtil.orderOf(maxValue);
-        
+
         int currentExp = minExp;
         while (currentExp <= maxExp) {
             double currentOrder = Math.pow(10, currentExp);
@@ -172,8 +172,8 @@ final class LogValueScale implements ValueScale {
             }
             currentExp++;
         }
-        
+
         return values;
     }
-    
+
 }

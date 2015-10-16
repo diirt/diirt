@@ -8,20 +8,20 @@ package org.diirt.graphene;
  * The <code>ValueScales</code> class is useful to create
  * different types of <code>ValueScale</code>s.
  * It cannot be instantiated.
- * 
+ *
  * <p>Allows for a both a linear and logarithmic scale to be created.
  * The <code>ValueScale</code> objects handle the scaling themselves.
- * 
+ *
  * @author carcassi
  */
 public class ValueScales {
-    
+
     /**
      * Cannot be instantiated.
      */
     private ValueScales(){
     }
-    
+
     /**
      * Returns a linear scale to handle value scaling.
      * @return linear scale
@@ -29,7 +29,7 @@ public class ValueScales {
     public static ValueScale linearScale() {
         return new LinearValueScale();
     }
-    
+
     /**
      * Returns a logarithmic scale to handle value scaling.
      * @return logarithmic scale

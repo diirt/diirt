@@ -34,7 +34,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         super("multiYAxisGraph2D");
     }
     private List<Point2DDataset> cosine2Dataset(){
-        double [][] initialData= new double [2][100]; 
+        double [][] initialData= new double [2][100];
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = (double)(i)*Math.cos((double)j/100 * 6 * Math.PI);
@@ -49,7 +49,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         return data;
     }
     private List<Point2DDataset> cosine3Dataset(){
-    double [][] initialData= new double [3][100]; 
+    double [][] initialData= new double [3][100];
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = (double)i*Math.cos((double)j/100 * 6 * Math.PI);
@@ -108,7 +108,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         return data;
     }
     private List<Point2DDataset> linear4Dataset(){
-        double [][] initialData= new double [4][100]; 
+        double [][] initialData= new double [4][100];
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = i;
@@ -153,13 +153,13 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         return data;
     }
     private List<Point2DDataset> linear10Dataset(){
-        double [][] initialData= new double [10][100]; 
+        double [][] initialData= new double [10][100];
         for(int i = 0; i < 10; i++){
             for(int j = 0; j < 100; j++){
                 initialData[i][j] = i;
             }
         }
-        
+
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
         for(int i = 0; i < 10; i++){
             data.add(Point2DDatasets.lineData(initialData[i]));
@@ -313,7 +313,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.updateInterpolations", image);
     }
-    
+
     @Test
     public void evenDivide() throws Exception {
         List<Point2DDataset>data = linear2Dataset();
@@ -322,11 +322,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.evenDivide", image);
     }
-    
+
     @Test
     public void oneGraphSplit() throws Exception {
         //Creates a sparkline graph
@@ -336,7 +336,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.oneGraph", image);
     }
@@ -345,12 +345,12 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
     public void noGraphs() throws Exception {
 
         List<Point2DDataset> data = new ArrayList<Point2DDataset>();
-     
+
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.draw(g, data);
-    
+
     }
 
     @Test
@@ -361,7 +361,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.multipleCosine", image);
     }
@@ -375,12 +375,12 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.unevenDivide", image);
     }
- 
-    
+
+
     @Test
     public void excessGraphs() throws Exception {
         List<Point2DDataset>data = linear5Dataset();
@@ -389,11 +389,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.excessGraphs", image);
     }
-    
+
     @Test
     public void excessGraphsUpdate() throws Exception {
         List<Point2DDataset>data = linear5Dataset();
@@ -403,11 +403,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().imageHeight(550));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.excessGraphsUpdate", image);
     }
-    
+
     @Test
     public void excessGraphsAfterUpdate() throws Exception {
         List<Point2DDataset>data = linear5Dataset();
@@ -417,11 +417,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().imageHeight(550));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.excessGraphsAfterUpdate", image);
     }
-    
+
     @Test
     public void updateMargins() throws Exception {
         List<Point2DDataset> data = cosine2Dataset();
@@ -431,11 +431,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().marginBetweenGraphs(50));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.updateMargins", image);
     }
-    
+
     @Test
     public void updateRanges() throws Exception {
         List<Point2DDataset> data = linear4Dataset();
@@ -447,11 +447,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().setRanges(map));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.updateRanges", image);
     }
-    
+
     @Test
     public void marginsTooBig() throws Exception {
         List<Point2DDataset> data = cosine3Dataset();
@@ -461,11 +461,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().marginBetweenGraphs(100));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.marginsTooBig", image);
     }
-    
+
     @Test
     @Ignore
     public void resizing() throws Exception {
@@ -473,12 +473,12 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         for(int i = 0; i < 3; i++){
             data.add(Point2DTestDatasets.sineDataset(100, 50, 0, 1, 0, Ranges.range(0, 99)));
         }
-        
+
         BufferedImage image = new BufferedImage(640, 400, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D g = (Graphics2D) image.getGraphics();
         MultiAxisLineGraph2DRenderer renderer = new MultiAxisLineGraph2DRenderer(640,480);
         renderer.update(renderer.newUpdate().separateAreas(true));
-        
+
         // Gradually reduce the image to simulate window being stretched
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(400));
         renderer.draw(g, data);
@@ -494,11 +494,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.draw(g, data);
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.NEAREST_NEIGHBOR).imageHeight(340));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.resizing", image);
     }
-    
+
     @Test
     public void updateMinimumGraphHeights() throws Exception {
         List<Point2DDataset> data = linear10Dataset();
@@ -508,11 +508,11 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().minimumGraphHeight(50));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.updateMinimumGraphHeights", image);
     }
-    
+
     @Test
     public void updateInterpolationsSplit() throws Exception {
         List<Point2DDataset> data = cosine2Dataset();
@@ -522,7 +522,7 @@ public class MultiYAxisGraph2DRendererTest extends BaseGraphTest<MultiAxisLineGr
         renderer.update(renderer.newUpdate().interpolation(InterpolationScheme.LINEAR));
         renderer.update(renderer.newUpdate().separateAreas(true));
         renderer.draw(g, data);
-        
+
         //Compares to correct image
         ImageAssert.compareImages("multiYAxisGraph2D.split.updateInterpolations", image);
     }

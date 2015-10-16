@@ -23,12 +23,12 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
 
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
     public static java.util.List<ReductionScheme> supportedReductionScheme = Arrays.asList(ReductionScheme.FIRST_MAX_MIN_LAST, ReductionScheme.NONE);
-    
+
     @Override
     public LineGraph2DRendererUpdate newUpdate() {
         return new LineGraph2DRendererUpdate();
     }
-    
+
     private NumberColorMap valueColorScheme = NumberColorMaps.GRAY;
     private NumberColorMapInstance valueColorSchemeInstance;
     private Range datasetRange;
@@ -36,14 +36,14 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     private ReductionScheme reduction = ReductionScheme.FIRST_MAX_MIN_LAST;
     // Pixel focus
     private Integer focusPixelX;
-    
+
     private boolean highlightFocusValue = false;
 
     private int focusValueIndex = -1;
-    
+
     /**
      * Creates a new line graph renderer.
-     * 
+     *
      * @param imageWidth the graph width
      * @param imageHeight the graph height
      */
@@ -53,13 +53,13 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
 
     /**
      * The current interpolation used for the line.
-     * 
+     *
      * @return the current interpolation
      */
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }
-    
+
     /**
      *Current state of highlightFocusValue.
      * <ul>
@@ -71,7 +71,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     public boolean isHighlightFocusValue() {
         return highlightFocusValue;
     }
-    
+
     /**
      *Current index of the value that the mouse is focused on.
      * @return focused index (in the dataset).
@@ -79,7 +79,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     public int getFocusValueIndex() {
         return focusValueIndex;
     }
-    
+
     /**
      *Current x-position(pixel) of the value that the mouse is focused on.
      * @return the x position that the mouse is focused on in the graph (pixel).
@@ -87,7 +87,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
     public Integer getFocusPixelX() {
         return focusPixelX;
     }
-    
+
     @Override
     public void update(LineGraph2DRendererUpdate update) {
         super.update(update);
@@ -113,19 +113,19 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
 
     /**
      * Draws the graph on the given graphics context.
-     * 
+     *
      * @param g the graphics on which to display the data
      * @param data the data to display
      */
     public void draw(Graphics2D g, Point2DDataset data) {
         this.g = g;
-        
+
         calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());
         calculateLabels();
-        calculateGraphArea();        
+        calculateGraphArea();
         drawBackground();
         drawGraphArea();
-        
+
         SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
 
@@ -147,16 +147,16 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
             focusValueIndex = -1;
         }
     }
-    
+
     public void draw(GraphBuffer buffer, Point2DDataset data) {
-       calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());  
+       calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(), data.getYStatistics().getRange(), data.getYDisplayRange());
        calculateGraphArea();
-       
+
        // TODO: make sure this is right
-       
-       GraphAreaData area = new GraphAreaData(); 
+
+       GraphAreaData area = new GraphAreaData();
        area.setGraphBuffer(buffer);
-       
+
        buffer.drawBackground(backgroundColor);
        int areaRightPixel = getImageWidth() - 1 - rightMargin;
         area.setGraphArea(leftMargin, getImageHeight() - 1 - bottomMargin, areaRightPixel, topMargin);
@@ -166,7 +166,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         area.prepareLabels(labelFont, labelColor);
         area.prepareGraphArea(false, referenceLineColor);
         area.drawGraphArea();
-       
+
         ProcessValue pv = new ProcessValue() {
 
             @Override
@@ -180,20 +180,20 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
                 }
             }
         };
-       
-     
+
+
         buffer.drawValueExplicitLine(data, interpolation, reduction, pv);
     }
-    
+
     /**
      * Draws a graph with multiple lines, each pertaining to a different set of data.
-     * 
+     *
      * @param g Graphics2D object used to perform drawing functions within draw.
      * @param data can not be null
      */
     public void draw(Graphics2D g, List<Point2DDataset> data) {
         this.g = g;
-        
+
         //Calculate range, range will end up being from the lowest point to highest in all of the given data.
         for(Point2DDataset dataPiece: data){
           super.calculateRanges(dataPiece.getXStatistics().getRange(), dataPiece.getXDisplayRange(), dataPiece.getYStatistics().getRange(), dataPiece.getYDisplayRange());
@@ -202,9 +202,9 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         calculateGraphArea();
         drawBackground();
         drawGraphArea();
-        
+
         Range datasetRangeCheck = Ranges.range(0,data.size());
-        
+
         //Set color scheme
         if(valueColorSchemeInstance == null || datasetRange == null || datasetRange != datasetRangeCheck){
             datasetRange = datasetRangeCheck;
@@ -213,7 +213,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         //Draw a line for each set of data in the data array.
         for(int datasetNumber = 0; datasetNumber < data.size(); datasetNumber++){
             SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getXValues());
-            ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());        
+            ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());
             setClip(g);
             g.setColor(new Color(valueColorSchemeInstance.colorFor((double)datasetNumber)));
             drawValueExplicitLine(xValues, yValues, interpolation, reduction);
@@ -230,9 +230,9 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
             }
         }
     }
-    
+
     private int currentIndex;
     private double currentScaledDiff;
 
-    
+
 }

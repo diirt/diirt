@@ -11,12 +11,12 @@ package org.diirt.graphene;
  * @author sjdallst
  */
 public interface NumberColorMapInstance {
-    
+
     /**
      * Returns the color associated to the value. The color is an integer
      * enconding an ARGB (Alpha-Red-Green-Blue) value. Each component is 8 bits,
      * making 32 bit total.
-     * 
+     *
      * @param value the value to be mapped
      * @return the color corresponding to the value
      */

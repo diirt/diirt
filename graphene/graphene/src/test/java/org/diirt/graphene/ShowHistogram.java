@@ -48,10 +48,10 @@ public class ShowHistogram extends javax.swing.JFrame {
         pack();
         redrawHistogram();
     }
-    
+
     private int count = 0;
     private long totalTime;
-    
+
     private void redrawHistogram() {
         count++;
         long startTime = System.nanoTime();
@@ -64,8 +64,8 @@ public class ShowHistogram extends javax.swing.JFrame {
         if (count % 100 == 0)
             System.out.println(count + " " + (totalTime / count));
     }
-    
-    
+
+
 
     private static void showHistogram(final Cell1DDataset hist) {
         java.awt.EventQueue.invokeLater(new Runnable() {

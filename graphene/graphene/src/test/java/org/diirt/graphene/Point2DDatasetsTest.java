@@ -18,9 +18,9 @@ import org.junit.BeforeClass;
  */
 public class Point2DDatasetsTest {
     public Point2DDatasetsTest(){
-        
+
     }
-    
+
 //Not sure how assertEquals works
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -29,7 +29,7 @@ public class Point2DDatasetsTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Test
     public void lineDataFromList() {
         ListNumber data = new ArrayDouble(1,2,3);
@@ -43,21 +43,21 @@ public class Point2DDatasetsTest {
         assertEquals(3.0, dataset.getYValues().getDouble(2), 0.001);
     }
 
-    
+
     @Test
     public void lineDataFromListAndOffset(){
-       
-    
+
+
     }
-    
+
     @Test
     public void lineDataFromRange(){
-        
+
     }
-    
+
     @Test
     public void lineDataFromFirstLastListNum(){
-        
+
     }
 // TODO: Are these supposed to be tested as well (methods that use arrays)?
 //    @Test
