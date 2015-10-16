@@ -80,7 +80,7 @@ public class CacheUnitTest {
                                 resultCount += data.getCount();
                         Assert.assertEquals(updateCount, resultCount);
 
-                        Query query2 = cache.createQuery("TEST-BTY0:AI1", VType.class, 
+                        Query query2 = cache.createQuery("TEST-BTY0:AI1", VType.class,
                                         new QueryParameters().timeInterval(TimeRelativeInterval.of(start, end)));
                         // test that the cache is still holding 1 PV cache
                         Assert.assertEquals(1, ((CacheImpl) cache).getCount());

@@ -45,7 +45,7 @@ public class MonitorChannel {
                 .maxRate(TimeDuration.ofMillis(50));
 
         Thread.sleep(3000);
-        
+
         System.out.println("Closing...");
         reader.close();
         PVManager.getDefaultDataSource().close();

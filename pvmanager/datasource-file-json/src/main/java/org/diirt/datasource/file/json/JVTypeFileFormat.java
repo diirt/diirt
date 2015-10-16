@@ -18,12 +18,12 @@ import org.diirt.vtype.json.VTypeToJson;
 
 /**
  * JSON serialization of VTypes (.jvtype).
- * 
+ *
  * @author Kunal Shroff
  *
  */
 public class JVTypeFileFormat implements FileFormat {
-    
+
     @Override
     public Object readValue(InputStream in) {
         try (JsonReader reader = Json.createReader(in)) {
@@ -51,5 +51,5 @@ public class JVTypeFileFormat implements FileFormat {
     public Collection<String> getFileExtensions() {
         return Arrays.asList("jvtype");
     }
-    
+
 }

@@ -18,7 +18,7 @@ import org.diirt.datasource.PVDirector;
  * @author carcassi
  */
 class LastOfChannelExpression<T> implements DesiredRateExpression<T> {
-    
+
     private final DesiredRateExpression<T> expression;
     private final Class<T> clazz;
 
@@ -61,23 +61,23 @@ class LastOfChannelExpression<T> implements DesiredRateExpression<T> {
     public List<DesiredRateExpression<T>> getDesiredRateExpressions() {
         return expression.getDesiredRateExpressions();
     }
-    
+
     public <N> LastOfChannelExpression<N> cast(Class<N> clazz) {
         if (clazz.isAssignableFrom(this.clazz)) {
             @SuppressWarnings("unchecked")
             LastOfChannelExpression<N> result = (LastOfChannelExpression<N>) this;
             return result;
         }
-        
+
         if (this.clazz.isAssignableFrom(clazz)) {
             return new LastOfChannelExpression<N>(getName(), clazz);
         }
-        
+
         throw new IllegalArgumentException("Cannot cast expression of type " + this.clazz + " to type " + clazz);
     }
 
     public Class<T> getType() {
         return clazz;
     }
-    
+
 }

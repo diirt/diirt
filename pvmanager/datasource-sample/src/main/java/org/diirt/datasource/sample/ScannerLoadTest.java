@@ -28,16 +28,16 @@ import org.diirt.util.time.TimeDuration;
 public class ScannerLoadTest {
     public static void main(String[] args) throws Exception {
         PVManager.setDefaultDataSource(new LocalDataSource());
-        
+
         System.out.println("nChannels \"timeToStart (ms)\" \"avgLoad (ms)\"");
         for (int i = 0; i < 9; i++) {
             int nPvs = (int) Math.pow(4, i);
             profile(nPvs);
         }
     }
-    
+
     static OperatingSystemMXBean bean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-    
+
     public static double measureLoad(int nSec) throws InterruptedException {
         long timeStart = System.currentTimeMillis();
         double totalSum = 0.0;
@@ -52,7 +52,7 @@ public class ScannerLoadTest {
         }
         return totalSum / count;
     }
-    
+
     public static void waitForZeroLoad(int timeoutSec) throws InterruptedException {
         long timeStart = System.currentTimeMillis();
         while (System.currentTimeMillis() - timeStart < timeoutSec * 1000) {
@@ -63,7 +63,7 @@ public class ScannerLoadTest {
             Thread.sleep(250);
         }
     }
-    
+
     public static void profile(int nPvs) throws Exception {
         List<PVReader<Object>> pvs = new ArrayList<>();
         long timeStart = System.currentTimeMillis();
@@ -75,13 +75,13 @@ public class ScannerLoadTest {
         long startTime = System.currentTimeMillis() - timeStart;
 
         double avgLoad = measureLoad(5);
-        
+
         System.out.println(nPvs + " " + startTime + " " + avgLoad);
-        
+
         for (PVReader<Object> pv : pvs) {
             pv.close();
         }
-        
+
         waitForZeroLoad(5);
     }
 }

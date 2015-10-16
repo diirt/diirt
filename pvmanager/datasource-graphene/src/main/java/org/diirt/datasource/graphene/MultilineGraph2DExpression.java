@@ -25,7 +25,7 @@ public class MultilineGraph2DExpression extends DesiredRateExpressionImpl<Graph2
                 functionOf(xColumnName), functionOf(yColumnName)),
                 "Multiline Graph");
     }
-    
+
     @Override
     public void update(LineGraph2DRendererUpdate update) {
         ((MultilineGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);

@@ -52,7 +52,7 @@ class ReplayValue {
                 props.add(field);
             }
         }
-        
+
         if (clazz.getSuperclass() != null) {
             calculateFields(clazz.getSuperclass(), props);
         }

@@ -26,7 +26,7 @@ public class ChannelReadRecipe {
         this.channelName = channelName;
         this.readSubscription = readSubscription;
     }
-    
+
     /**
      * The name of the channel to read.
      *
@@ -71,5 +71,5 @@ public class ChannelReadRecipe {
     public String toString() {
         return "[ChannelReadRecipe for " + channelName + ": " + readSubscription + "]";
     }
-    
+
 }

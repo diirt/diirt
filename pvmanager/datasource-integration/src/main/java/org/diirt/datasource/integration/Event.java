@@ -11,10 +11,10 @@ import org.diirt.util.time.Timestamp;
  * @author carcassi
  */
 public interface Event {
-    
+
     public Timestamp getTimestamp();
-    
+
     public String getPvName();
-    
+
     public abstract Object getEvent();
 }

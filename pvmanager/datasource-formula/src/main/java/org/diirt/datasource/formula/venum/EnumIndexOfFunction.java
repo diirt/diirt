@@ -62,13 +62,13 @@ class EnumIndexOfFunction implements FormulaFunction {
         public Object calculate(List<Object> args) {
                 if (NullUtils.containsNull(args)) {
                         return null;
-                }    	
+                }
                 // args[0] is a VEnum
-                VEnum value = (VEnum) args.get(0);    	
+                VEnum value = (VEnum) args.get(0);
                 return newVInt(value.getIndex(),
                                 ValueUtil.highestSeverityOf(args, false),
                                 ValueUtil.latestValidTimeOrNowOf(args),
-                                displayNone());    	
+                                displayNone());
         }
 
 }

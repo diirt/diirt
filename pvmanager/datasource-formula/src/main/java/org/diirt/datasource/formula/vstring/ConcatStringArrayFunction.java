@@ -14,7 +14,7 @@ import org.diirt.vtype.ValueFactory;
 
 /**
  * @author shroffk
- * 
+ *
  */
 class ConcatStringArrayFunction implements FormulaFunction {
 

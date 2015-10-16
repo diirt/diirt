@@ -111,7 +111,7 @@ public class IntervalsListUnitTest {
                         Assert.assertEquals(1, iList.getSize());
 
                         iList.addToSelf(new IntervalsList(
-                                        UnitTestUtils.timeIntervalOf("15:00", "16:00"), 
+                                        UnitTestUtils.timeIntervalOf("15:00", "16:00"),
                                         UnitTestUtils.timeIntervalOf("17:00", "18:00")));
                         Assert.assertTrue(iList.contains(UnitTestUtils.timeIntervalOf("15:10", "17:50")));
                         Assert.assertEquals(1, iList.getSize());
@@ -163,7 +163,7 @@ public class IntervalsListUnitTest {
                         Assert.assertEquals(0, iList.getSize());
 
                         iList.subtractFromSelf(new IntervalsList(
-                                        UnitTestUtils.timeIntervalOf("15:00", "16:15"), 
+                                        UnitTestUtils.timeIntervalOf("15:00", "16:15"),
                                         UnitTestUtils.timeIntervalOf("16:45", "18:00")));
                         Assert.assertFalse(iList.contains(UnitTestUtils.timeIntervalOf("16:00", "16:15")));
                         Assert.assertEquals(0, iList.getSize());

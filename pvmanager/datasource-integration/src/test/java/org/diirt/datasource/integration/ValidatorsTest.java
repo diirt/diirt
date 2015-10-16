@@ -19,7 +19,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class ValidatorsTest {
-    
+
     public ValidatorsTest() {
     }
 
@@ -37,5 +37,5 @@ public class ValidatorsTest {
         assertThat(Validators.matchCycle(VTypeMatchMask.VALUE, 1, matchValues, values), equalTo(false));
         assertThat(Validators.matchCycle(VTypeMatchMask.VALUE, 2, matchValues, values), equalTo(true));
     }
-    
+
 }

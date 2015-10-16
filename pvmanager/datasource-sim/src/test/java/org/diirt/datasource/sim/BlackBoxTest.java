@@ -26,7 +26,7 @@ public class BlackBoxTest {
     public void multipleRead1() throws Exception {
         String channelName = "ramp(0,100,1,0.01)";
         DataSource dataSource = new SimulationDataSource();
-        
+
         PVReader<Object> pv1 = PVManager.read(channel(channelName)).from(dataSource).maxRate(ofHertz(50));
         PVReader<Object> pv2 = PVManager.read(channel(channelName)).from(dataSource).maxRate(ofHertz(50));
         waitForValue(pv1, ofMillis(200));
@@ -39,5 +39,5 @@ public class BlackBoxTest {
         pv1.close();
         pv2.close();
     }
-    
+
 }

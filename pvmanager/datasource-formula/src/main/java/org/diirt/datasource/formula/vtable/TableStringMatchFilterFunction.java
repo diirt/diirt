@@ -63,14 +63,14 @@ class TableStringMatchFilterFunction implements FormulaFunction {
         VTable table = (VTable) args.get(0);
         VString columnName = (VString) args.get(1);
         VString substring = (VString) args.get(2);
-        
+
         if (columnName == null || columnName.getValue() == null || table == null || substring == null) {
             return null;
         }
-        
+
         VTable result = VTableFactory.tableStringMatchFilter(table, columnName.getValue(), substring.getValue());
-        
+
         return result;
     }
-    
+
 }

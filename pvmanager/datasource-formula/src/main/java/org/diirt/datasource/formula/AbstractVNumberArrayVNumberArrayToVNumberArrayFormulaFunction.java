@@ -27,9 +27,9 @@ import org.diirt.vtype.ValueUtil;
  *    <li>time handling - returns latest time, or now if no time is available</li>
  *    <li>display handling - returns display none</li>
  * </ul>
- * 
+ *
  * @author shroffk
- * 
+ *
  */
 public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction implements FormulaFunction {
 
@@ -41,7 +41,7 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
 
     /**
      * Creates a new function.
-     * 
+     *
      * @param name function name; can't be null
      * @param description function description; can't be null
      * @param arg1Name first argument name; can't be null
@@ -62,7 +62,7 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
         if (arg2Name == null) {
             throw new NullPointerException("Second argument name can't be null");
         }
-        
+
         this.name = name;
         this.description = description;
         this.argumentNames = Arrays.asList(arg1Name, arg2Name);
@@ -77,7 +77,7 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
     public final boolean isVarArgs() {
         return false;
     }
- 
+
     @Override
     public final String getName() {
         return name;
@@ -108,10 +108,10 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray arg1 = (VNumberArray) args.get(0);
         VNumberArray arg2 = (VNumberArray) args.get(1);
-        
+
         return newVNumberArray(
                 calculate(arg1.getData(), arg2.getData()),
                 ValueUtil.highestSeverityOf(args, false),
@@ -122,7 +122,7 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
     /**
      * Calculates the result based on the two arguments. This is the only
      * method one has to implement.
-     * 
+     *
      * @param arg1 the first argument; not null
      * @param arg2 the second argument; not null
      * @return the result; not null

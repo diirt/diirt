@@ -56,14 +56,14 @@ public class SparklineApp extends javax.swing.JFrame {
             bindPvChange(i);
         }
     }
-    
+
     private PVReader<Graph2DResult> pv;
     protected SparklineGraph2DExpression plot1;
     protected List<ImagePanel> imagePanels = new ArrayList<>();
     protected List<SparklineGraph2DExpression> plots = new ArrayList<>();
     private List<PVReader<Graph2DResult>> pvs = new ArrayList<>();
     private List<JTextField> pvFields = new ArrayList<>();
-    
+
     private void bindResize(final int i) {
         imagePanels.get(i).addComponentListener(new ComponentAdapter() {
 
@@ -75,7 +75,7 @@ public class SparklineApp extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void bindPvChange(final int i) {
         pvFields.get(i).addActionListener(new ActionListener() {
 
@@ -86,14 +86,14 @@ public class SparklineApp extends javax.swing.JFrame {
         });
         pvChange(i);
     }
-    
+
     private void pvChange(final int i) {
         if (pvs.get(i) != null) {
             pvs.get(i).close();
             imagePanels.get(i).setImage(null);
             plots.set(i, null);
         }
-        
+
         if (pvFields.get(i).getText() == null || pvFields.get(i).getText().trim().isEmpty()) {
             return;
         }
@@ -101,9 +101,9 @@ public class SparklineApp extends javax.swing.JFrame {
         SparklineGraph2DExpression plot = sparklineGraphOf(formula(pvFields.get(i).getText()),
                     null,
                     null);
-        
+
         plots.set(i, plot);
-        
+
         plots.get(i).update(plots.get(i).newUpdate().imageHeight(imagePanels.get(i).getHeight())
                 .imageWidth(imagePanels.get(i).getWidth()));
         pvs.set(i, PVManager.read(plots.get(i))
@@ -313,9 +313,9 @@ public class SparklineApp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     protected void openConfigurationDialog() {
-        
+
     }
-    
+
     private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed
         openConfigurationDialog();
     }//GEN-LAST:event_configureButtonActionPerformed
@@ -328,16 +328,16 @@ public class SparklineApp extends javax.swing.JFrame {
             lastErrorField.setText("");
         }
     }
-    
+
     public static void main(String[] args) {
         main(SparklineApp.class);
     }
-    
+
     public static void main(final Class<? extends SparklineApp> clazz) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -370,7 +370,7 @@ public class SparklineApp extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton configureButton;
     private org.diirt.datasource.sample.ImagePanel imagePanel1;

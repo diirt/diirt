@@ -12,16 +12,16 @@ import org.diirt.util.time.TimeDuration;
  * @author carcassi
  */
 class ScannerParameters {
-    
+
     enum Type {ACTIVE, PASSIVE}
-    
+
     private Type type = Type.ACTIVE;
     private ScheduledExecutorService scannerExecutor;
     private TimeDuration maxDuration;
     private TimeDuration timeout;
     private String timeoutMessage;
     private DesiredRateEventListener listener;
-    
+
     public ScannerParameters type(Type type) {
         this.type = type;
         return this;
@@ -58,13 +58,13 @@ class ScannerParameters {
     public ScheduledExecutorService getScannerExecutor() {
         return scannerExecutor;
     }
-    
+
     public ScannerParameters timeout(TimeDuration timeout, String timeoutMessage) {
         this.timeout = timeout;
         this.timeoutMessage = timeoutMessage;
         return this;
     }
-    
+
     public SourceDesiredRateDecoupler build() {
         if (type == Type.ACTIVE) {
             if (scannerExecutor == null) {
@@ -92,5 +92,5 @@ class ScannerParameters {
         }
         throw new IllegalStateException("Can't create suitable scanner");
     }
-    
+
 }

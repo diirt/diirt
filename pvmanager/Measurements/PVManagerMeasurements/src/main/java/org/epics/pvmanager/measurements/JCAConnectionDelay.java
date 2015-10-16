@@ -22,7 +22,7 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  * Hello world!
  *
  */
-public class JCAConnectionDelay 
+public class JCAConnectionDelay
 {
     public static void main( String[] args ) throws Exception {
         final StopWatch watch = new StopWatch();
@@ -59,7 +59,7 @@ public class JCAConnectionDelay
                         });
                     context.flushIO();
                     } catch (Exception ex) {
-                        
+
                     }
                 }
             });

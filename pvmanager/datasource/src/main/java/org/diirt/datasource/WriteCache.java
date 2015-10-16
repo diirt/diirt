@@ -22,12 +22,12 @@ public class WriteCache<T> implements WriteFunction<T> {
      * Will be guarded by the overall write recipe is cache is part of.
      */
     private T value;
-    
+
     /**
      * The channel we should be writing to
      */
     private final String channelName;
-    
+
     private List<String> precedingChannels = Collections.emptyList();
 
     /**
@@ -40,7 +40,7 @@ public class WriteCache<T> implements WriteFunction<T> {
 
     /**
      * Creates a new cache for the given channel name.
-     * 
+     *
      * @param channelName the channel name
      */
     public WriteCache(String channelName) {
@@ -70,7 +70,7 @@ public class WriteCache<T> implements WriteFunction<T> {
     /**
      * Changes which channels need to be written before the channel
      * for this cache can be written.
-     * 
+     *
      * @param precedingChannels a list of channel names
      */
     public void setPrecedingChannels(List<String> precedingChannels) {
@@ -80,7 +80,7 @@ public class WriteCache<T> implements WriteFunction<T> {
     /**
      * Returns all the channels in the same recipe that should be written
      * before writing the channel for this cache.
-     * 
+     *
      * @return a list of channel names
      */
     public Collection<String> getPrecedingChannels() {
@@ -89,7 +89,7 @@ public class WriteCache<T> implements WriteFunction<T> {
 
     /**
      * The channel associated to this cache
-     * 
+     *
      * @return the channel name
      */
     public String getChannelName() {
@@ -97,6 +97,6 @@ public class WriteCache<T> implements WriteFunction<T> {
         // the datasource may redirect it
         return channelName;
     }
-    
+
 
 }

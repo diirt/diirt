@@ -231,7 +231,7 @@ public class CacheHelperUnitTest {
                         i2 = UnitTestUtils.timeIntervalOf("16:00", "17:00");
                         r = UnitTestUtils.timeIntervalOf("16:00", "17:00");
                         Assert.assertEquals(r, CacheHelper.intersection(i1, i2));
-                        
+
                         i1 = UnitTestUtils.timeIntervalOf(null, null);
                         i2 = UnitTestUtils.timeIntervalOf(null, "17:00");
                         r = UnitTestUtils.timeIntervalOf(null, "17:00");

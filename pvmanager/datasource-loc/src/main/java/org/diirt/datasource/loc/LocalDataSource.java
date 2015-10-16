@@ -38,10 +38,10 @@ public class LocalDataSource extends DataSource {
     public LocalDataSource() {
         this(false);
     }
-    
+
     /**
      * Zero initialization is deprecated. Will be removed in a future release.
-     * 
+     *
      * @param zeroInitialization whether to initialize variable to 0
      * @deprecated do not use zero initialization of local variable: does not work for non numeric variables
      */
@@ -51,14 +51,14 @@ public class LocalDataSource extends DataSource {
         this.zeroInitialization = zeroInitialization;
     }
 
-    private final String CHANNEL_SYNTAX_ERROR_MESSAGE = 
+    private final String CHANNEL_SYNTAX_ERROR_MESSAGE =
             "Syntax for local channel must be either name, name(Double) or name(String) (e.g \"foo\", \"foo(2.0)\" or \"foo(\"bar\")";
-    
+
     @Override
     protected ChannelHandler createChannel(String channelName) {
         // Parse the channel name
         List<Object> parsedTokens = parseName(channelName);
-        
+
         LocalChannelHandler channel = new LocalChannelHandler(parsedTokens.get(0).toString());
         return channel;
     }
@@ -100,7 +100,7 @@ public class LocalDataSource extends DataSource {
         List<Object> parsedTokens = parseName(channelName);
         return parsedTokens.get(0).toString();
     }
-    
+
     private void initialize(String channelName) {
         List<Object> parsedTokens = parseName(channelName);
 
@@ -119,7 +119,7 @@ public class LocalDataSource extends DataSource {
     @Override
     public void connectRead(ReadRecipe readRecipe) {
         super.connectRead(readRecipe);
-        
+
         // Initialize all values
         for (ChannelReadRecipe channelReadRecipe : readRecipe.getChannelReadRecipes()) {
             initialize(channelReadRecipe.getChannelName());
@@ -129,7 +129,7 @@ public class LocalDataSource extends DataSource {
     @Override
     public void connectWrite(WriteRecipe writeRecipe) {
         super.connectWrite(writeRecipe);
-        
+
         // Initialize all values
         for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteRecipes()) {
             initialize(channelWriteRecipe.getChannelName());

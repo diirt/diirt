@@ -65,7 +65,7 @@ public class Ramp extends SimFunction<VDouble> {
     public Ramp(Double min, Double max, Double interval) {
         this(min, max, 1.0, interval);
     }
-    
+
     /**
      * Creates a ramp shaped signal between -5 and +5, incrementing 1 every second.
      */

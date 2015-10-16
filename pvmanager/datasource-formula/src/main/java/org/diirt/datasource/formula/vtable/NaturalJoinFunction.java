@@ -67,8 +67,8 @@ class NaturalJoinFunction implements FormulaFunction {
                 tables.add((VTable) object);
             }
         }
-        
+
         return VTableFactory.join(tables);
     }
-    
+
 }

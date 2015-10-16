@@ -91,17 +91,17 @@ abstract class SimFunction<T> extends Simulation<T> {
     VDouble newValue(double value, VDouble oldValue) {
         if (lastTime == null)
             lastTime = Timestamp.now();
-        
+
         return newVDouble(value, timeNow(), oldValue);
     }
 
     /**
      * Returns the time between each sample.
-     * 
+     *
      * @return a time duration
      */
     public TimeDuration getTimeBetweenSamples() {
         return timeBetweenSamples;
     }
-    
+
 }

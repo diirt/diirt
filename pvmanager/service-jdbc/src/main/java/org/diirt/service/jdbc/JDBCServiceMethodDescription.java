@@ -48,7 +48,7 @@ public class JDBCServiceMethodDescription extends ServiceMethodDescription {
             throw new IllegalArgumentException("The query can only have one result");
         }
         resultAdded = true;
-        
+
         addResult(name, description, VTable.class);
         return this;
     }

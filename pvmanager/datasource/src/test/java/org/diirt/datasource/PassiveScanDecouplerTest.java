@@ -132,7 +132,7 @@ public class PassiveScanDecouplerTest {
                 decoupler.start();
                 // Wait for connection event
                 Thread.sleep(60);
-                
+
                 // Send events at 100Hz
                 long startTime = System.nanoTime();
                 for (int i = 0; i < 4*5+2; i++) {
@@ -140,11 +140,11 @@ public class PassiveScanDecouplerTest {
                     Thread.sleep(10);
                 }
                 long period = System.nanoTime() - startTime;
-                
+
                 // Wait to drain
                 Thread.sleep(100);
                 decoupler.stop();
-                
+
                 // 1 event at the start of each full 50ms + 1 for the partial 50 ms
                 // + 1 at the end  of the last 50ms (if event during notification) + 1 for connection
                 int expectedEvents = (int) (period / 50000000) + 1 + 1;
@@ -153,7 +153,7 @@ public class PassiveScanDecouplerTest {
             }
         });
     }
-    
+
     public static void enableLog(Class<?> clazz, Level level) {
         Handler handler = Logger.getLogger("").getHandlers()[0];
         if (level.intValue() < handler.getLevel().intValue()) {
@@ -161,7 +161,7 @@ public class PassiveScanDecouplerTest {
         }
         Logger.getLogger(clazz.getName()).setLevel(level);
     }
-    
+
     public static void disableLog(Class<?> clazz) {
         Logger.getLogger(clazz.getName()).setLevel(null);
     }
@@ -177,7 +177,7 @@ public class PassiveScanDecouplerTest {
                 decoupler.start();
                 // Wait for connection event
                 Thread.sleep(125);
-                
+
                 decoupler.newValueEvent();
                 Thread.sleep(25);
                 decoupler.newValueEvent();
@@ -185,16 +185,16 @@ public class PassiveScanDecouplerTest {
                 decoupler.newValueEvent();
                 Thread.sleep(500);
                 decoupler.stop();
-                
+
                 // Expect 3 events: 1 conn, first value, last value
                 assertThat(log.getEvents().size(), equalTo(3));
                 return null;
             }
         });
     }
-    
+
     private DesiredRateEventLog log;
-    
+
     public void repeatTest(int nTimes, Callable<?> task) throws Exception {
         for (int i = 0; i < nTimes; i++) {
             try {

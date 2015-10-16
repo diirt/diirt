@@ -21,7 +21,7 @@ import org.junit.Test;
  * @author carcassi
  */
 public class ServiceMethodTest {
-    
+
     public ServiceMethodTest() {
     }
 
@@ -32,7 +32,7 @@ public class ServiceMethodTest {
         parameters.put("arg1", 1);
         parameters.put("arg2", 2);
         Map<String, Object> result = method.executeSync(parameters);
-        
+
         assertThat(result.get("result"), equalTo((Object) 3.0));
     }
 
@@ -52,34 +52,34 @@ public class ServiceMethodTest {
         parameters.put("arg1", 1);
         parameters.put("arg2", 2);
         Map<String, Object> result = method.executeSync(parameters);
-        
+
         assertThat(result.get("result"), equalTo((Object) 2.0));
     }
-    
+
     @Test
     public void toString1() {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("multiply");
         assertThat(method.toString(), equalTo("multiply(Number arg1, Number arg2): Number result"));
     }
-    
+
     @Test
     public void toString2() {
         ServiceMethod method = MathService.createMathService().getServiceMethods().get("add");
         assertThat(method.toString(), equalTo("add(Number arg1, Number arg2): Number result"));
     }
-    
+
     @Test
     public void executeAsyncVsSync(){
         ServiceMethod method = TimerWaitServiceMethod.createTimerService().getServiceMethods().get("wait");
-        
+
         // Time measurement
         long startTimeSync, endTimeSync;
         long startTimeAsync, endTimeAsync, postLatchTimeAsync;
-        
+
         // ASYNC setup
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicReference<Map<String, Object>> result = new AtomicReference<>();
-        
+
         Consumer<Map<String, Object>> callback = (Map<String, Object> newValue) -> {
             result.set(newValue);
             latch.countDown();
@@ -87,12 +87,12 @@ public class ServiceMethodTest {
         Consumer<Exception> errorCallback = (Exception ex) -> {
             fail("Unexpected async exception");
         };
-        
-        // ASYNC execution        
+
+        // ASYNC execution
         startTimeAsync = System.currentTimeMillis();
         method.executeAsync(new HashMap<>(), callback, errorCallback);
         endTimeAsync = System.currentTimeMillis();
-        
+
         // await latch
         try {
             latch.await(60, TimeUnit.SECONDS);
@@ -100,12 +100,12 @@ public class ServiceMethodTest {
             fail("Unable to finish async execution");
         }
         postLatchTimeAsync = System.currentTimeMillis();
-        
+
         // SYNC execution
         startTimeSync = System.currentTimeMillis();
         method.executeSync(new HashMap<>());
         endTimeSync = System.currentTimeMillis();
-        
+
         // Test
         assertTrue(endTimeAsync - startTimeAsync < 1000);
         assertTrue(postLatchTimeAsync - startTimeAsync >= 1000);

@@ -45,7 +45,7 @@ public class Sine extends SimFunction<VDouble> {
                 newDisplay(min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,
                 min + range * 0.8, min + range * 0.9, max, min, max));
     }
-    
+
     /**
      * Creates a sine shaped signal between min and max, updating
      * every interval seconds with 10 samples every full sine cycle.
@@ -57,7 +57,7 @@ public class Sine extends SimFunction<VDouble> {
     public Sine(Double min, Double max, Double secondsBeetwenSamples) {
         this(min, max, 10.0, secondsBeetwenSamples);
     }
-    
+
     /**
      * Creates a sine shaped signal between -5 and 5, updating
      * every second with 10 samples every full sine cycle.

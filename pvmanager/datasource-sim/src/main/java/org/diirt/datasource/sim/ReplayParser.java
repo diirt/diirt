@@ -36,7 +36,7 @@ class ReplayParser {
             File current = new File(".");
             uri = current.toURI().resolve(uri);
         }
-        
+
         try {
             JAXBContext jaxbCtx = JAXBContext.newInstance(XmlValues.class);
             Unmarshaller reader = jaxbCtx.createUnmarshaller();

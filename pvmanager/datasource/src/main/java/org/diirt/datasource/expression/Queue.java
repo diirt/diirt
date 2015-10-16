@@ -18,7 +18,7 @@ import org.diirt.datasource.WriteFunction;
  * @author carcassi
  */
 public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
-    
+
     private static <T> QueueCollector<T> createQueue(int maxSize) {
         return new QueueCollector<>(maxSize);
     }
@@ -41,7 +41,7 @@ public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
     public Queue(SourceRateExpression<T> sourceExpression, int maxSize) {
         super(sourceExpression, Queue.<T>createQueue(maxSize), "queue");
     }
-    
+
     /**
      * The write function to be used to fill the queue.
      *
@@ -50,12 +50,12 @@ public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
     public WriteFunction<T> getWriteFunction() {
         return getCollector();
     }
-    
+
     @SuppressWarnings("unchecked")
     private QueueCollector<T> getCollector() {
         return (QueueCollector<T>) getFunction();
     }
-    
+
     /**
      * Changes the maximum size of the queue.
      *
@@ -66,7 +66,7 @@ public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
         getCollector().setMaxSize(maxSize);
         return this;
     }
-    
+
     /**
      * Adds a new value to the queue
      *
@@ -75,6 +75,5 @@ public class Queue<T> extends DesiredRateExpressionImpl<List<T>> {
     public void add(T newValue) {
         getWriteFunction().writeValue(newValue);
     }
-    
+
 }
- 

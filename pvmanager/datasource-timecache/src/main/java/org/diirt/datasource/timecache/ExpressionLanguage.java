@@ -33,7 +33,7 @@ import org.diirt.vtype.ValueFactory;
 
 /**
  * PVManager expression language support for additional operations.
- * 
+ *
  * @author carcassi
  */
 public class ExpressionLanguage {
@@ -50,7 +50,7 @@ public class ExpressionLanguage {
 
         /**
          * A query expression that returns the result formatted as a table.
-         * 
+         *
          * @param channelName
          * @param parameters
          * @return a new expression
@@ -74,7 +74,7 @@ public class ExpressionLanguage {
                                         {
                                                 valueMap = new ConcurrentSkipListMap<Timestamp, Double>();
                                                 previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
-                                                                Arrays.asList("Time", "Value"), 
+                                                                Arrays.asList("Time", "Value"),
                                                                 Arrays.asList(Arrays.asList(channelName), new ArrayDouble(0)));
                                         }
 
@@ -107,7 +107,7 @@ public class ExpressionLanguage {
                                                 }
 
                                                 previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
-                                                                Arrays.asList("Time", "Value"), 
+                                                                Arrays.asList("Time", "Value"),
                                                                 Arrays.asList(times, new ArrayDouble(array, true)));
                                                 return previousValue;
                                         }

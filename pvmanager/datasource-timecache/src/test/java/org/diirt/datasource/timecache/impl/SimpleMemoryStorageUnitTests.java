@@ -74,7 +74,7 @@ public class SimpleMemoryStorageUnitTests {
                         for (int index = 0; index < chunkSize; index++) {
                                 Assert.assertTrue(itChunk.hasNext());
                                 Assert.assertTrue(itSet.hasNext());
-                                Assert.assertEquals(itChunk.next().getTimestamp(), 
+                                Assert.assertEquals(itChunk.next().getTimestamp(),
                                                 itSet.next().getTimestamp());
                         }
 

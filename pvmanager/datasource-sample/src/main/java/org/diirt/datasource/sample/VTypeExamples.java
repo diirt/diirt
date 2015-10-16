@@ -32,11 +32,11 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 public class VTypeExamples {
-    
+
     public void v1_readNumericType() {
         // Let's statically import so the code looks cleaner
         // import static org.epics.pvmanager.data.ExpressionLanguage.*;
- 
+
         // Read and Write a vNumber
         // Note that the read type is different form the write type
         final PV<VNumber, Number> pv = PVManager.readAndWrite(vNumber("currentRB"))
@@ -51,13 +51,13 @@ public class VTypeExamples {
             })
             .asynchWriteAndMaxReadRate(ofMillis(10));
         pv.write(1.0);
-        
+
         // Remember to close
         pv.close();
-        
+
         // For a full list of types, refer to org.epics.pvmanager.data.ExpressionLanguage
     }
-    
+
     public void v2_genericReaderExtractParialInformation() {
         final PVReader<VType> pvReader = PVManager.read(vType("channelName"))
             .readListener(new PVReaderListener<VType>() {
@@ -84,7 +84,7 @@ public class VTypeExamples {
             })
             .maxRate(ofMillis(10));
     }
-    
+
     public void v3_genericReaderSwitchOnType() {
         final PVReader<VType> pvReader = PVManager.read(vType("channelName"))
             .readListener(new PVReaderListener<VType>() {
@@ -100,7 +100,7 @@ public class VTypeExamples {
             })
             .maxRate(ofMillis(100));
     }
-    
+
     public void v4_readArrays() {
         // Reads a numeric array of any type (double, float, int, ...)
         // This allows to work on any array type without having to create
@@ -123,7 +123,7 @@ public class VTypeExamples {
             })
             .maxRate(ofMillis(100));
     }
-    
+
     public void v5_assemblingNumericArrayFromScalars() {
         List<String> channelNames = Arrays.asList("channel1", "channel2", "channel3", "channel4");
         // Reads a list of different numeric channels as a single array.
@@ -140,11 +140,11 @@ public class VTypeExamples {
             })
             .maxRate(ofMillis(100));
     }
-    
+
     public void v6_assemblingTables() {
-        // You can assemble a table by giving a desired rate expression for each cell, 
-        // organizing them by column. You can use constant expressions for 
-        // labels or values that do not change. 
+        // You can assemble a table by giving a desired rate expression for each cell,
+        // organizing them by column. You can use constant expressions for
+        // labels or values that do not change.
         List<String> names = Arrays.asList("one", "two", "trhee");
         PVReader<VTable> pvReader = PVManager
                 .read(vTable(column("Names", vStringConstants(names)),

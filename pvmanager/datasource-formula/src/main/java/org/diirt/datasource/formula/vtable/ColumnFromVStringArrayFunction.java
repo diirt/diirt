@@ -58,12 +58,12 @@ class ColumnFromVStringArrayFunction implements FormulaFunction {
     public Object calculate(final List<Object> args) {
         VString name = (VString) args.get(0);
         VStringArray data = (VStringArray) args.get(1);
-        
+
         if (name == null || data == null) {
             return null;
         }
 
         return VTableFactory.column(name.getValue(), data);
     }
-    
+
 }

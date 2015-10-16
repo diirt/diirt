@@ -30,7 +30,7 @@ public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
     <T extends VNumber> WaterfallPlot(DesiredRateExpressionList<List<T>> expressions, String name) {
         super(expressions, new WaterfallPlotFunction(new DoubleArrayTimeCacheFromVDoubles(getFunctions(expressions)), WaterfallPlotParameters.defaults().internalCopy()), name);
     }
-    
+
     private static <T extends VNumber> List<ReadFunction<List<T>>> getFunctions(DesiredRateExpressionList<List<T>> exp) {
         List<ReadFunction<List<T>>> functions = new ArrayList<ReadFunction<List<T>>>();
         for (DesiredRateExpression<List<T>> desiredRateExpression : exp.getDesiredRateExpressions()) {
@@ -38,16 +38,16 @@ public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
         }
         return functions;
     }
-    
+
     private volatile WaterfallPlotParameters parameters = WaterfallPlotParameters.defaults();
 
     WaterfallPlotFunction getPlotter() {
         return (WaterfallPlotFunction) getFunction();
     }
-    
+
     /**
      * Changes parameters of the waterfall plot.
-     * 
+     *
      * @param newParameters parameters to change
      * @return this
      */
@@ -57,10 +57,10 @@ public class WaterfallPlot extends DesiredRateExpressionImpl<VImage> {
         getPlotter().setParameters(copy);
         return this;
     }
-    
+
     /**
      * Returns the full set of parameters currently being used.
-     * 
+     *
      * @return the current parameters
      */
     public WaterfallPlotParameters getParameters() {

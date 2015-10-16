@@ -12,10 +12,10 @@ import java.util.Collection;
  * @author carcassi
  */
 public class NullUtils {
-    
+
     /**
      * Checks whether the collection contains a null value.
-     * 
+     *
      * @param args a collection; can't be null
      * @return true if one of the value is null
      */

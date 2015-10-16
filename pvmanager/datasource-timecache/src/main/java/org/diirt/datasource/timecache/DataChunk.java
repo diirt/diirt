@@ -43,7 +43,7 @@ public class DataChunk {
                         return false;
                 datas.add(data);
                 interval = TimeInterval.between(
-                                datas.first().getTimestamp(), 
+                                datas.first().getTimestamp(),
                                 datas.last().getTimestamp());
                 return true;
         }

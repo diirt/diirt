@@ -17,7 +17,7 @@ import org.diirt.vtype.ValueUtil;
 
 /**
  * @author shroffk
- * 
+ *
  */
 class ToStringFunction implements FormulaFunction {
 
@@ -67,7 +67,7 @@ class ToStringFunction implements FormulaFunction {
         if (time == null) {
             time = ValueFactory.timeNow();
         }
-        
+
         return ValueFactory.newVString(ValueUtil.getDefaultValueFormat().format(value),
                 alarm,
                 time);

@@ -28,13 +28,13 @@ public class TimerWaitServiceMethod extends ServiceMethod {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public static Service createTimerService(){
         return new ServiceDescription("timer", "Simple timer service")
                 .addServiceMethod(timerMethod())
-                .createService();        
+                .createService();
     }
-    
+
     public static ServiceMethodDescription timerMethod() {
         return new ServiceMethodDescription("wait", "Waits a pre-determined time (sync doesn't waits, async wait).") {
 

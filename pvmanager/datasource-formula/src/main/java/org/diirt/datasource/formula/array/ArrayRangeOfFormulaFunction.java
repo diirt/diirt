@@ -64,11 +64,11 @@ class ArrayRangeOfFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray numberArray = (VNumberArray) args.get(0);
         double min = numberArray.getDimensionDisplay().get(0).getCellBoundaries().getDouble(0);
         double max = numberArray.getDimensionDisplay().get(0).getCellBoundaries().getDouble(numberArray.getSizes().getInt(0));
-        
+
         return newVNumberArray(
                 new ArrayDouble(min, max),
                 ValueUtil.highestSeverityOf(args, false),

@@ -26,9 +26,9 @@ public final class FileDataSource extends DataSource {
         // Install type support for the types it generates.
         DataTypeSupport.install();
     }
-    
+
     private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.util.concurrent.Executors.namedPool("diirt - file watch"));
-    
+
     FileDataSource(FileDataSourceConfiguration conf) {
         super(true);
         if (conf.isPollEnabled()) {
@@ -36,19 +36,19 @@ public final class FileDataSource extends DataSource {
         } else {
             fileWatchService = new FileWatcherFileSystemService(exec,
                     Duration.ofSeconds(1));
-            
+
         }
     }
-    
+
     private final FileWatcherService fileWatchService;
-            
+
 
     FileWatcherService getFileWatchService() {
         return fileWatchService;
     }
-    
+
     @Override
-    protected ChannelHandler createChannel(String channelName) {	
+    protected ChannelHandler createChannel(String channelName) {
         if (channelName.contains(".")) {
             String fileExt = channelName.substring(
                     channelName.lastIndexOf('.') + 1, channelName.length());
@@ -67,5 +67,5 @@ public final class FileDataSource extends DataSource {
         exec.shutdownNow();
         super.close();
     }
-    
+
 }

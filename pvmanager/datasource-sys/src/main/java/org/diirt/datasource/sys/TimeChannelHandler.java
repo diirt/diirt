@@ -14,7 +14,7 @@ import static org.diirt.vtype.ValueFactory.*;
  */
 class TimeChannelHandler extends SystemChannelHandler {
 
-    private static final TimestampFormat timeFormat = new TimestampFormat("yyyy/MM/dd HH:mm:ss.SSS");    
+    private static final TimestampFormat timeFormat = new TimestampFormat("yyyy/MM/dd HH:mm:ss.SSS");
 
     public TimeChannelHandler(String channelName) {
         super(channelName);
@@ -26,5 +26,5 @@ class TimeChannelHandler extends SystemChannelHandler {
         String formatted = timeFormat.format(time);
         return newVString(formatted, alarmNone(), newTime(time));
     }
-    
+
 }

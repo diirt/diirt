@@ -43,7 +43,7 @@ public class SimpleFileDataSourceUnitTests {
                 @Override
                 public void newData(DataChunk chunk, DataRequestThread thread) {
                         System.out.println(CacheHelper.format(TimeInterval.between(
-                                        chunk.getDatas().first().getTimestamp(), 
+                                        chunk.getDatas().first().getTimestamp(),
                                         chunk.getDatas().last().getTimestamp()))
                                         + ": " + chunk.getDatas().size());
                         for (Data d : chunk.getDatas()) {
@@ -90,7 +90,7 @@ public class SimpleFileDataSourceUnitTests {
                                 "src/test/resources/archive-export.csv");
                 try {
                         start = Timestamp.of(dateFormat.parse("2014-03-14 16:00"));
-                        
+
                         // test wrong parameters
                         DataChunk chunk = null;
                         chunk = source.getData(null, null);
@@ -137,7 +137,7 @@ public class SimpleFileDataSourceUnitTests {
                 try {
                         start = Timestamp.of(dateFormat.parse("2014-03-14 16:00"));
                         end = Timestamp.of(dateFormat.parse("2014-03-14 17:00"));
-                        
+
                         thread = new DataRequestThread("TEST-BTY0:AI1", source,
                                         TimeInterval.between(start, end));
                         thread.addListener(new TUListener());

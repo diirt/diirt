@@ -31,7 +31,7 @@ import org.diirt.vtype.ValueFactory;
  * @author carcassi
  */
 class JDBCServiceMethod extends ServiceMethod {
-    
+
     private final DataSource dataSource;
     private final String query;
     private final List<String> parameterNames;
@@ -131,7 +131,7 @@ class JDBCServiceMethod extends ServiceMethod {
                     types.add(double.class);
                     data.add(new CircularBufferDouble(Integer.MAX_VALUE));
                     break;
-                    
+
                 case Types.LONGNVARCHAR:
                 case Types.CHAR:
                 case Types.VARCHAR:
@@ -141,12 +141,12 @@ class JDBCServiceMethod extends ServiceMethod {
                     types.add(String.class);
                     data.add(new ArrayList<>());
                     break;
-                    
+
                 case Types.TIMESTAMP:
                     types.add(Timestamp.class);
                     data.add(new ArrayList<>());
                     break;
-                    
+
                 default:
                     if ("java.lang.String".equals(metaData.getColumnClassName(j))) {
                         types.add(String.class);
@@ -157,7 +157,7 @@ class JDBCServiceMethod extends ServiceMethod {
 
             }
         }
-        
+
         while (resultSet.next()) {
             for (int i = 0; i < nColumns; i++) {
                 Class<?> type = types.get(i);
@@ -179,8 +179,8 @@ class JDBCServiceMethod extends ServiceMethod {
                 }
             }
         }
-        
+
         return ValueFactory.newVTable(types, names, data);
     }
-    
+
 }

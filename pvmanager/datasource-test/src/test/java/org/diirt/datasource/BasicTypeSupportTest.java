@@ -23,7 +23,7 @@ import org.junit.Test;
  * @author carcassi
  */
 public class BasicTypeSupportTest {
-    
+
     @BeforeClass
     public static void installSupport() {
         BasicTypeSupport.install();
@@ -115,5 +115,5 @@ public class BasicTypeSupportTest {
         assertThat(notification.getNewValue(), equalTo(newValues));
         assertThat(notification.getNewValue(), not(sameInstance(newValues)));
     }
-    
+
 }

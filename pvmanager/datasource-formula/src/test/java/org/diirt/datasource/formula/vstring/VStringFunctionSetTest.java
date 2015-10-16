@@ -15,7 +15,7 @@ import org.junit.Test;
 
 /**
  * @author shroffk
- * 
+ *
  */
 public class VStringFunctionSetTest {
 

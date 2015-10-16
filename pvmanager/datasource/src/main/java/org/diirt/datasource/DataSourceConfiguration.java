@@ -27,7 +27,7 @@ public abstract class DataSourceConfiguration<T extends DataSource> {
      * <p>
      * NOTE: whether this object is modified and returned, or a new
      * object is returned, is currently unspecified.
-     * 
+     *
      * @param stream the configuration file to be read
      * @return the object with the new configuration
      */
@@ -35,7 +35,7 @@ public abstract class DataSourceConfiguration<T extends DataSource> {
 
     /**
      * Creates a new data source based on this configuration.
-     * 
+     *
      * @return a new data source
      */
     public abstract T create();

@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
  * @author carcassi
  */
 public class MockExecutor implements Executor {
-    
+
     private volatile Runnable command;
 
     @Override
@@ -22,5 +22,5 @@ public class MockExecutor implements Executor {
     public Runnable getCommand() {
         return command;
     }
-    
+
 }

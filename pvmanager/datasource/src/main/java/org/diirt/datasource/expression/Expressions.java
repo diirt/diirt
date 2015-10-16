@@ -17,7 +17,7 @@ public class Expressions {
 
     /**
      * Extract the list of functions from an expression list.
-     * 
+     *
      * @param list the expressions
      * @return the functions of the expression
      */

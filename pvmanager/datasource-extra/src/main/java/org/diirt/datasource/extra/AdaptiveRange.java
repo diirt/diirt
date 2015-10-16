@@ -25,7 +25,7 @@ class AdaptiveRange implements Display {
     private Double upperAlarmLimit = 0.0;
     private Double upperCtrlLimit = 0.0;
     private Double upperDisplayLimit = 0.0;
-    
+
     private boolean firstValue = true;
     private boolean limitsChanged = false;
 

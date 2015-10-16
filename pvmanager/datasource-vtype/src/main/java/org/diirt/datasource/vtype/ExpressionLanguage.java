@@ -70,7 +70,7 @@ public class ExpressionLanguage {
         // Add support for value types.
         DataTypeSupport.install();
     }
-    
+
     //
     // Channel expressions
     //
@@ -84,7 +84,7 @@ public class ExpressionLanguage {
     public static ChannelExpression<VType, Object> vType(String name) {
         return channel(name, VType.class, Object.class);
     }
-    
+
     /**
      * A list of channels with the given names that return any of the value types.
      *
@@ -174,10 +174,10 @@ public class ExpressionLanguage {
     public static ChannelExpression<VNumberArray, ListNumber> vNumberArray(String name) {
         return channel(name, VNumberArray.class, ListNumber.class);
     }
-    
+
     /**
      * Transforms a list of numeric scalar into an array.
-     * 
+     *
      * @param expressions a list of numeric expressions
      * @return a new numeric array expression
      */
@@ -283,80 +283,80 @@ public class ExpressionLanguage {
     public static ChannelExpressionList<VDouble, Double> vDoubles(Collection<String> names) {
         return channels(names, VDouble.class, Double.class);
     }
-    
+
     //
     // Constant expressions
     //
-    
+
     /**
      * A constant representing a string. Alarm will be none and timestamp now.
-     * 
+     *
      * @param value the constant value
      * @return a string expression
      */
     public static DesiredRateExpression<VString> vConst(String value) {
         return constant(newVString(value, alarmNone(), timeNow()), value);
     }
-    
+
     /**
      * A constant representing a double. Alarm will be none, timestamp now
      * and no display information.
-     * 
+     *
      * @param value the constant value
      * @return a double expression
      */
     public static DesiredRateExpression<VDouble> vConst(double value) {
         return constant(newVDouble(value, alarmNone(), timeNow(), displayNone()), Double.toString(value));
     }
-    
+
     /**
      * A constant representing an int. Alarm will be none, timestamp now
      * and no display information.
-     * 
+     *
      * @param value the constant value
      * @return an int expression
      */
     public static DesiredRateExpression<VInt> vConst(int value) {
         return constant(newVInt(value, alarmNone(), timeNow(), displayNone()), Integer.toString(value));
     }
-    
+
     /**
      * A constant representing a double array. Alarm will be none, timestamp now
      * and no display information.
-     * 
+     *
      * @param values the constant values
      * @return a double array expression
      */
     public static DesiredRateExpression<VDoubleArray> vConst(double... values) {
         return constant(newVDoubleArray(new ArrayDouble(values), alarmNone(), timeNow(), displayNone()));
     }
-    
+
     /**
      * A constant representing a double array. Alarm will be none, timestamp now
      * and no display information.
-     * 
+     *
      * @param values the constant values
      * @return a double array expression
      */
     public static DesiredRateExpression<VDoubleArray> vConst(ListDouble values) {
         return constant(newVDoubleArray(values, alarmNone(), timeNow(), displayNone()));
     }
-    
+
     /**
      * A constant representing an int array. Alarm will be none, timestamp now
      * and no display information.
-     * 
+     *
      * @param values the constant values
      * @return an int array expression
      */
     public static DesiredRateExpression<VIntArray> vConst(int... values) {
         return constant(newVIntArray(new ArrayInt(values), alarmNone(), timeNow(), displayNone()));
     }
-    
+
     /**
      * A constant representing an int array. Alarm will be none, timestamp now
      * and no display information.
-     * 
+     *
      * @param values the constant values
      * @return an int array expression
      */
@@ -366,7 +366,7 @@ public class ExpressionLanguage {
 
     /**
      * A list of constant expressions of type VDouble.
-     * 
+     *
      * @param values the list of constants
      * @return a list of double expression
      */
@@ -380,7 +380,7 @@ public class ExpressionLanguage {
 
     /**
      * A list of constant expressions of type VDouble.
-     * 
+     *
      * @param values the list of constants
      * @return a list of int expression
      */
@@ -394,7 +394,7 @@ public class ExpressionLanguage {
 
     /**
      * A list of constant expressions of type VString.
-     * 
+     *
      * @param values the list of constants
      * @return a list of string expression
      */
@@ -405,11 +405,11 @@ public class ExpressionLanguage {
         }
         return list;
     }
-    
+
     /**
      * An expression that formats the given expression to a string using the
      * given format.
-     * 
+     *
      * @param expression the expression to format
      * @param valueFormat the format to use for the conversion
      * @return an expression with the string representation of the argument
@@ -417,33 +417,33 @@ public class ExpressionLanguage {
     public static DesiredRateExpression<VString> vStringOf(DesiredRateExpression<? extends VType> expression, ValueFormat valueFormat) {
         return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction(), valueFormat), expression.getName());
     }
-    
+
     /**
      * An expression that formats the given expression to a string using the
      * default format.
-     * 
+     *
      * @param expression the expression to format
      * @return an expression with the string representation of the argument
      */
     public static DesiredRateExpression<VString> vStringOf(DesiredRateExpression<? extends VType> expression) {
         return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction(), ValueUtil.getDefaultValueFormat()), expression.getName());
     }
-    
+
     /**
      * An expression that formats the given expression to a string using the
      * default format.
-     * 
+     *
      * @param expression the expression to format
      * @return an expression with the string representation of the argument
      */
     public static DesiredRateReadWriteExpression<VString, String> vStringOf(DesiredRateReadWriteExpression<? extends VType, ? extends Object> expression) {
         return vStringOf(expression, ValueUtil.getDefaultValueFormat());
     }
-    
+
     /**
      * An expression that formats the given expression to a string using the
      * given format.
-     * 
+     *
      * @param expression the expression to format
      * @param valueFormat the format to use for the conversion
      * @return an expression with the string representation of the argument
@@ -463,7 +463,7 @@ public class ExpressionLanguage {
 
     /**
      * Aggregates the sample at the scan rate and takes the average.
-     * 
+     *
      * @param doublePv the expression to take the average of; can't be null
      * @return an expression representing the average of the expression
      */
@@ -544,7 +544,7 @@ public class ExpressionLanguage {
     /**
      * Returns all the values starting the latest value and older up to
      * the time difference given by the interval.
-     * 
+     *
      * @param <T> type being read
      * @param expression expression to read
      * @param maxIntervalBetweenSamples maximum time difference between values
@@ -559,7 +559,7 @@ public class ExpressionLanguage {
 
     /**
      * A column for an aggregated vTable.
-     * 
+     *
      * @param name the name of the column
      * @param values the value of the column
      * @return the column
@@ -567,10 +567,10 @@ public class ExpressionLanguage {
     public static VTableColumn column(String name, DesiredRateExpressionList<?> values) {
         return new VTableColumn(name, values);
     }
-    
+
     /**
      * Creates a vTable by aggregating different values from different pvs.
-     * 
+     *
      * @param columns columns of the table
      * @return an expression for the table
      */

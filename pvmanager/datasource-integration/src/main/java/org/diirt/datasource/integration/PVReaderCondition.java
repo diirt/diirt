@@ -17,9 +17,9 @@ import org.diirt.datasource.PVReaderListener;
  * @author carcassi
  */
 public abstract class PVReaderCondition<T> {
-    
+
     abstract public boolean accept(PVReader<T> reader, PVReaderEvent<T> event);
-    
+
     public boolean waitOn(PVReader<T> reader, int msTimeout) {
         final CountDownLatch latch = new CountDownLatch(1);
         reader.addPVReaderListener(new PVReaderListener<T>() {
@@ -42,5 +42,5 @@ public abstract class PVReaderCondition<T> {
             return false;
         }
     }
-    
+
 }

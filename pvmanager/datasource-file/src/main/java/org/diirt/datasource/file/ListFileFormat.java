@@ -16,7 +16,7 @@ import org.diirt.vtype.io.TextIO;
 
 /**
  * A file format for reading and writing lists from a .list file
- * 
+ *
  * @author Kunal Shroff
  *
  */
@@ -41,5 +41,5 @@ public class ListFileFormat implements FileFormat  {
     public Collection<String> getFileExtensions() {
         return Arrays.asList("list");
     }
-    
+
 }

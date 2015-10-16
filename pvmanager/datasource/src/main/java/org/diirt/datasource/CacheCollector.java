@@ -18,7 +18,7 @@ import java.util.List;
  * @author carcassi
  */
 public class CacheCollector<T> implements Collector<T, List<T>> {
-    
+
     private final Object lock = new Object();
     private final List<T> readBuffer = new ArrayList<>();
     private final List<T> writeBuffer = new LinkedList<>();
@@ -27,7 +27,7 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
 
     /**
      * A new cache collector with max size for the cache.
-     * 
+     *
      * @param maxSize maximum number of elements in the cache
      */
     public CacheCollector(int maxSize) {
@@ -73,7 +73,7 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
      * <p>
      * If new maxSize is less than the current number of element in the cache,
      * the old values are discarded.
-     * 
+     *
      * @param maxSize the maximum number of elements in the cache.
      */
     public void setMaxSize(int maxSize) {
@@ -87,7 +87,7 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
 
     /**
      * The maximum number of elements in the cache.
-     * 
+     *
      * @return the maximum number of elements in the cache
      */
     public int getMaxSize() {
@@ -95,5 +95,5 @@ public class CacheCollector<T> implements Collector<T, List<T>> {
             return maxSize;
         }
     }
-    
+
 }

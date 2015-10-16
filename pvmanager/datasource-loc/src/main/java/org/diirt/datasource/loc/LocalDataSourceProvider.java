@@ -23,5 +23,5 @@ public class LocalDataSourceProvider extends DataSourceProvider {
     public DataSource createInstance() {
         return new LocalDataSource();
     }
-    
+
 }

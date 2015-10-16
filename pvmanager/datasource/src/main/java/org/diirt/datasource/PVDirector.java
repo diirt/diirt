@@ -36,7 +36,7 @@ import org.diirt.util.time.TimeDuration;
  * @author carcassi
  */
 public class PVDirector<T> {
-    
+
     private static final Logger log = Logger.getLogger(PVDirector.class.getName());
 
     // Required for connection and exception notification
@@ -53,7 +53,7 @@ public class PVDirector<T> {
     private final Exception creationStackTrace = new Exception("PV was never closed (stack trace for creation)");
     /** Used to ignore duplicated errors */
     private final AtomicReference<Exception> previousCalculationException = new AtomicReference<>();
-    
+
     // Required to connect/disconnect expressions
     private final DataSource dataSource;
     private final Object lock = new Object();
@@ -67,7 +67,7 @@ public class PVDirector<T> {
             new ConnectionCollector();
     /** Exception queue to be used to connect/disconnect expression and for exception notification */
     private final QueueCollector<Exception> readExceptionCollector;
-    
+
     void setScanner(final SourceDesiredRateDecoupler scanStrategy) {
         synchronized(lock) {
             this.scanStrategy = scanStrategy;
@@ -87,7 +87,7 @@ public class PVDirector<T> {
             }
         });
     }
-    
+
     public void registerCollector(Collector<?, ?> collector) {
         collector.setChangeNotification(new Runnable() {
 
@@ -99,7 +99,7 @@ public class PVDirector<T> {
             }
         });
     }
-    
+
     ReadRecipe getCurrentReadRecipe() {
         ReadRecipeBuilder builder = new ReadRecipeBuilder();
         for (Map.Entry<DesiredRateExpression<?>, ReadRecipe> entry : readRecipies.entrySet()) {
@@ -110,14 +110,14 @@ public class PVDirector<T> {
         }
         return builder.build(readExceptionCollector, readConnCollector);
     }
-    
+
     /**
      * Connects the given expression.
      * <p>
      * This can be used for dynamic expression to add and connect child expressions.
      * The added expression will be automatically closed when the associated
      * reader is closed, if it's not disconnected first.
-     * 
+     *
      * @param expression the expression to connect
      */
     public void connectReadExpression(DesiredRateExpression<?> expression) {
@@ -135,7 +135,7 @@ public class PVDirector<T> {
             }
         }
     }
-    
+
     /**
      * Simulate a static connection in which the channel has one exception
      * and the connection will never change.
@@ -148,7 +148,7 @@ public class PVDirector<T> {
      * <p>
      * In the future, this should be generalized to allow fully fledged expressions
      * that connect/disconnect and can report errors.
-     * 
+     *
      * @param ex the exception to queue
      * @param connection the connection flag
      * @param channelName the channel name
@@ -157,7 +157,7 @@ public class PVDirector<T> {
         readExceptionCollector.writeValue(ex);
         readConnCollector.addChannel(channelName).writeValue(connection);
     }
-    
+
     /**
      * Disconnects the given expression.
      * <p>
@@ -174,7 +174,7 @@ public class PVDirector<T> {
         if (recipe == null) {
             log.log(Level.SEVERE, "Director was asked to disconnect expression '" + expression + "' which was not found.");
         }
-        
+
         if (!recipe.getChannelReadRecipes().isEmpty()) {
             try {
                 for (ChannelReadRecipe channelRecipe : recipe.getChannelReadRecipes()) {
@@ -186,9 +186,9 @@ public class PVDirector<T> {
             }
         }
     }
-    
+
     private volatile boolean closed = false;
-    
+
     void close() {
         closed = true;
         disconnect();
@@ -254,17 +254,17 @@ public class PVDirector<T> {
             return false;
         }
     }
-    
+
     void pause() {
         scanStrategy.pause();
     }
-    
+
     void resume() {
         scanStrategy.resume();
     }
-    
+
     private volatile boolean notificationInFlight = false;
-    
+
     /**
      * Notifies the PVReader of a new value.
      */
@@ -274,7 +274,7 @@ public class PVDirector<T> {
         // is slower than the producer.
         if (notificationInFlight)
             return;
-        
+
         // Calculate new value
         T newValue = null;
         Exception calculationException = null;
@@ -298,7 +298,7 @@ public class PVDirector<T> {
         } catch (Throwable ex) {
             log.log(Level.SEVERE, "Unrecoverable error during scanning", ex);
         }
-        
+
         // Calculate new connection
         final boolean connected = readConnCollector.readValue();
         List<Exception> exceptions = readExceptionCollector.readValue();
@@ -310,10 +310,10 @@ public class PVDirector<T> {
         } else {
             lastException = exceptions.get(exceptions.size() - 1);
         }
-        
+
         // TODO: if payload is immutable, the difference test should be done here
         // and not in the runnable (to save SWT time)
-        
+
         // Prepare values to ship to the other thread.
         // The data will be shipped as part of the task,
         // which is properly synchronized by the executor
@@ -329,7 +329,7 @@ public class PVDirector<T> {
                     // Proceed with notification only if PVReader was not garbage
                     // collected
                     if (pv != null) {
-                        
+
                         // Atomicity guaranteed by:
                         //  - all the modification on the PVReader
                         //    are done here, on the same thread where the listeners will be called.
@@ -348,7 +348,7 @@ public class PVDirector<T> {
                                 pv.setLastException(lastException);
                             }
                         }
-                        
+
                         // XXX Are we sure that we should skip notifications if values are null?
                         if (finalCalculationSucceeded && finalValue != null) {
                             Notification<T> notification =
@@ -376,7 +376,7 @@ public class PVDirector<T> {
 
     /**
      * Posts a readTimeout exception in the exception queue.
-     * 
+     *
      * @param timeoutMessage the message for the readTimeout
      */
     private void processReadTimeout(String timeoutMessage) {
@@ -385,7 +385,7 @@ public class PVDirector<T> {
             readExceptionCollector.writeValue(new TimeoutException(timeoutMessage));
         }
     }
-    
+
     void readTimeout(TimeDuration timeout, final String timeoutMessage) {
         scannerExecutor.schedule(new Runnable() {
             @Override
@@ -394,7 +394,7 @@ public class PVDirector<T> {
             }
         }, timeout.toNanosLong(), TimeUnit.NANOSECONDS);
     }
-    
+
     private final DesiredRateEventListener desiredRateEventListener = new DesiredRateEventListener() {
 
         @Override
@@ -411,6 +411,6 @@ public class PVDirector<T> {
     DesiredRateEventListener getDesiredRateEventListener() {
         return desiredRateEventListener;
     }
-    
-    
+
+
 }

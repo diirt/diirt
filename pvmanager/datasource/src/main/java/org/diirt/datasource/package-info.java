@@ -5,29 +5,29 @@
 /**
  * <p align="center"><img alt="pvManager" src="http://pvmanager.diirt.org/images/PVManagerLogo150.png"></p>
  * <div style="float: right; margin-top: -170px" id="contents"></div>
- * 
- * 
+ *
+ *
  * <h1>Examples</h1>
- * 
+ *
  * <p>You can find examples in <code>link org.diirt.datasource.sample</code> package.
  * We stopped including examples in the documentation itself because they tend
  * to become stale. We link to actual code that is part of the build, so that
  * there is more of a guarantee that they stay correct</p>
- * 
+ *
  * <ol>
- *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/ConfigurationExamples.html">Configuration examples</a> - 
- * how to configure pvmanager to read from the right datasource and dispatch 
+ *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/ConfigurationExamples.html">Configuration examples</a> -
+ * how to configure pvmanager to read from the right datasource and dispatch
  * events on the right thread.</li>
- *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/BasicExamples.html">Basic examples</a> - 
+ *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/BasicExamples.html">Basic examples</a> -
  * how to read/write from a single channel.</li>
- *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/MultipleChannelExamples.html">Multiple channel examples</a> - 
+ *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/MultipleChannelExamples.html">Multiple channel examples</a> -
  * how to read/write multiple channels at a time.</li>
- *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/VTypeExamples.html">VType examples</a> - 
+ *     <li><a href="http://pvmanager.diirt.org/xref/org/epics/pvmanager/sample/VTypeExamples.html">VType examples</a> -
  * how to work with actual type and how to aggregate them in bigger structures.</li>
  * </ol>
- * 
+ *
  * <h1> Package description</h1>
- * 
+ *
  * This package contains all the basic components of the PVManager framework
  * and the basic support for the language to define the creation.
  * <p>

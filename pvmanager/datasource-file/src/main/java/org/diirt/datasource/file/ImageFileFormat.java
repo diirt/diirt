@@ -16,9 +16,9 @@ import org.diirt.vtype.ValueUtil;
 
 /**
  * A FileFormat for reading .bmp and .png into VImage
- * 
+ *
  * @author Kunal Shroff
- * 
+ *
  */
 public class ImageFileFormat implements FileFormat {
 

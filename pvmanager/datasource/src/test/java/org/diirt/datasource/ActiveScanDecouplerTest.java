@@ -75,8 +75,8 @@ public class ActiveScanDecouplerTest {
             }
         });
     }
-    
-    
+
+
     public static void repeatTest(int nTimes, Callable<?> task) throws Exception {
         for (int i = 0; i < nTimes; i++) {
             task.call();

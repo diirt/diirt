@@ -35,7 +35,7 @@ public class TypeSupportTest {
         assertThat(TypeSupport.isTypeDirectlySupported(MyTypeSupport.class, Double.class), equalTo(false));
         assertThat(TypeSupport.isTypeSupported(MyTypeSupport.class, Integer.class), equalTo(false));
         assertThat(TypeSupport.isTypeDirectlySupported(MyTypeSupport.class, Integer.class), equalTo(false));
-        
+
         // Add support for Object
         TypeSupport.addTypeSupport(new MyTypeSupport<Object>(Object.class));
         MyTypeSupport support = (MyTypeSupport) TypeSupport.findTypeSupportFor(MyTypeSupport.class, Number.class);

@@ -56,7 +56,7 @@ public class QueryChunk {
 
         public int addData(Data data, boolean forceUpdate) {
                 if (data == null
-                                || (isComplete() && !forceUpdate) 
+                                || (isComplete() && !forceUpdate)
                                 || !timeInterval.contains(data.getTimestamp()))
                         return Ignored;
                 if (isComplete() && DEBUG) {

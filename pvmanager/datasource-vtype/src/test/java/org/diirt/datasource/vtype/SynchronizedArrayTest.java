@@ -69,7 +69,7 @@ public class SynchronizedArrayTest {
     @Test
     public void reconstructArray() throws InterruptedException {
         ReadExpressionTester exp = new ReadExpressionTester(synchronizedArrayOf(ofMillis(5), ofMillis(10), vDoubles(Arrays.asList("pv1","pv2","pv3","pv4","pv5"))));
-        
+
         Timestamp reference = Timestamp.now();
         Timestamp future1 = reference.plus(ofMillis(1));
         Timestamp past1 = reference.minus(ofMillis(1));

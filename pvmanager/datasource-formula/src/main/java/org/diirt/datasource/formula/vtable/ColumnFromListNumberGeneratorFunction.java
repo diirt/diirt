@@ -59,12 +59,12 @@ class ColumnFromListNumberGeneratorFunction implements FormulaFunction {
     public Object calculate(final List<Object> args) {
         VString name = (VString) args.get(0);
         ListNumberProvider data = (ListNumberProvider) args.get(1);
-        
+
         if (name == null || data == null) {
             return null;
         }
 
         return VTableFactory.column(name.getValue(), data);
     }
-    
+
 }

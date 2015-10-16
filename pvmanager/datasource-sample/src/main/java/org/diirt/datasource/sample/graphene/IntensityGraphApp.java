@@ -28,13 +28,13 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
                     "=histogram2DOf(tableOf(column(\"X\", 'sim://sineWaveform(1,100,100,0.01)'), column(\"Y\", 'sim://sineWaveform(10,100,100,0.01)')), \"Y\", \"X\")",
                     "sim://square2DWaveform(1,50,45,10000,10000,0.1)"}));
     }
-    
+
     protected void updateGraph() {
         if (graph != null) {
             update(graph);
         }
     }
-    
+
     protected void update(Graph2DExpression<IntensityGraph2DRendererUpdate> graph) {
         graph.update(graph.newUpdate().colorMap(colorMap).drawLegend(drawLegend));
     }
@@ -45,10 +45,10 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
         plot.update(plot.newUpdate().colorMap(colorMap));
         return plot;
     }
-    
+
     private NumberColorMap colorMap = IntensityGraph2DRenderer.DEFAULT_COLOR_MAP;
     private boolean drawLegend = IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND;
-    
+
     public NumberColorMap getColorMap() {
         return colorMap;
     }
@@ -66,7 +66,7 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
         this.drawLegend = drawLegend;
         updateGraph();
     }
-    
+
     @Override
     protected void openConfigurationDialog() {
         IntensityGraphDialog dialog = new IntensityGraphDialog(new javax.swing.JFrame(), true, this);
@@ -74,9 +74,9 @@ public class IntensityGraphApp extends BaseGraphApp<IntensityGraph2DRendererUpda
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-    
+
     public static void main(String[] args) {
         main(IntensityGraphApp.class);
     }
-    
+
 }

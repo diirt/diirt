@@ -24,7 +24,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 class IntermittentChannelHandler extends MultiplexedChannelHandler<Object, Object> {
-    
+
     private final Object value;
     private final double delayInSeconds;
     private final ScheduledExecutorService exec;
@@ -35,7 +35,7 @@ class IntermittentChannelHandler extends MultiplexedChannelHandler<Object, Objec
             // Protect the timer thread for possible problems.
             try {
                 boolean toConnect = !isConnected();
-                
+
                 if (toConnect) {
                     processConnection(new Object());
                     processMessage(toVTypeChecked(value));
@@ -96,10 +96,10 @@ class IntermittentChannelHandler extends MultiplexedChannelHandler<Object, Objec
     protected boolean isConnected(Object payload) {
         return payload != null;
     }
-    
+
     @Override
     public void write(Object newValue, ChannelWriteCallback callback) {
         throw new UnsupportedOperationException("Can't write to simulation channel.");
     }
-    
+
 }

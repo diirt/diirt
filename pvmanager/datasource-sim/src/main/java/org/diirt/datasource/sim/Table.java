@@ -33,9 +33,9 @@ public class Table extends SimFunction<VTable> {
             throw new IllegalArgumentException("Interval must be greater than zero (was " + interval + ")");
         }
     }
-    
+
     private final List<Class<?>> types = Arrays.asList((Class<?>) String.class, Double.TYPE, Integer.TYPE, Timestamp.class);
-    
+
 
     @Override
     VTable nextValue() {
@@ -43,9 +43,9 @@ public class Table extends SimFunction<VTable> {
                 Arrays.asList((Object) generateStringColumn(10), generateDoubleColumn(10),
                 generateIntegerColumn(10), generateTimestampColumn(10)));
     }
-    
+
     private final Random rand = new Random();
-    
+
     ListInt generateIntegerColumn(int size) {
         int[] column = new int[size];
         for (int i = 0; i < column.length; i++) {
@@ -53,7 +53,7 @@ public class Table extends SimFunction<VTable> {
         }
         return new ArrayInt(column);
     }
-    
+
     ListDouble generateDoubleColumn(int size) {
         double[] column = new double[size];
         for (int i = 0; i < column.length; i++) {
@@ -61,7 +61,7 @@ public class Table extends SimFunction<VTable> {
         }
         return new ArrayDouble(column);
     }
-    
+
     List<String> generateStringColumn(int size) {
         String[] column = new String[size];
         for (int i = 0; i < column.length; i++) {
@@ -69,7 +69,7 @@ public class Table extends SimFunction<VTable> {
         }
         return Arrays.asList(column);
     }
-    
+
     List<Timestamp> generateTimestampColumn(int size) {
         List<Timestamp> timestamps = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -77,12 +77,12 @@ public class Table extends SimFunction<VTable> {
         }
         return timestamps;
     }
-    
+
     String generateString(int id) {
         if (id == 0) {
             return "A";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         while (id != 0) {
             char letter = (char) ('A' + (id %  26));

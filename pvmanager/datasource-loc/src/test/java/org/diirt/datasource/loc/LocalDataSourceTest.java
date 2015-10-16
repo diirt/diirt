@@ -40,7 +40,7 @@ public class LocalDataSourceTest {
     public void writeMultipleNamesForSameChannel() throws Exception {
         ReadExpressionTester exp = new ReadExpressionTester(mapOf(latestValueOf(channels("foo", "foo(2.0)"))));
         ReadRecipe recipe = exp.getReadRecipe();
-        
+
         // Connect and make sure only one channel is created
         LocalDataSource dataSource = new LocalDataSource();
         dataSource.connectRead(recipe);
@@ -56,7 +56,7 @@ public class LocalDataSourceTest {
         ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
         builder.addChannel("iv1", valueCache);
         ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
-        
+
         dataSource1.connectRead(recipe);
         Thread.sleep(100);
         Object value = valueCache.readValue();
@@ -71,7 +71,7 @@ public class LocalDataSourceTest {
         ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
         builder.addChannel("iv2(\"this\")", valueCache);
         ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
-        
+
         dataSource1.connectRead(recipe);
         Thread.sleep(100);
         Object value = valueCache.readValue();
@@ -88,7 +88,7 @@ public class LocalDataSourceTest {
         ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
         builder.addChannel("iv3(3.14)", valueCache);
         ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
-        
+
         dataSource1.connectRead(recipe);
         Thread.sleep(100);
         Object value = valueCache.readValue();
@@ -105,7 +105,7 @@ public class LocalDataSourceTest {
         ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
         builder.addChannel("iv3(1.0,2.0,3.0)", valueCache);
         ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
-        
+
         dataSource1.connectRead(recipe);
         Thread.sleep(100);
         Object value = valueCache.readValue();
@@ -122,7 +122,7 @@ public class LocalDataSourceTest {
         ValueCache<Object> valueCache = new ValueCacheImpl<>(Object.class);
         builder.addChannel("iv3(\"A\",\"B\",\"C\")", valueCache);
         ReadRecipe recipe = builder.build(new QueueCollector<Exception>(10), new ConnectionCollector());
-        
+
         dataSource1.connectRead(recipe);
         Thread.sleep(100);
         Object value = valueCache.readValue();

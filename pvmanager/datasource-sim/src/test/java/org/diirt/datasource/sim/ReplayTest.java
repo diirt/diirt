@@ -72,7 +72,7 @@ public class ReplayTest {
         assertThat(value.getAlarmName(), equalTo("NONE"));
         assertThat(value.getTimeUserTag(), equalTo(0));
     }
-    
+
     @BeforeClass
     public static void initializeParser() {
         Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/diirt/datasource/replay/parse2.xml\")");

@@ -35,7 +35,7 @@ public class LocChannelHandlerTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
     }
-    
+
     @Mock ValueCache<VDouble> vDoubleCache1;
     @Mock ValueCache<VDouble> vDoubleCache2;
     @Mock WriteFunction<Boolean> vDoubleConnCache1;
@@ -46,7 +46,7 @@ public class LocChannelHandlerTest {
 
     //@Test
     public void writeToLocalChannelSingleMonitor() {
-        
+
         // Creating a test local channel
         LocalChannelHandler channel = new LocalChannelHandler("test1");
         assertThat(channel.getChannelName(), equalTo("test1"));
@@ -69,15 +69,15 @@ public class LocChannelHandlerTest {
 
         // Writing a number and see if it is converted to a VDouble
         channel.write(6.28, channelWriteCallback);
-        
+
         // Removing all readers and writers
         channel.removeReader(readSubscription);
         channel.removeWrite(writeSubscription);
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
-        
+
         InOrder inOrder = inOrder(vDoubleCache1, channelWriteCallback, exceptionHandler);
-        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
+        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class);
         inOrder.verify(vDoubleCache1).writeValue(newValue.capture());
         assertThat(newValue.getValue().getValue(), equalTo(6.28));
         inOrder.verify(channelWriteCallback).channelWritten(null);
@@ -86,7 +86,7 @@ public class LocChannelHandlerTest {
 
     //@Test
     public void writeToLocalChannelTwoMonitors() {
-        
+
         // Creating a test local channel
         LocalChannelHandler channel = new LocalChannelHandler("test2");
         channel.setInitialValue(0.0);
@@ -115,19 +115,19 @@ public class LocChannelHandlerTest {
 
         // Writing a number and see if it is converted to a VDouble
         channel.write(16.28, channelWriteCallback);
-        
+
         // Remove reader/writers
         channel.removeWrite(new ChannelHandlerWriteSubscription(cache, exceptionHandler, vDoubleWriteConnCache1));
         channel.removeReader(readSubscription1);
         channel.removeReader(readSubscription2);
         assertThat(channel.getUsageCounter(), equalTo(0));
         assertThat(channel.isConnected(), is(false));
-        
-        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class); 
+
+        ArgumentCaptor<VDouble> newValue = ArgumentCaptor.forClass(VDouble.class);
         verify(vDoubleCache1, times(2)).writeValue(newValue.capture());
         assertThat(newValue.getAllValues().get(0).getValue(), equalTo(0.0));
         assertThat(newValue.getAllValues().get(1).getValue(), equalTo(16.28));
-        ArgumentCaptor<VDouble> newValue2 = ArgumentCaptor.forClass(VDouble.class); 
+        ArgumentCaptor<VDouble> newValue2 = ArgumentCaptor.forClass(VDouble.class);
         verify(vDoubleCache2, times(2)).writeValue(newValue2.capture());
         assertThat(newValue2.getAllValues().get(0).getValue(), equalTo(0.0));
         assertThat(newValue2.getAllValues().get(1).getValue(), equalTo(16.28));

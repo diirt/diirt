@@ -14,14 +14,14 @@ import static org.diirt.datasource.formula.FormulaFunctionSet.namePattern;
  * @author carcassi
  */
 public class FormulaFunctionSetDescription {
-    
+
     String name;
     String description;
     Collection<FormulaFunction> formulaFunctions = new HashSet<>();
 
     /**
      * A new function set description.
-     * 
+     *
      * @param name the name of the function set
      * @param description the description of the function set
      */
@@ -35,7 +35,7 @@ public class FormulaFunctionSetDescription {
 
     /**
      * Adds a formula in the set.
-     * 
+     *
      * @param formulaFunction the formula to add
      * @return this description
      */

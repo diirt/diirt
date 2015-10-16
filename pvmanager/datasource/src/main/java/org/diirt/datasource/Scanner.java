@@ -18,34 +18,34 @@ package org.diirt.datasource;
  * @author carcassi
  */
 interface Scanner {
-    
+
     /**
      * Starts the scanning. From this moment on, the pv may get notified.
      */
     void start();
-    
+
     /**
      * Pause the scanning. Events will be collected and delayed until a resume.
      */
     void pause();
-    
+
     /**
      * Resumes the scanning. If events were collected during the pause,
      * they will be sent right away.
      */
     void resume();
-    
+
     /**
      * Stops the scanning. From this moment on, the pv will no longer be
      * notified. Can't be restarted.
      */
     void stop();
-    
+
     /**
      * Called when a new notification reaches a collector.
      */
     void collectorChange();
-    
+
     /**
      * Called after a pv is notified.
      */

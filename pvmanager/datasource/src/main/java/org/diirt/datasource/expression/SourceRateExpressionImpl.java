@@ -25,7 +25,7 @@ public class SourceRateExpressionImpl<R> extends SourceRateExpressionListImpl<R>
     private Map<String, ValueCache<?>> caches;
     private ReadFunction<R> function;
     private String name;
-    
+
     {
         // Make sure that the list includes this expression
         addThis();
@@ -46,10 +46,10 @@ public class SourceRateExpressionImpl<R> extends SourceRateExpressionListImpl<R>
     public SourceRateExpressionImpl(String pvName, Class<R> pvType) {
         if (pvName == null)
             throw new NullPointerException("Channel name can't be null");
-        
+
         if (pvName.trim().isEmpty())
             throw new IllegalArgumentException("Channel name can't be an empty String");
-        
+
         ValueCache<R> cache = new ValueCacheImpl<R>(pvType);
         caches = new HashMap<String, ValueCache<?>>();
         caches.put(pvName, cache);
@@ -59,7 +59,7 @@ public class SourceRateExpressionImpl<R> extends SourceRateExpressionListImpl<R>
 
     /**
      * Creates a new source rate expression.
-     * 
+     *
      * @param childExpressions the expressions used as arguments by this expression
      * @param function the function that will calculate the value for this expression
      * @param defaultName the name for this expression

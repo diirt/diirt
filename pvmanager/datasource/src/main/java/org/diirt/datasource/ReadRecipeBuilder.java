@@ -22,7 +22,7 @@ public class ReadRecipeBuilder {
 
     /**
      * Adds a channel and its read cache to the recipe.
-     * 
+     *
      * @param channelName the name of the channel
      * @param cache the cache that contains the value
      * @return this builder
@@ -42,7 +42,7 @@ public class ReadRecipeBuilder {
      * <p>
      * To finish building the recipe, one needs to specify where to send errors
      * and where to send the connection status changes.
-     * 
+     *
      * @param exceptionWriteFunction where exception should be routed
      * @param connectionCollector where connection status should be routed
      * @return a new recipe
@@ -53,7 +53,7 @@ public class ReadRecipeBuilder {
             String channelName = entry.getKey();
             Collection<ValueCache<?>> valueCaches = entry.getValue();
             for (ValueCache<?> valueCache : valueCaches) {
-                recipes.add(new ChannelReadRecipe(channelName, 
+                recipes.add(new ChannelReadRecipe(channelName,
                        new ChannelHandlerReadSubscription(valueCache, exceptionWriteFunction, connectionCollector.addChannel(channelName))));
            }
         }

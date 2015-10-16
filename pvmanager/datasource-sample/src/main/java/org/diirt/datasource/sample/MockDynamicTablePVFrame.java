@@ -37,7 +37,7 @@ import static org.diirt.util.time.TimeDuration.*;
  * @author carcassi
  */
 public class MockDynamicTablePVFrame extends javax.swing.JFrame {
-    
+
     private DynamicGroup group = group();
     private PVReader<List<Object>> pv = PVManager.read(group)
             .notifyOn(swingEDT()).maxRate(ofHertz(2));
@@ -45,11 +45,11 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
     private List<Exception> latestExceptions = null;
     private List<String> pvNames = new ArrayList<String>();
     private ValueFormat format = new SimpleValueFormat(3);
-    
+
     private AbstractTableModel model = new AbstractTableModel() {
-        
+
         private List<String> titles = Arrays.asList("PV name", "Value", "Alarm", "Time");
-        
+
         {
             pv.addPVReaderListener(new PVReaderListener<List<Object>>() {
 
@@ -112,13 +112,13 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
             }
             throw new RuntimeException();
         }
-        
+
         private String alarmSeverityOf(Object value) {
             if (value == null)
                 return "";
             return ValueUtil.alarmOf(value).getAlarmSeverity().toString();
         }
-        
+
         private String timeStampOf(Object value) {
             if (value == null)
                 return "";
@@ -135,9 +135,9 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
             if (columnIndex != 0) {
                 throw new RuntimeException();
             }
-            
+
             String name = aValue.toString();
-            
+
             try {
                 if (rowIndex == pvNames.size()) {
                     group.add(latestValueOf(channel(name)));
@@ -152,13 +152,13 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(MockDynamicTablePVFrame.this, ex.getMessage(), "Can't open pv", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
-        
-        
+
+
+
     };
-    
+
     private AbstractTableModel writeModel = new AbstractTableModel() {
-        
+
         private List<String> titles = Arrays.asList("PV name", "New Value");
         private List<String> writePvNames = new ArrayList<String>();
         private List<String> writePvValues = new ArrayList<String>();
@@ -214,7 +214,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
             if (columnIndex > 2) {
                 throw new RuntimeException();
             }
-            
+
             if (columnIndex == 1) {
                 writePvValues.set(rowIndex, aValue.toString());
                 pvWriters.get(rowIndex).write(aValue.toString());
@@ -237,9 +237,9 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
                 }
             }
         }
-        
-        
-        
+
+
+
     };
 
     /** Creates new form MockPVFrame */
@@ -261,7 +261,7 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
                 }
                 return result;
             }
-            
+
         };
         pvTable.setDefaultRenderer(String.class, renderer);
         Action deleteAction = new AbstractAction("delete") {

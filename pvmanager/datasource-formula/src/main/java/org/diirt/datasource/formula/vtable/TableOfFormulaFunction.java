@@ -57,13 +57,13 @@ class TableOfFormulaFunction implements FormulaFunction {
     @Override
     public Object calculate(final List<Object> args) {
         List<Object> argsNoNull = new ArrayList<>(args);
-        
+
         // Remove null columns if there are any
         boolean removedNull = false;
         while (argsNoNull.remove(null)) {
             removedNull = true;
         }
-        
+
         // If null was removed, check whether all the remaining columns
         // are generated. In that case, return null.
         // This needs to be here because ListNumberProvider are usually
@@ -84,10 +84,10 @@ class TableOfFormulaFunction implements FormulaFunction {
                 return null;
             }
         }
-        
+
         Column[] columns = argsNoNull.toArray(new Column[argsNoNull.size()]);
-        
+
         return VTableFactory.newVTable(columns);
     }
-    
+
 }

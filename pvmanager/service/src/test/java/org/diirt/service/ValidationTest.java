@@ -12,7 +12,7 @@ import org.junit.Test;
  * @author asbarber
  */
 public class ValidationTest {
-    
+
     // Duplicate method name
     @Test (expected = IllegalArgumentException.class)
     public void validateParameters1() {
@@ -21,12 +21,12 @@ public class ValidationTest {
                 .addServiceMethod(addMethod())
                 .createService();
     }
-    
+
     // Service method does not implement sync or async execution
-    @Test (expected = RuntimeException.class)    
+    @Test (expected = RuntimeException.class)
     public void validateMethodImplementation1() {
         ServiceMethod x = new ServiceMethodImpl(
-                addMethod(), 
+                addMethod(),
                 new ServiceDescription("math", "Simple math service").addServiceMethod(addMethod()));
     }
 
@@ -35,6 +35,6 @@ public class ValidationTest {
         public ServiceMethodImpl(ServiceMethodDescription smd, ServiceDescription sd) {
             super(smd, sd);
         }
-        
+
     }
 }

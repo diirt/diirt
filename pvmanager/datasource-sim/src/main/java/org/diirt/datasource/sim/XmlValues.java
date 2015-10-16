@@ -37,5 +37,5 @@ class XmlValues {
         return adjustTime;
     }
 
-    
+
 }

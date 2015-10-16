@@ -20,7 +20,7 @@ import org.epics.pvmanager.jca.JCADataSource;
  * Hello world!
  *
  */
-public class JCAMassConnectionDelay 
+public class JCAMassConnectionDelay
 {
     public static void main( String[] args ) throws Exception {
         final StopWatch watch = new StopWatch();
@@ -58,7 +58,7 @@ public class JCAMassConnectionDelay
                         });
                     context.flushIO();
                     } catch (Exception ex) {
-                        
+
                     }
                 }
             });

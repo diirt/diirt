@@ -15,7 +15,7 @@ import static org.diirt.vtype.ValueFactory.*;
 
 
 /**
- * 
+ *
  * @author carcassi
  */
 public class AlarmFunctionSetTest {
@@ -31,7 +31,7 @@ public class AlarmFunctionSetTest {
 
         VEnum expected1 = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
         VEnum expected2 = newVEnum(2, AlarmSeverity.labels(), alarmNone(), timeNow());
-        
+
         FunctionTester.findByName(set, "highestSeverity")
                 .compareReturnValue(expected1, dataA, dataB, dataC)
                 .compareReturnValue(expected2, dataB, dataC, dataD);
@@ -44,7 +44,7 @@ public class AlarmFunctionSetTest {
 
         VEnum expected1 = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
         VEnum expected2 = newVEnum(2, AlarmSeverity.labels(), alarmNone(), timeNow());
-        
+
         FunctionTester.findByName(set, "alarmOf")
                 .compareReturnValue(expected1, dataA)
                 .compareReturnValue(expected2, dataB);

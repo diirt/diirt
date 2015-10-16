@@ -17,25 +17,25 @@ import org.diirt.datasource.expression.DesiredRateExpression;
  * @author carcassi
  */
 public abstract class DynamicFormulaFunction extends StatefulFormulaFunction {
-    
+
     private PVDirector<?> director;
 
     /**
      * The director to use to connect/disconnect live data expressions.
-     * 
+     *
      * @return the director
      */
     public final PVDirector<?> getDirector() {
         return director;
     }
-    
+
     /**
      * Expression for the last value of the given channel, suitable to be
      * used within formula.
      * <p>
      * TODO: we need to clarify when it is better to use this method directly,
      * and when to use the normal expressions.
-     * 
+     *
      * @param <T> the expression type
      * @param channelName the channel name
      * @param clazz the expression type
@@ -44,15 +44,15 @@ public abstract class DynamicFormulaFunction extends StatefulFormulaFunction {
     public final <T> DesiredRateExpression<T> channel(String channelName, Class clazz) {
         return new LastOfChannelExpression<>(channelName, clazz);
     }
-    
+
     /**
      * Changes the director. This is not part of the public API: the director
      * is set by the infrastructure.
-     * 
+     *
      * @param director the new director
      */
     void setDirector(PVDirector<?> director) {
         this.director = director;
     }
-    
+
 }

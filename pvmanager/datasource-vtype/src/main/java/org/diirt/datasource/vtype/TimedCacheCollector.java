@@ -21,7 +21,7 @@ class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
     private final ReadFunction<T> function;
     private final TimeDuration cachedPeriod;
     private Runnable notification;
-    
+
     public TimedCacheCollector(ReadFunction<T> function, TimeDuration cachedPeriod) {
         this.function = function;
         this.cachedPeriod = cachedPeriod;
@@ -64,7 +64,7 @@ class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
             return new ArrayList<T>(buffer);
         }
     }
-    
+
     private void prune() {
         // Remove all values that are too old
         TimeInterval periodAllowed = cachedPeriod.before(buffer.getLast().getTimestamp());

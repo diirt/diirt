@@ -25,7 +25,7 @@ public class LineGraph2DExpression extends DesiredRateExpressionImpl<Graph2DResu
                 functionOf(xColumnName), functionOf(yColumnName), functionOf(tooltipColumnName)),
                 "Scatter Graph");
     }
-    
+
     @Override
     public void update(LineGraph2DRendererUpdate update) {
         ((LineGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);

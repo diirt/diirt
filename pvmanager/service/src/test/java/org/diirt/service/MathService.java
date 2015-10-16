@@ -9,7 +9,7 @@ package org.diirt.service;
  * @author carcassi
  */
 public class MathService {
-    
+
     public static ServiceMethodDescription addMethod() {
         return new ServiceMethodDescription("add", "Adds two numbers.") {
 
@@ -21,7 +21,7 @@ public class MathService {
                 .addArgument("arg2", "Second argument", Number.class)
                 .addResult("result", "The sum of arg1 and arg2", Number.class);
     }
-    
+
     public static ServiceMethodDescription multiplyMethod() {
         return new ServiceMethodDescription("multiply", "Multiplies two numbers.") {
 
@@ -33,12 +33,12 @@ public class MathService {
                 .addArgument("arg2", "Second argument", Number.class)
                 .addResult("result", "The product of arg1 and arg2", Number.class);
     }
-    
+
     public static Service createMathService() {
         return new ServiceDescription("math", "Simple math service")
                 .addServiceMethod(addMethod())
                 .addServiceMethod(multiplyMethod())
                 .createService();
     }
-    
+
 }

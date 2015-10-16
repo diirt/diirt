@@ -21,44 +21,44 @@ public abstract class AbstractCATestPhase extends TestPhase {
         if (getDebugLevel() >= 1) {
             System.out.println("Initializing IOC " + iocName);
         }
-        
+
         // Open command and output
         addReader(PVManager.read(channel("command")), TimeDuration.ofHertz(50));
         addWriter("command", PVManager.write(channel("command")));
         addReader(PVManager.read(channel("output")), TimeDuration.ofHertz(50));
         pause(1000);
-        
+
         // Reset ioc to known state
         restart(iocName);
     }
-    
+
     protected void restart(String iocName) {
         if (getDebugLevel() >= 1) {
             System.out.println("Restart to IOC " + iocName);
         }
-        
+
         pause(500);
         write("command", "start " + iocName + " 1");
         pause(500);
         waitFor("command", "ready", 20000);
     }
-    
+
     protected void pauseNetwork(int secPause) {
         if (getDebugLevel() >= 1) {
             System.out.println("Pause network for " + secPause + " sec");
         }
-        
+
         pause(500);
         write("command", "netpause " + secPause);
         pause(500);
         waitFor("command", "ready", (secPause + 20) * 1000);
     }
-    
+
     protected void channelConnections(String channelName, int expected) {
         if (getDebugLevel() >= 1) {
             System.out.println("Querying channel connections for '" + channelName + "'");
         }
-        
+
         pause(500);
         write("command", "connections " + channelName);
         pause(500);
@@ -70,12 +70,12 @@ public abstract class AbstractCATestPhase extends TestPhase {
             throw new RuntimeException("Expected " + expected + " connections on '" + channelName + "' (was " + actual + ")");
         }
     }
-    
+
     protected boolean isDbePropertySupported() {
         JCADataSource dataSource =  (JCADataSource) PVManager.getDefaultDataSource();
         return dataSource.isDbePropertySupported();
     }
-    
+
     protected void singleChannelConnection(String channelName) {
         if (isDbePropertySupported()) {
             channelConnections(channelName, 2);

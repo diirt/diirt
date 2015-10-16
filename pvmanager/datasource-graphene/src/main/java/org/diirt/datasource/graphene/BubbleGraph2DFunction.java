@@ -57,7 +57,7 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
         yColumnName.readNext();
         sizeColumnName.readNext();
         colorColumnName.readNext();
-        
+
         // Table and columns must be available
         if (vTable == null || xColumnName.isMissing() || yColumnName.isMissing() || sizeColumnName.isMissing() || colorColumnName.isMissing()) {
             return null;

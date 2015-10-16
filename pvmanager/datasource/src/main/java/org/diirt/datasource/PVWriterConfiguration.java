@@ -14,7 +14,7 @@ import org.diirt.util.time.TimeDuration;
 /**
  * An expression used to set the final parameters on how the pv expression
  * should be written.
- * 
+ *
  * @param <T> the type of the expression
  * @author carcassi
  */
@@ -64,23 +64,23 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         super.timeout(timeout, timeoutMessage);
         return this;
     }
-    
+
     private final WriteExpression<T> writeExpression;
     private ExceptionHandler exceptionHandler;
     private final List<PVWriterListener<T>> writeListeners = new ArrayList<>();
-    
+
     PVWriterImpl<T> pvWriter;
     WriteFunction<T> writeFunction;
 
     PVWriterConfiguration(WriteExpression<T> writeExpression) {
         this.writeExpression = writeExpression;
     }
-    
+
     /**
      * Adds a listener notified for any writer event (write result, connection and errors).
      * <p>
      * Registering a listener here guarantees that no event is ever missed.
-     * 
+     *
      * @param listener the listener to register
      * @return this expression
      */
@@ -114,7 +114,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         preparePvWriter(syncWrite);
         PVWriterDirector<T> writerDirector = prepareDirector(this);
         prepareDecoupler(writerDirector, this);
-        
+
         return pvWriter;
     }
 
@@ -122,7 +122,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         if (timeoutMessage == null)
             timeoutMessage = "Write timeout";
     }
-    
+
     void preparePvWriter(boolean syncWrite) {
         // Create PVReader and connect
         pvWriter = new PVWriterImpl<>(syncWrite, localThread() == notificationExecutor);
@@ -131,7 +131,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         }
         writeFunction = writeExpression.getWriteFunction();
     }
-    
+
     static <T> PVWriterDirector<T> prepareDirector(PVWriterConfiguration<T> writerConfiguration) {
         PVWriterDirector<T> writerDirector = new PVWriterDirector<T>(writerConfiguration.pvWriter,
                 writerConfiguration.writeFunction, writerConfiguration.dataSource, PVManager.getAsyncWriteExecutor(),
@@ -141,7 +141,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         writerConfiguration.pvWriter.setWriteDirector(writerDirector);
         return writerDirector;
     }
-    
+
     static <T> void prepareDecoupler(PVWriterDirector<T> director, PVWriterConfiguration<T> writerConfiguration) {
         ScannerParameters scannerParameters = new ScannerParameters()
                 .writerDirector(director)
@@ -149,15 +149,15 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
                 .maxDuration(TimeDuration.ofMillis(100));
         scannerParameters.type(ScannerParameters.Type.PASSIVE);
         SourceDesiredRateDecoupler rateDecoupler = scannerParameters.build();
-        
+
         director.setScanner(rateDecoupler);
         rateDecoupler.start();
     }
-    
+
     /**
      * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
      * method is synchronous (i.e. blocking).
-     * 
+     *
      * @return a new PVWriter
      */
     public PVWriter<T> sync() {
@@ -167,7 +167,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     /**
      * Creates a new PVWriter where the {@link PVWriter#write(java.lang.Object) }
      * method is asynchronous (i.e. non-blocking).
-     * 
+     *
      * @return a new PVWriter
      */
     public PVWriter<T> async() {

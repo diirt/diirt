@@ -15,7 +15,7 @@ import java.util.Map;
  * @author carcassi
  */
 class MapOfWriteFunction<T> implements WriteFunction<Map<String, T>> {
-    
+
     private final Map<String, WriteFunction<T>> functions = new HashMap<>();
     private final QueueCollector<MapUpdate<T>> mapUpdateCollector;
 
@@ -31,7 +31,7 @@ class MapOfWriteFunction<T> implements WriteFunction<Map<String, T>> {
             }
             functions.putAll(mapUpdate.getWriteFunctionsToAdd());
         }
-        
+
         for (Map.Entry<String, T> entry : newValue.entrySet()) {
             WriteFunction<T> function = functions.get(entry.getKey());
             if (function != null) {

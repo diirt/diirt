@@ -35,7 +35,7 @@ public class CacheCollectorTest {
         assertThat(collector.readValue(), equalTo(Arrays.asList(2,3,4,5,6)));
         assertThat(collector.readValue(), equalTo(Arrays.asList(2,3,4,5,6)));
     }
-    
+
     @Test
     public void setMaxSize() {
         CacheCollector<Integer> collector = new CacheCollector<>(5);

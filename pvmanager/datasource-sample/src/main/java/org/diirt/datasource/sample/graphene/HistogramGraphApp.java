@@ -15,7 +15,7 @@ import org.diirt.datasource.graphene.HistogramGraph2DExpression;
  * @author carcassi
  */
 public class HistogramGraphApp extends BaseGraphApp<AreaGraph2DRendererUpdate> {
-    
+
     private boolean highlightFocusValue;
 
     public HistogramGraphApp() {
@@ -54,9 +54,9 @@ public class HistogramGraphApp extends BaseGraphApp<AreaGraph2DRendererUpdate> {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-    
+
     public static void main(String[] args) {
         main(HistogramGraphApp.class);
     }
-    
+
 }

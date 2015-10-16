@@ -18,7 +18,7 @@ public class ChannelWriteRecipe {
 
     /**
      * Creates a new write recipe for the given channel.
-     * 
+     *
      * @param channelName the name of the channel to connect to
      * @param writeSubscription the subscription parameters for the write
      */
@@ -26,7 +26,7 @@ public class ChannelWriteRecipe {
         this.channelName = channelName;
         this.writeSubscription = writeSubscription;
     }
-    
+
     /**
      * The name of the channel to read.
      *
@@ -70,5 +70,5 @@ public class ChannelWriteRecipe {
         }
         return true;
     }
-    
+
 }

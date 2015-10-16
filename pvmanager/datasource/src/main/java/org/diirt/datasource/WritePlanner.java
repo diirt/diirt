@@ -15,13 +15,13 @@ import java.util.Set;
  * @author carcassi
  */
 class WritePlanner {
-    
+
     private Map<String, ChannelHandler> channels = new HashMap<String, ChannelHandler>();
     private Map<String, Object> values = new HashMap<String, Object>();
     private Map<String, Set<String>> preceding = new HashMap<String, Set<String>>();
     private Map<String, Set<String>> succeeding = new HashMap<String, Set<String>>();
     private Set<String> leafs = new HashSet<String>();
-    
+
     void addChannel(ChannelHandler channel, Object value, Collection<String> precedingChannels) {
         channels.put(channel.getChannelName(), channel);
         values.put(channel.getChannelName(), value);
@@ -38,7 +38,7 @@ class WritePlanner {
             leafs.add(channel.getChannelName());
         }
     }
-    
+
     void removeChannel(String channelName) {
         channels.remove(channelName);
         values.remove(channelName);
@@ -62,9 +62,9 @@ class WritePlanner {
         leafs.clear();
         return nextChannels;
     }
-    
+
     boolean isDone() {
         return channels.isEmpty();
     }
-    
+
 }

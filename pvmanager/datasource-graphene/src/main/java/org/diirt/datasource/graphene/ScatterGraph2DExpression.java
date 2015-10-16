@@ -13,7 +13,7 @@ import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
-        
+
 /**
  * @author shroffk
  *

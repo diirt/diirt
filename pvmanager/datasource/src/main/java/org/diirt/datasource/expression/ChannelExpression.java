@@ -21,7 +21,7 @@ public class ChannelExpression<R, W> extends SourceRateReadWriteExpressionImpl<R
      * An expression for a channel with the given name, which is expected to
      * provide a read payload of {@code readClass} and accept a write payload
      * of {@code writeClass}.
-     * 
+     *
      * @param channelName the name of the channel
      * @param readClass type of the read payload
      * @param writeClass type of the write payload
@@ -32,10 +32,10 @@ public class ChannelExpression<R, W> extends SourceRateReadWriteExpressionImpl<R
             throw new NullPointerException("Channel name can't be null");
         }
     }
-    
+
     /**
      * Constructor for the null channel.
-     * 
+     *
      * @param readClass type of the read payload
      * @param writeClass type of the write payload
      */
@@ -43,11 +43,11 @@ public class ChannelExpression<R, W> extends SourceRateReadWriteExpressionImpl<R
         super(new SourceRateExpressionImpl<R>(new SourceRateExpressionListImpl<Object>(), new ValueCacheImpl<R>(readClass), "null"),
                 new WriteExpressionImpl<W>(new WriteExpressionListImpl<Object>(), new WriteCache<W>(), "null"));
     }
-    
+
     /**
      * For writes only, marks that this channel should be written only after the
      * given channels.
-     * 
+     *
      * @param channelNames preceding channel names
      * @return this
      */
@@ -59,6 +59,6 @@ public class ChannelExpression<R, W> extends SourceRateReadWriteExpressionImpl<R
         cache.setPrecedingChannels(Arrays.asList(channelNames));
         return this;
     }
-    
-    
+
+
 }

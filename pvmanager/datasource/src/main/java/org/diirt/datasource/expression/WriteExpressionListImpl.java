@@ -15,9 +15,9 @@ import java.util.List;
  * @author carcassi
  */
 public class WriteExpressionListImpl<W> implements WriteExpressionList<W> {
-    
+
     private List<WriteExpression<W>> writeExpressions;
-    
+
     final void addThis() {
         writeExpressions.add((WriteExpression<W>) this);
     }
@@ -32,7 +32,7 @@ public class WriteExpressionListImpl<W> implements WriteExpressionList<W> {
     WriteExpressionListImpl(Collection<? extends WriteExpression<W>> writeExpressions) {
         this.writeExpressions = new ArrayList<WriteExpression<W>>(writeExpressions);
     }
-    
+
     @Override
     public final WriteExpressionListImpl<W> and(WriteExpressionList<? extends W> expressions) {
         @SuppressWarnings("unchecked")
@@ -45,5 +45,5 @@ public class WriteExpressionListImpl<W> implements WriteExpressionList<W> {
     public final List<WriteExpression<W>> getWriteExpressions() {
         return writeExpressions;
     }
-    
+
 }

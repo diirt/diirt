@@ -18,7 +18,7 @@ import org.diirt.vtype.VType;
 import org.diirt.vtype.table.VTableFactory;
 
 /**
- * Formula function that accepts a list of strings and returns a table where 
+ * Formula function that accepts a list of strings and returns a table where
  * each row is the value of the channel matching the name.
  *
  * @author carcassi
@@ -54,10 +54,10 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
     public Class<?> getReturnType() {
         return VTable.class;
     }
-    
+
     private List<String> previousNames;
     private List<DesiredRateExpression<?>> currentExpressions;
-    
+
     Object calculateImpl(final List<String> newNames) {
         // If the name does not match, disconnect and connect
         if (!Objects.equals(newNames, previousNames)) {
@@ -65,7 +65,7 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
             if (newNames != null) {
                 newExpressions.addAll(Collections.nCopies(newNames.size(), (DesiredRateExpression<?>) null));
             }
-            
+
             // Iterate throgh the previous names, and extract
             // the expressions that match the new names
             if (previousNames != null) {
@@ -86,7 +86,7 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
                     }
                 }
             }
-            
+
             // Connect new expressions
             if (newNames != null) {
                 for (int i = 0; i < newNames.size(); i++) {
@@ -97,7 +97,7 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
                     }
                 }
             }
-            
+
             previousNames = newNames;
             currentExpressions = newExpressions;
         }
@@ -106,7 +106,7 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
         if (newNames == null) {
             return null;
         }
-        
+
         // Extract values
         List<VType> values = new ArrayList<>();
         for (DesiredRateExpression<?> desiredRateExpression : currentExpressions) {
@@ -119,7 +119,7 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
                 }
             }
         }
-        
+
         return VTableFactory.valueTable(previousNames, values);
     }
 
@@ -131,7 +131,7 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
         if (value != null) {
             newNames = value.getData();
         }
-        
+
         return calculateImpl(newNames);
     }
 
@@ -146,5 +146,5 @@ public class ChannelsFormulaFunction extends DynamicFormulaFunction {
         currentExpressions = null;
         previousNames = null;
     }
-    
+
 }

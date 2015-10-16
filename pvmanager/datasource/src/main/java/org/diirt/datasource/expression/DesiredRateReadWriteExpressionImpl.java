@@ -19,10 +19,10 @@ import org.diirt.datasource.WriteRecipeBuilder;
  * @author carcassi
  */
 public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRateReadWriteExpression<R, W> {
-    
+
     private final DesiredRateExpression<R> desiredRateExpression;
     private final WriteExpression<W> writeExpression;
-    
+
     {
         // Make sure that the list includes this expression
         addThis();
@@ -37,7 +37,7 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
 
     /**
      * Creates an expression that can be both read at the desired rate and written.
-     * 
+     *
      * @param desiredRateExpression the read part of the expression
      * @param writeExpression the write part of the expression
      */
@@ -55,12 +55,12 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     public final ReadFunction<R> getFunction() {
         return desiredRateExpression.getFunction();
     }
-    
+
     @Override
     public final DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl() {
         return desiredRateExpression.getDesiredRateExpressionImpl();
     }
-    
+
     @Override
     public final WriteExpressionImpl<W> getWriteExpressionImpl() {
         return writeExpression.getWriteExpressionImpl();
@@ -80,5 +80,5 @@ public class DesiredRateReadWriteExpressionImpl<R, W> extends DesiredRateReadWri
     public void fillWriteRecipe(PVWriterDirector director, WriteRecipeBuilder builder) {
         writeExpression.fillWriteRecipe(director, builder);
     }
-    
+
 }

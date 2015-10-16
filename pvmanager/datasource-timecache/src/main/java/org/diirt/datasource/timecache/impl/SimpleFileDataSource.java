@@ -128,7 +128,7 @@ public class SimpleFileDataSource implements DataSource {
                         }
                 }
                 Display display = ValueFactory.displayNone();
-                
+
                 // Determine the value type
                 // Try double
                 if (columns[float_val] != null && !columns[float_val].isEmpty()) {
@@ -210,5 +210,5 @@ public class SimpleFileDataSource implements DataSource {
                         return false;
                 return true;
         }
-        
+
 }

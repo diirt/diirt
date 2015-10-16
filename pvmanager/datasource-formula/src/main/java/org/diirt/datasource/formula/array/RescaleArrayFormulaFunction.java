@@ -64,7 +64,7 @@ class RescaleArrayFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray arg1 = (VNumberArray) args.get(0);
         VNumber arg2 = (VNumber) args.get(1);
         VNumber arg3 = (VNumber) args.get(2);

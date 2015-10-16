@@ -15,7 +15,7 @@ import org.diirt.vtype.ValueUtil;
 
 /**
  * Function that concatenates the arguments into a single string.
- * 
+ *
  * @author shroffk
  */
 class ConcatStringsFunction implements FormulaFunction {
@@ -68,7 +68,7 @@ class ConcatStringsFunction implements FormulaFunction {
             VString str = (VString) object;
             sb.append(str.getValue());
         }
-        
+
         // Return new value
         return ValueFactory.newVString(sb.toString(),
                 ValueUtil.highestSeverityOf(args, false),

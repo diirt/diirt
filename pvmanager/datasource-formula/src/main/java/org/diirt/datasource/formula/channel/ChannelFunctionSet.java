@@ -9,9 +9,9 @@ import org.diirt.datasource.formula.FormulaFunctionSetDescription;
 
 /**
  * A set of functions to work with channels.
- * 
+ *
  * @author carcassi
- * 
+ *
  */
 public class ChannelFunctionSet extends FormulaFunctionSet {
 

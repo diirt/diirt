@@ -54,7 +54,7 @@ public class ScatterGraph2DFunction implements ReadFunction<Graph2DResult> {
         xColumnName.readNext();
         yColumnName.readNext();
         tooltipColumnName.readNext();
-        
+
         // Table and columns must be available
         if (vTable == null || xColumnName.isMissing() || yColumnName.isMissing()) {
             return null;

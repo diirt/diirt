@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  * @author carcassi
  */
 public class InterpolationsTest {
-    
+
     public InterpolationsTest() {
     }
 
@@ -42,7 +42,7 @@ public class InterpolationsTest {
         assertEquals(3, result.length);
         assertArrayEquals(y, result, 0.000000000001);
     }
-    
+
     @Test
     public void testNoInterpolation2() {
         // Interpolate 2 values
@@ -52,7 +52,7 @@ public class InterpolationsTest {
         assertEquals(4, result.length);
         assertArrayEquals(new double[] {10.0, 10.0, 4.0, 4.0}, result, 0.000000000001);
     }
-    
+
     @Test
     public void testNoInterpolation3() {
         // Interpolate 3 values, checks middle value is prolonged in both directions
@@ -62,7 +62,7 @@ public class InterpolationsTest {
         assertEquals(7, result.length);
         assertArrayEquals(new double[] {3.0, 3.0, 4.0, 4.0, 4.0, 1.0, 1.0}, result, 0.000000000001);
     }
-    
+
     @Test
     public void testNoInterpolation4() {
         // 4th value is taken but 2 is interpolated
@@ -72,7 +72,7 @@ public class InterpolationsTest {
         assertEquals(5, result.length);
         assertArrayEquals(new double[] {3.0, 4.0, 4.0, 2.0, 1.0}, result, 0.000000000001);
     }
-    
+
     @Test
     public void testNoInterpolation5() {
         // Should discard bunch of values

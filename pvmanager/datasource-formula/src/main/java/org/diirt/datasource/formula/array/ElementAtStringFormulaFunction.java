@@ -17,7 +17,7 @@ import org.diirt.vtype.VStringArray;
 
 /**
  * @author carcassi
- * 
+ *
  */
 class ElementAtStringFormulaFunction implements FormulaFunction {
 
@@ -61,11 +61,11 @@ class ElementAtStringFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VStringArray stringArray = (VStringArray) args.get(0);
         VNumber index = (VNumber) args.get(1);
         int i = index.getValue().intValue();
-        
+
         return newVString(stringArray.getData().get(i),
                 stringArray, stringArray);
     }

@@ -28,10 +28,10 @@ import org.junit.Test;
  * @author carcassi
  */
 public class PVWriterFullTest {
-    
+
     public PVWriterFullTest() {
     }
-    
+
     public static void waitForChannelToClose(DataSource source, String channelName) {
         TimeDuration timeout = ofMillis(5000);
         TimeInterval timeoutInterval = timeout.after(Timestamp.now());
@@ -42,15 +42,15 @@ public class PVWriterFullTest {
             try {
                 Thread.sleep(100);
             } catch(Exception ex) {
-                
+
             }
         }
         fail("Channel " + channelName + " didn't close after 5 seconds");
     }
-    
+
     private DataSource dataSource;
     private Executor executor = java.util.concurrent.Executors.newSingleThreadExecutor(Executors.namedPool("PVWriterFullTest "));
-    
+
     PV<Object, Object> pv;
     PVReader<Object> pvReader;
     PVReader<Object> pvReader2;
@@ -60,7 +60,7 @@ public class PVWriterFullTest {
     public void setupDataSource() throws Exception {
         dataSource = new TestDataSource();
     }
-    
+
     @After
     public void closePVsAndDataSource() {
         if (pv != null) {
@@ -87,7 +87,7 @@ public class PVWriterFullTest {
         dataSource.close();
         dataSource = null;
     }
-    
+
     @Test
     public void writerConnected() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
@@ -96,7 +96,7 @@ public class PVWriterFullTest {
                 .notifyOn(executor)
                 .from(dataSource)
                 .async();
-        
+
         // Wait for the connection notification
         listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
@@ -106,7 +106,7 @@ public class PVWriterFullTest {
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
         assertThat(listener.getNotificationCount(), equalTo(1));
     }
-    
+
     @Test
     public void writerWriteSuccessful() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
@@ -115,12 +115,12 @@ public class PVWriterFullTest {
                 .notifyOn(executor)
                 .from(dataSource)
                 .async();
-        
+
         // Wait for the connection notification
         listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
-        
+
         pvWriter.write("Value");
         listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
@@ -130,7 +130,7 @@ public class PVWriterFullTest {
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
         assertThat(listener.getNotificationCount(), equalTo(2));
     }
-    
+
     @Test
     public void writerWriteFailed() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
@@ -139,12 +139,12 @@ public class PVWriterFullTest {
                 .notifyOn(executor)
                 .from(dataSource)
                 .async();
-        
+
         // Wait for the connection notification
         listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
-        
+
         pvWriter.write("Fail");
         listener.await(TimeDuration.ofMillis(400));
         assertThat(listener.getCount(), equalTo(0));
@@ -156,7 +156,7 @@ public class PVWriterFullTest {
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
         assertThat(listener.getNotificationCount(), equalTo(2));
     }
-    
+
     @Test
     public void writerSyncWriteSuccessful() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
@@ -165,11 +165,11 @@ public class PVWriterFullTest {
                 .notifyOn(executor)
                 .from(dataSource)
                 .sync();
-        
+
         // Wait for the connection notification
         listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
-        
+
         pvWriter.write("Value");
 
         assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.WRITE_SUCCEEDED_MASK));
@@ -178,7 +178,7 @@ public class PVWriterFullTest {
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
         assertThat(listener.getNotificationCount(), equalTo(2));
     }
-    
+
     @Test
     public void writerSyncWriteFailed() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
@@ -187,11 +187,11 @@ public class PVWriterFullTest {
                 .notifyOn(executor)
                 .from(dataSource)
                 .sync();
-        
+
         // Wait for the connection notification
         listener.await(TimeDuration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
-        
+
         Throwable cause = null;
         try {
             pvWriter.write("Fail");
@@ -210,7 +210,7 @@ public class PVWriterFullTest {
         assertThat(pvWriter.isWriteConnected(), equalTo(true));
         assertThat(listener.getNotificationCount(), equalTo(2));
     }
-    
+
     @Test
     public void writerConnectionTimeout() {
         // create writer with timeout and delayed connection

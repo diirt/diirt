@@ -51,9 +51,9 @@ public class MapExpressionTest {
             pvWriter.close();
             pvWriter = null;
         }
-        
+
         Thread.sleep(400);
-        
+
         assertThat(dataSource.getConnectedReadRecipes(), equalTo(Collections.<ChannelReadRecipe>emptyList()));
         assertThat(dataSource.getConnectedWriteRecipes(), equalTo(Collections.<ChannelWriteRecipe>emptyList()));
     }
@@ -102,10 +102,10 @@ public class MapExpressionTest {
         assertThat(dataSource.getWriteRecipeForWrite(), not(equalTo(null)));
         assertThat(WriteRecipeUtil.valueFor(dataSource.getWriteRecipeForWrite(), "test1"), equalTo((Object) "testing1"));
         assertThat(WriteRecipeUtil.valueFor(dataSource.getWriteRecipeForWrite(), "test1"), equalTo((Object) "testing1"));
-        
+
         map.remove("test2");
         assertThat(dataSource.getConnectedWriteRecipes(), hasSize(1));
     }
-    
+
 
 }

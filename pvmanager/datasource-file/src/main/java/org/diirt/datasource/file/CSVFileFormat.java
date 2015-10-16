@@ -16,14 +16,14 @@ import org.diirt.vtype.io.CSVIO;
 
 /**
  * A FileFormat for reading .csv files into VTables
- * 
+ *
  * @author Kunal Shroff
  *
  */
 public class CSVFileFormat implements FileFormat {
 
     private CSVIO io = new CSVIO();
-    
+
     @Override
     public Object readValue(InputStream in) {
         VTable value = io.importVTable(new InputStreamReader(in));

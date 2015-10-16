@@ -7,7 +7,7 @@ package org.diirt.datasource;
 /**
  * Used by {@link NotificationSupport} to communicate whether a new notification
  * is needed, and what should be the type to be notified.
- * 
+ *
  * @param <T> the type of the new value
  * @author carcassi
  */
@@ -17,7 +17,7 @@ public class Notification<T> {
 
     /**
      * Creates a new notification.
-     * 
+     *
      * @param notificationNeeded true if a notification is needed
      * @param newValue the new value to be sent
      */
@@ -28,7 +28,7 @@ public class Notification<T> {
 
     /**
      * True if the reader needs to be notified.
-     * 
+     *
      * @return true if notification should be sent
      */
     public boolean isNotificationNeeded() {
@@ -37,7 +37,7 @@ public class Notification<T> {
 
     /**
      * The value to be sent if the notification is needed.
-     * 
+     *
      * @return the new value to be sent
      */
     public T getNewValue() {

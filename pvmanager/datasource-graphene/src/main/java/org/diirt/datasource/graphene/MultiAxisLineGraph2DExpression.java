@@ -23,7 +23,7 @@ public class MultiAxisLineGraph2DExpression extends DesiredRateExpressionImpl<Gr
                 functionOf(xColumnName), functionOf(yColumnName)),
                 "Multi-axis Line Graph");
     }
-    
+
     @Override
     public void update(MultiAxisLineGraph2DRendererUpdate update) {
         ((MultiAxisLineGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);

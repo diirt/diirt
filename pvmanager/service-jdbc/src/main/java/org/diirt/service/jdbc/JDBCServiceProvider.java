@@ -12,7 +12,7 @@ import org.diirt.service.Service;
 /**
  * A service factory that crawls a directory for xml files, and creates
  * a JDBC service from each of them.
- * 
+ *
  * @author carcassi
  */
 public class JDBCServiceProvider extends AbstractFileServiceProvider {
@@ -21,7 +21,7 @@ public class JDBCServiceProvider extends AbstractFileServiceProvider {
      * Creates a new factory that reads from the given directory.
      * <p>
      * If the directory does not exist, it creates it and returns an empty set.
-     * 
+     *
      * @param directory a directory
      */
     public JDBCServiceProvider(File directory) {
@@ -47,5 +47,5 @@ public class JDBCServiceProvider extends AbstractFileServiceProvider {
     public String getName() {
         return "jdbc";
     }
-    
+
 }

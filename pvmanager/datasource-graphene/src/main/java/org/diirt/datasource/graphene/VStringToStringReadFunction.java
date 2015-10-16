@@ -12,7 +12,7 @@ import org.diirt.vtype.VString;
  * @author carcassi
  */
 public class VStringToStringReadFunction implements ReadFunction<String> {
-    
+
     private final ReadFunction<VString> function;
 
     public VStringToStringReadFunction(ReadFunction<VString> function) {

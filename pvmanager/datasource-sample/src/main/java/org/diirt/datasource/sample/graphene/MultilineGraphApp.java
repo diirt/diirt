@@ -28,7 +28,7 @@ public class MultilineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
                     "sim://triangleWaveform",
                     "=tableOf(column(\"X\", range(-5, 5)), column(\"Y\", 'sim://gaussianWaveform'))"}));
     }
-    
+
     public InterpolationScheme getInterpolationScheme() {
         return interpolationScheme;
     }
@@ -56,9 +56,9 @@ public class MultilineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-    
+
     public static void main(String[] args) {
         main(MultilineGraphApp.class);
     }
-    
+
 }

@@ -33,6 +33,6 @@ class ReadOnlyWriteExpression<T> extends WriteExpressionImpl<T> {
         super.fillWriteRecipe(director, builder);
         director.connectStatic(new RuntimeException(errorMessage), false, getName());
     }
-    
-    
+
+
 }

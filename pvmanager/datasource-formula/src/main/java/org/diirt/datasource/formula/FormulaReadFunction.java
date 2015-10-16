@@ -16,7 +16,7 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 class FormulaReadFunction implements ReadFunction<Object> {
-    
+
     public final List<ReadFunction<?>> argumentFunctions;
     public final Collection<FormulaFunction> formulaMatches;
     public final List<Object> argumentValues;
@@ -38,13 +38,13 @@ class FormulaReadFunction implements ReadFunction<Object> {
     void setDirector(PVDirector<?> director) {
         this.director = director;
     }
-    
+
    @Override
     public Object readValue() {
         if (formulaMatches.isEmpty()) {
             throw new RuntimeException("No function named '" + functionName + "'  is defined");
         }
-        
+
         List<Object> previousValues = new ArrayList<>(argumentValues);
         for (int i = 0; i < argumentFunctions.size(); i++) {
             argumentValues.set(i, argumentFunctions.get(i).readValue());
@@ -52,12 +52,12 @@ class FormulaReadFunction implements ReadFunction<Object> {
         if (previousValues.equals(argumentValues) && lastFormula != null && lastFormula.isPure()) {
             return lastValue;
         }
-        
+
         if (lastFormula == null || !FormulaFunctions.matchArgumentTypes(argumentValues, lastFormula)) {
             if (lastFormula instanceof StatefulFormulaFunction) {
                 ((StatefulFormulaFunction) lastFormula).dispose();
             }
-            
+
             lastFormula = FormulaFunctions.findFirstMatch(argumentValues, formulaMatches);
             // If the function is stateful, create a new copy
             // The copy will be kept until the same match works:
@@ -65,12 +65,12 @@ class FormulaReadFunction implements ReadFunction<Object> {
             if (lastFormula instanceof StatefulFormulaFunction) {
                 lastFormula = FormulaFunctions.createInstance((StatefulFormulaFunction) lastFormula);
             }
-            
+
             if (lastFormula instanceof DynamicFormulaFunction) {
                 ((DynamicFormulaFunction) lastFormula).setDirector(director);
             }
         }
-        
+
         if (lastFormula == null) {
             List<String> typeNames = new ArrayList<>(argumentValues.size());
             for (Object object : argumentValues) {
@@ -86,9 +86,9 @@ class FormulaReadFunction implements ReadFunction<Object> {
             }
             throw new RuntimeException("Can't find match for function '" + functionName + "'  and arguments " + typeNames);
         }
-        
+
         lastValue = lastFormula.calculate(argumentValues);
         return lastValue;
     }
-    
+
 }

@@ -13,10 +13,10 @@ package org.diirt.datasource;
  * @author carcassi
  */
 public class PV<R, W> implements PVReader<R>, PVWriter<W> {
-    
+
     // This class is a wrapper around a reader and a write. It has no logic by
     // itself, and just forwards the messages to the appropriate object.
-    
+
     private final PVReader<R> reader;
     private final PVWriter<W> writer;
 
@@ -105,5 +105,5 @@ public class PV<R, W> implements PVReader<R>, PVWriter<W> {
     public boolean isWriteConnected() {
         return writer.isWriteConnected();
     }
-    
+
 }

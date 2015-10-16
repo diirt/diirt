@@ -14,7 +14,7 @@ import org.diirt.datasource.ReadFunction;
  * @author carcassi
  */
 class DynamicGroupFunction implements ReadFunction<List<Object>> {
-    
+
     // Guarded by this
     private final List<ReadFunction<?>> arguments = new ArrayList<ReadFunction<?>>();
     // Guarded by this
@@ -47,13 +47,13 @@ class DynamicGroupFunction implements ReadFunction<List<Object>> {
     List<ReadFunction<?>> getArguments() {
         return arguments;
     }
-    
+
     List<Exception> getExceptions() {
         return exceptions;
     }
-    
+
     List<Object> getPreviousValues() {
         return previousValues;
     }
-    
+
 }

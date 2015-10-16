@@ -14,7 +14,7 @@ import java.util.Objects;
  * @author carcassi
  */
 public class ReadRecipe {
-    
+
     private final Collection<ChannelReadRecipe> channelReadRecipes;
 
     ReadRecipe(Collection<ChannelReadRecipe> channelReadRecipes) {
@@ -23,7 +23,7 @@ public class ReadRecipe {
 
     /**
      * The recipes for each channel to connect.
-     * 
+     *
      * @return a set of channel recipes
      */
     public Collection<ChannelReadRecipe> getChannelReadRecipes() {
@@ -51,5 +51,5 @@ public class ReadRecipe {
         }
         return true;
     }
-    
+
 }

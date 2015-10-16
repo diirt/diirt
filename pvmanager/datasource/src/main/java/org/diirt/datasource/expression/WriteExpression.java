@@ -24,14 +24,14 @@ public interface WriteExpression<W> extends WriteExpressionList<W> {
      * @return the expression name
      */
     public String getName();
-    
+
     /**
      * The function that implements this expression.
      *
      * @return the expression function
      */
     public WriteFunction<W> getWriteFunction();
-    
+
     /**
      * Prepares the recipe to connect the channels needed by this expression.
      * <p>
@@ -44,10 +44,10 @@ public interface WriteExpression<W> extends WriteExpressionList<W> {
      */
     public void fillWriteRecipe(PVWriterDirector director, WriteRecipeBuilder builder);
 
-    
+
     /**
      * The implementation of this expression.
-     * 
+     *
      * @return the implementation
      */
     public WriteExpressionImpl<W> getWriteExpressionImpl();

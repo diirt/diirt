@@ -23,7 +23,7 @@ public class SparklineGraph2DExpression extends DesiredRateExpressionImpl<Graph2
                 functionOf(xColumnName), functionOf(yColumnName)),
                 "Sparkline Graph");
     }
-    
+
     @Override
     public void update(SparklineGraph2DRendererUpdate update) {
         ((SparklineGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);

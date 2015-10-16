@@ -17,21 +17,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 class DesiredRateEvent {
     enum Type {READ_CONNECTION, WRITE_CONNECTION, VALUE, READ_EXCEPTION, WRITE_EXCEPTION, WRITE_SUCCEEDED, WRITE_FAILED};
-    
+
     private final List<Type> types = new CopyOnWriteArrayList<>();
     private volatile Exception writeException;
 
     public List<Type> getTypes() {
         return types;
     }
-    
+
     public void addType(Type type) {
         // TODO: may want to preserve ordering
         if (!types.contains(type)) {
             types.add(type);
         }
     }
-    
+
     public void addWriteFailed(Exception ex) {
         if (writeException != null) {
             throw new UnsupportedOperationException("Right now, only one failed write can be queued");
