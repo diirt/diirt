@@ -26,13 +26,13 @@ public class PVFieldToVTable implements VTable {
     private final List<String> names;
     private final List<Object> values;
     private final int rowCount;
-        
+
         /**
          * @param pvField
          * @param disconnected
          */
         public PVFieldToVTable(PVStructure pvField, boolean disconnected) {
-                
+
                 PVStringArray labelsField =
                         (PVStringArray)pvField.getScalarArrayField("labels", ScalarType.pvString);
                 String[] labels;
@@ -44,7 +44,7 @@ public class PVFieldToVTable implements VTable {
                 }
                 else
                         labels = null;
-                
+
                 PVStructure valueField = pvField.getStructureField("value");
                 if (valueField != null)
                 {
@@ -65,12 +65,12 @@ public class PVFieldToVTable implements VTable {
                 	values.add(NTUtils.scalarArrayToList(scalarArray, true));
                 	names.add(labels != null ? labels[nameIndex] : pvColumn.getFieldName());
 
-                	int len = scalarArray.getLength(); 
+                	int len = scalarArray.getLength();
         		if (len > maxRowCount) maxRowCount = len;
-                	
+
                 	nameIndex++;
                 }
-                
+
                 rowCount = maxRowCount;
                 }
                 else

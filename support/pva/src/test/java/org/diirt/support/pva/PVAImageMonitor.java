@@ -31,7 +31,7 @@ public class PVAImageMonitor {
         static class ImagePanel extends JComponent {
 
                 private Image image;
-                
+
                 // must be called from GUI thread
                 public void setImage(BufferedImage image)
                 {
@@ -41,20 +41,20 @@ public class PVAImageMonitor {
                         this.setPreferredSize(dim);
                         revalidate();
                 }
-                
+
             @Override
             public void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, null);
             }
 
         }
-        
+
         // popular: BufferedImage.TYPE_3BYTE_BGR or BufferedImage.TYPE_BYTE_GRAY
         public static BufferedImage updateBufferedImage(BufferedImage image, VImage vImage, int imageType)
         {
                 if (vImage == null)
                         return image;
-                
+
                 if (image == null ||
                         image.getHeight() != vImage.getHeight() ||
                         image.getWidth() != vImage.getWidth() ||
@@ -62,16 +62,16 @@ public class PVAImageMonitor {
                 {
                 image = new BufferedImage(vImage.getWidth(), vImage.getHeight(), imageType);
                 }
-                
+
         System.arraycopy(vImage.getData(), 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0, vImage.getData().length);
         return image;
         }
-        
+
         private final JFrame frame;
         private static final BufferedImage DEFAULT_IMAGE = new BufferedImage(320, 200, BufferedImage.TYPE_3BYTE_BGR);
         private volatile BufferedImage bufferedImage = DEFAULT_IMAGE;
         private final ImagePanel imagePanel;
-        
+
         public PVAImageMonitor()
         {
                 imagePanel = new ImagePanel();
@@ -81,15 +81,15 @@ public class PVAImageMonitor {
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.getContentPane().add(BorderLayout.CENTER, imagePanel);
                 frame.pack();
-                frame.setVisible(true);	
+                frame.setVisible(true);
         }
-        
+
         public void showImage(VImage vImage)
         {
                 final BufferedImage lastBufferedImage = bufferedImage;
                 final BufferedImage newBufferedImage = updateBufferedImage(lastBufferedImage, vImage, BufferedImage.TYPE_3BYTE_BGR);
                 bufferedImage = newBufferedImage;
-                
+
                 SwingUtilities.invokeLater(new Runnable()
                 {
                         @Override
@@ -104,7 +104,7 @@ public class PVAImageMonitor {
                         }
                 });
         }
-        
+
         public void execute(String[] args) throws InterruptedException
         {
                 // max 100Hz monitor
@@ -124,7 +124,7 @@ public class PVAImageMonitor {
                 // forever
                 while (System.currentTimeMillis() != 0)
                         Thread.sleep(Long.MAX_VALUE);
-                
+
                 reader.close();
         }
 

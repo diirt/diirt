@@ -36,18 +36,18 @@ public class JCAZeroPrecisionTest {
     public void honorZeroPrecision1() {
         ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(true);
-        
+
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         meta.setPrecision((short) 0);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3"));
     }
 
@@ -55,18 +55,18 @@ public class JCAZeroPrecisionTest {
     public void honorZeroPrecision2() {
         ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(false);
-        
+
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         meta.setPrecision((short) 0);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3.25"));
     }
 }

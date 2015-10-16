@@ -17,7 +17,7 @@ import org.diirt.vtype.VTypeToString;
 public class PVFieldToVDouble extends AlarmTimeDisplayExtractor implements VDouble {
 
         protected final Double value;
-        
+
         public PVFieldToVDouble(PVStructure pvField, boolean disconnected) {
                 this("value", pvField, disconnected);
         }
@@ -40,7 +40,7 @@ public class PVFieldToVDouble extends AlarmTimeDisplayExtractor implements VDoub
     {
     	return value;
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

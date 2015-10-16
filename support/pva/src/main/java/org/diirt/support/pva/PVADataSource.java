@@ -15,7 +15,7 @@ import org.epics.pvaccess.client.ChannelProviderRegistryFactory;
 import org.epics.pvaccess.client.impl.remote.ClientContextImpl;
 
 /**
- * 
+ *
  * @author msekoranja
  */
 public class PVADataSource extends DataSource {
@@ -29,25 +29,25 @@ public class PVADataSource extends DataSource {
 
     private final short defaultPriority;
     private final ChannelProvider pvaChannelProvider;
-    
+
     private final PVATypeSupport pvaTypeSupport = new PVATypeSupport(new PVAVTypeAdapterSet());
-    
+
     public PVADataSource() {
-    	this(ChannelProvider.PRIORITY_DEFAULT);  	
+    	this(ChannelProvider.PRIORITY_DEFAULT);
     }
-    
+
     public PVADataSource(short defaultPriority) {
     	super(true);
-    	
+
         this.defaultPriority = defaultPriority;
-        
+
                 try {
                         ClientFactory.start();
                     final ChannelProviderRegistry registry = ChannelProviderRegistryFactory.getChannelProviderRegistry();
                     this.pvaChannelProvider = registry.createProvider("pva");
                     if (this.pvaChannelProvider == null)
                     	throw new RuntimeException("pvAccess ChannelProvider not installed");
-                    
+
                 } catch (Throwable th) {
                         throw new RuntimeException("Failed to intialize pvAccess context.", th);
                 }
@@ -62,7 +62,7 @@ public class PVADataSource extends DataSource {
     public short getDefaultPriority() {
         return defaultPriority;
     }
-    
+
     public void close() {
     	if (this.pvaChannelProvider != null)
     		pvaChannelProvider.destroy();

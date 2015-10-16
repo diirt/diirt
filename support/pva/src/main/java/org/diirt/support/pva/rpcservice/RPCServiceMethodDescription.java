@@ -39,9 +39,9 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
     final String structureId;
     final boolean isResultStandalone;
     final String operationName;
-    
+
     final Map<String, Class> strictArguments = new HashMap<>();
-    
+
     final static String FIELD_NAME_EQUALS_NAME = "__NOALIAS__";
 
     /**
@@ -56,7 +56,7 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
     public RPCServiceMethodDescription(String name, String description, String operationName,
             String structureId, boolean isResultStandalone) {
         super(name, description);
-        
+
         this.operationName = operationName;
         this.structureId = structureId;
         this.isResultStandalone = isResultStandalone;
@@ -121,7 +121,7 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
     public RPCServiceMethodDescription addArgument(String name, String fieldName, String description, Class<?> type) {
         super.addArgument(name, description, relaxArgumentType(type));
         strictArguments.put(name, type);
-        
+
         orderedParameterNames.put(name, fieldName != null ? fieldName : FIELD_NAME_EQUALS_NAME);
         return this;
     }

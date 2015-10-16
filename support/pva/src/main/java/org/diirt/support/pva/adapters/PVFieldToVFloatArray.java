@@ -40,14 +40,14 @@ public class PVFieldToVFloatArray extends AlarmTimeDisplayExtractor implements V
 
         public PVFieldToVFloatArray(PVField field, PVStructure pvParent, boolean disconnected) {
                 super(pvParent, disconnected);
-                
+
                 if (field instanceof PVFloatArray)
                 {
                         PVFloatArray valueField = (PVFloatArray)field;
 
                         FloatArrayData data = new FloatArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayFloat(data.data);
                 }
@@ -57,7 +57,7 @@ public class PVFieldToVFloatArray extends AlarmTimeDisplayExtractor implements V
                         list = null;
                 }
         }
-        
+
         /* (non-Javadoc)
          * @see org.epics.pvmanager.data.Array#getSizes()
          */
@@ -73,7 +73,7 @@ public class PVFieldToVFloatArray extends AlarmTimeDisplayExtractor implements V
         public ListFloat getData() {
                 return list;
         }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

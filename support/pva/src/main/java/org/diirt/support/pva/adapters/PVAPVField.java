@@ -11,14 +11,14 @@ import org.epics.pvdata.pv.PVField;
  *
  */
 public class PVAPVField {
-        
+
         protected final PVField pvField;
-        
+
         public PVAPVField(PVField pvField, boolean disconnected)
         {
                 this.pvField = pvField;
         }
-        
+
         public PVField getPVField() {
                 return pvField;
         }
@@ -27,6 +27,6 @@ public class PVAPVField {
         public String toString() {
                 return pvField.toString();
         }
-        
-        
+
+
 }

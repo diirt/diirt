@@ -29,7 +29,7 @@ import org.mockito.MockitoAnnotations;
  * @author carcassi
  */
 public class JCARTYPTest {
-    
+
     public JCARTYPTest() {
     }
 
@@ -37,7 +37,7 @@ public class JCARTYPTest {
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
     }
-    
+
     @Mock Channel channel;
     @Mock JCADataSource dataSource;
 

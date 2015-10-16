@@ -31,22 +31,22 @@ import static org.diirt.util.time.TimeDuration.*;
  * channel is used twice, so that in some cases the channel is opened from
  * scratch and in other cases is opened while already opened. This will test
  * both the JCA connection logic and the connection sharing logic.
- * 
+ *
  * @author carcassi
  */
 public class JCAClientConnectDisconnect {
     public static void main(String[] args) throws Exception {
         JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
-        
+
         String channelNamePrefix = "TEST_";
-        
+
         List<String> names = new ArrayList<String>();
         for (int i = 1; i <= 10; i++) {
             names.add(channelNamePrefix + i);
             names.add(channelNamePrefix + i);
         }
-        List<PVReader<?>> pvs = new ArrayList<PVReader<?>>(); 
+        List<PVReader<?>> pvs = new ArrayList<PVReader<?>>();
         for (String name : names) {
             pvs.add(null);
         }
@@ -55,10 +55,10 @@ public class JCAClientConnectDisconnect {
         final AtomicInteger valueNotificationCount = new AtomicInteger(0);
         final AtomicInteger connectionNotificationCount = new AtomicInteger(0);
         final AtomicInteger totalNotificationCount = new AtomicInteger(0);
-        
+
         int countToPrint = 10;
         while (true) {
-            
+
             int index = rand.nextInt(names.size());
             PVReader<?> pv = pvs.get(index);
             if (pv == null) {
@@ -82,10 +82,10 @@ public class JCAClientConnectDisconnect {
                 pv.close();
                 pvs.set(index, null);
             }
-            
+
             Thread.sleep(50);
             if (connectCount.get() == countToPrint) {
-                System.out.println("Connections: " + connectCount + " Conn notifications: " + connectionNotificationCount 
+                System.out.println("Connections: " + connectCount + " Conn notifications: " + connectionNotificationCount
                         + " Value notifications: " + valueNotificationCount + " Total notifications: " +totalNotificationCount);
                 countToPrint += 10;
             }

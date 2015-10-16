@@ -20,12 +20,12 @@ public class AlarmTimeExtractor implements Alarm, Time {
         protected final Timestamp timeStamp;
         protected final Integer timeUserTag;
         protected final boolean isTimeValid;
-        
+
         private static final Alarm noAlarm = ValueFactory.alarmNone();
-        
+
         private static final Timestamp noTimeStamp = org.diirt.util.time.Timestamp.of(0,0);
         private static final Integer noTimeUserTag = null;
-        
+
         public AlarmTimeExtractor(PVStructure pvField, boolean disconnected)
         {
                 // alarm_t
@@ -45,15 +45,15 @@ public class AlarmTimeExtractor implements Alarm, Time {
                                 else
                                         alarmSeverity = alarmSeverityMapLUT[severityField.get()];
                                 // no explicit out-of-bounds check
-                                
-                                
+
+
                                 PVInt statusField = alarmStructure.getIntField("status");
                                 if (statusField == null)
                                         alarmStatus = "UNDEFINED";
                                 else
                                         alarmStatus = alarmStatusMapLUT[statusField.get()];
                                 // no explicit out-of-bounds check
-                                
+
                         }
                         else
                         {
@@ -61,25 +61,25 @@ public class AlarmTimeExtractor implements Alarm, Time {
                                 alarmStatus = noAlarm.getAlarmName();
                         }
                 }
-                
+
                 // timeStamp_t
                 PVStructure timeStampStructure = (pvField != null) ? pvField.getStructureField("timeStamp") : null;
                 if (timeStampStructure != null)
                 {
                         PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");
                         PVInt nanosField = timeStampStructure.getIntField("nanoseconds");
-                        
+
                         if (secsField == null || nanosField == null)
                                 timeStamp = noTimeStamp;
                         else
                                 timeStamp = org.diirt.util.time.Timestamp.of(secsField.get(), nanosField.get());
-                        
+
                         PVInt userTagField = timeStampStructure.getIntField("userTag");
                         if (userTagField == null)
                                 timeUserTag = noTimeUserTag;
                         else
                                 timeUserTag = userTagField.get();
-                        
+
                         isTimeValid = (timeStamp != noTimeStamp);
                 }
                 else
@@ -88,9 +88,9 @@ public class AlarmTimeExtractor implements Alarm, Time {
                         timeUserTag = null;
                         isTimeValid = true;
                 }
-                
+
         }
-        
+
         // org.epics.pvdata.property.AlarmSeverity to pvmanager.AlarmSeverity
         protected static final AlarmSeverity alarmSeverityMapLUT[] =
         {
@@ -100,7 +100,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
                 AlarmSeverity.INVALID,
                 AlarmSeverity.UNDEFINED
         };
-        
+
         // org.epics.pvdata.property.AlarmStatus to pvmanager.AlarmStatus
         protected static final String alarmStatusMapLUT[] =
         {
@@ -113,7 +113,7 @@ public class AlarmTimeExtractor implements Alarm, Time {
                 "UNDEFINED",
                 "CLIENT"
         };
- 
+
         @Override
         public AlarmSeverity getAlarmSeverity() {
                 return alarmSeverity;
@@ -123,8 +123,8 @@ public class AlarmTimeExtractor implements Alarm, Time {
     public String getAlarmName() {
         return alarmStatus;
     }
-        
-        
+
+
 
         @Override
         public Timestamp getTimestamp() {

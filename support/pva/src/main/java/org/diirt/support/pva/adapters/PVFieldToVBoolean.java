@@ -15,7 +15,7 @@ import org.diirt.vtype.VTypeToString;
  * @author dkumar
  */
 public class PVFieldToVBoolean extends AlarmTimeDisplayExtractor implements VBoolean {
- 
+
   protected final Boolean value;
 
         public PVFieldToVBoolean(PVStructure pvField, boolean disconnected) {

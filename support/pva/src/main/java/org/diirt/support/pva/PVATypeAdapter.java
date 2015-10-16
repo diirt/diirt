@@ -24,14 +24,14 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 
         // e.g. VDouble.class
     private final Class<?> typeClass;
-    
+
     // PVStructure requirements
     private final String[] ntIds;
     private final Field[] valueFieldTypes;
 
     /**
      * Creates a new type adapter.
-     * 
+     *
      * @param typeClass the java type this adapter will create
      * @param ntIds array of IDs this adapter is able convert, <code>null</code> allowed
      */
@@ -41,7 +41,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 
     /**
      * Creates a new type adapter.
-     * 
+     *
      * @param typeClass the java type this adapter will create
      * @param ntIds array of IDs this adapter is able convert, <code>null</code> allowed
      * @param fieldType <code>Field</code> instance this adapter is able convert
@@ -52,7 +52,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 
     /**
      * Creates a new type adapter.
-     * 
+     *
      * @param typeClass the java type this adapter will create
      * @param ntIds array of IDs this adapter is able convert, <code>null</code> allowed
      * @param fieldTypes <code>Field</code> instances this adapter is able convert, <code>null</code> allowed
@@ -76,11 +76,11 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         			match = true;
         			break;
         		}
-        	
+
         	if (!match)
         		return false;
         }
-        
+
         // If the type of the channel does not match, no match
         if (valueFieldTypes != null)
         {
@@ -95,7 +95,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
             			match = true;
             			break;
             		}
-            	
+
             	if (!match)
             		return false;
     		}
@@ -104,10 +104,10 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         // Everything matches
         return true;
     }
-    
+
     @Override
     public int match(ValueCache<?> cache, PVAChannelHandler channel) {
-    	
+
     	// If the generated type can't be put in the cache, no match
         if (!cache.getType().isAssignableFrom(typeClass))
             return 0;
@@ -124,11 +124,11 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         			match = true;
         			break;
         		}
-        	
+
         	if (!match)
         		return 0;
         }
-        
+
         // If the type of the channel does not match, no match
         if (valueFieldTypes != null)
         {
@@ -145,7 +145,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
             			match = true;
             			break;
             		}
-            	
+
             	if (!match)
             		return 0;
     		}
@@ -154,7 +154,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         // Everything matches
         return 1;
     }
-    
+
     @Override
     public Object getSubscriptionParameter(ValueCache<?> cache, PVAChannelHandler channel) {
         throw new UnsupportedOperationException("Not implemented: PVAChannelHandler is multiplexed, will not use this method");
@@ -173,9 +173,9 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
     		else
     			// this avoids problem when scalars/scalar arrays needs to be passed as PVStructure message
     			valueField = message.getSubField(extractFieldName);
-  
+
     	}
-    	
+
         Object value = createValue(message, valueField, !channel.isConnected());
         cache.writeValue(value);
         return true;
@@ -183,7 +183,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
 
     /**
      * Given the value create the new value.
-     * 
+     *
      * @param message the value taken from the monitor
      * @param valueField the value field data, optional
      * @param disconnected true if the value should report the channel is currently disconnected
@@ -197,5 +197,5 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
                                 + Arrays.toString(ntIds) + ", valueFieldTypes="
                                 + Arrays.toString(valueFieldTypes) + "]";
         }
-    
+
 }

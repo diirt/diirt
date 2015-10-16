@@ -34,5 +34,5 @@ public class DataUtilsTest {
         TimeStamp timeStamp = new TimeStamp(123456789, 123456789);
         assertThat(DataUtils.isTimeValid(timeStamp), equalTo(true));
     }
-    
+
 }

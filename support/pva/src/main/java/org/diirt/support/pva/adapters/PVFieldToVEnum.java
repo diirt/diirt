@@ -16,14 +16,14 @@ import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VTypeToString;
 
 public class PVFieldToVEnum extends AlarmTimeExtractor implements VEnum {
-        
+
         protected final int index;
         protected final List<String> labels;
-        
+
         public PVFieldToVEnum(PVStructure pvField, boolean disconnected)
         {
                 super(pvField, disconnected);
-        
+
                 PVStructure enumField = pvField.getField().getID().equals("enum_t") ? pvField : pvField.getStructureField("value");
                 if (enumField != null)
                 {
@@ -34,7 +34,7 @@ public class PVFieldToVEnum extends AlarmTimeExtractor implements VEnum {
                                 StringArrayData data = new StringArrayData();
                                 labelsField.get(0, labelsField.getLength(), data);
                                 labels = Arrays.asList(data.data);
-                                
+
                                 PVInt indexField = enumField.getIntField("index");
                                 if (indexField != null)
                                 {
@@ -44,16 +44,16 @@ public class PVFieldToVEnum extends AlarmTimeExtractor implements VEnum {
                                 {
                                         index = -1;
                                 }
-                                
+
                                 return;
                         }
                 }
-                
+
                 // error
                 index = -1;
                 labels = null;
         }
-        
+
         /* (non-Javadoc)
          * @see org.epics.pvmanager.data.Enum#getLabels()
          */

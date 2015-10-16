@@ -20,14 +20,14 @@ public class PVFieldNTMatrixToVDoubleArray extends PVFieldToVDoubleArray {
 
         private final int rows;
         private final int cols;
-        
+
         /**
          * @param pvField
          * @param disconnected
          */
         public PVFieldNTMatrixToVDoubleArray(PVStructure pvField, boolean disconnected) {
                 super(pvField, disconnected);
-                
+
                 PVIntArray dimField =
                         (PVIntArray)pvField.getScalarArrayField("dim", ScalarType.pvInt);
                 if (dimField != null)

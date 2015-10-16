@@ -31,26 +31,26 @@ import org.diirt.vtype.ValueFactory;
 public class PVFieldNTHistogramToVShortArray extends AlarmTimeDisplayExtractor implements VShortArray {
 
         private static final String RANGES_UNIT = "";
-        
+
         private final ListInt size;
         private final ListShort list;
-        
+
         private final List<ArrayDimensionDisplay> displays = new ArrayList<ArrayDimensionDisplay>(1);
-        
+
         /**
          * @param pvField
          * @param disconnected
          */
         public PVFieldNTHistogramToVShortArray(PVStructure pvField, boolean disconnected) {
                 super(pvField, disconnected);
-                
+
                 PVShortArray valueField =
                         (PVShortArray)pvField.getScalarArrayField("value", ScalarType.pvShort);
                 if (valueField != null)
                 {
                         ShortArrayData data = new ShortArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayShort(data.data);
                 }
@@ -66,7 +66,7 @@ public class PVFieldNTHistogramToVShortArray extends AlarmTimeDisplayExtractor i
                 {
                         DoubleArrayData data = new DoubleArrayData();
                         rangesField.get(0, rangesField.getLength(), data);
-                        
+
                         ArrayDimensionDisplay display = ValueFactory.newDisplay(new ArrayDouble(data.data), RANGES_UNIT);
                         displays.add(display);
                 }
@@ -87,7 +87,7 @@ public class PVFieldNTHistogramToVShortArray extends AlarmTimeDisplayExtractor i
         public ListShort getData() {
                 return list;
         }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

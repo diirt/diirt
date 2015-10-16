@@ -105,7 +105,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                         PVAPVStructure value = (PVAPVStructure) args.get(0);
                         if (value == null)
                                 return null;
-                        
+
                         PVStructure pvStructure = value.getPVStructure();
 
                         int numberOfFields = pvStructure.getNumberFields();
@@ -114,19 +114,19 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                         for (PVField pvF : pvStructure.getPVFields())
                         {
                                 /*
-                                // to String implementation 
+                                // to String implementation
                                 types.add(String.class);
                                 ArrayList<String> columnData = new ArrayList<String>();
                                 columnData.add(pvF.toString());
                                 values.add(columnData);
                                 */
-                                
+
                                 Class<?> clazz = toVTableColumnClass(pvF.getField());
                                 types.add(clazz);
                                 ArrayList<Object> columnData = new ArrayList<Object>();
                                 columnData.add(toVTableColumnValue(pvF, clazz));
                                 values.add(columnData);
-                                
+
                         }
 
                         return ValueFactory.newVTable(
@@ -134,7 +134,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                                 Arrays.asList(pvStructure.getStructure().getFieldNames()),
                                                 values);
                 }
-                
+
                 @Override
                 public List<String> getArgumentNames() {
                         return Arrays.asList("pvStructure");
@@ -169,9 +169,9 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                 public boolean isVarArgs() {
                         return false;
                 }
-                
+
         }
-        
+
         // field("fieldName", PVAPVStructure)
         static class PVAPVStructureFieldFormulaFunction implements FormulaFunction
         {
@@ -182,19 +182,19 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                         if (vfieldName == null)
                                 return null;
                         String fieldName = vfieldName.getValue();
-                        
+
                         PVAPVStructure value = (PVAPVStructure) args.get(1);
                         if (value == null)
                                 return null;
-                        
+
                         PVStructure pvStructure = value.getPVStructure();
                         PVField pvField = pvStructure.getSubField(fieldName);
 
                         PVStructure pvMetadataParent = (fieldName.equals("value")) ? pvStructure : null;
-                
+
                         if (pvField != null)
                                 return toVType(pvField, pvMetadataParent);
-                        
+
                         return null;
                 }
 
@@ -232,7 +232,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                 public boolean isVarArgs() {
                         return false;
                 }
-                
+
         }
 
         // pvField("fieldName", PVAPVStructure)
@@ -245,11 +245,11 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                         if (vfieldName == null)
                                 return null;
                         String fieldName = vfieldName.getValue();
-                        
+
                         PVAPVStructure value = (PVAPVStructure) args.get(1);
                         if (value == null)
                                 return null;
-                        
+
                         PVStructure pvStructure = value.getPVStructure();
                         PVField pvField = pvStructure.getSubField(fieldName);
 
@@ -298,7 +298,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                 public boolean isVarArgs() {
                         return false;
                 }
-                
+
         }
 
         // toString(PVAPVField)
@@ -309,10 +309,10 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                 public Object calculate(List<Object> args) {
                         PVAPVField value = (PVAPVField) args.get(0);
                         String str = (value == null ? "null" : value.toString());
-                        
+
                         return ValueFactory.newVString(str, ValueFactory.alarmNone(), ValueFactory.timeNow());
                 }
-                
+
                 @Override
                 public List<String> getArgumentNames() {
                         return Arrays.asList("pvField");
@@ -347,22 +347,22 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                 public boolean isVarArgs() {
                         return false;
                 }
-                
+
         }
 
         public static Object toVType(PVField pvField, PVStructure pvMetadataParent) {
-                
+
                 if (pvField instanceof PVStructure)
                 {
                         PVStructure pvFieldStructure = (PVStructure)pvField;
                         Structure fieldStructure = pvFieldStructure.getStructure();
-                        
+
                         Set<PVATypeAdapter> typeAdapters = PVAVTypeAdapterSet.converters;
                     for (PVATypeAdapter converter : typeAdapters) {
                         if (converter.match(fieldStructure))
                         	return converter.createValue(pvFieldStructure, null, false);
                     }
-        
+
                     // not found, simply return PVAPVStructure
                         return new PVAPVStructure((PVStructure)pvField, false);
                 }
@@ -434,7 +434,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
         }
 
         public static Object toVTableColumnValue(PVField pvField, Class<?> vtableClass) {
-                
+
                 if (pvField instanceof PVStructure)
                 {
                         if (vtableClass.equals(Timestamp.class))
@@ -502,11 +502,11 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                 VTypeToVTable.put(Timestamp.class, Timestamp.class);
                 VTypeToVTable.put(VNumber.class, Number.class);
         }
-        
+
         public static Class<?> toVTableColumnClass(Field field) {
-                
+
                 Class<?> vclazz = toVTypeClass(field);
-                
+
                 Class<?> vTableType = VTypeToVTable.get(vclazz);
                 if (vTableType != null)
                         return vTableType;
@@ -514,14 +514,14 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                         return String.class;
         }
         */
-        
+
         public static Class<?> toVTableColumnClass(Field field) {
-                
+
                 Type fieldType = field.getType();
                 if (fieldType == Type.structure)
                 {
                         Structure fieldStructure = (Structure)field;
-                        
+
                         if (fieldStructure.getID().equals("time_t"))
                                 return Timestamp.class;
                         else
@@ -579,7 +579,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                         if (lastField != null)
                                                 if (!uf.equals(lastField))
                                                         sameFields = false;
-        
+
                                         Type uft = uf.getType();
                                         if (uft != Type.scalar)
                                                 allScalars = false;
@@ -589,7 +589,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                                 if (!s.getScalarType().isNumeric())
                                                         allNumeric = false;
                                         }
-                                        
+
                                         if (uft != Type.scalarArray)
                                                 allScalarArrays = false;
                                         {
@@ -597,10 +597,10 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                                 if (!s.getElementType().isNumeric())
                                                         allNumeric = false;
                                         }
-                                        
+
                                         lastField = uf;
                                 }
-                                
+
                                 if (sameFields)
                                         return toVTableColumnClass(lastField);
                                 else if (allNumeric)
@@ -613,28 +613,28 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                         else
                                                 return String.class;
                                 }
-                                else 
-                                        return String.class; 
+                                else
+                                        return String.class;
                                 */
                         }
                 }
                 else
-                        return String.class; 
+                        return String.class;
         }
-        
+
         public static Class<?> toVTypeClass(Field field) {
-                
+
                 Type fieldType = field.getType();
                 if (fieldType == Type.structure)
                 {
                         Structure fieldStructure = (Structure)field;
-                        
+
                         Set<PVATypeAdapter> typeAdapters = PVAVTypeAdapterSet.converters;
                     for (PVATypeAdapter converter : typeAdapters) {
                         if (converter.match(fieldStructure))
                         	return converter.getClass();
                     }
-        
+
                     // not found, simply return PVAPVStructure
                         return PVAPVStructure.class;
                 }
@@ -713,7 +713,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                         if (lastField != null)
                                                 if (!uf.equals(lastField))
                                                         sameFields = false;
-        
+
                                         Type uft = uf.getType();
                                         if (uft != Type.scalar)
                                                 allScalars = false;
@@ -723,7 +723,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                                 if (!s.getScalarType().isNumeric())
                                                         allNumeric = false;
                                         }
-                                        
+
                                         if (uft != Type.scalarArray)
                                                 allScalarArrays = false;
                                         {
@@ -731,10 +731,10 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                                 if (!s.getElementType().isNumeric())
                                                         allNumeric = false;
                                         }
-                                        
+
                                         lastField = uf;
                                 }
-                                
+
                                 if (sameFields)
                                         return toVTypeClass(lastField);
                                 else if (allNumeric)
@@ -746,12 +746,12 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                                         else
                                                 return Object.class;
                                 }
-                                else 
-                                        return Object.class; 
+                                else
+                                        return Object.class;
                         }
                 }
                 else
                         return Object.class; // TODO PVUnionArray, PVStructureArray
         }
-        
+
 }

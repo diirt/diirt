@@ -26,7 +26,7 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
 
         private final ListInt size;
         private final List<String> array;
-        
+
         public PVFieldToVStringArray(PVStructure pvField, boolean disconnected) {
                 this("value", pvField, disconnected);
         }
@@ -37,14 +37,14 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
 
         public PVFieldToVStringArray(PVField field, PVStructure pvParent, boolean disconnected) {
                 super(pvParent, disconnected);
-                
+
                 if (field instanceof PVStringArray)
                 {
                         PVStringArray valueField = (PVStringArray)field;
 
                         StringArrayData data = new StringArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.array = Collections.unmodifiableList(Arrays.asList(data.data));
                 }
@@ -70,7 +70,7 @@ public class PVFieldToVStringArray extends AlarmTimeDisplayExtractor implements 
         public List<String> getData() {
                 return array;
         }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

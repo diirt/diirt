@@ -14,7 +14,7 @@ import org.diirt.vtype.VTypeToString;
  * @author dkumar
  */
 public class PVFieldToVShort extends AlarmTimeDisplayExtractor implements VShort {
- 
+
         protected final Short value;
 
         public PVFieldToVShort(PVStructure pvField, boolean disconnected) {
@@ -27,7 +27,7 @@ public class PVFieldToVShort extends AlarmTimeDisplayExtractor implements VShort
 
         public PVFieldToVShort(PVField field, PVStructure pvParent, boolean disconnected) {
                 super(pvParent, disconnected);
-                
+
                 if (field instanceof PVScalar)
                         value = convert.toShort((PVScalar)field);
                 else

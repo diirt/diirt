@@ -15,7 +15,7 @@ import org.diirt.vtype.VTypeToString;
  */
 public class PVFieldToVString extends AlarmTimeDisplayExtractor implements VString {
         // NOTE: VString does not extend Display, it's OK (will be undefined)
-        
+
         protected final String value;
 
         public PVFieldToVString(PVStructure pvField, boolean disconnected) {
@@ -28,7 +28,7 @@ public class PVFieldToVString extends AlarmTimeDisplayExtractor implements VStri
 
         public PVFieldToVString(PVField field, PVStructure pvParent, boolean disconnected) {
                 super(pvParent, disconnected);
-                
+
                 if (field instanceof PVScalar)
                         value = convert.toString((PVScalar)field);
                 else
@@ -44,5 +44,5 @@ public class PVFieldToVString extends AlarmTimeDisplayExtractor implements VStri
     public String toString() {
         return VTypeToString.toString(this);
     }
-        
+
 }

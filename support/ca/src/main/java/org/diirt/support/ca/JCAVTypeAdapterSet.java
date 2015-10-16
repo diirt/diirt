@@ -30,12 +30,12 @@ import org.diirt.datasource.ValueCache;
  * @author carcassi
  */
 public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
-    
+
     @Override
     public Set<JCATypeAdapter> getAdapters() {
         return converters;
     }
-    
+
     // DBR_TIME_Float -> VDouble
     final static JCATypeAdapter DBRFloatToVFloat = new JCATypeAdapter(VFloat.class, DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE, false) {
 
@@ -53,7 +53,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 return new VDoubleFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_Byte -> VInt
     final static JCATypeAdapter DBRByteToVByte = new JCATypeAdapter(VByte.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, false) {
 
@@ -62,7 +62,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 return new VByteFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_Short -> VInt
     final static JCATypeAdapter DBRShortToVShort = new JCATypeAdapter(VShort.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, false) {
 
@@ -98,7 +98,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 if (!connPayload.isLongString()) {
                     return 0;
                 }
-                
+
                 return super.match(cache, connPayload);
             }
 
@@ -116,7 +116,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 return new VEnumFromDbr((DBR_TIME_Enum) value, (DBR_LABELS_Enum) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_Float -> VFloatArray
     final static JCATypeAdapter DBRFloatToVFloatArray = new JCATypeAdapter(VFloatArray.class, DBR_TIME_Float.TYPE, DBR_CTRL_Double.TYPE, true) {
 
@@ -125,7 +125,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 return new VFloatArrayFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_Double -> VDoubleArray
     final static JCATypeAdapter DBRDoubleToVDoubleArray = new JCATypeAdapter(VDoubleArray.class, DBR_TIME_Double.TYPE, DBR_CTRL_Double.TYPE, true) {
 
@@ -134,7 +134,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 return new VDoubleArrayFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_Byte -> VByteArray
     final static JCATypeAdapter DBRByteToVByteArray = new JCATypeAdapter(VByteArray.class, DBR_TIME_Byte.TYPE, DBR_CTRL_Double.TYPE, true) {
 
@@ -143,16 +143,16 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 if (connPayload.isLongString()) {
                     return 0;
                 }
-                
+
                 return super.match(cache, connPayload);
             }
-        
+
             @Override
             public VByteArray createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
                 return new VByteArrayFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_Short -> VShortArray
     final static JCATypeAdapter DBRShortToVShortArray = new JCATypeAdapter(VShortArray.class, DBR_TIME_Short.TYPE, DBR_CTRL_Double.TYPE, true) {
 
@@ -161,7 +161,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 return new VShortArrayFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_Int -> VIntArray
     final static JCATypeAdapter DBRIntToVIntArray = new JCATypeAdapter(VIntArray.class, DBR_TIME_Int.TYPE, DBR_CTRL_Double.TYPE, true) {
 
@@ -170,7 +170,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
                 return new VIntArrayFromDbr((DBR_TIME_Int) value, (DBR_CTRL_Double) metadata, connPayload);
             }
         };
-    
+
     // DBR_TIME_String -> VStringArray
     final static JCATypeAdapter DBRStringToVStringArray = new JCATypeAdapter(VStringArray.class, DBR_TIME_String.TYPE, null, true) {
 
@@ -181,7 +181,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
         };
 
     private static final Set<JCATypeAdapter> converters;
-    
+
     static {
         Set<JCATypeAdapter> newFactories = new HashSet<JCATypeAdapter>();
         // Add all SCALARs
@@ -203,5 +203,5 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
         newFactories.add(DBRStringToVStringArray);
         converters = Collections.unmodifiableSet(newFactories);
     }
-    
+
 }

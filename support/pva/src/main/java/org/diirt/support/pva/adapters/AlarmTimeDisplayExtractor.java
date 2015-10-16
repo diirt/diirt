@@ -70,7 +70,7 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
     		else
     			return String.valueOf(number);
     	}
-    	
+
         @Override
         public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
             toAppendTo.append(internalFormat(number));
@@ -88,8 +88,8 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
             throw new UnsupportedOperationException("Not supported yet.");
         }
     };
-        
-        
+
+
         protected final Double lowerDisplayLimit;
         protected final Double lowerCtrlLimit;
         protected final Double lowerAlarmLimit;
@@ -100,20 +100,20 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
         protected final Double upperAlarmLimit;
         protected final Double upperCtrlLimit;
         protected final Double upperDisplayLimit;
-        
+
         private final static Display noDisplay = ValueFactory.displayNone();
-        
+
         public AlarmTimeDisplayExtractor(PVStructure pvField, boolean disconnected)
         {
                 super(pvField, disconnected);
-                
+
                 // display_t
                 PVStructure displayStructure = (pvField != null) ? pvField.getStructureField("display") : null;
                 if (displayStructure != null)
                 {
                         lowerDisplayLimit = getDoubleValue(displayStructure, "limitLow", noDisplay.getLowerDisplayLimit());
                         upperDisplayLimit = getDoubleValue(displayStructure, "limitHigh", noDisplay.getUpperDisplayLimit());
-                        
+
                         PVString formatField = displayStructure.getStringField("format");
                         if (formatField == null)
                                 format = noDisplay.getFormat();
@@ -128,12 +128,12 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
                 }
                 else
                 {
-                        lowerDisplayLimit = noDisplay.getLowerDisplayLimit();	
+                        lowerDisplayLimit = noDisplay.getLowerDisplayLimit();
                         upperDisplayLimit = noDisplay.getUpperDisplayLimit();
                         format = noDisplay.getFormat();
                         units = noDisplay.getUnits();
                 }
-        
+
                 // control_t
                 PVStructure controlStructure = (pvField != null) ? pvField.getStructureField("control") : null;
                 if (controlStructure != null)
@@ -146,8 +146,8 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
                         lowerCtrlLimit = noDisplay.getLowerCtrlLimit();
                         upperCtrlLimit = noDisplay.getUpperCtrlLimit();
                 }
-                
-                
+
+
                 // valueAlarm_t
                 PVStructure valueAlarmStructure = (pvField != null) ? pvField.getStructureField("valueAlarm") : null;
                 if (valueAlarmStructure != null)
@@ -165,9 +165,9 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
                         upperAlarmLimit = noDisplay.getUpperAlarmLimit();
                 }
         }
-        
+
         protected static final Convert convert = ConvertFactory.getConvert();
-        
+
         protected static final Double getDoubleValue(PVStructure structure, String fieldName, Double defaultValue)
         {
                 PVField field = structure.getSubField(fieldName);

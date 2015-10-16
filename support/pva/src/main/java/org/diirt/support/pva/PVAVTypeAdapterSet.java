@@ -69,20 +69,20 @@ import org.diirt.vtype.VTable;
  * @author msekoranja
  */
 public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
-    
+
         private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
-        
+
     @Override
     public Set<PVATypeAdapter> getAdapters() {
         return converters;
     }
-    
+
     // TODO startsWith
-    
+
     //  -> VDouble
     final static PVATypeAdapter ToVDouble = new PVATypeAdapter(
-    		VDouble.class, 
-    		new String[] { "epics:nt/NTScalar:1.", "double" }, 
+    		VDouble.class,
+    		new String[] { "epics:nt/NTScalar:1.", "double" },
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvDouble)
@@ -99,8 +99,8 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
 
     //  -> VFloat
     final static PVATypeAdapter ToVFloat = new PVATypeAdapter(
-    		VFloat.class, 
-    		new String[] { "epics:nt/NTScalar:1.", "float" }, 
+    		VFloat.class,
+    		new String[] { "epics:nt/NTScalar:1.", "float" },
     		new Field[]
     				{
     					fieldCreate.createScalar(ScalarType.pvFloat)
@@ -114,7 +114,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVFloat(message, disconnected);
             }
         };
-        
+
     //  -> VByte
     final static PVATypeAdapter ToVByte = new PVATypeAdapter(
     		VByte.class,
@@ -174,7 +174,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVInt(message, disconnected);
             }
         };
-        
+
     //  -> VLong
     final static PVATypeAdapter ToVLong = new PVATypeAdapter(
     		VLong.class,
@@ -194,7 +194,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVLong(message, disconnected);
             }
         };
-        
+
     //  -> VBoolean
     final static PVATypeAdapter ToVBoolean = new PVATypeAdapter(
     		VBoolean.class,
@@ -213,7 +213,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVBoolean(message, disconnected);
             }
         };
-        
+
     //  -> VString
     final static PVATypeAdapter ToVString = new PVATypeAdapter(
     		VString.class,
@@ -228,7 +228,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVString(message, disconnected);
             }
         };
-            
+
     //  -> VEnum
     final static PVATypeAdapter ToVEnum = new PVATypeAdapter(
     		VEnum.class,
@@ -270,7 +270,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVFloatArray(message, disconnected);
             }
         };
-        
+
     //  -> VArrayInt
     final static PVATypeAdapter ToVArrayInt = new PVATypeAdapter(
     		VIntArray.class,
@@ -308,7 +308,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVLongArray(message, disconnected);
             }
         };
-        
+
     //  -> VArrayShort
     final static PVATypeAdapter ToVArrayShort = new PVATypeAdapter(
     		VShortArray.class,
@@ -327,7 +327,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVShortArray(message, disconnected);
             }
         };
-        
+
     //  -> VArrayByte
     final static PVATypeAdapter ToVArrayByte = new PVATypeAdapter(
     		VByteArray.class,
@@ -346,7 +346,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVByteArray(message, disconnected);
             }
         };
-        
+
     //  -> VArrayBoolean
     final static PVATypeAdapter ToVArrayBoolean = new PVATypeAdapter(
     		VBooleanArray.class,
@@ -361,7 +361,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVBooleanArray(message, disconnected);
             }
         };
-            
+
     //  -> VArrayString
     final static PVATypeAdapter ToVArrayString = new PVATypeAdapter(
     		VStringArray.class,
@@ -376,7 +376,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             		return new PVFieldToVStringArray(message, disconnected);
             }
         };
-        
+
     //  -> VTable
     final static PVATypeAdapter ToVTable = new PVATypeAdapter(
     		VTable.class,
@@ -398,7 +398,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             	return new PVFieldNTMatrixToVDoubleArray(message, disconnected);
             }
         };
-        
+
     //  -> VTable as name-value (NTNameValue support)
     final static PVATypeAdapter ToVTableAsNameValue = new PVATypeAdapter(
     		VTable.class,
@@ -410,7 +410,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
 
-    //  -> VStatistics 
+    //  -> VStatistics
     final static PVATypeAdapter ToVStatistics = new PVATypeAdapter(
     		VStatistics.class,
     		new String[] { "epics:nt/NTAggregate:1." })
@@ -421,7 +421,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             }
         };
 
-    //  -> VNumberArray (NTHistogram support) 
+    //  -> VNumberArray (NTHistogram support)
     final static PVATypeAdapter ToVNumberArrayAsHistogram = new PVATypeAdapter(
     		VNumberArray.class,
     		new String[] { "epics:nt/NTHistogram:1." })
@@ -439,14 +439,14 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             			default:
                     		throw new RuntimeException("NTHistogram 'value' scalar array must be { short[] | int[] | long[] }.");
             		}
-            		
+
             	}
             	else
             		throw new RuntimeException("NTHistogram does not have a scalar array 'value' field.");
             }
         };
 
-    //  -> NTNDArray 
+    //  -> NTNDArray
     final static PVATypeAdapter ToNTNDArray = new PVATypeAdapter(
     		PVANTNDArray.class,
     		new String[] { "epics:nt/NTNDArray:1." })
@@ -456,8 +456,8 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             	return new PVANTNDArray(message, disconnected);
             }
         };
-            
-    //  -> Timestamp 
+
+    //  -> Timestamp
     final static PVATypeAdapter ToTimeStamp = new PVATypeAdapter(
     		Timestamp.class,
     		new String[] { "time_t" })
@@ -467,13 +467,13 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
             	return PVFieldToTimestamp.create(message);
             }
         };
-        
+
     public static final Set<PVATypeAdapter> converters;
-    
+
     static {
     	// preserve order
         Set<PVATypeAdapter> newFactories = new HashSet<PVATypeAdapter>();
-        
+
         // Add all SCALARs
         newFactories.add(ToVDouble);
         newFactories.add(ToVFloat);
@@ -495,7 +495,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
         newFactories.add(ToVArrayString);
         //newFactories.add(ToVArrayEnum);
         newFactories.add(ToVArrayBoolean);
-        
+
         newFactories.add(ToVTable);
         newFactories.add(ToVDoubleArrayAsMatrix);	// NTMatrix support
         newFactories.add(ToVTableAsNameValue);	// NTNameValue support
@@ -509,7 +509,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
 
         converters = Collections.unmodifiableSet(newFactories);
     }
-    
+
     // TODO
     /*
 VEnumArray - not explicitly a NT

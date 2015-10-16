@@ -28,7 +28,7 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
 
         private final ListInt size;
         private final ListInt list;
-        
+
         public PVFieldToVIntArray(PVStructure pvField, boolean disconnected) {
                 this("value", pvField, disconnected);
         }
@@ -46,7 +46,7 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
 
                         IntArrayData data = new IntArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayInt(data.data);
                 }
@@ -56,7 +56,7 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
 
                         IntArrayData data = new IntArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayInt(data.data);
                 }
@@ -66,7 +66,7 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
                         list = null;
                 }
         }
-        
+
         /* (non-Javadoc)
          * @see org.epics.pvmanager.data.Array#getSizes()
          */
@@ -82,7 +82,7 @@ public class PVFieldToVIntArray extends AlarmTimeDisplayExtractor implements VIn
         public ListInt getData() {
                 return list;
         }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

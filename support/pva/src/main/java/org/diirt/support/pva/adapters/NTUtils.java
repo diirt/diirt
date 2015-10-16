@@ -55,7 +55,7 @@ import org.diirt.vtype.VString;
 import org.diirt.vtype.VStringArray;
 
 public final class NTUtils {
-        
+
         private static final Class<?>[] classLUT = {
                 boolean.class, // pvBoolean
                 byte.class,    // pvByte
@@ -81,16 +81,16 @@ public final class NTUtils {
                 return scalarClass(scalarArray.getScalarArray().getElementType());
         }
 
-        
+
         private final static FieldCreate fieldCreate = FieldFactory.getFieldCreate();
-        
+
         public static Field vtypeToField(Class<?> vtypeClass)
         {
             if (vtypeClass == null)
               throw new IllegalArgumentException("vtypeClass == null");
 
             // TODO no complex types
-            
+
             if (vtypeClass.isAssignableFrom(VDouble.class)) {
               return fieldCreate.createScalar(ScalarType.pvDouble);
             } else if (vtypeClass.isAssignableFrom(VFloat.class)) {
@@ -107,7 +107,7 @@ public final class NTUtils {
               return fieldCreate.createScalar(ScalarType.pvByte);
             } else if (vtypeClass.isAssignableFrom(VBoolean.class)) {
               return fieldCreate.createScalar(ScalarType.pvBoolean);
-              
+
             } else if (vtypeClass.isAssignableFrom(VDoubleArray.class)) {
               return fieldCreate.createScalarArray(ScalarType.pvDouble);
             } else if (vtypeClass.isAssignableFrom(VFloatArray.class)) {
@@ -123,13 +123,13 @@ public final class NTUtils {
             } else if (vtypeClass.isAssignableFrom(VByteArray.class)) {
               return fieldCreate.createScalarArray(ScalarType.pvByte);
             }
-            
+
             throw new IllegalArgumentException("V-type class " + vtypeClass.getSimpleName() + " not supported");
         }
-        
+
         public static Object scalarArrayToList(PVScalarArray scalarArray, boolean readOnly)
         {
-    	int len = scalarArray.getLength(); 
+    	int len = scalarArray.getLength();
                 ScalarType elementType = scalarArray.getScalarArray().getElementType();
                 switch (elementType)
                 {

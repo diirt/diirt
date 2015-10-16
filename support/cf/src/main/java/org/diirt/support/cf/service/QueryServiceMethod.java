@@ -29,14 +29,14 @@ import org.diirt.vtype.ValueFactory;
 
 /**
  * @author shroffk
- * 
+ *
  */
 public class QueryServiceMethod extends ServiceMethod {
 
     public QueryServiceMethod(ServiceMethodDescription serviceMethodDescription, ServiceDescription serviceDescription){
         super(serviceMethodDescription, serviceDescription);
     }
-    
+
     @Override
     public void asyncExecImpl(Map<String, Object> parameters,
             final Consumer<Map<String, Object>> callback,

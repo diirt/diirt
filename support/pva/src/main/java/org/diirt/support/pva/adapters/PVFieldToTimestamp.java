@@ -17,7 +17,7 @@ public class PVFieldToTimestamp  {
                 {
                         PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");
                         PVInt nanosField = timeStampStructure.getIntField("nanoseconds");
-                        
+
                         if (secsField == null || nanosField == null)
                                 return null;
                         else

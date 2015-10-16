@@ -30,7 +30,7 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
 
         private final ListInt size;
         private final ListByte list;
-        
+
         public PVFieldToVByteArray(PVStructure pvField, boolean disconnected) {
                 this("value", pvField, disconnected);
         }
@@ -48,7 +48,7 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
 
                         ByteArrayData data = new ByteArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayByte(data.data);
                 }
@@ -58,7 +58,7 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
 
                         ByteArrayData data = new ByteArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayByte(data.data);
                 }
@@ -84,7 +84,7 @@ public class PVFieldToVByteArray extends AlarmTimeDisplayExtractor implements VB
         public ListByte getData() {
                 return list;
         }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

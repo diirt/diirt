@@ -18,9 +18,9 @@ import static org.diirt.util.time.TimeDuration.*;
  * @author carcassi
  */
 public class JCACloseIT extends JCABase {
-    
+
     AtomicInteger counter = new AtomicInteger();
-    
+
     public JCACloseIT() {
     }
 
@@ -34,15 +34,15 @@ public class JCACloseIT extends JCABase {
                     }
                 })
                 .maxRate(ofHertz(10));
-        
+
         Thread.sleep(1000);
-        
+
         assertJCAOn();
-        
+
         pv.close();
 
         Thread.sleep(1500);
-        
+
         assertJCAOff();
     }
 
@@ -80,18 +80,18 @@ public class JCACloseIT extends JCABase {
                     }
                 })
                 .maxRate(ofHertz(10));
-        
+
         Thread.sleep(1000);
-        
+
         assertJCAOn();
-        
+
         pv1.close();
         pv2.close();
         pv3.close();
         pv4.close();
 
         Thread.sleep(1500);
-        
+
         assertJCAOff();
     }
 
@@ -129,18 +129,18 @@ public class JCACloseIT extends JCABase {
                     }
                 })
                 .maxRate(ofHertz(10));
-        
+
         Thread.sleep(1000);
-        
+
         assertJCAOn();
-        
+
         pv1.close();
         pv2.close();
         pv3.close();
         pv4.close();
 
         Thread.sleep(1500);
-        
+
         assertJCAOff();
     }
 }

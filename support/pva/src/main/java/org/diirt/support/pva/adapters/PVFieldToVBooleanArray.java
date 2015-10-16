@@ -24,7 +24,7 @@ public class PVFieldToVBooleanArray extends AlarmTimeDisplayExtractor implements
 
         private final ListInt size;
         private final ListBoolean list;
-        
+
         public PVFieldToVBooleanArray(PVStructure pvField, boolean disconnected) {
                 this("value", pvField, disconnected);
         }
@@ -42,7 +42,7 @@ public class PVFieldToVBooleanArray extends AlarmTimeDisplayExtractor implements
 
                         BooleanArrayData data = new BooleanArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayBoolean(data.data);
                 }
@@ -68,7 +68,7 @@ public class PVFieldToVBooleanArray extends AlarmTimeDisplayExtractor implements
         public ListBoolean getData() {
                 return list;
         }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

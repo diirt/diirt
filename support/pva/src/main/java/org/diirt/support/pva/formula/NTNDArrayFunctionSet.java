@@ -79,7 +79,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                         PVANTNDArray value = (PVANTNDArray) args.get(0);
                         if (value == null)
                                 return null;
-                        
+
                         PVStructure pvStructure = value.getPVStructure();
 
                         final PVStructureArray attributeArray = pvStructure.getStructureArrayField("attribute");
@@ -88,16 +88,16 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                         final StructureArrayData attributeArrayData = new StructureArrayData();
                         attributeArray.get(0, rows, attributeArrayData);
 
-                        
+
                         ArrayList<Object> columnValues = new ArrayList<Object>(COLUMN_NAMES.length);
                         for (int index = 0; index < COLUMN_NAMES.length; index++)
                         {
                                 Class<?> columnType = COLUMN_TYPES[index];
-                                
+
                                 if (columnType.equals(String.class))
                                 {
                                         ArrayList<String> columnData = new ArrayList<String>();
-                                        
+
                                         if (index == 1)
                                         {
                                                 // value is a special case, convert any to string
@@ -108,7 +108,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                                         pvData != null ? pvData.toString() : null
                                                         );
                                                 }
-                                                
+
                                         }
                                         else
                                         {
@@ -129,10 +129,10 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                 else
                                         throw new RuntimeException("unsupported attribute field type");
                         }
-                        
+
                         return ValueFactory.newVTable(Arrays.asList(COLUMN_TYPES), Arrays.asList(COLUMN_NAMES), columnValues);
                 }
-                
+
                 @Override
                 public List<String> getArgumentNames() {
                         return Arrays.asList("ntNdArray");
@@ -167,12 +167,12 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                 public boolean isVarArgs() {
                         return false;
                 }
-                
+
         }
-        
+
         private final static String noUnits = ValueFactory.displayNone().getUnits();
 
-        
+
         // ndArray(NTNDArray)
         static class NTNDArrayNDArrayFormulaFunction implements FormulaFunction
         {
@@ -184,11 +184,11 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                 return null;
 
                         PVStructure pvStructure = value.getPVStructure();
-                        
+
                         AlarmTimeDisplayExtractor atd = new AlarmTimeDisplayExtractor(pvStructure, false);
 
                         PVUnion valueUnion = pvStructure.getUnionField("value");
-                        
+
                         PVScalarArray scalarArray = valueUnion.get(PVScalarArray.class);
                         Object list = NTUtils.scalarArrayToList(scalarArray, true);
                         if (!(list instanceof ListNumber))
@@ -199,8 +199,8 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                         StructureArrayData dimensionArrayData = new StructureArrayData();
                         pvDimension.get(0,  pvDimension.getLength(), dimensionArrayData);
                         PVStructure[] dims = dimensionArrayData.data;
-                        
-                        
+
+
                         int ix = 0;
                         int[] sizes = new int[dims.length];
                         List<ArrayDimensionDisplay> dimensionDisplay = new ArrayList<ArrayDimensionDisplay>(dims.length);
@@ -211,12 +211,12 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                 boolean reversed = dim.getBooleanField("reverse").get();
                                 dimensionDisplay.add(
                                                 ValueFactory.newDisplay(
-                                                                ListNumbers.linearList(0, 1, size + 1), 
-                                                                reversed, 
+                                                                ListNumbers.linearList(0, 1, size + 1),
+                                                                reversed,
                                                                 noUnits)
                                                                 );
                         }
-                        
+
                         return ValueFactory.newVNumberArray(data, new ArrayInt(sizes), dimensionDisplay, atd, atd, atd);
                 }
 
@@ -256,7 +256,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                 }
 
         }
-        
+
         // image(NTNDArray)
         static class NTNDArrayImageFormulaFunction implements FormulaFunction
         {
@@ -266,7 +266,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                         PVANTNDArray value = (PVANTNDArray) args.get(0);
                         if (value == null)
                                 return null;
-                
+
                         PVStructure pvStructure = value.getPVStructure();
 
                         PVUnion valueUnion = pvStructure.getUnionField("value");
@@ -276,7 +276,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                         StructureArrayData dimensionArrayData = new StructureArrayData();
                         pvDimension.get(0,  pvDimension.getLength(), dimensionArrayData);
                         PVStructure[] dims = dimensionArrayData.data;
-                        
+
                         int ix = 0;
                         int[] sizes = new int[dims.length];
                         for (PVStructure dim : dims)
@@ -297,11 +297,11 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                         modeValue = attr.getUnionField("value").get(PVInt.class).get();
                                         break;
                                 }
-                        
+
                         if (modeValue < 0 || modeValue >= NDColorMode.values().length)
                                 throw new IllegalArgumentException("invalid or non-existent ColorMode attribute");
                         NDColorMode mode = NDColorMode.values()[modeValue];
-                        
+
                         return createVImage(pvArray, mode, sizes);
                 }
 
@@ -341,7 +341,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                 }
 
         }
-        
+
         private enum NDColorMode
         {
                 NDColorModeMono,    /** Monochromatic image */
@@ -357,41 +357,41 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                 NDColorModeYUV422,  /** YUV image, 4 bytes encodes 2 RGB pixel */
                 NDColorModeYUV411;   /** YUV image, 6 bytes encodes 4 RGB pixels */
         };
-        
+
         public static VImage createVImage(PVScalarArray valueArray, NDColorMode mode, int[] dims) {
-                
+
                 if (dims.length != 2 &&
                         dims.length != 3)
                         throw new IllegalArgumentException("VImage can be only created from 2-d or 3-d ndArray");
-                
+
                 int nx = dims[0];
                 int ny = dims[1];
                 int nz = (dims.length == 3) ? dims[2] : 1;
-                
+
                 int valueArraySize = nx * ny * nz;
                 if (valueArraySize <= 0)
                         throw new IllegalArgumentException("given dimensions are not valid");
-                
+
                 if (valueArray.getLength() != valueArraySize)
                         throw new IllegalArgumentException("value array length does not match given dimensions");
-                
+
                 int width, height;
                 byte[] data;
-                
+
                 switch (mode)
                 {
                         case NDColorModeMono:
                         case NDColorModeBayer:
                         {
-                                
+
                                 // 2D value array
                                 if (nz != 1)
                                         throw new IllegalArgumentException("invalid dimensions for given color mode");
-                                
+
                                 width = nx;
                                 height = ny;
-                                
-                                ScalarType scalarType = valueArray.getScalarArray().getElementType(); 
+
+                                ScalarType scalarType = valueArray.getScalarArray().getElementType();
                                 switch (scalarType)
                                 {
                                         case pvBoolean:
@@ -405,13 +405,13 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                 {
                                                         byte c = bad.data[i] ? (byte)-1 : (byte)0;
                                                         // B = G = R = c
-                                                        data[p++] = c; 
-                                                        data[p++] = c; 
+                                                        data[p++] = c;
+                                                        data[p++] = c;
                                                         data[p++] = c;
                                                 }
                                                 break;
                                         }
-                                        
+
                                         case pvByte:
                                         case pvUByte:
                                         {
@@ -427,13 +427,13 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                 {
                                                         byte c = bad.data[i];
                                                         // B = G = R = c
-                                                        data[p++] = c; 
-                                                        data[p++] = c; 
+                                                        data[p++] = c;
+                                                        data[p++] = c;
                                                         data[p++] = c;
                                                 }
                                                 break;
                                         }
-                                        
+
                                         case pvShort:
                                         case pvUShort:
                                         {
@@ -449,8 +449,8 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                 {
                                                         byte c = (byte)(bad.data[i] >>> 8);
                                                         // B = G = R = c
-                                                        data[p++] = c; 
-                                                        data[p++] = c; 
+                                                        data[p++] = c;
+                                                        data[p++] = c;
                                                         data[p++] = c;
                                                 }
                                                 break;
@@ -471,8 +471,8 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                 {
                                                         byte c = (byte)(bad.data[i] >>> 24);
                                                         // B = G = R = c
-                                                        data[p++] = c; 
-                                                        data[p++] = c; 
+                                                        data[p++] = c;
+                                                        data[p++] = c;
                                                         data[p++] = c;
                                                 }
                                                 break;
@@ -493,13 +493,13 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                 {
                                                         byte c = (byte)(bad.data[i] >>> 56);
                                                         // B = G = R = c
-                                                        data[p++] = c; 
-                                                        data[p++] = c; 
+                                                        data[p++] = c;
+                                                        data[p++] = c;
                                                         data[p++] = c;
                                                 }
                                                 break;
                                         }
-                                        
+
                                         case pvFloat:
                                         {
                                                 FloatArrayData bad = new FloatArrayData();
@@ -512,8 +512,8 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                         int tc = (int)(bad.data[i] * 255);   // assuming [0 - 1.0]
                                                         byte c = (tc > 127) ? (byte)(tc-256) : (byte)tc;
                                                         // B = G = R = c
-                                                        data[p++] = c; 
-                                                        data[p++] = c; 
+                                                        data[p++] = c;
+                                                        data[p++] = c;
                                                         data[p++] = c;
                                                 }
                                                 break;
@@ -531,28 +531,28 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                         int tc = (int)(bad.data[i] * 255);	// assuming [0 - 1.0]
                                                         byte c = (tc > 127) ? (byte)(tc-256) : (byte)tc;
                                                         // B = G = R = c
-                                                        data[p++] = c; 
-                                                        data[p++] = c; 
+                                                        data[p++] = c;
+                                                        data[p++] = c;
                                                         data[p++] = c;
                                                 }
                                                 break;
                                         }
-                                        
+
                                         default:
                                                 throw new IllegalArgumentException("unsupported scalar_t[] value type");
-                                
+
                                 }
-                                
+
                                 break;
                         }
-                        
+
                         case NDColorModeRGB1:
                         {
                                 if (nx != 3)
                                         throw new IllegalArgumentException("dim[0] should be 3 for NDColorModeRGB1");
                                 width = ny;
                                 height = nz;
-                                
+
                                 ByteArrayData bad = new ByteArrayData();
                                 ((PVByteArray)valueArray).get(0, valueArraySize, bad);
                                 // convert to BGR
@@ -560,11 +560,11 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                 int out = 0; int in = 0;
                                 while (in < valueArraySize)
                                 {
-                                        byte r = bad.data[in++]; 
-                                        byte g = bad.data[in++]; 
+                                        byte r = bad.data[in++];
+                                        byte g = bad.data[in++];
                                         byte b = bad.data[in++];
-                                        data[out++] = b; 
-                                        data[out++] = g; 
+                                        data[out++] = b;
+                                        data[out++] = g;
                                         data[out++] = r;
                                 }
                                 break;
@@ -577,12 +577,12 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                         throw new IllegalArgumentException("dim[1] should be 3 for NDColorModeRGB2");
                                 width = nx;
                                 height = nz;
-                                
+
                                 ByteArrayData bad = new ByteArrayData();
                                 ((PVByteArray)valueArray).get(0, valueArraySize, bad);
                                 // convert to BGR
                                 data = new byte[valueArraySize];
-                                int out = 0; 
+                                int out = 0;
                                 int nCols = width;
                                 int nRows = height;
                                 for (int row = 0; row < nRows; row++)
@@ -592,17 +592,17 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                         int blueIn = greenIn + nCols;
                                         for (int col = 0; col < nCols; col++)
                                         {
-                                                byte r = bad.data[redIn++]; 
-                                                byte g = bad.data[greenIn++]; 
+                                                byte r = bad.data[redIn++];
+                                                byte g = bad.data[greenIn++];
                                                 byte b = bad.data[blueIn++];
-                                                data[out++] = b; 
-                                                data[out++] = g; 
+                                                data[out++] = b;
+                                                data[out++] = g;
                                                 data[out++] = r;
                                         }
                                 }
                                 break;
                         }
-                        
+
                         case NDColorModeRGB3:
                         {
                                 // nz = 3
@@ -610,37 +610,37 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                         throw new IllegalArgumentException("dim[2] should be 3 for NDColorModeRGB3");
                                 width = nx;
                                 height = ny;
-                                
+
                                 int imageSize = width * height;
 
                                 ByteArrayData bad = new ByteArrayData();
                                 ((PVByteArray)valueArray).get(0, valueArraySize, bad);
                                 // convert to BGR
                                 data = new byte[valueArraySize];
-                                int out = 0; 
+                                int out = 0;
                                 int redIn = 0;
                                 int greenIn = imageSize;
                                 int blueIn = imageSize * 2;
                                 while (redIn < imageSize)
                                 {
-                                        byte r = bad.data[redIn++]; 
-                                        byte g = bad.data[greenIn++]; 
+                                        byte r = bad.data[redIn++];
+                                        byte g = bad.data[greenIn++];
                                         byte b = bad.data[blueIn++];
-                                        data[out++] = b; 
-                                        data[out++] = g; 
+                                        data[out++] = b;
+                                        data[out++] = g;
                                         data[out++] = r;
                                 }
                                 break;
                         }
-                
+
                         case NDColorModeYUV444:
                         case NDColorModeYUV422:
                         case NDColorModeYUV411:
                         default:
                                 throw new IllegalArgumentException("unsupported colorMode");
                 }
-                
+
                 return ValueFactory.newVImage(height, width, data);
         }
-        
+
 }

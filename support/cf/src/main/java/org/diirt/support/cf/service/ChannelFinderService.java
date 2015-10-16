@@ -14,7 +14,7 @@ import org.diirt.vtype.VTable;
 
 /**
  * @author shroffk
- * 
+ *
  */
 public class ChannelFinderService {
 
@@ -25,12 +25,12 @@ public class ChannelFinderService {
             public ServiceMethod createServiceMethod(ServiceDescription serviceDescription) {
                 return new QueryServiceMethod(this, serviceDescription);
             }
-            
+
         }.addArgument("query", "Query String", VString.class)
                 .addResult("result", "Query Result", VTable.class)
-                .addResult("result_size", "Query Result size", VNumber.class);        
+                .addResult("result_size", "Query Result size", VNumber.class);
     }
-    
+
     public static Service createService(){
         return new ServiceDescription("cf", "ChannelFinder service")
                 .addServiceMethod(queryMethod())

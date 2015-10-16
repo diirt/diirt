@@ -13,7 +13,7 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.util.time.TimeDuration;
 
 public class PVASimpleExample {
-        
+
         public static void main(String[] args) throws InterruptedException
         {
                 PVManager.setDefaultDataSource(new PVADataSource());
@@ -26,14 +26,14 @@ public class PVASimpleExample {
                                                         System.out.println(event.getPvReader().getValue());
                                                 else
                                                         System.out.println(event.toString());
-                                                
+
                                         }
                                 }).maxRate(TimeDuration.ofHertz(10));
-                
+
                 // forever
                 while (System.currentTimeMillis() != 0)
                         Thread.sleep(Long.MAX_VALUE);
-                
+
                 reader.close();
         }
 

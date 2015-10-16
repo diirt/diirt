@@ -30,7 +30,7 @@ public class PVFieldToVLongArray extends AlarmTimeDisplayExtractor implements VL
 
         private final ListInt size;
         private final ListLong list;
-        
+
         public PVFieldToVLongArray(PVStructure pvField, boolean disconnected) {
                 this("value", pvField, disconnected);
         }
@@ -48,7 +48,7 @@ public class PVFieldToVLongArray extends AlarmTimeDisplayExtractor implements VL
 
                         LongArrayData data = new LongArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayLong(data.data);
                 }
@@ -58,7 +58,7 @@ public class PVFieldToVLongArray extends AlarmTimeDisplayExtractor implements VL
 
                         LongArrayData data = new LongArrayData();
                         valueField.get(0, valueField.getLength(), data);
-                        
+
                         this.size = new ArrayInt(data.data.length);
                         this.list = new ArrayLong(data.data);
                 }
@@ -68,7 +68,7 @@ public class PVFieldToVLongArray extends AlarmTimeDisplayExtractor implements VL
                         list = null;
                 }
         }
-        
+
         /* (non-Javadoc)
          * @see org.epics.pvmanager.data.Array#getSizes()
          */
@@ -84,7 +84,7 @@ public class PVFieldToVLongArray extends AlarmTimeDisplayExtractor implements VL
         public ListLong getData() {
                 return list;
         }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

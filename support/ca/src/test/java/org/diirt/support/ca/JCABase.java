@@ -35,7 +35,7 @@ public class JCABase {
     public static void tearDownClass() throws Exception {
         PVManager.setDefaultDataSource(null);
     }
-    
+
     private List<Thread> activeThreads() {
         Thread[] buffer = new Thread[30];
         int size = Thread.enumerate(buffer);
@@ -45,7 +45,7 @@ public class JCABase {
         }
         return result;
     }
-    
+
     private boolean isJCAThreadPresent() {
         for (Thread thread : activeThreads()) {
             if (thread.getName().equals("com.cosylab.epics.caj.util.Timer")) {
@@ -54,12 +54,12 @@ public class JCABase {
         }
         return false;
     }
-    
+
     public void assertJCAOn() {
         assertNotNull("Context is not present", jca.getContext());
         assertTrue("JCA Timer thread not found", isJCAThreadPresent());
     }
-    
+
     public void assertJCAOff() {
         assertNull("Context is present", jca.getContext());
         assertFalse("JCA Timer thread was found", isJCAThreadPresent());

@@ -74,7 +74,7 @@ public class PVFieldNTNameValueToVTable implements VTable {
                 this.values = new ArrayList<Object>(numCols);
 
                 if (scalarArray instanceof PVDoubleArray) {
-                        
+
                         valueType = double.class;
                         DoubleArrayData data = new DoubleArrayData();
                         ((PVDoubleArray) scalarArray).get(0, numCols, data);
