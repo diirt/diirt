@@ -24,7 +24,7 @@ public class WaterfallPlotParameters extends Parameters {
         final Boolean scrollDown;
         final TimeDuration pixelDuration;
         final Integer backgroundColor;
-        
+
         private InternalCopy(Map<Object, Object> params) {
             height = (Integer) params.get("height");
             colorScheme = (ColorScheme) params.get("colorScheme");
@@ -33,7 +33,7 @@ public class WaterfallPlotParameters extends Parameters {
             pixelDuration = (TimeDuration) params.get("pixelDuration");
             backgroundColor = (Integer) params.get("backgroundColor");
         }
-        
+
     }
 
     WaterfallPlotParameters(Object name, Object value) {
@@ -50,7 +50,7 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * Defaults parameters for the waterfall plot.
-     * 
+     *
      * @return set of default parameters
      */
     public static WaterfallPlotParameters defaults() {
@@ -62,14 +62,14 @@ public class WaterfallPlotParameters extends Parameters {
         defaults.put("pixelDuration", TimeDuration.ofMillis(10));
         return new WaterfallPlotParameters(defaults);
     }
-    
+
     InternalCopy internalCopy() {
         return new InternalCopy(getParameters());
     }
-    
+
     /**
      * Height of the plot in pixels.
-     * 
+     *
      * @param height height of the plot in pixels
      * @return a new parameter
      */
@@ -79,7 +79,7 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * The color scheme to convert a value to an rgb pixel in the plot.
-     * 
+     *
      * @param colorScheme color scheme
      * @return a new parameter
      */
@@ -90,7 +90,7 @@ public class WaterfallPlotParameters extends Parameters {
     /**
      * True if the range for the display should be the automatically
      * determined or should be desumed by the data.
-     * 
+     *
      * @param adaptiveRange true automatic range, false use the data form the channel
      * @return  a new parameter
      */
@@ -100,7 +100,7 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * Whether the plot should scroll down or up.
-     * 
+     *
      * @param scrollDown true if scrolls down (current value at the top),
      * false if scrolls down (current value at the bottom)
      * @return a new parameter
@@ -111,7 +111,7 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * How much time should be allocated to each line of the plot.
-     * 
+     *
      * @param pixelDuration amount of time for each pixel
      * @return a new parameter
      */
@@ -121,17 +121,17 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * The background color for the plot.
-     * 
+     *
      * @param rgb background color for the plot
      * @return a new parameter
      */
     public static WaterfallPlotParameters backgroundColor(int rgb) {
         return new WaterfallPlotParameters("backgroundColor", rgb);
     }
-    
+
     /**
      * Returns a new set of parameters with the given changes;
-     * 
+     *
      * @param newParameters parameters to change
      * @return a new set of parameters
      */
@@ -141,7 +141,7 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * The height of the plot in pixels.
-     * 
+     *
      * @return height of the plot
      */
     public int getHeight() {
@@ -150,16 +150,16 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * True if range is automatic, false if taken from data.
-     * 
+     *
      * @return true if using automatic range
      */
     public boolean isAdaptiveRange() {
         return internalCopy().adaptiveRange;
     }
-    
+
     /**
      * Whether the plot scrolls up or down.
-     * 
+     *
      * @return true if scrolls down
      */
     public boolean isScrollDown() {
@@ -168,20 +168,20 @@ public class WaterfallPlotParameters extends Parameters {
 
     /**
      * Color scheme used for the plot.
-     * 
+     *
      * @return a color scheme
      */
     public ColorScheme getColorScheme() {
         return internalCopy().colorScheme;
     }
-    
+
     /**
      * Time interval for each line.
-     * 
+     *
      * @return the duration for each line
      */
     public TimeDuration getPixelDuration() {
         return internalCopy().pixelDuration;
     }
-    
+
 }

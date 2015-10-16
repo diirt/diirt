@@ -10,7 +10,7 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 class IVString extends VString {
-    
+
     private final String value;
     private final Alarm alarm;
     private final Time time;

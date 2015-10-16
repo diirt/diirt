@@ -22,7 +22,7 @@ import static org.diirt.util.concurrent.Executors.namedPool;
  * <p>
  * Type support can be configured by passing a custom {@link JCATypeSupport}
  * to the constructor.
- * 
+ *
  * @author carcassi
  */
 public class JCADataSource extends DataSource {
@@ -41,20 +41,20 @@ public class JCADataSource extends DataSource {
     private final JCATypeSupport typeSupport;
     private final boolean rtypValueOnly;
     private final boolean honorZeroPrecision;
-    
+
     /**
      * Creates a new data source using the parameters given in the configuration.
-     * 
+     *
      * @param configuration the configuration of the new data source
      */
     JCADataSource(JCADataSourceConfiguration configuration) {
         super(true);
         // Retrive data source properties
-        
+
         if (configuration == null) {
             configuration = new JCADataSourceConfiguration();
         }
-        
+
         ctxt = configuration.createContext();
 
         try {
@@ -64,7 +64,7 @@ public class JCADataSource extends DataSource {
         } catch (Throwable t) {
             log.log(Level.WARNING, "Couldn't change CAJContext to doNotShareChannels: this may cause some rare notification problems.", t);
         }
-        
+
         // Default type support are the VTypes
         if (configuration.typeSupport == null) {
             typeSupport = new JCATypeSupport(new JCAVTypeAdapterSet());
@@ -78,18 +78,18 @@ public class JCADataSource extends DataSource {
         } else {
             varArraySupported = configuration.varArraySupported;
         }
-        
+
         monitorMask = configuration.monitorMask;
         dbePropertySupported = configuration.dbePropertySupported;
         rtypValueOnly = configuration.rtypValueOnly;
         honorZeroPrecision = configuration.honorZeroPrecision;
-        
+
         if (useContextSwitchForAccessRightCallback()) {
             contextSwitch = Executors.newSingleThreadExecutor(namedPool("PVMgr JCA Workaround "));
         } else {
             contextSwitch = null;
         }
-        
+
     }
 
     @Override
@@ -100,7 +100,7 @@ public class JCADataSource extends DataSource {
 
     /**
      * The context used by the data source.
-     * 
+     *
      * @return the data source context
      */
     public Context getContext() {
@@ -109,7 +109,7 @@ public class JCADataSource extends DataSource {
 
     /**
      * The monitor mask used for this data source.
-     * 
+     *
      * @return the monitor mask
      */
     public int getMonitorMask() {
@@ -118,7 +118,7 @@ public class JCADataSource extends DataSource {
 
     /**
      * Whether the metadata monitor should be established.
-     * 
+     *
      * @return true if using metadata monitors
      */
     public boolean isDbePropertySupported() {
@@ -133,11 +133,11 @@ public class JCADataSource extends DataSource {
     JCATypeSupport getTypeSupport() {
         return typeSupport;
     }
-    
+
     /**
      * True whether the context can use variable arrays (all
      * array monitor request will have an element count of 0).
-     * 
+     *
      * @return true if variable size arrays are supported
      */
     public boolean isVarArraySupported() {
@@ -146,7 +146,7 @@ public class JCADataSource extends DataSource {
 
     /**
      * True if should only ask value for RTYP fields.
-     * 
+     *
      * @return true if asking for value only
      */
     public boolean isRtypValueOnly() {
@@ -155,24 +155,24 @@ public class JCADataSource extends DataSource {
 
     /**
      * True if zero precision should be honored, or disregarded.
-     * 
+     *
      * @return true if zero precision setting is honored
      */
     public boolean isHonorZeroPrecision() {
         return honorZeroPrecision;
     }
-    
+
     final boolean useContextSwitchForAccessRightCallback() {
         if (ctxt instanceof JNIContext) {
             return true;
         }
         return false;
     }
-    
+
     ExecutorService getContextSwitch() {
         return contextSwitch;
     }
-    
+
     private final ExecutorService contextSwitch;
-    
+
 }

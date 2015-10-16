@@ -27,53 +27,53 @@ import org.diirt.vtype.ValueUtil;
  */
 public class PVFieldToVFloatArray extends AlarmTimeDisplayExtractor implements VFloatArray {
 
-	private final ListInt size;
-	private final ListFloat list;
+        private final ListInt size;
+        private final ListFloat list;
 
-	public PVFieldToVFloatArray(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        public PVFieldToVFloatArray(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVFloatArray(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVFloatArray(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	public PVFieldToVFloatArray(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
-		
-		if (field instanceof PVFloatArray)
-		{
-			PVFloatArray valueField = (PVFloatArray)field;
+        public PVFieldToVFloatArray(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
 
-			FloatArrayData data = new FloatArrayData();
-			valueField.get(0, valueField.getLength(), data);
-			
-			this.size = new ArrayInt(data.data.length);
-			this.list = new ArrayFloat(data.data);
-		}
-		else
-		{
-			size = null;
-			list = null;
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.Array#getSizes()
-	 */
-	@Override
-	public ListInt getSizes() {
-		return size;
-	}
+                if (field instanceof PVFloatArray)
+                {
+                        PVFloatArray valueField = (PVFloatArray)field;
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VFloatArray#getData()
-	 */
-	@Override
-	public ListFloat getData() {
-		return list;
-	}
-    
+                        FloatArrayData data = new FloatArrayData();
+                        valueField.get(0, valueField.getLength(), data);
+
+                        this.size = new ArrayInt(data.data.length);
+                        this.list = new ArrayFloat(data.data);
+                }
+                else
+                {
+                        size = null;
+                        list = null;
+                }
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.Array#getSizes()
+         */
+        @Override
+        public ListInt getSizes() {
+                return size;
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.VFloatArray#getData()
+         */
+        @Override
+        public ListFloat getData() {
+                return list;
+        }
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

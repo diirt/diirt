@@ -17,7 +17,7 @@ import org.junit.Test;
  * @author carcassi
  */
 public class GraphAreaDataTest {
-    
+
     @Test
     public void linearGraphRange() throws Exception {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
@@ -31,7 +31,7 @@ public class GraphAreaDataTest {
         data.prepareLabels(FontUtil.getLiberationSansRegular(), Color.BLACK);
         data.prepareGraphArea(true, Color.GRAY);
         data.drawGraphArea();
-        
+
         ImageAssert.compareImages("graphAreaData.linearGraphRange", graphBuffer.getImage());
     }
 }

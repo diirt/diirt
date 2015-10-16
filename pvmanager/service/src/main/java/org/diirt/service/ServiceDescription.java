@@ -49,7 +49,7 @@ public class ServiceDescription {
         if (description.isEmpty()){
             throw new IllegalArgumentException("Description must not be empty");
         }
-        
+
         this.name = name;
         this.description = description;
         if (!namePattern.matcher(name).matches()) {

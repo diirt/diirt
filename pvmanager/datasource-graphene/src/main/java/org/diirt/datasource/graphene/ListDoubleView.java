@@ -12,7 +12,7 @@ import org.diirt.util.array.ListNumber;
  * @author carcassi
  */
 public class ListDoubleView extends ListDouble {
-    
+
     private ListNumber list;
 
     public ListDoubleView(ListNumber list) {
@@ -28,5 +28,5 @@ public class ListDoubleView extends ListDouble {
     public int size() {
         return list.size();
     }
-    
+
 }

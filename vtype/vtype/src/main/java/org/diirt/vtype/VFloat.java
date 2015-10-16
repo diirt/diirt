@@ -8,7 +8,7 @@ package org.diirt.vtype;
  * Scalar float with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public interface VFloat extends VNumber, VType {

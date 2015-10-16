@@ -15,12 +15,12 @@ import javax.json.stream.JsonGenerator;
  * @author carcassi
  */
 public class MessageValueEvent extends Message {
-    
+
     private final Object value;
-    
+
     /**
      * Creates a new message based on the JSON representation.
-     * 
+     *
      * @param obj JSON object
      * @throws MessageDecodeException if json format is incorrect
      */
@@ -31,7 +31,7 @@ public class MessageValueEvent extends Message {
 
     /**
      * Creates a new message based on the given parameters.
-     * 
+     *
      * @param id the channel id
      * @param value the new value
      */
@@ -42,21 +42,21 @@ public class MessageValueEvent extends Message {
 
     /**
      * The new value.
-     * 
+     *
      * @return the new value
      */
     public Object getValue() {
         return value;
     }
-    
+
     @Override
     public void toJson(Writer writer) {
         JsonGenerator gen = Json.createGenerator(writer).writeStartObject()
                 .write("message", getMessage().toString().toLowerCase())
                 .write("id", getId())
                 .write("type", "value");
-        writeValueToJson(gen, "value", value);        
+        writeValueToJson(gen, "value", value);
         gen.writeEnd().close();
     }
-    
+
 }

@@ -53,7 +53,7 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
             public void mouseMoved(MouseEvent e) {
                 onMouseMove(e);
             }
-            
+
         });
         EventQueue.invokeLater(new Runnable() {
 
@@ -63,11 +63,11 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
             }
         });
     }
-    
+
     protected void onMouseMove(MouseEvent e) {
-        
+
     }
-    
+
     private PVReader<Graph2DResult> pv;
     protected Graph2DExpression<T> graph;
 
@@ -162,13 +162,13 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
             imagePanel.setImage(null);
             graph = null;
         }
-        
+
         if (dataFormulaField.getSelectedItem() == null || dataFormulaField.getSelectedItem().toString().trim().isEmpty()) {
             return;
         }
-        
+
         graph = createExpression(dataFormulaField.getSelectedItem().toString());
-        
+
         graph.update(graph.newUpdate().imageHeight(imagePanel.getHeight())
                 .imageWidth(imagePanel.getWidth()));
         pv = PVManager.read(graph)
@@ -186,10 +186,10 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
                 })
                 .maxRate(ofHertz(50));
     }
-    
+
     protected abstract Graph2DExpression<T> createExpression(String dataFormula);
     protected abstract void openConfigurationDialog();
-    
+
     private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed
         openConfigurationDialog();
     }//GEN-LAST:event_configureButtonActionPerformed
@@ -202,12 +202,12 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
             lastErrorField.setText("");
         }
     }
-    
+
     public static void main(final Class<? extends BaseGraphApp> clazz) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -240,7 +240,7 @@ public abstract class BaseGraphApp<T extends Graph2DRendererUpdate<T>> extends j
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton configureButton;
     protected javax.swing.JComboBox<String> dataFormulaField;

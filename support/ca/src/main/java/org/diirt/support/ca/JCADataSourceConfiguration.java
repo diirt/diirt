@@ -41,7 +41,7 @@ import org.xml.sax.SAXException;
  */
 public final class JCADataSourceConfiguration extends DataSourceConfiguration<JCADataSource> {
     private static final Logger log = Logger.getLogger(JCADataSource.class.getName());
-    
+
     // Package private so we don't need getters
     Context jcaContext;
     int monitorMask = Monitor.VALUE | Monitor.ALARM;
@@ -51,7 +51,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
     boolean rtypValueOnly = false;
     boolean honorZeroPrecision = true;
     String jcaContextClass = null;
-    
+
     Map<String, String> jcaContextProperties = new HashMap<>();
 
     @Override
@@ -60,15 +60,15 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/ca/@version", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             String monitorMask = xPath.evaluate("/ca/dataSourceOptions/@monitorMask", document);
             if (monitorMask != null && !monitorMask.isEmpty()) {
                 switch (monitorMask.toUpperCase()) {
@@ -85,7 +85,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         monitorMask(Integer.parseInt(monitorMask));
                 }
             }
-            
+
             String dbePropertySupported = xPath.evaluate("/ca/dataSourceOptions/@dbePropertySupported", document);
             if (dbePropertySupported != null && !dbePropertySupported.isEmpty()) {
                 switch (dbePropertySupported.toUpperCase()) {
@@ -96,7 +96,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         dbePropertySupported(false);
                 }
             }
-            
+
             String honorZeroPrecision = xPath.evaluate("/ca/dataSourceOptions/@honorZeroPrecision", document);
             if (honorZeroPrecision != null && !honorZeroPrecision.isEmpty()) {
                 switch (honorZeroPrecision.toUpperCase()) {
@@ -107,7 +107,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         honorZeroPrecision(false);
                 }
             }
-            
+
             String rtypValueOnly = xPath.evaluate("/ca/dataSourceOptions/@rtypValueOnly", document);
             if (rtypValueOnly != null && !rtypValueOnly.isEmpty()) {
                 switch (rtypValueOnly.toUpperCase()) {
@@ -118,7 +118,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         rtypValueOnly(false);
                 }
             }
-            
+
             String varArraySupported = xPath.evaluate("/ca/dataSourceOptions/@varArraySupported", document);
             if (varArraySupported != null && !varArraySupported.isEmpty()) {
                 switch (varArraySupported.toUpperCase()) {
@@ -132,7 +132,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         varArraySupported(false);
                 }
             }
-            
+
             String pureJava = xPath.evaluate("/ca/jcaContext/@pureJava", document);
             if (pureJava != null && !pureJava.isEmpty()) {
                 switch (pureJava.toUpperCase()) {
@@ -143,7 +143,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         jcaContextClass(JCALibrary.JNI_THREAD_SAFE);
                 }
             }
-            
+
             Node jcaContext = (Node) xPath.evaluate("/ca/jcaContext", document, XPathConstants.NODE);
             if (jcaContext != null) {
                 NamedNodeMap attributes = jcaContext.getAttributes();
@@ -154,7 +154,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                     }
                 }
             }
-            
+
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(JCADataSourceConfiguration.class.getName()).log(Level.FINEST, "Couldn't load file configuration", ex);
             throw new IllegalArgumentException("Couldn't load file configuration", ex);
@@ -166,7 +166,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * The class name for the implementation of JCA.
      * <p>
      * Default is {@link JCALibrary#CHANNEL_ACCESS_JAVA}.
-     * 
+     *
      * @param className the class name of the jca implementation
      * @return this
      */
@@ -177,14 +177,14 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         this.jcaContextClass = className;
         return this;
     }
-    
+
     /**
      * The jca context to use. This allows complete customization
      * of the jca context.
      * <p>
      * By default, will be automatically
      * created from the {@link #jcaContextClass(java.lang.String) }.
-     * 
+     *
      * @param jcaContext the context
      * @return this
      */
@@ -201,7 +201,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * of {@link Monitor#VALUE}, {@link Monitor#ALARM}, ...
      * <p>
      * Default is {@code Monitor.VALUE | Monitor.ALARM }.
-     * 
+     *
      * @param monitorMask the monitor mask
      * @return this
      */
@@ -209,12 +209,12 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         this.monitorMask = monitorMask;
         return this;
     }
-    
+
     /**
      * Changes the way JCA DBR types are mapped to types supported in pvamanger.
      * <p>
      * Default includes support for the VTypes (i.e. {@link JCAVTypeAdapterSet}).
-     * 
+     *
      * @param typeSupport the custom type support
      * @return this
      */
@@ -228,7 +228,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * changes.
      * <p>
      * Default is false.
-     * 
+     *
      * @param dbePropertySupported if true, metadata changes will trigger notification
      * @return this
      */
@@ -245,7 +245,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * <p>
      * By default it tries to auto-detected whether the client library
      * implements the proper checks.
-     * 
+     *
      * @param varArraySupported true will enable
      * @return this
      */
@@ -253,7 +253,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         this.varArraySupported = varArraySupported;
         return this;
     }
-    
+
     /**
      * If true, for fields that match ".*\.RTYP.*" only the value will be
      * read; alarm and time will be created at client side. Version of EPICS
@@ -261,7 +261,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * which would make the client behave incorrectly.
      * <p>
      * Default is false.
-     * 
+     *
      * @param rtypValueOnly true will enable
      * @return this
      */
@@ -269,14 +269,14 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         this.rtypValueOnly = rtypValueOnly;
         return this;
     }
-    
+
     /**
      * If true, the formatter returned by the VType will show
      * no decimal digits (assumes it was configured);
      * if false, it will return all the digit (assumes it wasn't configured).
      * <p>
      * Default is true.
-     * 
+     *
      * @param honorZeroPrecision whether the formatter should treat 0 precision as meaningful
      * @return this
      */
@@ -288,7 +288,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
     /**
      * Adds a new property that is passed directly to the JCALibrary when
      * creating the context.
-     * 
+     *
      * @param name the name of the property
      * @param value the value of the property
      * @return this
@@ -297,11 +297,11 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         this.jcaContextProperties.put(name, value);
         return this;
     }
-    
+
     /**
      * Determines whether the context supports variable arrays
      * or not.
-     * 
+     *
      * @param context a JCA Context
      * @return true if supports variable sized arrays
      */
@@ -314,7 +314,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         } catch (ClassNotFoundException ex) {
             // Can't be CAJ, fall back to JCA
         }
-        
+
         if (context instanceof JNIContext) {
             try {
                 Class<?> jniClazz = Class.forName("gov.aps.jca.jni.JNI");
@@ -327,7 +327,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         method.setAccessible(true);
                         return null;
                     }
-                    
+
                 });
                 Integer integer = (Integer) method.invoke(null, new Object[0]);
                 return (integer >= 13);
@@ -335,13 +335,13 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                 log.log(Level.SEVERE, "Couldn't detect varArraySupported", ex);
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Creates a context from the configuration information.
-     * 
+     *
      * @param className the class name
      * @return a new context
      */
@@ -349,11 +349,11 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         if (jcaContext != null) {
             return jcaContext;
         }
-        
+
         if (jcaContextClass == null) {
             jcaContextClass = JCALibrary.CHANNEL_ACCESS_JAVA;
         }
-        
+
         try {
             JCALibrary jca = JCALibrary.getInstance();
             DefaultConfiguration conf = new DefaultConfiguration("CONTEXT");
@@ -366,11 +366,11 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
             log.log(Level.SEVERE, "JCA context creation failed", ex);
             throw new RuntimeException("JCA context creation failed", ex);
         }
-    }    
-    
+    }
+
     /**
      * Creates a new JCADataSource with the current configuration.
-     * 
+     *
      * @return a new data source
      */
     @Override

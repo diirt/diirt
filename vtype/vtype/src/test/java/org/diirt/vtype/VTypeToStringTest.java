@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class VTypeToStringTest {
-    
+
     public VTypeToStringTest() {
     }
 

@@ -13,15 +13,15 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 public abstract class VNumber extends Scalar implements DisplayProvider {
-    
+
     /**
      * The numeric value.
-     * 
+     *
      * @return the value
      */
     @Override
     public abstract Number getValue();
-    
+
     /**
      * Default toString implementation for VNumber.
      *
@@ -41,10 +41,10 @@ public abstract class VNumber extends Scalar implements DisplayProvider {
                 .append(']');
         return builder.toString();
     }
-    
+
     /**
      * Creates a new VNumber based on the type of the data
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -65,7 +65,7 @@ public abstract class VNumber extends Scalar implements DisplayProvider {
         } else if (value instanceof Byte) {
             return VByte.create((Byte) value, alarm, time, display);
         }
-	throw new IllegalArgumentException("Only standard Java implementations of Number are supported");
+        throw new IllegalArgumentException("Only standard Java implementations of Number are supported");
     }
-    
+
 }

@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 public class CompositeDataSource extends DataSource {
-    
+
     private static final Logger log = Logger.getLogger(CompositeDataSource.class.getName());
 
     // Stores all data sources by name
@@ -88,29 +88,29 @@ public class CompositeDataSource extends DataSource {
         dataSources.remove(dataSourceProvider.getName());
         dataSourceProviders.put(dataSourceProvider.getName(), dataSourceProvider);
     }
-    
+
     /**
      * Returns the data sources used by this composite data source.
      * <p>
      * Returns only the data sources that have been created.
-     * 
+     *
      * @return the registered data sources
      */
     public Map<String, DataSource> getDataSources() {
         return Collections.unmodifiableMap(dataSources);
     }
-    
+
     /**
      * Returns the data source providers registered to this composite data source.
      * <p>
      * Returns all registered data sources.
-     * 
+     *
      * @return the registered data source providers
      */
     public Map<String, DataSourceProvider> getDataSourceProviders() {
         return Collections.unmodifiableMap(dataSourceProviders);
     }
-    
+
     private  String nameOf(String channelName) {
         String delimiter = conf.delimiter;
         int indexDelimiter = channelName.indexOf(delimiter);
@@ -120,7 +120,7 @@ public class CompositeDataSource extends DataSource {
             return channelName.substring(indexDelimiter + delimiter.length());
         }
     }
-    
+
     private String sourceOf(String channelName) {
         String delimiter = conf.delimiter;
         String defaultDataSource = conf.defaultDataSource;
@@ -138,7 +138,7 @@ public class CompositeDataSource extends DataSource {
             throw new IllegalArgumentException("Data source " + source + " for " + channelName + " was not configured.");
         }
     }
-    
+
     private Map<String, ReadRecipe> splitRecipe(ReadRecipe readRecipe) {
         Map<String, ReadRecipe> splitRecipe = new HashMap<String, ReadRecipe>();
 
@@ -158,12 +158,12 @@ public class CompositeDataSource extends DataSource {
             }
             routingRecipes.get(dataSource).add(new ChannelReadRecipe(name, channelRecipe.getReadSubscription()));
         }
-        
+
         // Create the recipes
         for (Entry<String, Collection<ChannelReadRecipe>> entry : routingRecipes.entrySet()) {
             splitRecipe.put(entry.getKey(), new ReadRecipe(entry.getValue()));
         }
-        
+
         return splitRecipe;
     }
 
@@ -196,7 +196,7 @@ public class CompositeDataSource extends DataSource {
             }
         }
     }
-    
+
     private Map<String, WriteRecipe> splitRecipe(WriteRecipe writeRecipe) {
         // Chop the recipe along different data sources
         Map<String, Collection<ChannelWriteRecipe>> recipes = new HashMap<String, Collection<ChannelWriteRecipe>>();
@@ -210,7 +210,7 @@ public class CompositeDataSource extends DataSource {
             }
             channelWriteRecipes.add(new ChannelWriteRecipe(channelName, channelWriteRecipe.getWriteSubscription()));
         }
-        
+
         Map<String, WriteRecipe> splitRecipes = new HashMap<String, WriteRecipe>();
         for (Map.Entry<String, Collection<ChannelWriteRecipe>> en : recipes.entrySet()) {
             String dataSource = en.getKey();
@@ -218,10 +218,10 @@ public class CompositeDataSource extends DataSource {
             WriteRecipe newWriteRecipe = new WriteRecipe(val);
             splitRecipes.put(dataSource, newWriteRecipe);
         }
-        
+
         return splitRecipes;
     }
-    
+
     private DataSource retrieveDataSource(String name) {
         DataSource dataSource = dataSources.get(name);
         if (dataSource == null) {
@@ -253,14 +253,14 @@ public class CompositeDataSource extends DataSource {
     @Override
     public void disconnectWrite(WriteRecipe writeRecipe) {
         Map<String, WriteRecipe> splitRecipe = splitRecipe(writeRecipe);
-        
+
         for (Map.Entry<String, WriteRecipe> en : splitRecipe.entrySet()) {
             String dataSource = en.getKey();
             WriteRecipe splitWriteRecipe = en.getValue();
             dataSources.get(dataSource).disconnectWrite(splitWriteRecipe);
         }
     }
-    
+
 
     @Override
     ChannelHandler channel(String channelName) {
@@ -268,7 +268,7 @@ public class CompositeDataSource extends DataSource {
         String dataSource = sourceOf(channelName);
         return dataSources.get(dataSource).channel(name);
     }
-    
+
     @Override
     protected ChannelHandler createChannel(String channelName) {
         throw new UnsupportedOperationException("Composite data source can't create channels directly.");
@@ -296,7 +296,7 @@ public class CompositeDataSource extends DataSource {
                 channels.put(dataSourceName + conf.delimiter + channelName, channelHandler);
             }
         }
-        
+
         return channels;
     }
 

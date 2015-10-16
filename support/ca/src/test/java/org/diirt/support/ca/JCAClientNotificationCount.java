@@ -48,7 +48,7 @@ public class JCAClientNotificationCount
         {
             final String name = names[rand.nextInt(names.length)];
             final CountDownLatch done = new CountDownLatch(1);
-            
+
             System.out.print(name + " = ");
             final PVReader<?> pv = PVManager.read(channel(name))
                 .readListener(new PVReaderListener<Object>()
@@ -73,7 +73,7 @@ public class JCAClientNotificationCount
                     }
                 }).maxRate(ofHertz(100));
             runs.incrementAndGet();
-            
+
             if (! done.await(10, TimeUnit.SECONDS)) {
                 System.out.println("NO VALUE");
                 System.out.println(jca.getChannels().get(name).getProperties());

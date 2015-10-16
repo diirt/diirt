@@ -73,5 +73,5 @@ public class WriteEvent implements Event {
     public String toString() {
         return event.toString();
     }
-    
+
 }

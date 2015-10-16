@@ -17,14 +17,14 @@ import org.diirt.util.config.Configuration;
  * @author carcassi
  */
 public final class WebPodsDataSourceProvider extends ConfigurableDataSourceProvider<WebPodsDataSource, WebPodsDataSourceConfiguration> {
-    
+
     public WebPodsDataSourceProvider() {
         super(WebPodsDataSourceConfiguration.class);
     }
-    
+
     @Override
     public String getName() {
         return "wp";
     }
-    
+
 }

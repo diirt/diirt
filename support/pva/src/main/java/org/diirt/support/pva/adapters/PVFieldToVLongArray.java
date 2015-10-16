@@ -28,63 +28,63 @@ import org.diirt.vtype.ValueUtil;
  */
 public class PVFieldToVLongArray extends AlarmTimeDisplayExtractor implements VLongArray {
 
-	private final ListInt size;
-	private final ListLong list;
-	
-	public PVFieldToVLongArray(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        private final ListInt size;
+        private final ListLong list;
 
-	public PVFieldToVLongArray(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVLongArray(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVLongArray(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
+        public PVFieldToVLongArray(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-		if (field instanceof PVLongArray)
-		{
-			PVLongArray valueField = (PVLongArray)field;
+        public PVFieldToVLongArray(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
 
-			LongArrayData data = new LongArrayData();
-			valueField.get(0, valueField.getLength(), data);
-			
-			this.size = new ArrayInt(data.data.length);
-			this.list = new ArrayLong(data.data);
-		}
-		else if (field instanceof PVULongArray)
-		{
-			PVULongArray valueField = (PVULongArray)field;
+                if (field instanceof PVLongArray)
+                {
+                        PVLongArray valueField = (PVLongArray)field;
 
-			LongArrayData data = new LongArrayData();
-			valueField.get(0, valueField.getLength(), data);
-			
-			this.size = new ArrayInt(data.data.length);
-			this.list = new ArrayLong(data.data);
-		}
-		else
-		{
-			size = null;
-			list = null;
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.Array#getSizes()
-	 */
-	@Override
-	public ListInt getSizes() {
-		return size;
-	}
+                        LongArrayData data = new LongArrayData();
+                        valueField.get(0, valueField.getLength(), data);
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VIntArray#getData()
-	 */
-	@Override
-	public ListLong getData() {
-		return list;
-	}
-    
+                        this.size = new ArrayInt(data.data.length);
+                        this.list = new ArrayLong(data.data);
+                }
+                else if (field instanceof PVULongArray)
+                {
+                        PVULongArray valueField = (PVULongArray)field;
+
+                        LongArrayData data = new LongArrayData();
+                        valueField.get(0, valueField.getLength(), data);
+
+                        this.size = new ArrayInt(data.data.length);
+                        this.list = new ArrayLong(data.data);
+                }
+                else
+                {
+                        size = null;
+                        list = null;
+                }
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.Array#getSizes()
+         */
+        @Override
+        public ListInt getSizes() {
+                return size;
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.VIntArray#getData()
+         */
+        @Override
+        public ListLong getData() {
+                return list;
+        }
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

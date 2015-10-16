@@ -21,7 +21,7 @@ import org.junit.Ignore;
  * @author carcassi
  */
 public class TemporalGraph2DRendererTest {
-    
+
     @Test
     public void aggregateTimeInterval1() {
         Timestamp time = Timestamp.now();
@@ -30,7 +30,7 @@ public class TemporalGraph2DRendererTest {
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval1, interval2), sameInstance(interval2));
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval2, interval1), sameInstance(interval2));
     }
-    
+
     @Test
     public void aggregateTimeInterval2() {
         Timestamp time = Timestamp.now();
@@ -39,7 +39,7 @@ public class TemporalGraph2DRendererTest {
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval1, interval2), sameInstance(interval2));
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval2, interval1), sameInstance(interval2));
     }
-    
+
     @Test
     public void aggregateTimeInterval4() {
         Timestamp time = Timestamp.now();
@@ -49,7 +49,7 @@ public class TemporalGraph2DRendererTest {
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval1, interval2), equalTo(total));
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval2, interval1), equalTo(total));
     }
-    
+
     @Test
     public void aggregateTimeInterval3() {
         Timestamp time = Timestamp.now();
@@ -59,7 +59,7 @@ public class TemporalGraph2DRendererTest {
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval1, interval2), equalTo(total));
         assertThat(TemporalGraph2DRenderer.aggregateTimeInterval(interval2, interval1), equalTo(total));
     }
-    
+
     @Test
     public void calculateRanges1() throws Exception {
         TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(300, 200) {
@@ -69,18 +69,18 @@ public class TemporalGraph2DRendererTest {
                 return new TemporalGraph2DRendererUpdate();
             }
         };
-        
+
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        
+
         Range initialRange = Ranges.range(0, 10);
         Timestamp now = Timestamp.now();
         TimeInterval initialTimeInterval = TimeInterval.between(now, now.plus(TimeDuration.ofSeconds(1)));
         renderer.calculateRanges(initialRange, initialTimeInterval);
         assertThat(renderer.getPlotRange(), sameInstance(initialRange));
         assertThat(renderer.getPlotTimeInterval(), sameInstance(initialTimeInterval));
-        
+
         Range newRange = Ranges.range(5, 15);
         TimeInterval newTimeInterval = TimeInterval.between(now.minus(TimeDuration.ofSeconds(1)), now);
         renderer.calculateRanges(newRange, newTimeInterval);
@@ -88,7 +88,7 @@ public class TemporalGraph2DRendererTest {
         assertThat(renderer.getPlotRange().getMaximum(), equalTo(Ranges.range(0, 15).getMaximum()));
         assertThat(renderer.getPlotTimeInterval(), sameInstance(newTimeInterval));
     }
-    
+
     @Test
     public void timeGraphArea1() throws Exception {
         TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(300, 200) {
@@ -108,12 +108,12 @@ public class TemporalGraph2DRendererTest {
         renderer.drawGraphArea();
         ImageAssert.compareImages("timeGraph2DArea.1", image);
     }
-    
+
     @Test
     @Ignore
     public void timeGraphAreaHours2() throws Exception {
         // TODO: Fix multi-line labels
-	TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
+        TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
 
             @Override
             public TemporalGraph2DRendererUpdate newUpdate() {
@@ -128,14 +128,14 @@ public class TemporalGraph2DRendererTest {
         renderer.calculateRanges(Ranges.range(0, 10), TimeInterval.between(start, end));
         renderer.calculateGraphArea();
         renderer.drawGraphArea();
-	ImageAssert.compareImages( "timeGraph2DArea2" , image );
+        ImageAssert.compareImages( "timeGraph2DArea2" , image );
     }
-    
+
     @Test
     @Ignore
     public void timeGraphAreaDays1() throws Exception {
         // TODO: Fix multi-line labels
-	TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
+        TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
 
             @Override
             public TemporalGraph2DRendererUpdate newUpdate() {
@@ -150,9 +150,9 @@ public class TemporalGraph2DRendererTest {
         renderer.calculateRanges(Ranges.range(0, 10), TimeInterval.between(start, end));
         renderer.calculateGraphArea();
         renderer.drawGraphArea();
-	ImageAssert.compareImages( "timeGraph2DAreaDays1" , image );
-	//File f = new File( "src/test/resources/org/epics/graphene/timeGraph2DAreaDays1.png" );
-	//ImageIO.write( image , "png" , f );
+        ImageAssert.compareImages( "timeGraph2DAreaDays1" , image );
+        //File f = new File( "src/test/resources/org/epics/graphene/timeGraph2DAreaDays1.png" );
+        //ImageIO.write( image , "png" , f );
     }
-    
+
 }

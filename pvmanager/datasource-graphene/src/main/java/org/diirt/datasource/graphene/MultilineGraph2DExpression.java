@@ -18,14 +18,14 @@ import static org.diirt.datasource.graphene.ExpressionLanguage.functionOf;
 public class MultilineGraph2DExpression extends DesiredRateExpressionImpl<Graph2DResult> implements Graph2DExpression<LineGraph2DRendererUpdate> {
 
     MultilineGraph2DExpression(DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
         super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName),
                 new MultilineGraph2DFunction(functionOf(tableData),
                 functionOf(xColumnName), functionOf(yColumnName)),
                 "Multiline Graph");
     }
-    
+
     @Override
     public void update(LineGraph2DRendererUpdate update) {
         ((MultilineGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);

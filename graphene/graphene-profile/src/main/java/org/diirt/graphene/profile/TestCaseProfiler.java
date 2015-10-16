@@ -48,24 +48,24 @@ import org.diirt.util.time.Timestamp;
  * through profiling.
  * <p>
  * Several invoke methods are provided to run the test methods all at once.
- * 
+ *
  * @author asbarber
  */
 public final class TestCaseProfiler {
-    
+
     /**
      * Prevents instantiation.
      */
     private TestCaseProfiler(){}
-    
-    
+
+
     //--------------------------------------------------------------------------
     //Usage
-    
+
     /**
      * Starting point to running the test methods.
      * Provides the options to run all test methods.
-     * @param args 
+     * @param args
      */
     public static void main(String[] args){
         /**
@@ -75,20 +75,20 @@ public final class TestCaseProfiler {
          *      2:      invokes methods with memory requirements
          */
         int invokeType = -1;
-        
-        
+
+
         switch(invokeType){
             case 0:     invokeAll();                        break;
             case 1:     invokeNoRequirements();             break;
             case 2:     invokeWithRequirements();           break;
             default:    //Invoke specific tests
         }
-    }    
+    }
 
-    
+
     //--------------------------------------------------------------------------
-    //Invoking methods 
-    
+    //Invoking methods
+
     /**
      * Runs every test method in <code>TestCaseProfile</code> that
      * has a <code>NoRequires</code> annotation.
@@ -96,11 +96,11 @@ public final class TestCaseProfiler {
     public static void invokeNoRequirements(){
         Method[] allMethods = TestCaseProfiler.class.getMethods();
         TestCaseProfiler profiler = new TestCaseProfiler();
-        
+
         //All methods
         for (Method method: allMethods){
             boolean noRequirements;
-            
+
             //Gets Requires annotation
             NoRequires req = method.getAnnotation(NoRequires.class);
             if (req != null){
@@ -109,28 +109,28 @@ public final class TestCaseProfiler {
             else{
                 noRequirements = false;
             }
-            
+
             //If should run the method
             if (!ignoreMethod(method) && noRequirements){
                 try{
                     //Console message
                     System.out.println("Invoking " + method.getName() + "...");
-                    
-                    //Attempts to run the method
-                    method.invoke(profiler);  
 
-                    System.out.println("success");                    
+                    //Attempts to run the method
+                    method.invoke(profiler);
+
+                    System.out.println("success");
                 }
                 //Could not invoke
                 catch (IllegalAccessException | InvocationTargetException ex) {
                     //Method invoke failure
                     System.err.println("Error invoking method: " + method.getName());
                     Logger.getLogger(TestCaseProfiler.class.getName()).log(Level.SEVERE, null, ex);
-                }                    
+                }
             }
-        }         
+        }
     }
-    
+
     /**
      * Runs every test method in <code>TestCaseProfile</code> that
      * has a <code>Requires</code> annotation.
@@ -138,7 +138,7 @@ public final class TestCaseProfiler {
     public static void invokeWithRequirements(){
         Method[] allMethods = TestCaseProfiler.class.getMethods();
         TestCaseProfiler profiler = new TestCaseProfiler();
-           
+
         double memoryAvailable  = Runtime.getRuntime().maxMemory();
 
         //All methods
@@ -146,7 +146,7 @@ public final class TestCaseProfiler {
             boolean hasRequirements;
             double memoryRequired = -1;
             Unit unit = null;
-            
+
             //Gets Requires annotation
             Requires req = method.getAnnotation(Requires.class);
             if (req != null){
@@ -157,7 +157,7 @@ public final class TestCaseProfiler {
             else{
                 hasRequirements = false;
             }
-            
+
             //If should run the method
             if (!ignoreMethod(method) && hasRequirements && unit != null){
                 try{
@@ -165,15 +165,15 @@ public final class TestCaseProfiler {
                     if (memoryRequired > Unit.convert(memoryAvailable, unit)){
                         throw new IllegalArgumentException();
                     }
-                    
+
                     //Console message
-                    System.out.print("Invoking " + method.getName() + 
+                    System.out.print("Invoking " + method.getName() +
                                        " (Requirements: " + String.format("%.3f", memoryRequired) + unit.toString()  +
                                        ")...");
-                    
+
                     //Attempts to run the method
-                    method.invoke(profiler); 
-                    
+                    method.invoke(profiler);
+
                     System.out.println("success");
                 }
                 //Not enough memory
@@ -181,18 +181,18 @@ public final class TestCaseProfiler {
                     System.err.println("Error invoking method: " + method.getName() + ", " +
                                        "Memory Required: " + String.format("%.3f", memoryRequired) + unit.toString() + ", " +
                                        "Memory Available: " + String.format("%.3f", Unit.convert(memoryAvailable, unit)) + unit.toString());
-                    
+
                 }
                 //Could not invoke
                 catch (IllegalAccessException | InvocationTargetException ex) {
                     //Method invoke failure
                     System.err.println("Error invoking method: " + method.getName());
                     Logger.getLogger(TestCaseProfiler.class.getName()).log(Level.SEVERE, null, ex);
-                }                    
+                }
             }
-        }         
+        }
     }
-    
+
     /**
      * Runs every test method in <code>TestCaseProfile</code>
      * <p>
@@ -208,7 +208,7 @@ public final class TestCaseProfiler {
     public static void invokeAll(){
         Method[] allMethods = TestCaseProfiler.class.getMethods();
         TestCaseProfiler profiler = new TestCaseProfiler();
-           
+
         double memoryAvailable  = Runtime.getRuntime().maxMemory();
 
         //All methods
@@ -216,7 +216,7 @@ public final class TestCaseProfiler {
             boolean hasRequirements;
             double memoryRequired = -1;
             Unit unit = null;
-            
+
             //Gets Requires annotation
             Requires req = method.getAnnotation(Requires.class);
             if (req != null){
@@ -227,7 +227,7 @@ public final class TestCaseProfiler {
             else{
                 hasRequirements = false;
             }
-            
+
             //If should run the method
             if (!ignoreMethod(method)){
                 try{
@@ -235,13 +235,13 @@ public final class TestCaseProfiler {
                     if (hasRequirements && unit != null && memoryRequired > Unit.convert(memoryAvailable, unit)){
                         throw new IllegalArgumentException();
                     }
-                    
+
                     //Console message
                     System.out.print("Invoking " + method.getName() + "...");
-                    
+
                     //Attempts to run the method
-                    method.invoke(profiler); 
-                    
+                    method.invoke(profiler);
+
                     System.out.println("success");
                 }
                 //Not enough memory
@@ -252,18 +252,18 @@ public final class TestCaseProfiler {
                                            "Memory Available: " + String.format("%.3f", Unit.convert(memoryAvailable, unit)) + unit.toString() +
                                            "...failed");
                     }
-                    
+
                 }
                 //Could not invoke
                 catch (IllegalAccessException | InvocationTargetException ex) {
                     //Method invoke failure
                     System.err.println("Error invoking method: " + method.getName());
                     Logger.getLogger(TestCaseProfiler.class.getName()).log(Level.SEVERE, null, ex);
-                }                    
+                }
             }
-        }         
+        }
     }
-    
+
     /**
      * Determines whether a method should be ignored or run through the
      * invocation methods.
@@ -275,35 +275,35 @@ public final class TestCaseProfiler {
                                                         "TestCaseProfiler",
                                                         "ignoreMethod",
                                                        });
-        
+
             boolean isInherited = !method.getDeclaringClass().equals(TestCaseProfiler.class);
             boolean isInvocation = method.getName().contains("invoke");
 
             boolean isInIgnoreList = names.contains(method.getName());
-            
+
             //True if this method should be ignored
             return isInherited ||
                    isInvocation ||
                    isInIgnoreList;
     }
-    
-    
+
+
     //--------------------------------------------------------------------------
     //Annotations for invoke() methods
-    
+
     @Retention(RetentionPolicy.RUNTIME)
     private @interface Requires{
         String xmx() default "-Xmx4g";
-        double memory() default 512;   
+        double memory() default 512;
         Unit unit() default Unit.MEGABYTE;
     }
-    
-    @Retention(RetentionPolicy.RUNTIME)    
-    private @interface NoRequires{}    
+
+    @Retention(RetentionPolicy.RUNTIME)
+    private @interface NoRequires{}
 
     private enum Unit {
         BYTE, KILOBYTE, MEGABYTE, GIGABYTE;
-        
+
         @Override
         public String toString(){
             if (this.equals(BYTE)){
@@ -322,7 +322,7 @@ public final class TestCaseProfiler {
                 return "";
             }
         }
-        
+
         public double toValue(){
             if (this.equals(BYTE)){
                 return 1;
@@ -338,16 +338,16 @@ public final class TestCaseProfiler {
             }
             else{
                 return 1;
-            }            
+            }
         }
         public static double convert(double value, Unit unit){
             return value / unit.toValue();
         }
     }
-    
+
     //--------------------------------------------------------------------------
-    //Test Methods (not requiring more memory) 
-    
+    //Test Methods (not requiring more memory)
+
     /**
      * Test method for the maximum dataset size used on
      * every 1D renderer (ie - Histogram1D).
@@ -363,15 +363,15 @@ public final class TestCaseProfiler {
      * </ul>
      */
     @NoRequires
-    public static void maxDataset1D(){  
+    public static void maxDataset1D(){
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
-        
+
         graphs.add(new ProfileHistogram1D());
         //Add more 1D dataset types here
-        
+
         while(!graphs.isEmpty()){
             ProfileGraph2D graph = graphs.get(0);
-            
+
             //Apply SaveSettings
             graph.setNumDataPoints( (int)Math.pow(10, 6) );
 
@@ -386,12 +386,12 @@ public final class TestCaseProfiler {
             //Run
             graph.profile();
             graph.saveStatistics();
-            
+
             //Free up memory
             graphs.remove(0);
-        }        
+        }
     }
-    
+
     /**
      * Test method for the maximum dataset size used on
      * every 2D Point data renderer (ie - LineGraph).
@@ -406,25 +406,25 @@ public final class TestCaseProfiler {
      *      <li>Image Height: 400</li>
      *      <li>Test Time: 20s</li>
      * </ul>
-     */    
+     */
     @NoRequires
     public static void maxDataset2DPoint(){
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         ArrayList<Integer> size = new ArrayList<>();
-        
+
         graphs.add(new ProfileLineGraph2D());
         graphs.add(new ProfileScatterGraph2D());
         graphs.add(new ProfileSparklineGraph2D());
         //Add more 2D point dataset types here
-        
+
         size.add( (int)Math.pow(10, 6) );
         size.add( (int)Math.pow(10, 3) );
         size.add( (int)Math.pow(10, 3) );
         //Add here to add dataset sizes
-        
+
         while(!graphs.isEmpty() && !size.isEmpty()){
             ProfileGraph2D graph = graphs.get(0);
-            
+
             //Apply SaveSettings
             graph.setNumDataPoints( size.get(0) );
 
@@ -439,7 +439,7 @@ public final class TestCaseProfiler {
             //Run
             graph.profile();
             graph.saveStatistics();
-            
+
             //Free up memory
             graphs.remove(0);
             size.remove(0);
@@ -460,21 +460,21 @@ public final class TestCaseProfiler {
      *      <li>Image Height: 400</li>
      *      <li>Test Time: 20s</li>
      * </ul>
-     */     
+     */
     @NoRequires
-    public static void maxDataset3DPoint(){        
+    public static void maxDataset3DPoint(){
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         ArrayList<Integer> size = new ArrayList<>();
-        
+
         graphs.add(new ProfileBubbleGraph2D());
         //Add more 3D point dataset types here
-        
+
         size.add( (int)Math.pow(10, 6) );
         //Add here to add dataset sizes
-        
+
         while(!graphs.isEmpty() && !size.isEmpty()){
             ProfileGraph2D graph = graphs.get(0);
-            
+
             //Apply SaveSettings
             graph.setNumDataPoints( size.get(0) );
 
@@ -489,13 +489,13 @@ public final class TestCaseProfiler {
             //Run
             graph.profile();
             graph.saveStatistics();
-            
+
             //Free up memory
             graphs.remove(0);
             size.remove(0);
-        }      
+        }
     }
-    
+
     /**
      * Test method for the maximum dataset size used on
      * every 2D Point data renderer (ie - AreaGraph).
@@ -510,21 +510,21 @@ public final class TestCaseProfiler {
      *      <li>Image Height: 400</li>
      *      <li>Test Time: 20s</li>
      * </ul>
-     */     
+     */
     @NoRequires
-    public static void maxDataset1DCell(){        
+    public static void maxDataset1DCell(){
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         ArrayList<Integer> size = new ArrayList<>();
-        
+
         graphs.add(new ProfileAreaGraph2D());
         //Add more 3D point dataset types here
-        
+
         size.add( (int)Math.pow(10, 6) );
         //Add here to add dataset sizes
-        
+
         while(!graphs.isEmpty() && !size.isEmpty()){
             ProfileGraph2D graph = graphs.get(0);
-            
+
             //Apply SaveSettings
             graph.setNumDataPoints( size.get(0) );
 
@@ -539,13 +539,13 @@ public final class TestCaseProfiler {
             //Run
             graph.profile();
             graph.saveStatistics();
-            
+
             //Free up memory
             graphs.remove(0);
             size.remove(0);
-        }      
+        }
     }
-    
+
     /**
      * Test method for the maximum dataset size used on
      * every Multiline (2D Point) data renderer (ie - NLineGraphs).
@@ -559,11 +559,11 @@ public final class TestCaseProfiler {
      *      <li>Image Height: 400</li>
      *      <li>Test Time: 20s</li>
      * </ul>
-     */      
+     */
     @NoRequires
     public static void maxDatasetMultiline(){
         int maxLines = 10;
-        
+
         ProfileMultiYAxisGraph2D multiy      = new ProfileMultiYAxisGraph2D();
         ProfileMultilineGraph2D multiline   = new ProfileMultilineGraph2D();
         ProfileNLineGraphs2D nline          = new ProfileNLineGraphs2D();
@@ -571,32 +571,32 @@ public final class TestCaseProfiler {
         multiy.setNumGraphs(maxLines);
         multiline.setNumGraphs(maxLines);
         nline.setNumGraphs(maxLines);
-        
+
         ArrayList<ProfileGraph2D> graphs = new ArrayList<>();
         graphs.add(multiy);
         graphs.add(multiline);
         graphs.add(nline);
-        
+
         while( !graphs.isEmpty() ){
             //Apply Settings
             graphs.get(0).setNumDataPoints( (int)Math.pow(10, 6) );
             graphs.get(0).getResolution().setWidth(600);
             graphs.get(0).getResolution().setWidth(400);
-            
+
             graphs.get(0).getSaveSettings().setSaveMessage("Max Dataset Size Test");
             graphs.get(0).getSaveSettings().setAuthorMessage("asbarber");
-            
+
             graphs.get(0).getProfileSettings().setTestTime(20);
-            
+
             //Run
             graphs.get(0).profile();
             graphs.get(0).saveStatistics();
-            
+
             //Free up memory
             graphs.remove(0);
         }
     }
-    
+
     /**
      * Tests the different types of rendering methods to write data
      * to a buffered image.
@@ -616,9 +616,9 @@ public final class TestCaseProfiler {
         profiler.profileDrawRect();
         profiler.printStatistics();
         //profiler.saveImage("_DrawRect");
-        
+
         System.out.println();
-        
+
         //Uses the Byte Array method in drawing the image
         profiler.profileByteArray();
         profiler.printStatistics();
@@ -635,28 +635,28 @@ public final class TestCaseProfiler {
         profiler.getProfileSettings().setTestTime(2);
         MultiLevelProfiler multi = new MultiLevelProfiler(profiler);
         List<Point2DDataset> data = new ArrayList<>();
-        
+
         //Resolutions
         List<Resolution> resolutions = new ArrayList<>();
         resolutions.add(Resolution.RESOLUTION_640x480);
-        
+
         //Settings
         multi.setImageSizes(resolutions);
         multi.setDatasetSizes(DatasetFactory.defaultDatasetSizes());
-        
+
             //Results (No Data Reduction)
             multi.profile();
             List<Point2DDataset> results = multi.getStatisticLineData();
             assert(results.size() == 1);
             data.add(results.get(0));
-            
+
             //Results (Data Reduction)
             profiler.getRenderSettings().setUpdate("First Max Min Last Reduction");
             multi.profile();
             results = multi.getStatisticLineData();
             assert(results.size() == 1);
             data.add(results.get(0));
-            
+
         //Save
         LineGraph2DRenderer graph = new LineGraph2DRenderer(640, 480);
         BufferedImage image = new BufferedImage(640, 480, BufferedImage.TYPE_3BYTE_BGR);
@@ -664,10 +664,10 @@ public final class TestCaseProfiler {
         graph.draw(g, data);
         ImageWriter.saveImage(profiler.getGraphTitle() + "-Table2D", image);
     }
-    
+
     //--------------------------------------------------------------------------
     //Test Methods (requiring more memory)
-    
+
     /**
      * Test method for the maximum dataset size used on
      * every 2D Cell data renderer (ie - IntensityGraph).
@@ -682,69 +682,69 @@ public final class TestCaseProfiler {
      *      <li>Image Height: 400</li>
      *      <li>Test Time: 20s</li>
      * </ul>
-     */ 
+     */
     @Requires (xmx = "-Xmx4g", memory = 3.50, unit = Unit.GIGABYTE)
     public static void maxDataset2DCell(){
         ProfileIntensityGraph2D graph = new ProfileIntensityGraph2D();
-        
+
         //Apply SaveSettings
         graph.setNumXDataPoints( 10000 );
         graph.setNumYDataPoints( 10000 );
-        
+
         graph.getResolution().setWidth(600);
         graph.getResolution().setHeight(400);
-        
+
         graph.getSaveSettings().setDatasetMessage("10000x10000");
         graph.getSaveSettings().setSaveMessage("Max Dataset Size Test");
         graph.getSaveSettings().setAuthorMessage("asbarber");
-        
+
         graph.getProfileSettings().setTestTime(20);
 
         //Run
         graph.profile();
         graph.saveStatistics();
     }
-    
-    
+
+
     //--------------------------------------------------------------------------
     //Helper
-    
+
     /**
      * Profiles for different methods for drawing an image to see which
      * is the more efficient method.
-     * 
+     *
      * <p>
      * One method is "Set Pixel", which individually sets each pixel value of an image.
      * One method is "Draw Rect", which creates the image by drawing a rectangle
      * for every single pixel of the image.
      * One method is "Byte Array", which directly writes to the byte array of the image
      * buffer for every pixel.
-     * 
+     *
      * <p>
      * The results are:
-     * 
+     *
      *      Render Method       Resolution      Average Time (ms)
      *      -------------       ----------      ----------------
-     *      Set Pixel           1024x768	113.06
-     *      Draw Rect           1024x768	252.89
-     *      Byte Array          1024x768	16.22
-     *      Set Pixel           1440x1080	263.84
-     *      Draw Rect           1440x1080	748.26
-     *      Byte Array          1440x1080	89.22
-     *      Set Pixel           1600x1200	298.23
-     *      Draw Rect           1600x1200	921.2
-     *      Byte Array          1600x1200	68.57
+     *      Set Pixel           1024x768        113.06
+     *      Draw Rect           1024x768        252.89
+     *      Byte Array          1024x768        16.22
+     *      Set Pixel           1440x1080       263.84
+     *      Draw Rect           1440x1080       748.26
+     *      Byte Array          1440x1080       89.22
+     *      Set Pixel           1600x1200       298.23
+     *      Draw Rect           1600x1200       921.2
+     *      Byte Array          1600x1200       68.57
      *
      * The "Byte Array" method is the fastest.
-     * 
+     *
      * @author asbarber
      */
     private static class RenderMethodProfiler{
         private enum RenderMethod {SET_PIXEL, DRAW_RECT, BYTE_ARRAY}
-        
+
         private RenderMethod renderType;
 
-        private int         width = 1600, 
+        private int         width = 1600,
                             height = 1200;
 
         private StopWatch   stopWatch;
@@ -798,15 +798,15 @@ public final class TestCaseProfiler {
             this.renderType = RenderMethod.BYTE_ARRAY;
             profile();
         }
-        
+
         /**
-         * Creates a loop where an image is repeatedly drawn using the 
+         * Creates a loop where an image is repeatedly drawn using the
          * appropriate method being tested.
          */
         private void profile(){
             //Timing
             Timestamp start = Timestamp.now();
-            Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));        
+            Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));
             stopWatch = new StopWatch(maxTries);
 
             nTries = 0;
@@ -852,7 +852,7 @@ public final class TestCaseProfiler {
                 for (int x = 0; x < width; x++){
                     values[y*width + x] = rand.nextDouble();
                 }
-            }        
+            }
 
             return values;
         }
@@ -864,9 +864,9 @@ public final class TestCaseProfiler {
         private void doSetPixel(double[] values){
             for (int y = 0; y < height; y++){
                 for (int x = 0; x < width; x++){
-                    image.setRGB(x, y, (int) (255*values[y*width + x]));                    
+                    image.setRGB(x, y, (int) (255*values[y*width + x]));
                 }
-            }      
+            }
         }
 
         /**
@@ -878,8 +878,8 @@ public final class TestCaseProfiler {
                 for (int x = 0; x < width; x++){
                     Color color = new Color((int)(255*values[y*width + x]));
                     graphics.setColor(color);
-                    graphics.fillRect(x, y, 1, 1);                     
-                    image.setRGB(x, y, (int) (255*values[y*width + x]));                    
+                    graphics.fillRect(x, y, 1, 1);
+                    image.setRGB(x, y, (int) (255*values[y*width + x]));
                 }
             }
         }
@@ -892,7 +892,7 @@ public final class TestCaseProfiler {
         private void doByteArray(double[] values){
             byte[] pixels = (((DataBufferByte)image.getRaster().getDataBuffer()).getData());
             boolean hasAlphaChannel = image.getAlphaRaster() != null;
-            
+
             //all data
             for (int y = 0; y < height; y++){
                 for (int x = 0; x < width; x++){
@@ -920,19 +920,19 @@ public final class TestCaseProfiler {
                         (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 0] = (byte)(rgb & 0xFF);
                         (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 1] = (byte)(rgb << 8 & 0xFF);
                         (((DataBufferByte)image.getRaster().getDataBuffer()).getData())[index + 2] = (byte)(rgb << 16 & 0xFF);
-                    }                        
+                    }
                 }
             }
-            
+
 //            //Updates image
 //            try {
 //                image = ImageIO.read(new ByteArrayInputStream(pixels));
 //            } catch (IOException ex) {
 //                System.out.println("The image could not be created from a byte array.");
 //            }
-        }    
+        }
 
-        
+
         //Post-Profile Options
 
         /**
@@ -942,7 +942,7 @@ public final class TestCaseProfiler {
         public void saveImage(){
             saveImage("");
         }
-        
+
         /**
          * Saves the image created in profiling.
          * Does nothing if <code>profile</code> has not been run.
@@ -960,13 +960,13 @@ public final class TestCaseProfiler {
             } catch (IOException ex) {
                 System.out.println("Could not save image.");
                 Logger.getLogger(TestCaseProfiler.class.getName()).log(Level.SEVERE, null, ex);
-            }            
+            }
         }
 
         /**
-         * Gets profile statistics. 
+         * Gets profile statistics.
          * Returns null if the profile method has not been called and no statistics exist.
-         * 
+         *
          * @return statistical information about profiling
          */
         public Statistics getStatistics(){
@@ -986,11 +986,11 @@ public final class TestCaseProfiler {
             Statistics stats = getStatistics();
 
             if (stats != null){
-                System.out.println(this.getClass().getName());      
+                System.out.println(this.getClass().getName());
                 System.out.println("Profiled: " + getTypeProfiled());
                 stats.printStatistics();
             }
-        }    
+        }
 
         /**
          * Returns a string representing what method to render the image was used.
@@ -1010,5 +1010,5 @@ public final class TestCaseProfiler {
                 return "";
             }
         }
-    }   
+    }
 }

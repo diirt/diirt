@@ -33,7 +33,7 @@ public class ExecServices {
     private ExecServices() {
         // Prevent instantiation
     }
-    
+
     /**
      * Creates a service with exec arguments based on the description of an XML
      * file.
@@ -45,22 +45,22 @@ public class ExecServices {
         if (input == null){
             throw new IllegalArgumentException("Input must not be null");
         }
-        
+
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/execService/@ver", document);
             String serviceName = xPath.evaluate("/execService/@name", document);
             String serviceDesecription = xPath.evaluate("/execService/@description", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             ExecServiceDescription service = new ExecServiceDescription(serviceName, serviceDesecription);
             service.executorService(GenericExecService.defaultExecutor);
 
@@ -72,13 +72,13 @@ public class ExecServices {
                 String command = xPath.evaluate("command", method);
                 String resultName = xPath.evaluate("result/@name", method);
                 String resultDescription = xPath.evaluate("result/@description", method);
-                
+
                 ExecServiceMethodDescription execMethod = new ExecServiceMethodDescription(methodName, methodDescription);
                 execMethod.command(command);
                 if (!resultName.trim().isEmpty()) {
                     execMethod.queryResult(resultName, resultDescription);
                 }
-                
+
                 NodeList arguments = (NodeList) xPath.evaluate("argument", method, XPathConstants.NODESET);
                 for (int nArg = 0; nArg < arguments.getLength(); nArg++) {
                     Node argument = arguments.item(nArg);
@@ -99,7 +99,7 @@ public class ExecServices {
                 }
                 service.addServiceMethod(execMethod);
             }
-            
+
             return service.createService();
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(ExecServices.class.getName()).log(Level.FINEST, "Couldn't create service", ex);

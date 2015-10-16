@@ -35,10 +35,10 @@ import org.diirt.vtype.table.ListNumberProvider;
  * @author carcassi
  */
 public class ValueFactory {
-    
+
     /**
      * Creates a new VString.
-     * 
+     *
      * @param value the string value
      * @param alarm the alarm
      * @param time the time
@@ -47,10 +47,10 @@ public class ValueFactory {
     public static VString newVString(final String value, final Alarm alarm, final Time time) {
         return new IVString(value, alarm, time);
     }
-    
+
     /**
      * Creates a new VBoolean.
-     * 
+     *
      * @param value the boolean value
      * @param alarm the alarm
      * @param time the time
@@ -60,10 +60,10 @@ public class ValueFactory {
         return new IVBoolean(value, alarm, time);
     }
 
-    
+
     /**
      * Creates a new VMultiDouble.
-     * 
+     *
      * @param values the values
      * @param alarm the alarm
      * @param time the time
@@ -76,7 +76,7 @@ public class ValueFactory {
 
     /**
      * Creates a new VLong.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -89,7 +89,7 @@ public class ValueFactory {
 
     /**
      * Creates a new VInt.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -99,10 +99,10 @@ public class ValueFactory {
     public static VInt newVInt(final Integer value, final Alarm alarm, final Time time, final Display display) {
         return new IVInt(value, alarm, time, display);
     }
-    
+
     /**
      * Creates a new VShort.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -112,10 +112,10 @@ public class ValueFactory {
     public static VShort newVShort(final Short value, final Alarm alarm, final Time time, final Display display) {
         return new IVShort(value, alarm, time, display);
     }
-    
+
     /**
      * Creates a new VByte.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -125,10 +125,10 @@ public class ValueFactory {
     public static VByte newVByte(final Byte value, final Alarm alarm, final Time time, final Display display) {
         return new IVByte(value, alarm, time, display);
     }
-    
+
     /**
      * New alarm with the given severity and status.
-     * 
+     *
      * @param alarmSeverity the alarm severity
      * @param alarmName the alarm name
      * @return the new alarm
@@ -150,26 +150,26 @@ public class ValueFactory {
             public String toString() {
                 return VTypeToString.alarmToString(this);
             }
-            
+
         };
     }
-    
+
     private static final Alarm alarmNone = newAlarm(AlarmSeverity.NONE, "NONE");
     private static final Display displayBoolean = newDisplay(0.0, 0.0, 0.0, "", NumberFormats.toStringFormat(),
             1.0, 1.0, 1.0, 0.0, 1.0);
-    
+
     /**
      * No alarm.
-     * 
+     *
      * @return severity and status NONE
      */
     public static Alarm alarmNone() {
         return alarmNone;
     }
-    
+
     /**
      * Alarm based on the value and the display ranges.
-     * 
+     *
      * @param value the value
      * @param display the display information
      * @return the new alarm
@@ -191,13 +191,13 @@ public class ValueFactory {
             status = "HIGH";
             severity = AlarmSeverity.MINOR;
         }
-        
+
         return newAlarm(severity, status);
     }
-    
+
     /**
      * Creates a new time.
-     * 
+     *
      * @param timestamp the timestamp
      * @param timeUserTag the user tag
      * @param timeValid whether the time is valid
@@ -222,29 +222,29 @@ public class ValueFactory {
             }
         };
     }
-    
+
     /**
      * New time, with no user tag and valid data.
-     * 
+     *
      * @param timestamp the timestamp
      * @return the new time
      */
     public static Time newTime(final Timestamp timestamp) {
         return newTime(timestamp, null, true);
     }
-    
+
     /**
      * New time with the current timestamp, no user tag and valid data.
-     * 
+     *
      * @return the new time
      */
     public static Time timeNow() {
         return newTime(Timestamp.now(), null, true);
     }
-    
+
     /**
      * Creates a new display
-     * 
+     *
      * @param lowerDisplayLimit lower display limit
      * @param lowerAlarmLimit lower alarm limit
      * @param lowerWarningLimit lower warning limit
@@ -314,27 +314,27 @@ public class ValueFactory {
 
         };
     }
-    
+
     public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final String unit) {
         return newDisplay(boundaries, false, unit);
     }
-    
+
     public static ArrayDimensionDisplay newDisplay(final ListNumber boundaries, final boolean reversed, final String unit) {
         return new IArrayDimensionDisplay(boundaries, reversed, unit);
     }
-    
+
     public static ArrayDimensionDisplay newDisplay(final int size, final ListNumberProvider boundaryProvider, final boolean invert) {
         return newDisplay(boundaryProvider.createListNumber(size + 1), invert, "");
     }
-    
+
     public static ArrayDimensionDisplay newDisplay(final int size, final ListNumberProvider boundaryProvider) {
         return newDisplay(boundaryProvider.createListNumber(size + 1), false, "");
     }
-    
+
     /**
      * Returns an array display where the index is used to calculate the
      * cell boundaries.
-     * 
+     *
      * @param nCells the number of cells along the direction
      * @return a new array display
      */
@@ -342,32 +342,32 @@ public class ValueFactory {
         final ListNumber boundaries = ListNumbers.linearList(0, 1, nCells + 1);
         return newDisplay(boundaries, "");
     }
-    
-    private static final Display displayNone = newDisplay(Double.NaN, Double.NaN, 
+
+    private static final Display displayNone = newDisplay(Double.NaN, Double.NaN,
             Double.NaN, "", NumberFormats.toStringFormat(), Double.NaN, Double.NaN,
             Double.NaN, Double.NaN, Double.NaN);
-    
+
     /**
      * Empty display information.
-     * 
+     *
      * @return no display
      */
     public static Display displayNone() {
         return displayNone;
     }
-    
+
     /**
      * Returns a display from 0 to 1, suitable for booleans.
-     * 
+     *
      * @return a display for boolean
      */
     public static Display displayBoolean() {
         return displayBoolean;
     }
-    
+
     /**
      * Creates a new VNumber based on the type of the data
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -388,12 +388,12 @@ public class ValueFactory {
         } else if (value instanceof Byte) {
             return newVByte((Byte) value, alarm, time, display);
         }
-	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
-    
+
     /**
      * Creates a new VDouble.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -407,7 +407,7 @@ public class ValueFactory {
     /**
      * Creates a new VDouble using the given value, time, display and
      * generating the alarm from the value and display information.
-     * 
+     *
      * @param value the new value
      * @param time the time
      * @param display the display information
@@ -416,11 +416,11 @@ public class ValueFactory {
     public static VDouble newVDouble(Double value, Time time, Display display) {
         return newVDouble(value, newAlarm(value, display), time, display);
     }
-    
+
     /**
      * Creates new immutable VDouble by using metadata from the old value,
      * now as timestamp and computing alarm from the metadata range.
-     * 
+     *
      * @param value new numeric value
      * @param display metadata
      * @return new value
@@ -428,20 +428,20 @@ public class ValueFactory {
     public static VDouble newVDouble(Double value, Display display) {
         return newVDouble(value, timeNow(), display);
     }
-    
+
     /**
      * Creates a new VDouble, no alarm, time now, no display.
-     * 
+     *
      * @param value the value
      * @return the new value
      */
     public static VDouble newVDouble(Double value) {
         return newVDouble(value, alarmNone(), timeNow(), displayNone());
     }
-    
+
     /**
      * Creates a new VDouble, no alarm, no display.
-     * 
+     *
      * @param value the value
      * @param time the time
      * @return the new value
@@ -452,7 +452,7 @@ public class ValueFactory {
 
     /**
      * Creates a new VFloat.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time
@@ -465,7 +465,7 @@ public class ValueFactory {
 
     /**
      * Create a new VEnum.
-     * 
+     *
      * @param index the index in the label array
      * @param labels the labels
      * @param alarm the alarm
@@ -478,7 +478,7 @@ public class ValueFactory {
 
     /**
      * Creates a new VStatistics.
-     * 
+     *
      * @param average average
      * @param stdDev standard deviation
      * @param min minimum
@@ -487,7 +487,7 @@ public class ValueFactory {
      * @param alarm the alarm
      * @param time the time
      * @param display the display
-     * @return the new value 
+     * @return the new value
      */
     public static VStatistics newVStatistics(final double average, final double stdDev,
             final double min, final double max, final int nSamples, final Alarm alarm,
@@ -495,10 +495,10 @@ public class ValueFactory {
         return new IVStatistics(average, stdDev, min, max, nSamples,
                 alarm, time, display);
     }
-    
+
     /**
      * Creates a new VNumberArray based on the type of the data.
-     * 
+     *
      * @param data the array data
      * @param alarm the alarm
      * @param time the time
@@ -510,10 +510,10 @@ public class ValueFactory {
         List<ArrayDimensionDisplay> dimensionDisplay = ValueUtil.defaultArrayDisplay(sizes);
         return newVNumberArray(data, sizes, dimensionDisplay, alarm, time, display);
     }
-    
+
     /**
      * Creates a new VNumberArray based on the type of the data.
-     * 
+     *
      * @param data the array data
      * @param sizes the array shape
      * @param dimensionDisplay the array axis display information
@@ -524,26 +524,26 @@ public class ValueFactory {
      */
     public static VNumberArray newVNumberArray(final ListNumber data, final ListInt sizes, final List<ArrayDimensionDisplay> dimensionDisplay,
             final Alarm alarm, final Time time, final Display display){
-	if (data instanceof ListDouble){
-	    return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListFloat){
-	    return new IVFloatArray((ListFloat) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListLong){
-	    return new IVLongArray((ListLong) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListInt){
-	    return new IVIntArray((ListInt) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListByte){
-	    return new IVByteArray((ListByte) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListShort){
-	    return new IVShortArray((ListShort) data, sizes, dimensionDisplay, alarm, time, display);
-	}
-	throw new UnsupportedOperationException("Data is of an unsupported type (" + data.getClass() + ")");
+        if (data instanceof ListDouble){
+            return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListFloat){
+            return new IVFloatArray((ListFloat) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListLong){
+            return new IVLongArray((ListLong) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListInt){
+            return new IVIntArray((ListInt) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListByte){
+            return new IVByteArray((ListByte) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListShort){
+            return new IVShortArray((ListShort) data, sizes, dimensionDisplay, alarm, time, display);
+        }
+        throw new UnsupportedOperationException("Data is of an unsupported type (" + data.getClass() + ")");
     }
-    
+
     /**
      * Constructs and nd array with the data, time and alarm in the first array and the given
      * dimension information.
-     * 
+     *
      * @param data the array with the data
      * @param dimensions the dimension information
      * @return a new array
@@ -558,10 +558,10 @@ public class ValueFactory {
         }
         return ValueFactory.newVNumberArray(data.getData(), new ArrayInt(sizes), displays, data, data, data);
     }
-    
+
     /**
      * Creates a new VDoubleArray.
-     * 
+     *
      * @param data array data
      * @param alarm the alarm
      * @param time the time
@@ -572,10 +572,10 @@ public class ValueFactory {
         return new IVDoubleArray(data, new ArrayInt(data.size()), alarm,
                 time, display);
     }
-    
+
     /**
      * Creates a new VFloatArray.
-     * 
+     *
      * @param data array data
      * @param alarm the alarm
      * @param time the time
@@ -589,7 +589,7 @@ public class ValueFactory {
 
     /**
      * Creates a new VImage given the data and the size.
-     * 
+     *
      * @param height the height
      * @param width the width
      * @param data the data
@@ -598,10 +598,10 @@ public class ValueFactory {
     public static VImage newVImage(int height, int width, byte[] data) {
         return new IVImage(height, width, data);
     }
-    
+
     /**
      * Creates a new VLongArray.
-     * 
+     *
      * @param values array values
      * @param alarm the alarm
      * @param time the time
@@ -612,10 +612,10 @@ public class ValueFactory {
         ListInt sizes = new ArrayInt(values.size());
         return new IVLongArray(values, sizes, ValueUtil.defaultArrayDisplay(sizes), alarm, time, display);
     }
-    
+
     /**
      * Creates a new VIntArray.
-     * 
+     *
      * @param values array values
      * @param alarm the alarm
      * @param time the time
@@ -625,10 +625,10 @@ public class ValueFactory {
     public static VIntArray newVIntArray(final ListInt values, Alarm alarm, Time time, Display display) {
         return new IVIntArray(values, new ArrayInt(values.size()), alarm, time, display);
     }
-    
+
     /**
      * Creates a new VShortArray.
-     * 
+     *
      * @param values array values
      * @param alarm the alarm
      * @param time the time
@@ -642,7 +642,7 @@ public class ValueFactory {
 
     /**
      * Create a new VEnumArray.
-     * 
+     *
      * @param indexes the indexes in the label array
      * @param labels the labels
      * @param alarm the alarm
@@ -655,7 +655,7 @@ public class ValueFactory {
 
     /**
      * Creates a new VBooleanArray.
-     * 
+     *
      * @param data the strings
      * @param alarm the alarm
      * @param time the time
@@ -667,7 +667,7 @@ public class ValueFactory {
 
     /**
      * Creates a new VStringArray.
-     * 
+     *
      * @param data the strings
      * @param alarm the alarm
      * @param time the time
@@ -676,10 +676,10 @@ public class ValueFactory {
     public static VStringArray newVStringArray(List<String> data, Alarm alarm, Time time) {
         return new IVStringArray(data, new ArrayInt(data.size()), alarm, time);
     }
-    
+
     /**
      * Creates a new VTable - this method is provisional and will change in the future.
-     * 
+     *
      * @param types the types for each column
      * @param names the names for each column
      * @param values the values for each column
@@ -689,13 +689,13 @@ public class ValueFactory {
         //TODO: should check the types
         return new IVTable(types, names, values);
     }
-    
+
     /**
      * Takes a java objects and wraps it into a vType. All numbers are wrapped
      * as VDouble. String is wrapped as VString. double[] and ListDouble are wrapped as
      * VDoubleArray. A List of String is wrapped to a VStringArray. Alarms
      * are alarmNone(), time are timeNow() and display are displayNone();
-     * 
+     *
      * @param value the value to wrap
      * @return the wrapped value
      * @deprecated use {@link #toVType(java.lang.Object) }
@@ -704,13 +704,13 @@ public class ValueFactory {
     public static VType wrapValue(Object value) {
         return wrapValue(value, alarmNone());
     }
-    
+
     /**
      * Takes a java objects and wraps it into a vType. All numbers are wrapped
      * as VDouble. String is wrapped as VString. double[] and ListDouble are wrapped as
      * VDoubleArray. A List of String is wrapped to a VStringArray. Alarms
      * are alarm, time are timeNow() and display are displayNone();
-     * 
+     *
      * @param value the value to wrap
      * @param alarm the alarm for the value
      * @return the wrapped value
@@ -750,19 +750,19 @@ public class ValueFactory {
             throw new UnsupportedOperationException("Type " + value.getClass().getName() + "  is not yet supported");
         }
     }
-    
+
     /**
      * Converts a standard java type to VTypes. Returns null if no conversion
-     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.Alarm, org.diirt.vtype.Time, org.diirt.vtype.Display)} 
+     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.Alarm, org.diirt.vtype.Time, org.diirt.vtype.Display)}
      * with no alarm, time now and no display.
-     * 
+     *
      * @param javaObject the value to wrap
      * @return the new VType value
      */
     public static VType toVType(Object javaObject) {
         return toVType(javaObject, alarmNone(), timeNow(), displayNone());
     }
-    
+
     /**
      * Converts a standard java type to VTypes. Returns null if no conversion
      * is possible.
@@ -776,7 +776,7 @@ public class ValueFactory {
      *   <li>ListNumber -&gt; corresponding VNumberArray</li>
      *   <li>List -&gt; if all elements are String, VStringArray</li>
      * </ul>
-     * 
+     *
      * @param javaObject the value to wrap
      * @param alarm the alarm
      * @param time the time
@@ -820,11 +820,11 @@ public class ValueFactory {
             return null;
         }
     }
-    
+
     /**
      * As {@link #toVType(java.lang.Object)} but throws an exception
      * if conversion not possible.
-     * 
+     *
      * @param javaObject the value to wrap
      * @return the new VType value
      */
@@ -835,11 +835,11 @@ public class ValueFactory {
         }
         return value;
     }
-    
+
     /**
      * As {@link #toVType(java.lang.Object, org.diirt.vtype.Alarm, org.diirt.vtype.Time, org.diirt.vtype.Display)} but throws an exception
      * if conversion not possible.
-     * 
+     *
      * @param javaObject the value to wrap
      * @param alarm the alarm
      * @param time the time

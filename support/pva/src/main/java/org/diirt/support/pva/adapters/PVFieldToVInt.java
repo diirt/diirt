@@ -16,31 +16,31 @@ import org.diirt.vtype.VTypeToString;
  */
 public class PVFieldToVInt extends AlarmTimeDisplayExtractor implements VInt {
 
-	protected final Integer value;
-	
-	public PVFieldToVInt(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        protected final Integer value;
 
-	public PVFieldToVInt(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVInt(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVInt(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
-		
-		if (field instanceof PVScalar)
-			value = convert.toInt((PVScalar)field);
-		else
-			value = null;
-	}
+        public PVFieldToVInt(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	@Override
+        public PVFieldToVInt(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
+
+                if (field instanceof PVScalar)
+                        value = convert.toInt((PVScalar)field);
+                else
+                        value = null;
+        }
+
+        @Override
     public Integer getValue()
     {
-    	return value;
+        return value;
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

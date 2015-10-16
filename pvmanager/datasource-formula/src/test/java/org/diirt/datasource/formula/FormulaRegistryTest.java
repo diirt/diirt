@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class FormulaRegistryTest {
-    
+
     public static class Function1 extends StatefulFormulaFunction {
 
         @Override
@@ -61,16 +61,16 @@ public class FormulaRegistryTest {
         public Object calculate(List<Object> args) {
             return "";
         }
-        
+
     }
 
     @Test
     public void validateFunction1() {
         FormulaRegistry.validateFormulaFunction(new Function1());
     }
-    
+
     public static class Function2 extends StatefulFormulaFunction {
-        
+
         private Function2() {
         }
 
@@ -108,7 +108,7 @@ public class FormulaRegistryTest {
         public Object calculate(List<Object> args) {
             return "";
         }
-        
+
     }
 
     @Test(expected = IllegalArgumentException.class)

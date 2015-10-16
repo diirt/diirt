@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class DisplayTest {
-    
+
     public DisplayTest() {
     }
 
@@ -31,7 +31,7 @@ public class DisplayTest {
         assertThat(display.getUnit(), equalTo("m"));
         assertThat(display.getFormat(), equalTo(NumberFormats.toStringFormat()));
     }
-    
+
     @Test
     public void none1() {
         Display display = Display.none();
@@ -48,5 +48,5 @@ public class DisplayTest {
 //        assertThat(Alarm.create(AlarmSeverity.MINOR, "HIGH"), not(equalTo(Alarm.create(AlarmSeverity.MINOR, "LOW"))));
 //        assertThat(Alarm.create(AlarmSeverity.MINOR, "HIGH"), not(equalTo(Alarm.create(AlarmSeverity.MAJOR, "HIGH"))));
     }
-    
+
 }

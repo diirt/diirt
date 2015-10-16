@@ -49,7 +49,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
     public Class<?> getReturnType() {
         return VNumber.class;
     }
-    
+
     private Timestamp previousTime;
     private double integratedValue;
     private List<VNumber> values = new LinkedList<>();
@@ -60,11 +60,11 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         if (value != null && value.getValue() != null) {
             values.add(value);
         }
-        
+
         if (values.isEmpty()) {
             return null;
         }
-        
+
         if (previousTime == null) {
             Timestamp now = Timestamp.now();
             if (now.compareTo(values.get(0).getTimestamp()) <= 0) {
@@ -74,35 +74,35 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
             }
         }
         Timestamp currentTime = Timestamp.now();
-        
+
         integratedValue += integrate(previousTime, currentTime, values);
         previousTime = currentTime;
-        
+
         while (values.size() > 1 && values.get(1).getTimestamp().compareTo(currentTime) <= 0) {
             values.remove(0);
         }
-        
+
         return ValueFactory.newVDouble(integratedValue);
     }
-    
+
     static double integrate(Timestamp start, Timestamp end, List<VNumber> values) {
         if (values.isEmpty()) {
             return 0;
         }
-        
+
         if (values.get(0).getTimestamp().compareTo(end) >= 0) {
             return 0;
         }
-        
+
         double integratedValue = 0;
         for (int i = 0; i < values.size() - 1; i++) {
             integratedValue += integrate(start, end, values.get(i), values.get(i+1));
         }
         integratedValue += integrate(start, end, values.get(values.size() - 1), null);
-        
+
         return integratedValue;
     }
-    
+
     static double integrate(Timestamp start, Timestamp end, VNumber value, VNumber nextValue) {
         Timestamp actualStart = Collections.max(Arrays.asList(start, value.getTimestamp()));
         Timestamp actualEnd = end;
@@ -116,5 +116,5 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
             return 0;
         }
     }
-    
+
 }

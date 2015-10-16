@@ -27,7 +27,7 @@ public class DataRecipeTest {
 //        @SuppressWarnings("unchecked")
 //        Collector<Object> coll1 = new QueueCollector<Object>(cache1, 1);
 //        builder.addCollector(coll1, caches);
-//        
+//
 //        caches = new HashMap<String, ValueCache>();
 //        @SuppressWarnings("unchecked")
 //        ValueCache cache2 = new ValueCacheImpl(Object.class);
@@ -35,14 +35,14 @@ public class DataRecipeTest {
 //        @SuppressWarnings("unchecked")
 //        Collector<Object> coll2 = new QueueCollector<Object>(cache2, 1);
 //        builder.addCollector(coll2, caches);
-//        
+//
 //        DataRecipe recipe = builder.build();
 //        Collector<Boolean> connCollector = recipe.getConnectionCollector();
 //        Map<String, ValueCache<Boolean>> connCaches = recipe.getConnectionCaches();
 //
 //        assertThat(connCaches.size(), equalTo(2));
 //        assertThat(connCaches.keySet(), contains("two", "one"));
-//        
+//
 //        connCaches.get("one").setValue(false);
 //        connCollector.collect();
 //        connCaches.get("two").setValue(true);
@@ -50,13 +50,13 @@ public class DataRecipeTest {
 //        List<Boolean> value = connCollector.getValue();
 //        assertThat(value.size(), equalTo(1));
 //        assertThat(value.get(0), equalTo(false));
-//        
+//
 //        connCaches.get("one").setValue(true);
 //        connCollector.collect();
 //        value = connCollector.getValue();
 //        assertThat(value.size(), equalTo(1));
 //        assertThat(value.get(0), equalTo(true));
-//        
+//
 //        connCaches.get("two").setValue(false);
 //        connCollector.collect();
 //        value = connCollector.getValue();

@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  * @author carcassi
  */
 public final class FileDataSourceConfiguration extends DataSourceConfiguration<FileDataSource> {
-    
+
     // Package private so we don't need getters
     boolean pollEnabled = false;
     Duration pollInterval = Duration.ofSeconds(5);
@@ -38,15 +38,15 @@ public final class FileDataSourceConfiguration extends DataSourceConfiguration<F
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/file/@version", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             String intervalDuration = xPath.evaluate("/file/poll/@interval", document);
             if (intervalDuration != null && !intervalDuration.isEmpty()) {
                 pollEnabled = true;
@@ -56,7 +56,7 @@ public final class FileDataSourceConfiguration extends DataSourceConfiguration<F
             Logger.getLogger(FileDataSourceConfiguration.class.getName()).log(Level.FINEST, "Couldn't load file configuration", ex);
             throw new IllegalArgumentException("Couldn't load file configuration", ex);
         }
-        
+
         return this;
     }
 
@@ -72,7 +72,7 @@ public final class FileDataSourceConfiguration extends DataSourceConfiguration<F
     public boolean isPollEnabled() {
         return pollEnabled;
     }
-    
+
     public FileDataSourceConfiguration pollEnabled(boolean pollEnabled) {
         this.pollEnabled = pollEnabled;
         return this;

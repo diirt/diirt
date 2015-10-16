@@ -15,13 +15,13 @@ public class LineGraph2DRendererUpdate extends Graph2DRendererUpdate<LineGraph2D
     private ReductionScheme reduction;
     private Integer focusPixelX;
     private Boolean highlightFocusValue;
-    
-    
+
+
     public LineGraph2DRendererUpdate valueColorScheme(NumberColorMap scheme) {
         this.valueColorScheme = scheme;
         return self();
     }
-    
+
     /**
      *Sets this object's interpolation to the given scheme.
      * @param scheme can not be null, must be a supported scheme. Supported schemes:NEAREST_NEIGHBOUR,LINEAR,CUBIC.
@@ -37,7 +37,7 @@ public class LineGraph2DRendererUpdate extends Graph2DRendererUpdate<LineGraph2D
         this.interpolation = scheme;
         return this;
     }
-    
+
     /**
      *Sets this object's data reduction scheme to the given scheme.
      * @param scheme can not be null, must be a supported scheme. Supported schemes:FIRST_MAX_MIN_LAST,NONE
@@ -53,7 +53,7 @@ public class LineGraph2DRendererUpdate extends Graph2DRendererUpdate<LineGraph2D
         this.reduction = scheme;
         return this;
     }
-    
+
     /**
      *Sets the current value of the focused pixel to x.
      * @param x value of focused pixel.
@@ -63,7 +63,7 @@ public class LineGraph2DRendererUpdate extends Graph2DRendererUpdate<LineGraph2D
         this.focusPixelX = x;
         return this;
     }
-    
+
     /**
      *Sets the state of highlightFocusValue.
      * <ul>
@@ -77,11 +77,11 @@ public class LineGraph2DRendererUpdate extends Graph2DRendererUpdate<LineGraph2D
         this.highlightFocusValue = highlightFocusValue;
         return this;
     }
-    
+
     public NumberColorMap getValueColorScheme() {
         return valueColorScheme;
     }
-    
+
     /**
      *Current interpolation scheme
      * @return the current interpolation scheme.
@@ -117,5 +117,5 @@ public class LineGraph2DRendererUpdate extends Graph2DRendererUpdate<LineGraph2D
     public Boolean getHighlightFocusValue() {
         return highlightFocusValue;
     }
-    
+
 }

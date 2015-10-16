@@ -8,20 +8,20 @@ package org.diirt.vtype.next;
  * Scalar byte with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public abstract class VByte extends VNumber {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract Byte getValue();
-    
+
     /**
      * Creates a new VByte.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time

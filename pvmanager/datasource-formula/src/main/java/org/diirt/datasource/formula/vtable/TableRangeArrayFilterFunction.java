@@ -65,18 +65,18 @@ class TableRangeArrayFilterFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VTable table = (VTable) args.get(0);
         VString columnName = (VString) args.get(1);
         VNumberArray range = (VNumberArray) args.get(2);
-        
+
         if (range.getData().size() != 2) {
             throw new IllegalArgumentException("Range array must be of 2 elements");
         }
-        
+
         VTable result = VTableFactory.tableRangeFilter(table, columnName.getValue(), ValueFactory.newVDouble(range.getData().getDouble(0)), ValueFactory.newVDouble(range.getData().getDouble(1)));
-        
+
         return result;
     }
-    
+
 }

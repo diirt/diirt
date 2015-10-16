@@ -33,85 +33,85 @@ import org.diirt.vtype.ValueFactory;
 
 /**
  * PVManager expression language support for additional operations.
- * 
+ *
  * @author carcassi
  */
 public class ExpressionLanguage {
 
-	private ExpressionLanguage() {
-	}
+        private ExpressionLanguage() {
+        }
 
-	static {
-		// Add support for Epics types.
-		DataTypeSupport.install();
-		// Add support for Basic types
-		BasicTypeSupport.install();
-	}
+        static {
+                // Add support for Epics types.
+                DataTypeSupport.install();
+                // Add support for Basic types
+                BasicTypeSupport.install();
+        }
 
-	/**
-	 * A query expression that returns the result formatted as a table.
-	 * 
-	 * @param channelName
-	 * @param parameters
-	 * @return a new expression
-	 */
-	public static DesiredRateExpression<VTable> timeTableOf(
-			final String channelName, QueryParameters parameters) {
-		// TODO: Cache & query should not be created here in order to be
-		// configured / closed
-		CacheConfig config = new CacheConfig();
-		config.addSource(new SimpleFileDataSource("src/test/resources/archive-export.csv"));
-		config.addSource(new SimpleFileDataSource("src/test/resources/archive-export-singlePV.csv"));
-		config.setStorage(new SimpleMemoryStorage());
-		final Cache cache = CacheFactory.getCache(config);
-		final Query query = cache.createQuery(channelName, VType.class, parameters);
-		return new DesiredRateExpressionImpl<VTable>(new DesiredRateExpressionListImpl<Object>(),
-				new ReadFunction<VTable>() {
+        /**
+         * A query expression that returns the result formatted as a table.
+         *
+         * @param channelName
+         * @param parameters
+         * @return a new expression
+         */
+        public static DesiredRateExpression<VTable> timeTableOf(
+                        final String channelName, QueryParameters parameters) {
+                // TODO: Cache & query should not be created here in order to be
+                // configured / closed
+                CacheConfig config = new CacheConfig();
+                config.addSource(new SimpleFileDataSource("src/test/resources/archive-export.csv"));
+                config.addSource(new SimpleFileDataSource("src/test/resources/archive-export-singlePV.csv"));
+                config.setStorage(new SimpleMemoryStorage());
+                final Cache cache = CacheFactory.getCache(config);
+                final Query query = cache.createQuery(channelName, VType.class, parameters);
+                return new DesiredRateExpressionImpl<VTable>(new DesiredRateExpressionListImpl<Object>(),
+                                new ReadFunction<VTable>() {
 
-					private NavigableMap<Timestamp, Double> valueMap;
-					private VTable previousValue;
+                                        private NavigableMap<Timestamp, Double> valueMap;
+                                        private VTable previousValue;
 
-					{
-						valueMap = new ConcurrentSkipListMap<Timestamp, Double>();
-						previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
-								Arrays.asList("Time", "Value"), 
-								Arrays.asList(Arrays.asList(channelName), new ArrayDouble(0)));
-					}
+                                        {
+                                                valueMap = new ConcurrentSkipListMap<Timestamp, Double>();
+                                                previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
+                                                                Arrays.asList("Time", "Value"),
+                                                                Arrays.asList(Arrays.asList(channelName), new ArrayDouble(0)));
+                                        }
 
-					@Override
-					public VTable readValue() {
-						// Create table by merging chunks as they come
+                                        @Override
+                                        public VTable readValue() {
+                                                // Create table by merging chunks as they come
 
-						// Get new data
-						QueryResult result = query.getUpdate();
+                                                // Get new data
+                                                QueryResult result = query.getUpdate();
 
-						// If not new data is available, return the previous table
-						if (result.getData().isEmpty())
-							return previousValue;
+                                                // If not new data is available, return the previous table
+                                                if (result.getData().isEmpty())
+                                                        return previousValue;
 
-						int index = 0;
-						for (QueryData data : result.getData()) {
-							for (VType dataToDisplay : data.getData()) {
-								if (dataToDisplay instanceof VDouble)
-									valueMap.put(data.getTimestamps().get(index), ((VDouble) dataToDisplay).getValue());
-								index++;
-							}
-						}
-						index = 0;
-						double[] array = new double[valueMap.size()];
-						List<String> times = new ArrayList<String>();
-						for (Entry<Timestamp, Double> entry : valueMap.entrySet()) {
-							times.add(CacheHelper.format(entry.getKey()));
-							array[index] = entry.getValue();
-							index++;
-						}
+                                                int index = 0;
+                                                for (QueryData data : result.getData()) {
+                                                        for (VType dataToDisplay : data.getData()) {
+                                                                if (dataToDisplay instanceof VDouble)
+                                                                        valueMap.put(data.getTimestamps().get(index), ((VDouble) dataToDisplay).getValue());
+                                                                index++;
+                                                        }
+                                                }
+                                                index = 0;
+                                                double[] array = new double[valueMap.size()];
+                                                List<String> times = new ArrayList<String>();
+                                                for (Entry<Timestamp, Double> entry : valueMap.entrySet()) {
+                                                        times.add(CacheHelper.format(entry.getKey()));
+                                                        array[index] = entry.getValue();
+                                                        index++;
+                                                }
 
-						previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
-								Arrays.asList("Time", "Value"), 
-								Arrays.asList(times, new ArrayDouble(array, true)));
-						return previousValue;
-					}
-				}, channelName);
-	}
+                                                previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
+                                                                Arrays.asList("Time", "Value"),
+                                                                Arrays.asList(times, new ArrayDouble(array, true)));
+                                                return previousValue;
+                                        }
+                                }, channelName);
+        }
 
 }

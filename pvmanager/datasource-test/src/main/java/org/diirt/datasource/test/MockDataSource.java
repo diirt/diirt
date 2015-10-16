@@ -19,7 +19,7 @@ import org.diirt.datasource.WriteRecipe;
  * @author carcassi
  */
 public class MockDataSource extends DataSource {
-    
+
     private final List<ChannelReadRecipe> connectedReadRecipes = new CopyOnWriteArrayList<>();
     private final List<ChannelWriteRecipe> connectedWriteRecipes = new CopyOnWriteArrayList<>();
     private volatile ReadRecipe readRecipe;
@@ -83,5 +83,5 @@ public class MockDataSource extends DataSource {
     public List<ChannelWriteRecipe> getConnectedWriteRecipes() {
         return connectedWriteRecipes;
     }
-    
+
 }

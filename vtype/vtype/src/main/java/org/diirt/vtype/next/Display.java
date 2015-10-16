@@ -23,28 +23,28 @@ public abstract class Display {
 
     /**
      * The range for the value when displayed.
-     * 
+     *
      * @return the display range; can be null
      */
     public abstract Range getDisplayRange();
 
     /**
      * The range for the alarm associated to the value.
-     * 
+     *
      * @return the alarm range; can be null
      */
     public abstract Range getAlarmRange();
 
     /**
      * The range for the warning associated to the value.
-     * 
+     *
      * @return the warning range; can be null
      */
     public abstract Range getWarningRange();
 
     /**
      * The range used for changing the value.
-     * 
+     *
      * @return the control range; can be null
      */
     public abstract Range getControlRange();
@@ -71,10 +71,10 @@ public abstract class Display {
         if (this == obj) {
             return true;
         }
-        
-	if (obj instanceof Display) {
+
+        if (obj instanceof Display) {
             Display other = (Display) obj;
-        
+
             return Objects.equals(getFormat(), other.getFormat()) &&
                 Objects.equals(getUnit(), other.getUnit()) &&
                 Objects.equals(getDisplayRange(), other.getDisplayRange()) &&
@@ -82,7 +82,7 @@ public abstract class Display {
                 Objects.equals(getWarningRange(), other.getWarningRange()) &&
                 Objects.equals(getControlRange(), other.getControlRange());
         }
-        
+
         return false;
     }
 
@@ -97,10 +97,10 @@ public abstract class Display {
         hash = 59 * hash + Objects.hashCode(getControlRange());
         return hash;
     }
-    
+
     /**
      * Creates a new display
-     * 
+     *
      * @param lowerDisplayLimit lower display limit
      * @param lowerAlarmLimit lower alarm limit
      * @param lowerWarningLimit lower warning limit
@@ -122,14 +122,14 @@ public abstract class Display {
                 Ranges.range(lowerAlarmLimit, upperAlarmLimit),
                 Ranges.range(lowerCtrlLimit, upperCtrlLimit), units, numberFormat);
     }
-    
-    private static final Display displayNone = create(Double.NaN, Double.NaN, 
+
+    private static final Display displayNone = create(Double.NaN, Double.NaN,
             Double.NaN, "", NumberFormats.toStringFormat(), Double.NaN, Double.NaN,
             Double.NaN, Double.NaN, Double.NaN);
-    
+
     /**
      * Empty display information.
-     * 
+     *
      * @return no display
      */
     public static Display none() {

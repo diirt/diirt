@@ -68,5 +68,5 @@ class DirectRateDecoupler extends SourceDesiredRateDecoupler {
         event.addWriteFailed(ex);
         sendDesiredRateEvent(event);
     }
-    
+
 }

@@ -38,139 +38,139 @@ import org.diirt.vtype.ValueFactory;
  */
 public class TCQueryFunction extends StatefulFormulaFunction {
 
-	final private static TimestampFormat tsFormat = new TimestampFormat("yyyy-MM-dd HH:mm");
+        final private static TimestampFormat tsFormat = new TimestampFormat("yyyy-MM-dd HH:mm");
 
-	final private static String S1 = "src/test/resources/archive-ramps-1H.csv"; // from '2014-12-04 00:00:01' to '2014-12-04 01:00:01'
-	final private static String S2 = "src/test/resources/archive-ramps-1D.csv"; // from '2014-12-03 00:00:00' to '2014-12-04 00:00:00'
-	final private static String S3 = "src/test/resources/archive-ramps-1W.csv"; // from '2014-11-25 23:59:59' to '2014-12-02 23:59:59'
-	final private static String S4 = "src/test/resources/archive-ramps-2DUS.csv"; // from '2014-12-02 00:00:00' to '2014-12-04 00:00:00' but only multiple of 5
+        final private static String S1 = "src/test/resources/archive-ramps-1H.csv"; // from '2014-12-04 00:00:01' to '2014-12-04 01:00:01'
+        final private static String S2 = "src/test/resources/archive-ramps-1D.csv"; // from '2014-12-03 00:00:00' to '2014-12-04 00:00:00'
+        final private static String S3 = "src/test/resources/archive-ramps-1W.csv"; // from '2014-11-25 23:59:59' to '2014-12-02 23:59:59'
+        final private static String S4 = "src/test/resources/archive-ramps-2DUS.csv"; // from '2014-12-02 00:00:00' to '2014-12-04 00:00:00' but only multiple of 5
 
-	private final Cache cache;
-	private Query currentQuery;
-	private String currentPV;
-	private Timestamp currentBegin;
-	private Timestamp currentEnd;
+        private final Cache cache;
+        private Query currentQuery;
+        private String currentPV;
+        private Timestamp currentBegin;
+        private Timestamp currentEnd;
 
-	private NavigableMap<Timestamp, Double> valueMap;
-	private VTable previousValue;
+        private NavigableMap<Timestamp, Double> valueMap;
+        private VTable previousValue;
 
-	public TCQueryFunction() {
-		valueMap = new ConcurrentSkipListMap<Timestamp, Double>();
-		CacheConfig config = new CacheConfig();
-		config.addSource(new SimpleFileDataSource(S4));
-		config.addSource(new SimpleFileDataSource(S3));
-		config.addSource(new SimpleFileDataSource(S2));
-		config.addSource(new SimpleFileDataSource(S1));
-		config.setStorage(new SimpleMemoryStorage());
-		cache = CacheFactory.getCache(config);
-		cache.setStatisticsEnabled(true);
-	}
+        public TCQueryFunction() {
+                valueMap = new ConcurrentSkipListMap<Timestamp, Double>();
+                CacheConfig config = new CacheConfig();
+                config.addSource(new SimpleFileDataSource(S4));
+                config.addSource(new SimpleFileDataSource(S3));
+                config.addSource(new SimpleFileDataSource(S2));
+                config.addSource(new SimpleFileDataSource(S1));
+                config.setStorage(new SimpleMemoryStorage());
+                cache = CacheFactory.getCache(config);
+                cache.setStatisticsEnabled(true);
+        }
 
-	@Override
-	public boolean isVarArgs() {
-		return false;
-	}
+        @Override
+        public boolean isVarArgs() {
+                return false;
+        }
 
-	@Override
-	public String getName() {
-		return "tcQuery";
-	}
+        @Override
+        public String getName() {
+                return "tcQuery";
+        }
 
-	@Override
-	public String getDescription() {
-		return "Query for data threw a TimeCache";
-	}
+        @Override
+        public String getDescription() {
+                return "Query for data threw a TimeCache";
+        }
 
-	@Override
-	public List<Class<?>> getArgumentTypes() {
-		return Arrays.<Class<?>> asList(VString.class, VString.class,
-				VString.class);
-	}
+        @Override
+        public List<Class<?>> getArgumentTypes() {
+                return Arrays.<Class<?>> asList(VString.class, VString.class,
+                                VString.class);
+        }
 
-	@Override
-	public List<String> getArgumentNames() {
-		return Arrays.asList("pvName", "begin", "end");
-	}
+        @Override
+        public List<String> getArgumentNames() {
+                return Arrays.asList("pvName", "begin", "end");
+        }
 
-	@Override
-	public Class<?> getReturnType() {
-		return VTable.class;
-	}
+        @Override
+        public Class<?> getReturnType() {
+                return VTable.class;
+        }
 
-	@Override
-	public Object calculate(List<Object> args) {
-		if (args == null || args.size() < 3) {
-			return null;
-		}
-		if (previousValue == null) {
-			previousValue = ValueFactory.newVTable(
-					Arrays.<Class<?>> asList(String.class, double.class),
-					Arrays.asList("Timestamp", "Value"),
-					Arrays.asList(new ArrayList<String>(), new ArrayDouble()));
-		}
-		String newPV = ((VString) args.get(0)).getValue();
-		Timestamp newBegin = null, newEnd = null;
-		try {
-			newBegin = tsFormat.parse(((VString) args.get(1)).getValue());
-			newEnd = tsFormat.parse(((VString) args.get(2)).getValue());
-		} catch (ParseException e) {
-			return previousValue;
-		}
-		if (currentPV == null || !currentPV.equals(newPV)) {
-			currentPV = newPV;
-			currentBegin = newBegin;
-			currentEnd = newEnd;
-			QueryParameters parameters = new QueryParameters()
-					.timeInterval(TimeRelativeInterval.of(newBegin, newEnd));
-			if (currentQuery != null) {
-				currentQuery.close();
-			}
-			currentQuery = cache.createQuery(currentPV, VType.class, parameters);
-		} else if (!currentBegin.equals(newBegin) || !currentEnd.equals(newEnd)) {
-			QueryParameters parameters = new QueryParameters()
-					.timeInterval(TimeRelativeInterval.of(newBegin, newEnd));
-			currentQuery.update(parameters);
-		}
-		// Create table by merging chunks as they come
-		QueryResult result = currentQuery.getUpdate();
+        @Override
+        public Object calculate(List<Object> args) {
+                if (args == null || args.size() < 3) {
+                        return null;
+                }
+                if (previousValue == null) {
+                        previousValue = ValueFactory.newVTable(
+                                        Arrays.<Class<?>> asList(String.class, double.class),
+                                        Arrays.asList("Timestamp", "Value"),
+                                        Arrays.asList(new ArrayList<String>(), new ArrayDouble()));
+                }
+                String newPV = ((VString) args.get(0)).getValue();
+                Timestamp newBegin = null, newEnd = null;
+                try {
+                        newBegin = tsFormat.parse(((VString) args.get(1)).getValue());
+                        newEnd = tsFormat.parse(((VString) args.get(2)).getValue());
+                } catch (ParseException e) {
+                        return previousValue;
+                }
+                if (currentPV == null || !currentPV.equals(newPV)) {
+                        currentPV = newPV;
+                        currentBegin = newBegin;
+                        currentEnd = newEnd;
+                        QueryParameters parameters = new QueryParameters()
+                                        .timeInterval(TimeRelativeInterval.of(newBegin, newEnd));
+                        if (currentQuery != null) {
+                                currentQuery.close();
+                        }
+                        currentQuery = cache.createQuery(currentPV, VType.class, parameters);
+                } else if (!currentBegin.equals(newBegin) || !currentEnd.equals(newEnd)) {
+                        QueryParameters parameters = new QueryParameters()
+                                        .timeInterval(TimeRelativeInterval.of(newBegin, newEnd));
+                        currentQuery.update(parameters);
+                }
+                // Create table by merging chunks as they come
+                QueryResult result = currentQuery.getUpdate();
 
-		// If not new data is available, return the previous table
-		if (result.getData().isEmpty()) {
-			return previousValue;
-		}
+                // If not new data is available, return the previous table
+                if (result.getData().isEmpty()) {
+                        return previousValue;
+                }
 
-		int index = 0;
-		for (QueryData data : result.getData()) {
-			index = 0;
-			for (VType dataToDisplay : data.getData()) {
-				if (dataToDisplay instanceof VDouble) {
-					valueMap.put(data.getTimestamps().get(index),
-							((VDouble) dataToDisplay).getValue());
-				}
-				index++;
-			}
-		}
-		index = 0;
-		double[] array = new double[valueMap.size()];
-		List<String> times = new ArrayList<String>();
-		for (Entry<Timestamp, Double> entry : valueMap.entrySet()) {
-			times.add(CacheHelper.format(entry.getKey()));
-			array[index] = entry.getValue();
-			index++;
-		}
+                int index = 0;
+                for (QueryData data : result.getData()) {
+                        index = 0;
+                        for (VType dataToDisplay : data.getData()) {
+                                if (dataToDisplay instanceof VDouble) {
+                                        valueMap.put(data.getTimestamps().get(index),
+                                                        ((VDouble) dataToDisplay).getValue());
+                                }
+                                index++;
+                        }
+                }
+                index = 0;
+                double[] array = new double[valueMap.size()];
+                List<String> times = new ArrayList<String>();
+                for (Entry<Timestamp, Double> entry : valueMap.entrySet()) {
+                        times.add(CacheHelper.format(entry.getKey()));
+                        array[index] = entry.getValue();
+                        index++;
+                }
 
-		previousValue = ValueFactory.newVTable(
-				Arrays.<Class<?>> asList(String.class, double.class),
-				Arrays.asList("Timestamp", "Value"),
-				Arrays.asList(times, new ArrayDouble(array, true)));
-		return previousValue;
-	}
+                previousValue = ValueFactory.newVTable(
+                                Arrays.<Class<?>> asList(String.class, double.class),
+                                Arrays.asList("Timestamp", "Value"),
+                                Arrays.asList(times, new ArrayDouble(array, true)));
+                return previousValue;
+        }
 
-	@Override
-	public void dispose() {
-		if (currentQuery != null) {
-			currentQuery.close();
-		}
-	}
+        @Override
+        public void dispose() {
+                if (currentQuery != null) {
+                        currentQuery.close();
+                }
+        }
 
 }

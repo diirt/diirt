@@ -12,7 +12,7 @@ import org.diirt.datasource.PVReaderEvent;
  * @author carcassi
  */
 public class PVReaderValueCondition extends PVReaderCondition<Object> {
-    
+
     private final VTypeMatchMask mask;
     private final Object expectedValue;
 
@@ -26,5 +26,5 @@ public class PVReaderValueCondition extends PVReaderCondition<Object> {
         Object actualValue = reader.getValue();
         return mask.match(expectedValue, actualValue) == null;
     }
-    
+
 }

@@ -41,7 +41,7 @@ public class CsvParserResult {
 
     /**
      * The header of the CSV table.
-     * 
+     *
      * @return the list of column names
      */
     public List<String> getColumnNames() {
@@ -55,7 +55,7 @@ public class CsvParserResult {
      * Objects) and in a {@link ListNumber} (for primitive data). For example,
      * if the column type is {@link String}, then one can expect a {@code List<String>}.
      * If it's {@code double}, then one can expect a {@link ListDouble}.
-     * 
+     *
      * @return the list of column data
      */
     public List<Object> getColumnValues() {
@@ -66,7 +66,7 @@ public class CsvParserResult {
      * The type of data found in the column.
      * <p>
      * At present, it can be either {@link String} or {@code double}.
-     * 
+     *
      * @return list of column types
      */
     public List<Class<?>> getColumnTypes() {
@@ -75,7 +75,7 @@ public class CsvParserResult {
 
     /**
      * The number of rows.
-     * 
+     *
      * @return the number of rows
      */
     public int getRowCount() {
@@ -85,7 +85,7 @@ public class CsvParserResult {
     /**
      * True whether the parsing was successful and one can safely read
      * data from the data methods.
-     * 
+     *
      * @return true if data is present and complete
      */
     public boolean isParsingSuccessful() {
@@ -94,11 +94,11 @@ public class CsvParserResult {
 
     /**
      * An error message.
-     * 
+     *
      * @return an error message; null if no error occurred
      */
     public String getMessage() {
         return message;
     }
-    
+
 }

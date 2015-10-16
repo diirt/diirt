@@ -28,14 +28,14 @@ import org.diirt.vtype.ValueUtil;
 
 /**
  * Utility class to convert VTypes into graphene datasets.
- * 
+ *
  * @author carcassi
  */
 public class DatasetConversions {
-    
+
     /**
      * Converts a VTable into a Point2DDataset.
-     * 
+     *
      * @param vTable the table containing the data
      * @param xColumn the column for the x values
      * @param yColumn the column for the y values
@@ -46,7 +46,7 @@ public class DatasetConversions {
         // Extract x and y using column names
         ListNumber xValues = ValueUtil.numericColumnOf(vTable, xColumn);
         ListNumber yValues = ValueUtil.numericColumnOf(vTable, yColumn);
-        
+
         // Fill the missing columns with the first available columns
         for (int i = 0; i < vTable.getColumnCount(); i++) {
             if (vTable.getColumnType(i).isPrimitive()) {
@@ -61,17 +61,17 @@ public class DatasetConversions {
                 }
             }
         }
-            
+
         if (xValues == null || yValues == null) {
             throw new IllegalArgumentException("Couldn't find two numeric columns");
         }
-        
+
         return Point2DDatasets.lineData(xValues, yValues);
     }
-    
+
     /**
      * Converts a VTable into a Point2DDataset.
-     * 
+     *
      * @param vTable the table containing the data
      * @param xColumn the column name for the x values
      * @param yColumn the column name for the y values
@@ -107,12 +107,12 @@ public class DatasetConversions {
                     }
                 }
             }
-            
+
             if (xValues == null || yValues == null) {
                 throw new IllegalArgumentException("Couldn't find two numeric columns for X and Y");
-            }            
+            }
         }
-            
+
         if (xValues == null || yValues == null) {
             throw new IllegalArgumentException("X and Y must both be specified");
         }
@@ -133,19 +133,19 @@ public class DatasetConversions {
                 }
             };
         }
-        
+
         // If color is missing, generate a "None" column
         if (colorValues == null) {
             colorValues = Collections.nCopies(xValues.size(), "None");
         }
-        
+
         return Point3DWithLabelDatasets.build(xValues, yValues, sizeValues, colorValues);
     }
 
     public static List<Point2DDataset> point2DDatasetsFromVTable(VTable vTable, List<String> xColumns, List<String> yColumns) {
         List<ListNumber> xValues = new ArrayList<>();
         List<ListNumber> yValues = new ArrayList<>();
-        
+
         if (xColumns != null && yColumns != null) {
             for (String column : xColumns) {
                 xValues.add(ValueUtil.numericColumnOf(vTable, column));
@@ -163,8 +163,8 @@ public class DatasetConversions {
         } else {
             throw new UnsupportedOperationException("Not supported yet.");
         }
-        
-        
+
+
         if (xValues.isEmpty()) {
             List<Point2DDataset> datasets = new ArrayList<>();
             for (int i = 0; i < yValues.size(); i++) {
@@ -172,7 +172,7 @@ public class DatasetConversions {
             }
             return datasets;
         }
-        
+
         if (xValues.size() == yValues.size()) {
             List<Point2DDataset> datasets = new ArrayList<>();
             for (int i = 0; i < xValues.size(); i++) {
@@ -180,7 +180,7 @@ public class DatasetConversions {
             }
             return datasets;
         }
-        
+
         if (xValues.size() == 1) {
             List<Point2DDataset> datasets = new ArrayList<>();
             for (int i = 0; i < yValues.size(); i++) {
@@ -188,22 +188,22 @@ public class DatasetConversions {
             }
             return datasets;
         }
-        
+
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public static Cell2DDataset cell2DDatasetsFromVNumberArray(VNumberArray data) {
         return new Cell2DDatasetFromVNumberArray(data);
     }
-    
+
     public static Range toRange(Display display) {
         if (display == null) {
             return null;
         }
-        
+
         Double min = display.getLowerDisplayLimit();
         Double max = display.getUpperDisplayLimit();
-        
+
         if (min != null && max != null) {
             return Ranges.range(min, max);
         } else {

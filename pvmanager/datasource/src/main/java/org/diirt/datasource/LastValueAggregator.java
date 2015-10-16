@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Returns the last value of the list.
- * 
+ *
  * @author carcassi
  */
 class LastValueAggregator<T> extends Aggregator<T, T> {

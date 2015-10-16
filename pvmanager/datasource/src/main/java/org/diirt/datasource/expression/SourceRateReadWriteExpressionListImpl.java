@@ -16,9 +16,9 @@ import java.util.List;
  * @author carcassi
  */
 public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateReadWriteExpressionList<R, W> {
-    
+
     private List<SourceRateReadWriteExpression<R, W>> sourceRateReadWriteExpressions = new ArrayList<SourceRateReadWriteExpression<R, W>>();
-    
+
     final void addThis() {
         sourceRateReadWriteExpressions.add((SourceRateReadWriteExpression<R, W>) this);
     }
@@ -59,5 +59,5 @@ public class SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateRe
     public final List<WriteExpression<W>> getWriteExpressions() {
         return Collections.<WriteExpression<W>>unmodifiableList(sourceRateReadWriteExpressions);
     }
-    
+
 }

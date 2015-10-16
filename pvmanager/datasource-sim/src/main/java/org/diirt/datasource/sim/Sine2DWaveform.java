@@ -34,7 +34,7 @@ public class Sine2DWaveform extends SimFunction<VDoubleArray> {
     public Sine2DWaveform() {
         this(1.0, 100.0, 0.1);
     }
-    
+
     /**
      * Creates sine wave of 100 samples, with given period and given wavelength of
      * 100 samples along the x axis, updating at given rate.

@@ -13,7 +13,7 @@ import org.diirt.vtype.VImage;
 import org.diirt.vtype.ValueUtil;
 
 public final class VImageView extends BorderPane {
-    
+
     private ImageView imageView;
 
     public VImageView() {
@@ -21,25 +21,25 @@ public final class VImageView extends BorderPane {
         imageView.fitHeightProperty().bind(heightProperty());
         imageView.fitWidthProperty().bind(widthProperty());
         setCenter(imageView);
-	setMinSize( 0 , 0 );
+        setMinSize( 0 , 0 );
     }
-    
+
     public void setVImage(VImage image) {
-	if ( image != null ) {
-	    
-	    //we must create a new WritableImage every time. If the WritableImage
-	    //is larger than the image we want to display, then SwingFXUtils.toFXImage()
-	    //simply draws our smaller image onto the larger WritableImage.
-	    //This is bad because then we have a random gray gap on the right side.
-	    //Thus, we fix this by creating a new WritableImage of the correct
-	    //size every time and having SwingFXUtils.toFXImage() draw on that.
-	    WritableImage newImage = new WritableImage( image.getWidth() , image.getHeight() );
-	    newImage = SwingFXUtils.toFXImage(ValueUtil.toImage(image), newImage );
-	    imageView.setImage(newImage);
-	}
-	else {
-	    imageView.setImage( null );
-	}
+        if ( image != null ) {
+
+            //we must create a new WritableImage every time. If the WritableImage
+            //is larger than the image we want to display, then SwingFXUtils.toFXImage()
+            //simply draws our smaller image onto the larger WritableImage.
+            //This is bad because then we have a random gray gap on the right side.
+            //Thus, we fix this by creating a new WritableImage of the correct
+            //size every time and having SwingFXUtils.toFXImage() draw on that.
+            WritableImage newImage = new WritableImage( image.getWidth() , image.getHeight() );
+            newImage = SwingFXUtils.toFXImage(ValueUtil.toImage(image), newImage );
+            imageView.setImage(newImage);
+        }
+        else {
+            imageView.setImage( null );
+        }
     }
 
 }

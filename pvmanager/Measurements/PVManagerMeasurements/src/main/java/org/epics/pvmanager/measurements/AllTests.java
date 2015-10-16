@@ -25,7 +25,7 @@ public class AllTests {
         Collection<Channel> queriedChannels = cf.find("Tags=aphla.sys.SR");
         Collection<String> channelNames = ChannelUtil.getChannelNames(queriedChannels);
         System.out.println(channelNames.size());
-        
+
         String[] channels20 = new String[] {"counter1", "counter2", "counter3", "counter4",
             "counter5", "counter6", "counter7", "counter8", "counter9", "counter10",
             "counter11", "counter12", "counter13", "counter14",

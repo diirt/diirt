@@ -15,32 +15,32 @@ import org.diirt.vtype.VTypeToString;
  */
 public class PVFieldToVFloat extends AlarmTimeDisplayExtractor implements VFloat {
 
-	protected final Float value;
+        protected final Float value;
 
-	public PVFieldToVFloat(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        public PVFieldToVFloat(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVFloat(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVFloat(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	public PVFieldToVFloat(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
+        public PVFieldToVFloat(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
 
-		if (field instanceof PVScalar)
-			value = convert.toFloat((PVScalar)field);
-	    else
-	    	value = null;
-	}
+                if (field instanceof PVScalar)
+                        value = convert.toFloat((PVScalar)field);
+            else
+                value = null;
+        }
 
-	@Override
-	public Float getValue() {
-		return value;
-	}
+        @Override
+        public Float getValue() {
+                return value;
+        }
 
-	@Override
-	public String toString() {
-		return VTypeToString.toString(this);
-	}
+        @Override
+        public String toString() {
+                return VTypeToString.toString(this);
+        }
 }

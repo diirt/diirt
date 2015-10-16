@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author carcassi
  */
 public abstract class TypeSupport<T> {
-    
+
     /**
      * Internal class to improve readability.
      * @author bknerr
@@ -43,15 +43,15 @@ public abstract class TypeSupport<T> {
         private static final long serialVersionUID = -8726785703555122582L;
         public TypeSupportMap() { /* EMPTY */ }
     }
-    
-    private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allTypeSupports = 
+
+    private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allTypeSupports =
         new ConcurrentHashMap<Class<? extends TypeSupport>, TypeSupportMap>();
-    private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allCalcTypeSupports = 
+    private static final Map<Class<? extends TypeSupport>, TypeSupportMap> allCalcTypeSupports =
         new ConcurrentHashMap<Class<? extends TypeSupport>, TypeSupportMap>();
-    
-    
-    private static 
-    void addTypeSupportFamilyIfNotExists(final Map<Class<? extends TypeSupport>, TypeSupportMap> map, 
+
+
+    private static
+    void addTypeSupportFamilyIfNotExists(final Map<Class<? extends TypeSupport>, TypeSupportMap> map,
                                          final Class<? extends TypeSupport> typeSupportFamily) {
         TypeSupportMap familyMap = map.get(typeSupportFamily);
         if (familyMap == null) {
@@ -59,7 +59,7 @@ public abstract class TypeSupport<T> {
             map.put(typeSupportFamily, supportMap);
         }
     }
-    
+
     /**
      * Adds type support for the given class. The type support added will apply
      * to the given class and all of its subclasses. Support of the same
@@ -73,7 +73,7 @@ public abstract class TypeSupport<T> {
     public static
     void addTypeSupport(final TypeSupport<?> typeSupport) {
         Class<? extends TypeSupport> typeSupportFamily = typeSupport.getTypeSupportFamily();
-        
+
         addTypeSupportFamilyIfNotExists(allTypeSupports, typeSupportFamily);
         addTypeSupportFamilyIfNotExists(allCalcTypeSupports, typeSupportFamily);
 
@@ -81,30 +81,30 @@ public abstract class TypeSupport<T> {
         if (allTypeSupports.get(typeSupportFamily).get(typeSupport.getType()) != null) {
             throw new RuntimeException(typeSupportFamily.getSimpleName() + " was already added for type " + typeSupport.getType().getName());
         }
-        
+
         allTypeSupports.get(typeSupportFamily).put(typeSupport.getType(), typeSupport);
         // Need to clear all calculated supports since registering an
         // interface may affect all the calculated supports
         // of all the implementations
         allCalcTypeSupports.get(typeSupportFamily).clear();
     }
-    
+
     /**
      * Checks whether the type is supported directly or through one of the
      * supertypes.
-     * 
+     *
      * @param type type to check support for
      * @param typeSupportFamily the family in which to look for
      * @return true if supported
-     * @throws RuntimeException if multiple conflicting support is found 
+     * @throws RuntimeException if multiple conflicting support is found
      */
     public static boolean isTypeSupported(Class<? extends TypeSupport> typeSupportFamily, Class<?> type) {
         return findTypeSupportFor(typeSupportFamily, type) != null;
     }
-    
+
     /**
      * Checks whether the type is supported on the same exact type.
-     * 
+     *
      * @param type type to check support for
      * @param typeSupportFamily the family in which to look for
      * @return true if supported
@@ -126,14 +126,14 @@ public abstract class TypeSupport<T> {
      * @param supportFamily the support family for which to find support
      * @param typeClass the class of the type
      * @return the support for the type or null
-     * @throws RuntimeException if multiple conflicting support is found 
+     * @throws RuntimeException if multiple conflicting support is found
      */
     protected static <T> TypeSupport<T> findTypeSupportFor(final Class<? extends TypeSupport> supportFamily,
                                                              final Class<T> typeClass) {
-        
+
         TypeSupportMap calcSupportMap = allCalcTypeSupports.get(supportFamily);
         TypeSupportMap supportMap = allTypeSupports.get(supportFamily);
-        
+
         if (supportMap == null || calcSupportMap == null) {
             return null;
         }
@@ -152,7 +152,7 @@ public abstract class TypeSupport<T> {
         }
         return support;
     }
-    
+
     /**
      * Returns all the type supports available for the given class.
      *
@@ -214,7 +214,7 @@ public abstract class TypeSupport<T> {
     }
     /**
      * Creates a new type support of the given type
-     * 
+     *
      * @param type the type on which support is defined
      * @param typeSupportFamily the kind of support is being defined
      */
@@ -241,7 +241,7 @@ public abstract class TypeSupport<T> {
 
     /**
      * Defines on which class the support is defined.
-     * 
+     *
      * @return the type of the class
      */
     protected Class<T> getType() {

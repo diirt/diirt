@@ -46,18 +46,18 @@ import static org.mockito.Mockito.*;
  * @author carcassi
  */
 public class JCAVTypeAdapterSetTest {
-    
+
     public JCAVTypeAdapterSetTest() {
     }
-    
+
     public static JCAConnectionPayload mockJCAConnectionPayload(final DBRType dbrType, final int count, final ConnectionState connState) {
         return mockJCAConnectionPayload("default", dbrType, count, connState);
     }
-    
+
     public static JCAConnectionPayload mockJCAConnectionPayload(final String name, final DBRType dbrType, final int count, final ConnectionState connState) {
         return mockJCAConnectionPayload(name, dbrType, count, connState, false);
     }
-    
+
     public static JCAConnectionPayload mockJCAConnectionPayload(final String name, final DBRType dbrType, final int count, final ConnectionState connState, final boolean longString) {
         Channel channel = mock(Channel.class);
         when(channel.getName()).thenReturn(name);
@@ -103,15 +103,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRFloatToVFloat4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VFloat.class));
         VFloat converted = (VFloat) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25F));
@@ -133,15 +133,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRFloatToVFloat5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloat;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VFloat.class));
         VFloat converted = (VFloat) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25F));
@@ -190,15 +190,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRDoubleToVDouble4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VDouble.class));
         VDouble converted = (VDouble) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25));
@@ -220,15 +220,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRDoubleToVDouble5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VDouble.class));
         VDouble converted = (VDouble) cache.readValue();
         assertThat(converted.getValue(), equalTo(3.25));
@@ -277,15 +277,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRByteToVByte4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VByte.class));
         VByte converted = (VByte) cache.readValue();
         assertThat(converted.getValue(), equalTo((byte) 32));
@@ -307,15 +307,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRByteToVByte5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByte;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VByte.class));
         VByte converted = (VByte) cache.readValue();
         assertThat(converted.getValue(), equalTo((byte) 32));
@@ -364,15 +364,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRShortToVShort4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VShort.class));
         VShort converted = (VShort) cache.readValue();
         assertThat(converted.getValue(), equalTo((short) 32));
@@ -394,15 +394,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRShortToVShort5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShort;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VShort.class));
         VShort converted = (VShort) cache.readValue();
         assertThat(converted.getValue(), equalTo((short) 32));
@@ -451,15 +451,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRIntToVInt4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVInt;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VInt.class));
         VInt converted = (VInt) cache.readValue();
         assertThat(converted.getValue(), equalTo(32));
@@ -481,15 +481,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRIntToVInt5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVInt;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{32}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VInt.class));
         VInt converted = (VInt) cache.readValue();
         assertThat(converted.getValue(), equalTo(32));
@@ -538,14 +538,14 @@ public class JCAVTypeAdapterSetTest {
     public void DBRStringToVString4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"32"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VString.class));
         VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("32"));
@@ -559,14 +559,14 @@ public class JCAVTypeAdapterSetTest {
     public void DBRStringToVString5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVString;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"32"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VString.class));
         VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("32"));
@@ -611,16 +611,16 @@ public class JCAVTypeAdapterSetTest {
     public void DBRByteToVString4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload("mypv.NAME$", DBR_Byte.TYPE, 20, ConnectionState.CONNECTED, true);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         byte[] data = "Testing".getBytes();
         data = Arrays.copyOf(data, data.length + 1);
         DBR_TIME_Byte value = createDBRTimeByte(data, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VString.class));
         VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("Testing"));
@@ -634,16 +634,16 @@ public class JCAVTypeAdapterSetTest {
     public void DBRByteToVString5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVString;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload("mypv.NAME$", DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         byte[] data = "Testing".getBytes();
         data = Arrays.copyOf(data, data.length + 1);
         DBR_TIME_Byte value = createDBRTimeByte(data, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(null, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VString.class));
         VString converted = (VString) cache.readValue();
         assertThat(converted.getValue(), equalTo("Testing"));
@@ -684,15 +684,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBREnumToVEnum4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBREnumToVEnum;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Enum.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Enum value = createDBRTimeEnum(new short[]{2}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_LABELS_Enum meta = createMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VEnum.class));
         VEnum converted = (VEnum) cache.readValue();
         assertThat(converted.getValue(), equalTo("Two"));
@@ -706,15 +706,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBREnumToVEnum5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBREnumToVEnum;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Enum.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Enum value = createDBRTimeEnum(new short[]{2}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_LABELS_Enum meta = createMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VEnum.class));
         VEnum converted = (VEnum) cache.readValue();
         assertThat(converted.getValue(), equalTo("Two"));
@@ -755,15 +755,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRFloatToVFloatArray4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F, 3.75F, 4.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VFloatArray.class));
         VFloatArray converted = (VFloatArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
@@ -785,15 +785,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRFloatToVFloatArray5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRFloatToVFloatArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Float.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Float value = createDBRTimeFloat(new float[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VFloatArray.class));
         VFloatArray converted = (VFloatArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
@@ -842,15 +842,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRDoubleToVDoubleArray4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25, 3.75, 4.25}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
         VDoubleArray converted = (VDoubleArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25, 3.75, 4.25}));
@@ -872,15 +872,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRDoubleToVDoubleArray5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDoubleArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
         VDoubleArray converted = (VDoubleArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3.25}));
@@ -930,15 +930,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRByteToVByteArray4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByteArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{3, 4, 5}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VByteArray.class));
         VByteArray converted = (VByteArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
@@ -960,15 +960,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRByteToVByteArray5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRByteToVByteArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Byte.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Byte value = createDBRTimeByte(new byte[]{3}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VByteArray.class));
         VByteArray converted = (VByteArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
@@ -1017,15 +1017,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRShortToVShortArray4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShortArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{3, 4, 5}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VShortArray.class));
         VShortArray converted = (VShortArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
@@ -1046,15 +1046,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRShortToVShortArray5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRShortToVShortArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Short.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Short value = createDBRTimeShort(new short[]{3}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VShortArray.class));
         VShortArray converted = (VShortArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
@@ -1103,15 +1103,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRIntToVIntArray4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVIntArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{3, 4, 5}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VIntArray.class));
         VIntArray converted = (VIntArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3, 4, 5}));
@@ -1133,15 +1133,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRIntToVIntArray5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRIntToVIntArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Int.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_Int value = createDBRTimeInt(new int[]{3}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VIntArray.class));
         VIntArray converted = (VIntArray) cache.readValue();
         assertThat(CollectionNumbers.doubleArrayCopyOf(converted.getData()), equalTo(new double[]{3}));
@@ -1190,15 +1190,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRStringToVStringArray4() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.CONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"Zero", "One", "Two"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VStringArray.class));
         VStringArray converted = (VStringArray) cache.readValue();
         assertThat(converted.getData(), equalTo(Arrays.asList("Zero", "One", "Two")));
@@ -1212,15 +1212,15 @@ public class JCAVTypeAdapterSetTest {
     public void DBRStringToVStringArray5() {
         ValueCache<Object> cache = new ValueCacheImpl<Object>(Object.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRStringToVStringArray;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_String.TYPE, 1, ConnectionState.DISCONNECTED);
         Timestamp timestamp = Timestamp.of(1234567,1234);
         DBR_TIME_String value = createDBRTimeString(new String[]{"Only"}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue(), instanceOf(VStringArray.class));
         VStringArray converted = (VStringArray) cache.readValue();
         assertThat(converted.getData(), equalTo(Arrays.asList("Only")));

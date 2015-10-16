@@ -16,19 +16,19 @@ public class MultiAxisLineGraph2DRendererUpdate extends Graph2DRendererUpdate<Mu
     private HashMap<Integer, Range> IndexToRangeMap;
     private Integer marginBetweenGraphs,
             minimumGraphHeight;
-    
+
     private InterpolationScheme interpolation;
     private ReductionScheme reduction;
-    
+
     private Integer minimumGraphWidth;
-    
+
     private Boolean separateAreas;
-    
+
     public MultiAxisLineGraph2DRendererUpdate minimumGraphWidth(int minimumGraphWidth){
         this.minimumGraphWidth = minimumGraphWidth;
         return self();
     }
-    
+
     /**
      *Sets this object's interpolation to the given scheme.
      * @param scheme can not be null, must be a supported scheme. Supported schemes:NEAREST_NEIGHBOUR,LINEAR,CUBIC.
@@ -44,7 +44,7 @@ public class MultiAxisLineGraph2DRendererUpdate extends Graph2DRendererUpdate<Mu
         this.interpolation = scheme;
         return this;
     }
-    
+
     /**
      *Sets this object's data reduction scheme to the given scheme.
      * @param scheme can not be null, must be a supported scheme. Supported schemes:FIRST_MAX_MIN_LAST,NONE
@@ -60,39 +60,39 @@ public class MultiAxisLineGraph2DRendererUpdate extends Graph2DRendererUpdate<Mu
         this.reduction = scheme;
         return this;
     }
-    
+
     public MultiAxisLineGraph2DRendererUpdate marginBetweenGraphs(Integer margin){
         marginBetweenGraphs = margin;
         return this.self();
     }
-    
+
     public MultiAxisLineGraph2DRendererUpdate minimumGraphHeight(Integer minimumGraphHeight){
         this.minimumGraphHeight = minimumGraphHeight;
         return this.self();
     }
-    
+
     public MultiAxisLineGraph2DRendererUpdate setRanges(HashMap<Integer, Range> map){
         IndexToRangeMap = map;
         return this.self();
     }
-    
+
     public MultiAxisLineGraph2DRendererUpdate separateAreas(boolean separateAreas){
         this.separateAreas = separateAreas;
         return this.self();
     }
-    
+
     public HashMap<Integer, Range> getIndexToRange(){
         return IndexToRangeMap;
     }
-    
+
     public Integer getMarginBetweenGraphs(){
         return marginBetweenGraphs;
     }
-    
+
     public Integer getMinimumGraphHeight(){
         return minimumGraphHeight;
     }
-    
+
     /**
      *Current interpolation scheme
      * @return the current interpolation scheme.
@@ -108,11 +108,11 @@ public class MultiAxisLineGraph2DRendererUpdate extends Graph2DRendererUpdate<Mu
     public ReductionScheme getDataReduction() {
         return reduction;
     }
-    
+
     public Integer getMinimumGraphWidth(){
         return minimumGraphWidth;
     }
-    
+
     public Boolean isSeparateAreas(){
         return separateAreas;
     }

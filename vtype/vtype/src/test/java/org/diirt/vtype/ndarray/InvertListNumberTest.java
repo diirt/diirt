@@ -23,7 +23,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class InvertListNumberTest {
-    
+
     @Test
     public void fillCoords1() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -33,7 +33,7 @@ public class InvertListNumberTest {
         InvertListNumber.fillCoords(coords, index, sizes);
         assertThat(coords, equalTo(actualCoords));
     }
-    
+
     @Test
     public void fillCoords2() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -43,7 +43,7 @@ public class InvertListNumberTest {
         InvertListNumber.fillCoords(coords, index, sizes);
         assertThat(coords, equalTo(actualCoords));
     }
-    
+
     @Test
     public void index1() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -52,7 +52,7 @@ public class InvertListNumberTest {
         int index = (10 * 3 + 0) * 2 + 1;
         assertThat(InvertListNumber.index(actualCoords, sizes, invert), equalTo(index));
     }
-    
+
     @Test
     public void index2() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -61,7 +61,7 @@ public class InvertListNumberTest {
         int index = (10 * 3 + 2) * 2 + 1;
         assertThat(InvertListNumber.index(actualCoords, sizes, invert), equalTo(index));
     }
-    
+
     @Test
     public void index3() {
         ListInt sizes = new ArrayInt(15,3,2);

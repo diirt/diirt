@@ -56,5 +56,5 @@ public class SourceDesiredRateDecouplerTest {
         assertThat(log.getEventTypes(5), contains(DesiredRateEvent.Type.WRITE_FAILED));
         assertThat(log.getEventTypes(6), contains(DesiredRateEvent.Type.WRITE_SUCCEEDED));
     }
-    
+
 }

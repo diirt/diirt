@@ -267,7 +267,7 @@ public class RPCServicesTest implements Runnable {
      VFloat vFloat = (VFloat) cache.getValue().get("c_alias");
      assertThat(vFloat.getValue(), equalTo(30.0f));
      }
-  
+
      @Test
      public void testMethodWithBooleanResult() throws Exception {
      InputStream stream = getClass().getResourceAsStream("RPCSumServiceBoolean.xml");
@@ -530,7 +530,7 @@ public class RPCServicesTest implements Runnable {
         InputStream stream = getClass().getResourceAsStream("RPCSumServiceWithOperationName.xml");
         Service service = RPCServices.createFromXml(stream);
 
-        //checking the specifics of pva rpc    
+        //checking the specifics of pva rpc
         assertThat(((RPCServiceMethod) service.getServiceMethods().get("sumFloat")).getOperationName(),
                 equalTo("sumFoo"));
     }

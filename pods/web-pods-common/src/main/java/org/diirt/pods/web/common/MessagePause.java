@@ -16,7 +16,7 @@ public class MessagePause extends Message {
 
     /**
      * Creates a new message based on the JSON representation.
-     * 
+     *
      * @param obj JSON object
      * @throws MessageDecodeException if json format is incorrect
      */
@@ -26,16 +26,16 @@ public class MessagePause extends Message {
 
     /**
      * Creates a new message based on the given parameters.
-     * 
+     *
      * @param id the channel id
      */
     public MessagePause(int id) {
         super(MessageType.PAUSE, id);
     }
-    
+
     @Override
     public void toJson(Writer writer) {
         basicToJson(writer);
     }
-    
+
 }

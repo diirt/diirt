@@ -63,22 +63,22 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     private volatile boolean sentReadOnlyException = false;
     private final boolean putCallback;
     private final boolean longString;
-    
+
     // For the AccessChaneListener we need to guard it differently
     private final AtomicBoolean needsAccessChangeListener = new AtomicBoolean(false);
-    
+
     public static Pattern longStringPattern = Pattern.compile(".+\\..*\\$.*");
     private final static Pattern hasOptions = Pattern.compile("(.*) (\\{.*\\})");
-    
+
     private final static Logger log = Logger.getLogger(JCAChannelHandler.class.getName());
 
     public JCAChannelHandler(String channelName, JCADataSource jcaDataSource) {
         super(channelName);
         setProcessMessageOnReconnect(false);
         this.jcaDataSource = jcaDataSource;
-        
+
         boolean longStringName = longStringPattern.matcher(channelName).matches();
-        
+
         // Parse parameters
         // Done here so that they can be immutable
         Matcher matcher = hasOptions.matcher(getChannelName());
@@ -115,7 +115,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
 
     /**
      * Whether this channel should be written using a put callback.
-     * 
+     *
      * @return true if a put callback should be used
      */
     public boolean isPutCallback() {
@@ -125,7 +125,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     /**
      * Return whether this channel should be treated as a long string,
      * meaning a BYTE[] that really represents an encoded string.
-     * 
+     *
      * @return true if the channel should be handled as a long string
      */
     public boolean isLongString() {
@@ -134,22 +134,22 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
 
     /**
      * The datasource this channel refers to.
-     * 
+     *
      * @return a jca data source
      */
     public JCADataSource getJcaDataSource() {
         return jcaDataSource;
     }
- 
+
     /**
      * The name used for the actual connection.
-     * 
+     *
      * @return the name of the ca channel
      */
     public String getJcaChannelName() {
         return jcaChannelName;
     }
-    
+
     @Override
     protected JCATypeAdapter findTypeAdapter(ValueCache<?> cache, JCAConnectionPayload connPayload) {
         return jcaDataSource.getTypeSupport().find(cache, connPayload);
@@ -159,15 +159,15 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
     public synchronized void connect() {
         needsMonitor = true;
         needsAccessChangeListener.set(true);
-        
+
         try {
             // Give the listener right away so that no event gets lost
-	    // If it's a large array, connect using lower priority
-	    if (largeArray) {
+            // If it's a large array, connect using lower priority
+            if (largeArray) {
                 channel = jcaDataSource.getContext().createChannel(getJcaChannelName(), connectionListener, Channel.PRIORITY_MIN);
-	    } else {
+            } else {
                 channel = jcaDataSource.getContext().createChannel(getJcaChannelName(), connectionListener, (short) (Channel.PRIORITY_MIN + 1));
-	    }
+            }
         } catch (CAException ex) {
             throw new RuntimeException("JCA Connection failed", ex);
         }
@@ -181,7 +181,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                 if (log.isLoggable(Level.FINEST)) {
                     log.log(Level.FINEST, "JCA putCompleted for channel {0} event {1}", new Object[] {getChannelName(), ev});
                 }
-                
+
                 if (ev.getStatus().isSuccessful()) {
                     callback.channelWritten(null);
                 } else {
@@ -275,7 +275,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             }
             newValue = val;
         }
-        
+
         if (newValue instanceof String) {
             if (isLongString()) {
                 channel.put(toBytes(newValue.toString()));
@@ -327,7 +327,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
 
     private void setup(Channel channel) throws CAException {
         DBRType metaType = metadataFor(channel);
-        
+
         // If metadata is needed, get it
         if (metaType != null) {
             // Need to use callback for the listener instead of doing a synchronous get
@@ -341,7 +341,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                         if (log.isLoggable(Level.FINEST)) {
                             log.log(Level.FINEST, "JCA metadata getCompleted for channel {0} event {1}", new Object[] {getChannelName(), ev});
                         }
-                        
+
                         // In case the metadata arrives after the monitor
                         MonitorEvent event = null;
                         if (getLastMessagePayload() != null) {
@@ -358,17 +358,17 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             // since the type could be changed, we would have a type mismatch
             // between the current type and the old type when the monitor was
             // created
-            
+
             // XXX: Ideally, we would destroy the monitor on reconnect,
             // but currently this does not work with CAJ (you get an
             // IllegalStateException because the transport is not there
-            // anymore). So, for now, we destroy the monitor during the 
+            // anymore). So, for now, we destroy the monitor during the
             // the connection callback.
-            
+
             // XXX: Ideally, we should just close (clear) the monitor, but
             // this would cause one last event to reach the monitorListener.
             // So, we remove the monitorListener right before the clear.
-            
+
             // TODO: we could remember the previous type, and reconnect
             // only if the type actually changed
             if (valueMonitor != null) {
@@ -376,7 +376,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                 valueMonitor.clear();
                 valueMonitor = null;
             }
-            
+
             valueMonitor = channel.addMonitor(valueTypeFor(channel), countFor(channel), jcaDataSource.getMonitorMask(), monitorListener);
             needsMonitor = false;
         }
@@ -387,7 +387,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             metadataMonitor.clear();
             metadataMonitor = null;
         }
-        
+
         // Setup metadata monitor if required
         if (jcaDataSource.isDbePropertySupported() && metaType != null) {
             metadataMonitor = channel.addMonitor(metaType, 1, Monitor.PROPERTY, metadataListener);
@@ -396,7 +396,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         // Flush the entire context (it's the best we can do)
         channel.getContext().flushIO();
     }
-    
+
     private final ConnectionListener connectionListener = new ConnectionListener() {
 
             @Override
@@ -427,7 +427,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                                 reportExceptionToAllWriters(createReadOnlyException());
                                 sentReadOnlyException = true;
                             }
-                            
+
                             // Setup monitors on connection
                             setup(channel);
                         } else {
@@ -436,12 +436,12 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                             sentReadOnlyException = false;
                             needsMonitor = true;
                         }
-                        
+
                     } catch (Exception ex) {
                         reportExceptionToAllReadersAndWriters(ex);
                     }
                 }
-                
+
                 // XXX: because of the JNI implementation this section cannot
                 // be part of the previous atomic section. The problem is that
                 // adding the listener causes the listener to be called
@@ -462,7 +462,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                                 if (log.isLoggable(Level.FINEST)) {
                                     log.log(Level.FINEST, "JCA accessRightsChanged for channel {0} event {1}", new Object[] {getChannelName(), ev});
                                 }
-                                
+
                                 // Some JNI implementation lock if calling getState
                                 // from within this callback. We context switch in that case
                                 final Channel channel = (Channel) ev.getSource();
@@ -492,7 +492,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                 }
             }
         };;
-    
+
     private String toStringDBR(DBR value) {
         StringBuilder builder = new StringBuilder();
         if (value == null) {
@@ -509,7 +509,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         }
         return builder.toString();
     }
-    
+
     private final MonitorListener monitorListener = new MonitorListener() {
 
         @Override
@@ -518,7 +518,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
                 if (log.isLoggable(Level.FINEST)) {
                     log.log(Level.FINEST, "JCA value monitorChanged for channel {0} value {1}, event {2}", new Object[] {getChannelName(), toStringDBR(event.getDBR()), event});
                 }
-                
+
                 DBR metadata = null;
                 if (getLastMessagePayload() != null) {
                     metadata = getLastMessagePayload().getMetadata();
@@ -527,7 +527,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             }
         }
     };
-    
+
     private final MonitorListener metadataListener = new MonitorListener() {
 
         @Override
@@ -577,7 +577,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             callback.channelWritten(ex);
         }
     }
-    
+
     @Override
     protected boolean isConnected(JCAConnectionPayload connPayload) {
         return connPayload != null && connPayload.isChannelConnected();
@@ -596,7 +596,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             subscription.getExceptionWriteFunction().writeValue(createReadOnlyException());
         }
     }
-    
+
     private Exception createReadOnlyException() {
         return new RuntimeException("'" + getJcaChannelName() + "' is read-only");
     }
@@ -626,31 +626,31 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
 
     protected DBRType metadataFor(Channel channel) {
         DBRType type = channel.getFieldType();
-        
+
         if (type.isBYTE() || type.isSHORT() || type.isINT() || type.isFLOAT() || type.isDOUBLE())
             return DBR_CTRL_Double.TYPE;
-        
+
         if (type.isENUM())
             return DBR_LABELS_Enum.TYPE;
-        
+
         return null;
     }
 
     protected int countFor(Channel channel) {
         if (channel.getElementCount() == 1)
             return 1;
-        
+
         if (jcaDataSource.isVarArraySupported())
             return 0;
         else
             return channel.getElementCount();
     }
-    
+
     static Pattern rtypeStringPattern = Pattern.compile(".+\\.RTYP.*");
 
     protected DBRType valueTypeFor(Channel channel) {
         DBRType type = channel.getFieldType();
-        
+
         if (type.isBYTE()) {
             return DBR_TIME_Byte.TYPE;
         } else if (type.isSHORT()) {
@@ -670,29 +670,29 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             }
             return DBR_TIME_String.TYPE;
         }
-        
+
         throw new IllegalArgumentException("Unsupported type " + type);
     }
-    
+
     /**
      * Converts a String into byte array.
-     * 
+     *
      * @param text the string to be converted
      * @return byte array, always including '\0' termination
      */
     static byte[] toBytes(final String text) {
         // TODO: it's unclear what encoding is used and how
-        
+
         // Write string as byte array WITH '\0' TERMINATION!
         final byte[] bytes = new byte[text.length() + 1];
         System.arraycopy(text.getBytes(), 0, bytes, 0, text.length());
         bytes[text.length()] = '\0';
         return bytes;
     }
-    
+
     /**
      * Converts a byte array into a String. It
-     * 
+     *
      * @param data the array to be converted
      * @return the string
      */
@@ -701,7 +701,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         while (index < data.length && data[index] != '\0') {
             index++;
         }
-        
+
         return new String(data, 0, index);
     }
 }

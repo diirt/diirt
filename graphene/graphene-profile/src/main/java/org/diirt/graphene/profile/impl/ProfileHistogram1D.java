@@ -20,11 +20,11 @@ import org.diirt.util.array.ListNumbers;
 /**
  * Handles profiling for <code>Histogram1D</code>.
  * Takes a <code>Histogram1D</code> dataset and repeatedly renders through a <code>AreaGraph2DRenderer</code>.
- * 
+ *
  * @author asbarber
  */
 public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Cell1DDataset> {
-    
+
     /**
      * Generates <code>Histogram1D</code> data that can be used in rendering.
      * The data is Gaussian and random between 0 and 1.
@@ -33,14 +33,14 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Cell
     @Override
     protected Cell1DDataset getDataset() {
         int nSamples = getNumDataPoints();
-        
+
         //Creates data
         Random rand = new Random(1);
         double[] data = new double[nSamples];
         for (int i = 0; i < nSamples; i++) {
             data[i] = rand.nextGaussian();
         }
-        
+
         return Cell1DDatasets.datasetFrom(new ArrayDouble(data), ListNumbers.linearList(0, 1, nSamples));
     }
 
@@ -65,9 +65,9 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Cell
      */
     @Override
     protected void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Cell1DDataset data) {
-        renderer.draw(graphics, data);            
+        renderer.draw(graphics, data);
     }
-    
+
     /**
      * Returns the name of the graph being profiled.
      * @return <code>Histogram1D</code> title
@@ -78,16 +78,16 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Cell
     }
 
     /**
-     * Gets the updates associated with the renderer in a map, linking a 
+     * Gets the updates associated with the renderer in a map, linking a
      * description of the update to the update object.
      * @return map with description of update paired with an update
-     */    
+     */
     @Override
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
-        
+
         map.put("None", null);
-        
+
         return map;
     }
 }

@@ -15,10 +15,10 @@ import static org.diirt.util.array.ListTest.testList;
  * @author carcassi
  */
 public class BufferIntTest {
-    
+
     public BufferIntTest() {
     }
-    
+
     @Test
     public void iteration1() {
         BufferInt coll = new BufferInt();
@@ -28,7 +28,7 @@ public class BufferIntTest {
         testCollection(coll);
         testList(coll);
     }
-    
+
     @Test
     public void add1() {
         BufferInt coll = new BufferInt();
@@ -45,7 +45,7 @@ public class BufferIntTest {
         }
         assertThat(coll.size(), equalTo(15));
     }
-    
+
     @Test
     public void add2() {
         BufferInt coll = new BufferInt();
@@ -55,7 +55,7 @@ public class BufferIntTest {
         ListInt reference = new ArrayInt(new int[] {0, 1,2,3,4,5,6,7,8,9,10});
         assertThat(coll, equalTo(reference));
     }
-    
+
     @Test
     public void add3() {
         BufferInt coll = new BufferInt();
@@ -65,7 +65,7 @@ public class BufferIntTest {
         ListInt reference = new ArrayInt(new int[] {0,1,2,3,4});
         assertThat(coll, equalTo(reference));
     }
-    
+
     @Test
     public void clear1() {
         BufferInt coll = new BufferInt();

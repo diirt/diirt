@@ -18,7 +18,7 @@ import java.util.List;
  * @author carcassi
  */
 public class QueueCollector<T> implements Collector<T, List<T>> {
-    
+
     private final Object lock = new Object();
     private List<T> readBuffer;
     private List<T> writeBuffer;
@@ -27,7 +27,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
 
     /**
      * New queue collector with the given max size for the queue.
-     * 
+     *
      * @param maxSize maximum number of elements in the queue
      */
     public QueueCollector(int maxSize) {
@@ -77,7 +77,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
      * <p>
      * If new maxSize is less than the current number of element in the queue,
      * the old values are discarded.
-     * 
+     *
      * @param maxSize the maximum number of elements in the queue
      */
     public void setMaxSize(int maxSize) {
@@ -91,7 +91,7 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
 
     /**
      * The maximum number of elements in the queue.
-     * 
+     *
      * @return the maximum number of elements in the queue
      */
     public int getMaxSize() {
@@ -99,5 +99,5 @@ public class QueueCollector<T> implements Collector<T, List<T>> {
             return maxSize;
         }
     }
-    
+
 }

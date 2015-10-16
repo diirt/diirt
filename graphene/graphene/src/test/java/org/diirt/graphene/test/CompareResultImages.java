@@ -25,10 +25,10 @@ import javax.swing.plaf.ActionMapUIResource;
  * @author carcassi
  */
 public class CompareResultImages extends javax.swing.JFrame {
-    
+
     private TestResultManager manager = new TestResultManager();
     private Action acceptAction = new AbstractAction("Accept") {
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             int index = toReviewList.getSelectedIndex();
@@ -55,7 +55,7 @@ public class CompareResultImages extends javax.swing.JFrame {
         actualImage.setStretch(false);
         referenceImage.setStretch(false);
         acceptAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control D"));
-        
+
         InputMap keyMap = new ComponentInputMap(acceptButton);
         keyMap.put(KeyStroke.getKeyStroke("control D"), "accept");
 
@@ -65,7 +65,7 @@ public class CompareResultImages extends javax.swing.JFrame {
         SwingUtilities.replaceUIActionMap(acceptButton, actionMap);
         SwingUtilities.replaceUIInputMap(acceptButton, JComponent.WHEN_IN_FOCUSED_WINDOW, keyMap);
     }
-    
+
     private void fillList() {
         DefaultListModel newModel = (DefaultListModel) toReviewList.getModel();
         newModel.clear();
@@ -199,7 +199,7 @@ public class CompareResultImages extends javax.swing.JFrame {
             referenceImage.setImage(null);
             return;
         }
-        
+
         if (result.getFailedImage().exists()) {
             try {
                 actualImage.setImage(ImageIO.read(result.getFailedImage()));
@@ -233,7 +233,7 @@ public class CompareResultImages extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

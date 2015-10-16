@@ -35,5 +35,5 @@ public class FileDataSourceConfigurationTest {
         assertThat(conf.isPollEnabled(), equalTo(true));
         assertThat(conf.getPollInterval(), equalTo(Duration.ofSeconds(50)));
     }
-    
+
 }

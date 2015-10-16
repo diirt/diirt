@@ -33,10 +33,10 @@ import org.diirt.util.time.Timestamp;
  * @author carcassi
  */
 public class JsonArrays {
-    
+
     /**
      * Checks whether the array contains only numbers.
-     * 
+     *
      * @param array a JSON array
      * @return true if all elements are JSON numbers
      */
@@ -48,10 +48,10 @@ public class JsonArrays {
         }
         return true;
     }
-    
+
     /**
      * Checks whether the array contains only strings.
-     * 
+     *
      * @param array a JSON array
      * @return true if all elements are JSON strings
      */
@@ -63,10 +63,10 @@ public class JsonArrays {
         }
         return true;
     }
-    
+
     /**
      * Converts the given numeric JSON array to a ListDouble.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListDouble
      */
@@ -81,10 +81,10 @@ public class JsonArrays {
         }
         return new ArrayDouble(values);
     }
-    
+
     /**
      * Converts the given numeric JSON array to a ListFloat.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListFloat
      */
@@ -102,7 +102,7 @@ public class JsonArrays {
 
     /**
      * Converts the given numeric JSON array to a ListLong.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListLong
      */
@@ -113,10 +113,10 @@ public class JsonArrays {
         }
         return new ArrayLong(values);
     }
-    
+
     /**
      * Converts the given numeric JSON array to a ListInt.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListInt
      */
@@ -130,7 +130,7 @@ public class JsonArrays {
 
     /**
      * Converts the given numeric JSON array to a ListShort.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListShort
      */
@@ -144,7 +144,7 @@ public class JsonArrays {
 
     /**
      * Converts the given numeric JSON array to a ListByte.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListByte
      */
@@ -158,7 +158,7 @@ public class JsonArrays {
 
     /**
      * Converts the given string JSON array to a List of Strings.
-     * 
+     *
      * @param array an array of strings
      * @return a new List of Strings
      */
@@ -173,7 +173,7 @@ public class JsonArrays {
 
     /**
      * Converts the given JSON array to a List of Timestamp.
-     * 
+     *
      * @param array an array
      * @return a new List of Timestamps
      */
@@ -187,7 +187,7 @@ public class JsonArrays {
 
     /**
      * Converts the given List of String to a string JSON array.
-     * 
+     *
      * @param list a List of Strings
      * @return an array of strings
      */
@@ -205,7 +205,7 @@ public class JsonArrays {
 
     /**
      * Converts the given List of Timestamp to a JSON array.
-     * 
+     *
      * @param list a List of Timestamps
      * @return an array
      */
@@ -219,7 +219,7 @@ public class JsonArrays {
 
     /**
      * Converts the given ListNumber to a number JSON array.
-     * 
+     *
      * @param list a list of numbers
      * @return an array of numbers
      */
@@ -245,5 +245,5 @@ public class JsonArrays {
         }
         return b;
     }
-    
+
 }

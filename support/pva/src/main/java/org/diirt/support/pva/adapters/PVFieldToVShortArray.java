@@ -28,63 +28,63 @@ import org.diirt.vtype.ValueUtil;
  */
 public class PVFieldToVShortArray extends AlarmTimeDisplayExtractor implements VShortArray {
 
-	private final ListInt size;
-	private final ListShort list;
-	
-	public PVFieldToVShortArray(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        private final ListInt size;
+        private final ListShort list;
 
-	public PVFieldToVShortArray(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVShortArray(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVShortArray(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
+        public PVFieldToVShortArray(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-		if (field instanceof PVShortArray)
-		{
-			PVShortArray valueField = (PVShortArray)field;
+        public PVFieldToVShortArray(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
 
-			ShortArrayData data = new ShortArrayData();
-			valueField.get(0, valueField.getLength(), data);
-			
-			this.size = new ArrayInt(data.data.length);
-			this.list = new ArrayShort(data.data);
-		}
-		else if (field instanceof PVUShortArray)
-		{
-			PVUShortArray valueField = (PVUShortArray)field;
+                if (field instanceof PVShortArray)
+                {
+                        PVShortArray valueField = (PVShortArray)field;
 
-			ShortArrayData data = new ShortArrayData();
-			valueField.get(0, valueField.getLength(), data);
-			
-			this.size = new ArrayInt(data.data.length);
-			this.list = new ArrayShort(data.data);
-		}
-		else
-		{
-			size = null;
-			list = null;
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.Array#getSizes()
-	 */
-	@Override
-	public ListInt getSizes() {
-		return size;
-	}
+                        ShortArrayData data = new ShortArrayData();
+                        valueField.get(0, valueField.getLength(), data);
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VShortArray#getData()
-	 */
-	@Override
-	public ListShort getData() {
-		return list;
-	}
-    
+                        this.size = new ArrayInt(data.data.length);
+                        this.list = new ArrayShort(data.data);
+                }
+                else if (field instanceof PVUShortArray)
+                {
+                        PVUShortArray valueField = (PVUShortArray)field;
+
+                        ShortArrayData data = new ShortArrayData();
+                        valueField.get(0, valueField.getLength(), data);
+
+                        this.size = new ArrayInt(data.data.length);
+                        this.list = new ArrayShort(data.data);
+                }
+                else
+                {
+                        size = null;
+                        list = null;
+                }
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.Array#getSizes()
+         */
+        @Override
+        public ListInt getSizes() {
+                return size;
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.VShortArray#getData()
+         */
+        @Override
+        public ListShort getData() {
+                return list;
+        }
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

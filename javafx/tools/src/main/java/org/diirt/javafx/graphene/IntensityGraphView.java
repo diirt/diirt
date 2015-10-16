@@ -28,53 +28,53 @@ public class IntensityGraphView extends BaseGraphView< IntensityGraph2DRendererU
     private final Property< NumberColorMap > colorMap = new SimpleObjectProperty< NumberColorMap >( this , "colorMap" , IntensityGraph2DRenderer.DEFAULT_COLOR_MAP );
     private final BooleanProperty drawLegend = new SimpleBooleanProperty( this , "drawLegend" , IntensityGraph2DRenderer.DEFAULT_DRAW_LEGEND );
     private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
-    
+
     @Override
     public Graph2DExpression<IntensityGraph2DRendererUpdate> createExpression(String dataFormula) {
-	return intensityGraphOf( formula(dataFormula) );
+        return intensityGraphOf( formula(dataFormula) );
     }
-    
+
     @Override
     protected void reconnect( String formula ) {
-	super.reconnect( formula );
-	updateGraph();
+        super.reconnect( formula );
+        updateGraph();
     }
-    
+
     public IntensityGraphView() {
-	this.colorMap.addListener( new ChangeListener< NumberColorMap >() {
+        this.colorMap.addListener( new ChangeListener< NumberColorMap >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends NumberColorMap> observable, NumberColorMap oldValue, NumberColorMap newValue) {
-		if ( graph != null ) {
-		    graph.update( graph.newUpdate().colorMap( newValue ) );
-		}
-	    }
-	    
-	});
-	this.drawLegend.addListener( new ChangeListener< Boolean >() {
+            @Override
+            public void changed(ObservableValue<? extends NumberColorMap> observable, NumberColorMap oldValue, NumberColorMap newValue) {
+                if ( graph != null ) {
+                    graph.update( graph.newUpdate().colorMap( newValue ) );
+                }
+            }
 
-	    @Override
-	    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-		graph.update( graph.newUpdate().drawLegend( newValue ) );
-	    }
-	    
-	});
-	Collection< NumberColorMap > maps = NumberColorMaps.getRegisteredColorSchemes().values();
-	NumberColorMap[] allowedMappings = new NumberColorMap[ maps.size() ];
-	allowedMappings = maps.toArray( allowedMappings );
-	this.defaultConfigurationDialog.addNumberColorMapListProperty( "Color Map" , colorMap , allowedMappings );
-	this.defaultConfigurationDialog.addBooleanProperty( "Draw Legend" , this.drawLegend );
+        });
+        this.drawLegend.addListener( new ChangeListener< Boolean >() {
+
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                graph.update( graph.newUpdate().drawLegend( newValue ) );
+            }
+
+        });
+        Collection< NumberColorMap > maps = NumberColorMaps.getRegisteredColorSchemes().values();
+        NumberColorMap[] allowedMappings = new NumberColorMap[ maps.size() ];
+        allowedMappings = maps.toArray( allowedMappings );
+        this.defaultConfigurationDialog.addNumberColorMapListProperty( "Color Map" , colorMap , allowedMappings );
+        this.defaultConfigurationDialog.addBooleanProperty( "Draw Legend" , this.drawLegend );
     }
-    
+
     public NumberColorMap getColorMap() {
-	return this.colorMap.getValue();
+        return this.colorMap.getValue();
     }
-    
+
     public void setColorMap( NumberColorMap map ) {
-	this.colorMap.setValue( map );
-	updateGraph();
+        this.colorMap.setValue( map );
+        updateGraph();
     }
-    
+
     public boolean isDrawLegend() {
         return drawLegend.getValue();
     }
@@ -83,18 +83,18 @@ public class IntensityGraphView extends BaseGraphView< IntensityGraph2DRendererU
         this.drawLegend.setValue( drawLegend );
         updateGraph();
     }
-    
+
     protected void updateGraph() {
         if (graph != null) {
             update(graph);
         }
     }
-    
+
     protected void update(Graph2DExpression<IntensityGraph2DRendererUpdate> graph) {
         graph.update(graph.newUpdate().colorMap(colorMap.getValue()).drawLegend(drawLegend.getValue()));
     }
-    
+
     public ConfigurationDialog getDefaultConfigurationDialog() {
-	return this.defaultConfigurationDialog;
+        return this.defaultConfigurationDialog;
     }
 }

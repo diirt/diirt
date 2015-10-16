@@ -34,7 +34,7 @@ import org.diirt.util.stats.Ranges;
  */
 public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
-    // WARNING: the following has been cause of continuous confusion, so 
+    // WARNING: the following has been cause of continuous confusion, so
     // please do not touch any drawing code before you fully understand the following.
     // All the vairables marked as Coord are in unit of pixels. The precision
     // is subpixel, and 0 coord represent the ideal boundary before the first pixel.
@@ -42,7 +42,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     // the last pixel really need to be drawn: drawing from 0 to 5, for example,
     // may color 6 pixel which is not what is needed; 5 will be the boundary
     // between the 5th and 6th pixel, so only 5 pixels should be colored.
-    
+
     // All the variables marked as Value are in unit of data to plot
 
     // The range of values for the plot
@@ -68,10 +68,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     // The pixel size of the range (not of the plot area)
     protected double yPlotCoordHeight;
     protected double xPlotCoordWidth;
-    
+
     /**
      * Creates a graph renderer.
-     * 
+     *
      * @param graphWidth the graph width
      * @param graphHeight the graph height
      */
@@ -82,7 +82,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * The current height of the graph.
-     * 
+     *
      * @return the graph height
      */
     public int getImageHeight() {
@@ -91,17 +91,17 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * The current width of the graph.
-     * 
+     *
      * @return the graph width
      */
     public int getImageWidth() {
         return imageWidth;
     }
-    
+
     protected Graphics2D g;
-    
+
     // Renderer external parameter //
-    
+
     // Size of the image
     private int imageWidth;
     private int imageHeight;
@@ -132,9 +132,9 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     // Margin for starting drawing from center of pixel
     protected double xPointMargin = 0.5;  //Set as point (not area) by default
     protected double yPointMargin = 0.5;
-    
+
     // Computed parameters, visible to outside //
-    
+
     private Range xAggregatedRange;
     private Range yAggregatedRange;
     private Range xPlotRange;
@@ -150,10 +150,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     private int yLabelMaxWidth;
     private boolean xAsPoints = true;
     private boolean yAsPoints = true;
-    
+
     /**
      * The current strategy to calculate the x range for the graph.
-     * 
+     *
      * @return the x axis range calculator
      */
     public AxisRange getXAxisRange() {
@@ -162,7 +162,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * The current strategy to calculate the y range for the graph.
-     * 
+     *
      * @return the y axis range calculator
      */
     public AxisRange getYAxisRange() {
@@ -171,7 +171,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * The aggregated range of all the data that has been rendered.
-     * 
+     *
      * @return the aggregated data x range
      */
     public Range getXAggregatedRange() {
@@ -180,7 +180,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * The aggregated range of all the data that has been rendered.
-     * 
+     *
      * @return the aggregated data y range
      */
     public Range getYAggregatedRange() {
@@ -189,7 +189,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * The range of the x axis in the last graph rendering.
-     * 
+     *
      * @return the x axis range
      */
     public Range getXPlotRange() {
@@ -198,19 +198,19 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * The range of the y axis in the last graph rendering.
-     * 
+     *
      * @return the y axis range
      */
     public Range getYPlotRange() {
         return yPlotRange;
     }
-    
+
     /**
      * Applies the update to the renderer.
      * <p>
      * When sub-classing, one should re-implement this method by first calling it
      * and then applying all the updates specific to the sub-class.
-     * 
+     *
      * @param update the update to apply
      */
     public void update(T update) {
@@ -275,7 +275,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             yLabelMargin = update.getYLabelMargin();
         }
     }
-    
+
     static Range aggregateRange(Range dataRange, Range aggregatedRange) {
         if (aggregatedRange == null) {
             return dataRange;
@@ -283,18 +283,18 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             return dataRange.combine(aggregatedRange);
         }
     }
-    
+
     /**
      * Creates a new update for the given graph.
-     * 
+     *
      * @return a new update object
      */
     public abstract T newUpdate();
-    
+
     /**
      * Given the new data ranges, calculates the new aggregated and plot
      * ranges.
-     * 
+     *
      * @param xDataRange the new data range for x
      * @param xDisplayRange the new display range for x
      * @param yDataRange the new data range for y
@@ -304,7 +304,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         xPlotRange = xAxisRange.axisRange(xDataRange, xDisplayRange);
         yPlotRange = yAxisRange.axisRange(yDataRange, yDisplayRange);
     }
-    
+
     /**
      * Draws the horizontal reference lines based on the calculated
      * graph area.
@@ -331,7 +331,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             g.draw(line);
         }
     }
-    
+
     /**
      * Calculates:
      * <ul>
@@ -344,29 +344,29 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         if (!(xPlotRange.getMinimum() == xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
-            xReferenceValues = new ArrayDouble(xAxis.getTickValues());            
+            xReferenceValues = new ArrayDouble(xAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             xReferenceLabels = Collections.singletonList(Double.toString(xPlotRange.getMinimum()));
-            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum());            
-        }      
-        
+            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum());
+        }
+
         // Calculate vertical axis references. If range is zero, use special logic
         if (!(yPlotRange.getMinimum() == yPlotRange.getMaximum())) {
             ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
             yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
-            yReferenceValues = new ArrayDouble(yAxis.getTickValues());            
+            yReferenceValues = new ArrayDouble(yAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             yReferenceLabels = Collections.singletonList(Double.toString(yPlotRange.getMinimum()));
             yReferenceValues = new ArrayDouble(yPlotRange.getMinimum());
         }
-        
+
         labelFontMetrics = g.getFontMetrics(labelFont);
-        
+
         // Compute x axis spacing
         xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
-        
+
         // Compute y axis spacing
         int[] yLabelWidths = new int[yReferenceLabels.size()];
         yLabelMaxWidth = 0;
@@ -375,7 +375,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             yLabelMaxWidth = Math.max(yLabelMaxWidth, yLabelWidths[i]);
         }
     }
-        
+
     /**
      * Calculates the graph area based on:
      * <ul>
@@ -385,10 +385,10 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      *    <li>The font for the labels</li>
      *    <li>The margins</li>
      * </ul>
-     * 
+     *
      * To calculate area based on labels, ensure that calculateGraphArea() is called
      * prior to calling calculateGraphAreaNoLabels().
-     */    
+     */
     protected void calculateGraphArea() {
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
@@ -405,7 +405,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         xPlotCoordStart = xAreaCoordStart + leftAreaMargin + xPointMargin;
         xPlotCoordEnd = xAreaCoordEnd - rightAreaMargin - xPointMargin;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
-        
+
         yPlotValueStart = getYPlotRange().getMinimum();
         yPlotValueEnd = getYPlotRange().getMaximum();
         if (yPlotValueStart == yPlotValueEnd) {
@@ -418,7 +418,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPlotCoordStart = yAreaCoordStart + topAreaMargin + yPointMargin;
         yPlotCoordEnd = yAreaCoordEnd - bottomAreaMargin - yPointMargin;
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
-        
+
         //Only calculates reference coordinates if calculateLabels() was called
         if (xReferenceValues != null) {
             double[] xRefCoords = new double[xReferenceValues.size()];
@@ -427,7 +427,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             }
             xReferenceCoords = new ArrayDouble(xRefCoords);
         }
-        
+
         if (yReferenceValues != null) {
             double[] yRefCoords = new double[yReferenceValues.size()];
             for (int i = 0; i < yRefCoords.length; i++) {
@@ -444,7 +444,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getImageWidth(), getImageHeight());
     }
-    
+
     /**
      * Draw the calculated graph area. Draws the the reference
      * lines and the labels.
@@ -454,7 +454,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         // When drawing the reference line, align them to the pixel
         drawVerticalReferenceLines();
         drawHorizontalReferenceLines();
-        
+
         drawYLabels();
         drawXLabels();
     }
@@ -478,7 +478,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     }
 
     private ScaledData scaleFirstMaxMinLastReduction(ListNumber xValues, ListNumber yValues, int dataStart) {
-        // The number of points generated by this is about 4 times the 
+        // The number of points generated by this is about 4 times the
         // number of points on the x axis. If the number of points is less
         // than that, it's not worth it. Don't do the data reduction.
         if (xValues.size() < xPlotCoordWidth * 4) {
@@ -533,11 +533,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         scaledData.end = cursor;
         return scaledData;
     }
-    
+
     /**
      *Empty function, designed to be implemented in sub-classes.
      * <p>Used on every value in a dataset.</p>
-     * 
+     *
      * @param index the index of the value
      * @param valueX the x value
      * @param valueY the y value
@@ -546,30 +546,30 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      */
     protected void processScaledValue(int index, double valueX, double valueY, double scaledX, double scaledY) {
     }
-    
+
     private static class ScaledData {
         private double[] scaledX;
         private double[] scaledY;
         private int start;
         private int end;
     }
-    
+
     /**
      * Draws an implicit line given the interpolation scheme and the x,y values.
      * The function will scale the values.
-     * 
+     *
      * @param xValues the x values
      * @param yValues the y values
      * @param interpolation the interpolation scheme
      */
     protected void drawValueLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation) {
         ReductionScheme reductionScheme = ReductionScheme.NONE;
-        
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
         ScaledData scaledData;
-        
+
         switch (reductionScheme) {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reductionScheme + " not supported");
@@ -577,7 +577,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                 scaledData = scaleNoReduction(xValues, yValues);
                 break;
         }
-        
+
         // create path
         Path2D path;
         switch (interpolation) {
@@ -596,11 +596,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         // Draw the line
         g.draw(path);
     }
-    
+
     /**
      * Draws an explicit line give the interpolation and reduction schemes,
      * the x values and the y values. The function will scale the values.
-     * 
+     *
      * @param xValues the x values
      * @param yValues the y values
      * @param interpolation the interpolation
@@ -608,17 +608,17 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
      */
     protected void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction) {
         ScaledData scaledData;
-        
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        
+
         // Narrow the data
         int start = org.diirt.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
         int end = org.diirt.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
-        
+
         xValues = ListMath.limit(xValues, start, end + 1);
         yValues = ListMath.limit(yValues, start, end + 1);
-        
+
         switch (reduction) {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reduction + " not supported");
@@ -629,7 +629,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                 scaledData = scaleFirstMaxMinLastReduction(xValues, yValues, start);
                 break;
         }
-        
+
         // create path
         Path2D path;
         switch (interpolation) {
@@ -669,14 +669,14 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         line.lineTo(scaledX[end - 1], scaledY[end - 1]);
         return line;
     }
-   
+
     private static Path2D.Double linearInterpolation(ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
         int start = scaledData.start;
         int end = scaledData.end;
         Path2D.Double line = new Path2D.Double();
-        
+
         for (int i = start; i < end; i++) {
             // Do I have a current value?
             if (!java.lang.Double.isNaN(scaledY[i])) {
@@ -696,11 +696,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                         line.lineTo(scaledX[i] + 1, scaledY[i]);
                     }
                 }
-            } 
+            }
         }
         return line;
     }
-    
+
     private static Path2D.Double cubicInterpolation(ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
@@ -708,7 +708,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         int end = scaledData.end;
         Path2D.Double path = new Path2D.Double();
         for (int i = start; i < end; i++) {
-            
+
             double y1;
             double y2;
             double x1;
@@ -717,7 +717,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             double x0;
             double y3;
             double x3;
-            
+
             double bx0;
             double by0;
             double bx3;
@@ -728,7 +728,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             double by1;
             double bx2;
             double by2;
-            
+
             //Do I have current value?
             if (!java.lang.Double.isNaN(scaledY[i])){
                 //Do I have previous value?
@@ -756,7 +756,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                         else{//Have current, previous, two before, but not value after
                             y2 = scaledY[i];
                             x2 = scaledX[i];
@@ -777,7 +777,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                     } else if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
                         //Have current , previous, and next, but not two before
                         path.moveTo(scaledX[i - 1], scaledY[i - 1]);
@@ -821,19 +821,19 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
         return path;
     }
-    
+
     private static final int MIN = 0;
     private static final int MAX = 1;
-    
+
     private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
         int targetY = yCenter;
         int halfHeight = metrics.getAscent() / 2;
@@ -852,23 +852,23 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
-        
+
         if (updateMin) {
             drawRange[MAX] = targetY - metrics.getHeight();
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
         }
     }
-    
+
     private static void drawVerticalReferenceLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
         int targetX = xCenter;
         int halfWidth = metrics.stringWidth(text) / 2;
@@ -887,17 +887,17 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
-        
+
         if (updateMin) {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
             drawRange[MAX] = targetX - metrics.getHeight();
         }
     }
-    
+
     /*
      * Scale the x value to the graph area.
-     * 
+     *
      * @param value the x value
      * @return the x position in the graph area
      */
@@ -907,17 +907,17 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
 
     /**
      * Scale the y value to the graph area.
-     * 
+     *
      * @param value the y value
      * @return the y position in the graph area
      */
     protected final double scaledY(double value) {
         return yValueScale.scaleValue(value, yPlotValueStart, yPlotValueEnd, yPlotCoordEnd, yPlotCoordStart);
     }
-    
+
     /**
      * Sets the clip area to the actual graph area
-     * 
+     *
      * @param g the graphics context
      */
     protected void setClip(Graphics2D g) {
@@ -943,7 +943,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                 drawRange, xRightLabel, true, false);
             drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(yReferenceLabels.size() - 1), (int) Math.floor(yTicks.getDouble(yReferenceLabels.size() - 1)),
                 drawRange, xRightLabel, false, false);
-            
+
             for (int i = 1; i < yReferenceLabels.size() - 1; i++) {
                 drawHorizontalReferencesLabel(g, metrics, yReferenceLabels.get(i), (int) Math.floor(yTicks.getDouble(i)),
                     drawRange, xRightLabel, true, false);
@@ -970,7 +970,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
                 drawRange, yTop, true, false);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),
                 drawRange, yTop, false, false);
-            
+
             for (int i = 1; i < xReferenceLabels.size() - 1; i++) {
                 drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
                     drawRange, yTop, true, false);
@@ -987,7 +987,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         setupYAsPoints();
     }
     /**
-     *Sets up the x-axis of a graph to start and end at the center of a pixel. 
+     *Sets up the x-axis of a graph to start and end at the center of a pixel.
      */
     protected void setupXAsPoints(){
         xPointMargin = 0.5;
@@ -999,7 +999,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         yPointMargin = 0.5;
     }
     /**
-     *Sets up a graph to start and end at the beginning border of a pixel. 
+     *Sets up a graph to start and end at the beginning border of a pixel.
      *  After using this method, each point should be assumed to be at the top left corner of a pixel.
      */
     protected void setupDataAsAreas(){
@@ -1012,7 +1012,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
     protected void setupXAsAreas(){
         xPointMargin = 0;
     }
-    
+
     /**
      *Sets up the y-axis of a graph to start and end at the top border of a pixel.
      */

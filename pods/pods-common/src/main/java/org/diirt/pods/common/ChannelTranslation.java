@@ -13,7 +13,7 @@ package org.diirt.pods.common;
  */
 public class ChannelTranslation {
     public enum Permission {READ_WRITE, READ_ONLY, NONE};
-    
+
     private final String formula;
     private final Permission permission;
 
@@ -29,5 +29,5 @@ public class ChannelTranslation {
     public Permission getPermission() {
         return permission;
     }
-    
+
 }

@@ -12,7 +12,7 @@ import java.util.Map;
  * @author carcassi
  */
 public class Parameters {
-    
+
     private final Map<Object, Object> map;
 
     protected Parameters(Map<Object, Object> map) {
@@ -22,7 +22,7 @@ public class Parameters {
     public Parameters(Parameters oldParams, Parameters... newParams) {
         this(combineMaps(oldParams, newParams));
     }
-    
+
     private static Map<Object, Object> combineMaps(Parameters oldParams, Parameters... newParams) {
         Map<Object, Object> parameters = new HashMap<Object, Object>(oldParams.map);
         for (Parameters newParam : newParams) {
@@ -30,7 +30,7 @@ public class Parameters {
         }
         return parameters;
     }
-    
+
     public Map<Object, Object> getParameters() {
         return map;
     }

@@ -65,7 +65,7 @@ class DftFormulaFunction implements FormulaFunction {
         if (array.getSizes().size() != 1) {
             throw new IllegalArgumentException("Only 1D array supported for DFT");
         }
-        
+
         // TODO: no need to allocate empty array
         List<ListNumber> fft = ListMath.dft(array.getData(), new ArrayDouble(new double[array.getData().size()]));
         final ListNumber real = fft.get(0);

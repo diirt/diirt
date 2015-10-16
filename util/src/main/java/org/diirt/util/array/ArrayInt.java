@@ -13,15 +13,15 @@ import java.util.Arrays;
  * @author Gabriele Carcassi
  */
 public final class ArrayInt extends ListInt implements Serializable {
-    
+
     private static final long serialVersionUID = 7493025761455302919L;
-    
+
     private final int[] array;
     private final boolean readOnly;
 
     /**
      * A new {@code ArrayInt} that wraps around the given array.
-     * 
+     *
      * @param array an array
      */
     public ArrayInt(int... array) {
@@ -30,7 +30,7 @@ public final class ArrayInt extends ListInt implements Serializable {
 
     /**
      * A new {@code ArrayInt} that wraps around the given array.
-     * 
+     *
      * @param array an array
      * @param readOnly if false the wrapper allows writes to the array
      */
@@ -42,7 +42,7 @@ public final class ArrayInt extends ListInt implements Serializable {
     @Override
     public final IteratorInt iterator() {
         return new IteratorInt() {
-            
+
             private int index;
 
             @Override
@@ -61,7 +61,7 @@ public final class ArrayInt extends ListInt implements Serializable {
     public final int size() {
         return array.length;
     }
-    
+
     @Override
     public int getInt(int index) {
         return array[index];
@@ -78,13 +78,13 @@ public final class ArrayInt extends ListInt implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        
+
         if (obj instanceof ArrayInt) {
             return Arrays.equals(array, ((ArrayInt) obj).array);
         }
-        
+
         return super.equals(obj);
-    }    
+    }
 
     int[] wrappedArray() {
         return array;

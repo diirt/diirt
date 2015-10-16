@@ -12,9 +12,9 @@ import org.diirt.datasource.expression.DesiredRateExpression;
  * @author carcassi
  */
 public interface Graph2DExpression<T extends Graph2DRendererUpdate<T>> extends DesiredRateExpression<Graph2DResult> {
-    
+
     public T newUpdate();
-    
+
     public void update(T update);
-    
+
 }

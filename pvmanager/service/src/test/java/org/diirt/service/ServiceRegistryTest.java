@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
  * @author carcassi
  */
 public class ServiceRegistryTest {
-    
+
     public ServiceRegistryTest() {
     }
 
@@ -105,13 +105,13 @@ public class ServiceRegistryTest {
     @Test
     public void close1() {
         Service mockService = spy(MathService.createMathService());
-        
+
         ServiceRegistry registry = new ServiceRegistry();
         registry.registerService(mockService);
         assertThat(registry.findService("math"), equalTo(mockService));
         registry.close();
         assertThat(registry.findService("math"), nullValue());
-        
+
         verify(mockService).close();
     }
 }

@@ -12,7 +12,7 @@ import org.diirt.util.array.ListNumber;
  * @author carcassi
  */
 public abstract class InvertListNumber implements ListNumber {
-    
+
     static void fillCoords(int[] coords, int index, ListInt sizes) {
         for (int i = 0; i < coords.length; i++) {
             int revI = sizes.size() - i - 1;
@@ -21,7 +21,7 @@ public abstract class InvertListNumber implements ListNumber {
             index = index / size;
         }
     }
-    
+
     static int index(int[] coords, ListInt sizes, boolean[] invert) {
         int index = 0;
         for (int i = 0; i < coords.length; i++) {
@@ -34,5 +34,5 @@ public abstract class InvertListNumber implements ListNumber {
         }
         return index;
     }
-    
+
 }

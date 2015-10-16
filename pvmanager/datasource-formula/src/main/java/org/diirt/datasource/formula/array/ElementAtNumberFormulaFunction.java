@@ -77,11 +77,11 @@ class ElementAtNumberFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray numberArray = (VNumberArray) args.get(0);
         VNumber index = (VNumber) args.get(1);
         int i = index.getValue().intValue();
-        
+
         return newVNumber(numberArray.getData().getDouble(i),
                 numberArray, numberArray, displayNone());
     }

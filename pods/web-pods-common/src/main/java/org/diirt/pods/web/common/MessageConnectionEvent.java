@@ -14,13 +14,13 @@ import javax.json.JsonObject;
  * @author carcassi
  */
 public class MessageConnectionEvent extends Message {
-    
+
     private final boolean connected;
     private final boolean writeConnected;
-    
+
     /**
      * Creates a new message based on the JSON representation.
-     * 
+     *
      * @param obj JSON object
      * @throws MessageDecodeException if json format is incorrect
      */
@@ -32,7 +32,7 @@ public class MessageConnectionEvent extends Message {
 
     /**
      * Creates a new message based on the given parameters.
-     * 
+     *
      * @param id the channel id
      * @param connected whether it's connected
      * @param writeConnected whether the write is connected
@@ -45,7 +45,7 @@ public class MessageConnectionEvent extends Message {
 
     /**
      * Whether the channel is connected.
-     * 
+     *
      * @return true if connected
      */
     public boolean isConnected() {
@@ -54,13 +54,13 @@ public class MessageConnectionEvent extends Message {
 
     /**
      * Whether the channel can be written to.
-     * 
+     *
      * @return true if write connected
      */
     public boolean isWriteConnected() {
         return writeConnected;
     }
-    
+
     @Override
     public void toJson(Writer writer) {
         Json.createGenerator(writer).writeStartObject()
@@ -72,5 +72,5 @@ public class MessageConnectionEvent extends Message {
                 .writeEnd()
                 .close();
     }
-    
+
 }

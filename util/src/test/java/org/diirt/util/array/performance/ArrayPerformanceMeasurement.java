@@ -20,7 +20,7 @@ public class ArrayPerformanceMeasurement {
 
     public static void main(String[] args) {
         System.out.println(System.getProperty("java.version"));
-        
+
         int arraySize = 100000;
         int nIterations = 10000;
 

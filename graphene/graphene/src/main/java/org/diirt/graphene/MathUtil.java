@@ -11,7 +11,7 @@ import org.diirt.util.array.IteratorDouble;
  * @author carcassi
  */
 public class MathUtil {
-    
+
     /**
      *Returns the base 10 logarithm of the given value, to the nearest integer value.
      * <p>Uses Math.log10(double a)</p>

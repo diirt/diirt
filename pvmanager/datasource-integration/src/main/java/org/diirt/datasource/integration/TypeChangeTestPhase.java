@@ -24,11 +24,11 @@ public class TypeChangeTestPhase extends AbstractCATestPhase {
     @Override
     public final void run() throws Exception {
         init("typeChange1");
-        
+
         addReader(PVManager.read(channel("double-to-i32")), TimeDuration.ofHertz(50));
         //addReader(PVManager.read(channel("i32-to-double")), TimeDuration.ofHertz(50));
         pause(1000);
-        
+
         restart("typeChange2");
         pause(2000);
     }

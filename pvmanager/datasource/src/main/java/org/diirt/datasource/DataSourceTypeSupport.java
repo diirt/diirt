@@ -22,13 +22,13 @@ import java.util.List;
  * @author carcassi
  */
 public class DataSourceTypeSupport {
-    
+
     /**
      * Given a collection of type datapters, finds the one that can store
      * data in the cache given the channel information described in the
      * connection payload. If there isn't a unique match, an exception
      * is thrown.
-     * 
+     *
      * @param <C> type of connection payload
      * @param <T> datasource specific type adapter type
      * @param typeAdapters a collection of type adapters
@@ -48,18 +48,18 @@ public class DataSourceTypeSupport {
                 matchedConverters.add(converter);
             }
         }
-        
+
         if (matchedConverters.size() != 1) {
             throw new IllegalStateException(formatMessage(cache, connection, matched, matchedConverters));
         }
-        
+
         return matchedConverters.get(0);
     }
-    
+
     /**
      * Formats the error message in case of not unique match. This
      * allows data sources to give more specific error messages.
-     * 
+     *
      * @param cache the cache used for the match
      * @param connection the connection payload used for the match
      * @param match the result of the match

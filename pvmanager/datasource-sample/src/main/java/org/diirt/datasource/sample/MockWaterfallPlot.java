@@ -46,7 +46,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                     plot.with(height(plotView.getHeight()));
                 }
             }
-            
+
         });
     }
 

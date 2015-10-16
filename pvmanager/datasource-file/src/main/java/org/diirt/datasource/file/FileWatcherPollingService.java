@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 public class FileWatcherPollingService implements FileWatcherService {
-    
+
     private static final Logger log = Logger.getLogger(FileWatcherService.class.getName());
 
     private final Object lock = new Object();
@@ -61,7 +61,7 @@ public class FileWatcherPollingService implements FileWatcherService {
             registrations.remove(toClose);
         }
     }
-    
+
     public void scan() {
         synchronized(lock) {
             for (Registration registration : registrations) {
@@ -69,7 +69,7 @@ public class FileWatcherPollingService implements FileWatcherService {
             }
         }
     }
-    
+
     private class Registration {
         final File file;
         final Runnable callback;
@@ -79,7 +79,7 @@ public class FileWatcherPollingService implements FileWatcherService {
             this.file = file;
             this.callback = callback;
         }
-        
+
         void notifyChanges() {
             long latestTime = file.lastModified();
             if ((previousTime == null) || (latestTime != previousTime)) {
@@ -92,7 +92,7 @@ public class FileWatcherPollingService implements FileWatcherService {
                 }
             }
         }
-        
+
     }
-    
+
 }

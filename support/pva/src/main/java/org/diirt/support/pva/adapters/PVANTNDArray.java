@@ -11,10 +11,10 @@ import org.epics.pvdata.pv.PVStructure;
  *
  */
 public class PVANTNDArray extends PVAPVStructure {
-	
-	public PVANTNDArray(PVStructure ntNdArray, boolean disconnected)
-	{
-		super(ntNdArray, disconnected);
-	}
-	
+
+        public PVANTNDArray(PVStructure ntNdArray, boolean disconnected)
+        {
+                super(ntNdArray, disconnected);
+        }
+
 }

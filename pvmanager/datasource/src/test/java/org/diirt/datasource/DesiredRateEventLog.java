@@ -19,9 +19,9 @@ import org.diirt.util.time.Timestamp;
  * @author carcassi
  */
  class DesiredRateEventLog implements DesiredRateEventListener {
-     
+
     private final Object lock = new Object();
-    
+
     private final List<DesiredRateEvent> events = new ArrayList<>();
     private final List<Timestamp> timestamps = new ArrayList<>();
     private SourceDesiredRateDecoupler decoupler;
@@ -66,7 +66,7 @@ import org.diirt.util.time.Timestamp;
         }
         decoupler.readyForNextEvent();
     }
-    
+
     public List<DesiredRateEvent.Type> getEventTypes(int n) {
         synchronized(lock) {
             return events.get(n).getTypes();
@@ -78,7 +78,7 @@ import org.diirt.util.time.Timestamp;
             return events;
         }
     }
-    
+
     public void printLog() {
         synchronized(lock) {
             for (int i = 0; i < events.size(); i++) {
@@ -86,5 +86,5 @@ import org.diirt.util.time.Timestamp;
             }
         }
     }
-    
+
 }

@@ -26,7 +26,7 @@ public class ScatterPlot extends javax.swing.JFrame {
     public ScatterPlot() {
         initComponents();
     }
-    
+
     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
@@ -178,7 +178,7 @@ public class ScatterPlot extends javax.swing.JFrame {
         } catch(Exception ex) {
             ex.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private String toText(CollectionNumber coll) {
@@ -187,10 +187,10 @@ public class ScatterPlot extends javax.swing.JFrame {
         while (iter.hasNext()) {
             builder.append(iter.nextDouble()).append("\n");
         }
-        
+
         return builder.toString();
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -198,7 +198,7 @@ public class ScatterPlot extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

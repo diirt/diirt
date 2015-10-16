@@ -38,5 +38,5 @@ class DelayedWriteChannel extends MultiplexedChannelHandler<Object, Object> {
             callback.channelWritten(ex);
         }
     }
-    
+
 }

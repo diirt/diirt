@@ -8,7 +8,7 @@ package org.diirt.vtype;
  * Scalar short with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public interface VShort extends VNumber, VType {

@@ -28,11 +28,11 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 public class Log {
-    
+
     private final List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
     private final List<String> errors = Collections.synchronizedList(new ArrayList<String>());
     private final AtomicInteger testCount = new AtomicInteger(0);
-    
+
     public <T> PVReaderListener<T> createReadListener() {
         return new PVReaderListener<T>() {
 
@@ -42,7 +42,7 @@ public class Log {
             }
         };
     }
-    
+
     public <T> PVWriterListener<T> createWriteListener(final String name) {
         return new PVWriterListener<T>() {
 
@@ -52,23 +52,23 @@ public class Log {
             }
         };
     }
-    
+
     public List<Event> getEvents() {
         return events;
     }
-    
+
     public boolean isCorrect() {
         return errors.isEmpty();
     }
-    
+
     public List<String> getErrors() {
         return errors;
     }
-    
+
     public int getTestCount() {
         return testCount.get();
     }
-    
+
     public void matchConnections(String pvName, boolean... connectionFlags) {
         int current = 0;
         for (Event event : events) {
@@ -90,7 +90,7 @@ public class Log {
         }
         testCount.incrementAndGet();
     }
-    
+
     public void matchWriteConnections(String pvName, boolean... connectionFlags) {
         int current = 0;
         for (Event event : events) {
@@ -112,7 +112,7 @@ public class Log {
         }
         testCount.incrementAndGet();
     }
-    
+
     public void matchWriteNotifications(String pvName, boolean... sucessfulWrite) {
         int current = 0;
         for (Event event : events) {
@@ -139,7 +139,7 @@ public class Log {
         }
         testCount.incrementAndGet();
     }
-    
+
     public void matchValues(String pvName, VTypeMatchMask mask, Object... values) {
         int current = 0;
         for (Event event : events) {
@@ -166,7 +166,7 @@ public class Log {
         }
         testCount.incrementAndGet();
     }
-    
+
     public void validate(String pvName, Validator validator) {
         List<String> resErrors = validator.validate(valuesForChannel(pvName, Object.class));
         for (String error : resErrors) {
@@ -192,7 +192,7 @@ public class Log {
         }
         testCount.incrementAndGet();
     }
-    
+
     public void matchErrors(String pvName, String... messages) {
         int current = 0;
         for (Event event : events) {
@@ -214,7 +214,7 @@ public class Log {
         }
         testCount.incrementAndGet();
     }
-    
+
     public void matchSequentialNumberValues(String pvName, int expectedRepeatedValues) {
         List<VNumber> values = valuesForChannel(pvName, VNumber.class);
         Double currentValue = null;
@@ -260,7 +260,7 @@ public class Log {
                 }
             }
         }
-        
+
         if (initialTime != null && finalTime != null) {
             double seconds = finalTime.durationFrom(initialTime).toSeconds();
             // The period between the first two notification is going to be shorter
@@ -275,7 +275,7 @@ public class Log {
         }
         testCount.incrementAndGet();
     }
-    
+
     private <T> List<T> valuesForChannel(String pvName, Class<T> clazz) {
         List<T> values = new ArrayList<>();
         for (Event event : events) {
@@ -292,8 +292,8 @@ public class Log {
             }
         }
         return values;
-    } 
-    
+    }
+
     private List<Alarm> alarmsForChannel(String pvName) {
         List<Alarm> values = new ArrayList<>();
         for (Event event : events) {
@@ -305,10 +305,10 @@ public class Log {
             }
         }
         return values;
-    } 
-    
+    }
+
     TimestampFormat format = new TimestampFormat("ss.NNNNNNNNN");
-    
+
     public void print(PrintStream out) {
         for (Event event : events) {
             if (event instanceof ReadEvent) {

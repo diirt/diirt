@@ -23,14 +23,14 @@ import static org.diirt.util.time.TimeDuration.*;
  * This class tests opening and closing the same channel multiple times
  * to check whether any of the initial events are lost. This test is designed
  * to give some debug information if problems appear.
- * 
+ *
  * @author carcassi
  */
 public class JCAClientConnectDisconnectDetail {
     public static void main(String[] args) throws Exception {
         JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
-        
+
         String channelName = "TEST_1";
 
 
@@ -38,11 +38,11 @@ public class JCAClientConnectDisconnectDetail {
         final AtomicInteger valueNotificationCount = new AtomicInteger(0);
         final AtomicInteger connectionNotificationCount = new AtomicInteger(0);
         final AtomicInteger totalNotificationCount = new AtomicInteger(0);
-        
+
         int countToPrint = 10;
         while (true) {
             final CountDownLatch latch = new CountDownLatch(1);
-            
+
             final PVReader<?> pv = PVManager.read(channel(channelName))
                         .readListener(new PVReaderListener<Object>() {
                             @Override
@@ -66,9 +66,9 @@ public class JCAClientConnectDisconnectDetail {
                 System.out.println(jca.getChannels().get(channelName).getProperties());
             }
             pv.close();
-            
+
             if (connectCount.get() == countToPrint) {
-                System.out.println("Connections: " + connectCount + " Conn notifications: " + connectionNotificationCount 
+                System.out.println("Connections: " + connectCount + " Conn notifications: " + connectionNotificationCount
                         + " Value notifications: " + valueNotificationCount + " Total notifications: " +totalNotificationCount);
                 countToPrint += 10;
             }

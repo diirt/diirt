@@ -16,9 +16,9 @@ import java.util.List;
  * @author carcassi
  */
 public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRateReadWriteExpressionList<R, W> {
-    
+
     private List<DesiredRateReadWriteExpression<R, W>> desiredRateReadWriteExpressions = new ArrayList<DesiredRateReadWriteExpression<R, W>>();
-    
+
     final void addThis() {
         desiredRateReadWriteExpressions.add((DesiredRateReadWriteExpression<R, W>) this);
     }
@@ -59,5 +59,5 @@ public class DesiredRateReadWriteExpressionListImpl<R, W> implements DesiredRate
     public final List<WriteExpression<W>> getWriteExpressions() {
         return Collections.<WriteExpression<W>>unmodifiableList(desiredRateReadWriteExpressions);
     }
-    
+
 }

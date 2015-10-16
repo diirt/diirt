@@ -41,10 +41,10 @@ public class EqualValueFilter {
                     throw new IllegalArgumentException("Column types must match for natural join");
                 }
             }
-            
+
         }
     }
-    
+
     public boolean filterRow(int[] rowIndexes) {
         if (type == double.class) {
             double value = ((ListNumber) tables.get(0).getColumnData(columnIndexes[0])).getDouble(rowIndexes[0]);
@@ -63,5 +63,5 @@ public class EqualValueFilter {
         }
         return true;
     }
-    
+
 }

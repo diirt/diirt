@@ -26,7 +26,7 @@ public class RepeatedDisconnectTestPhase extends AbstractCATestPhase {
     @Override
     public final void run() throws Exception {
         init("phase1");
-        
+
         addReader(PVManager.read(channel(const_double)), TimeDuration.ofHertz(50));
 
         // Perfom ten restarts

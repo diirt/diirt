@@ -23,7 +23,7 @@ public class MessageSubscribe extends Message {
 
     /**
      * Creates a new message based on the JSON representation.
-     * 
+     *
      * @param obj JSON object
      * @throws MessageDecodeException if json format is incorrect
      */
@@ -34,10 +34,10 @@ public class MessageSubscribe extends Message {
         this.maxRate = intOptional(obj, "maxRate", -1);
         this.readOnly = booleanOptional(obj, "readOnly", true);
     }
-    
+
     /**
      * Creates a new message based on the given parameters.
-     * 
+     *
      * @param id the channel id
      * @param channel the channel name
      * @param type the type for the value
@@ -54,7 +54,7 @@ public class MessageSubscribe extends Message {
 
     /**
      * The channel name.
-     * 
+     *
      * @return the channel name
      */
     public String getChannel() {
@@ -63,7 +63,7 @@ public class MessageSubscribe extends Message {
 
     /**
      * The requested type for values.
-     * 
+     *
      * @return the type name
      */
     public String getType() {
@@ -72,7 +72,7 @@ public class MessageSubscribe extends Message {
 
     /**
      * The maximum notification rate.
-     * 
+     *
      * @return min time in ms between sample
      */
     public int getMaxRate() {
@@ -81,7 +81,7 @@ public class MessageSubscribe extends Message {
 
     /**
      * Whether the channel should be read-only.
-     * 
+     *
      * @return true if read-only connection
      */
     public boolean isReadOnly() {
@@ -106,5 +106,5 @@ public class MessageSubscribe extends Message {
         gen.writeEnd()
             .close();
     }
-    
+
 }

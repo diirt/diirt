@@ -10,7 +10,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 class IVDouble extends IVNumeric implements VDouble {
-    
+
     private final Double value;
 
     IVDouble(Double value, Alarm alarm, Time time, Display display) {

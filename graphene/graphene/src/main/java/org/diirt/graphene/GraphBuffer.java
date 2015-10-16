@@ -26,20 +26,20 @@ import org.diirt.util.array.SortedListView;
  * <p>
  * This class takes care of putting the pixels where it is told. It specifically
  * does not concerns itself with the calculation of what/where to draw. It provides
- * the drawing of aggregated data structures, so that the plotting can be 
+ * the drawing of aggregated data structures, so that the plotting can be
  * efficient and clean.
  * <p>
  * It also serves as a wrapper around Java2D (<code>Graphics2D</code>) so that
  * the drawing can be re-implemented efficiently on other engines in the future,
  * such as JavaFX.
- * 
+ *
  * @author carcassi, sjdallst, asbarber, jkfeng
  */
 public class GraphBuffer {
-    
+
     private final BufferedImage image;
     private final Graphics2D g;
-    
+
     /**
      * Represents the pixels of a 2D image. if a the image has a width w, then
      * the point (x, y) is represented by the y*width + x pixel.
@@ -47,10 +47,10 @@ public class GraphBuffer {
     private final byte[] pixels;
     private final boolean hasAlphaChannel;
     private final int width, height;
-    
+
     /**
      * Creates a GraphBuffer with the given image on which to draw a graph.
-     * 
+     *
      * @param image an image on which we can draw a graph
      */
     private GraphBuffer(BufferedImage image){
@@ -61,33 +61,33 @@ public class GraphBuffer {
         hasAlphaChannel = image.getAlphaRaster() != null;
         g = image.createGraphics();
     }
-    
+
     /**
      * Creates a GraphBuffer with the given width and height.
-     * 
+     *
      * @param width width of the graph
      * @param height height of the graph
      */
     public GraphBuffer(int width, int height) {
         this(new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR));
     }
-    
+
     /**
      * Creates a GraphBuffer suitable for the given renderer. Makes sure
      * all the parameters from the renderer are consistent with the buffer itself.
-     * 
+     *
      * @param renderer the graph renderer
      */
     public GraphBuffer(Graph2DRenderer<?> renderer) {
         this(renderer.getImageWidth(), renderer.getImageHeight());
     }
-    
+
     /**
      * Changes the pixel at the given coordinates to the given color.
      * TODO: make sure all other plotting functions use this.
-     * 
-     * @param x	x-coordinate of a pixel
-     * @param y	y-coordinate of a pixel
+     *
+     * @param x x-coordinate of a pixel
+     * @param y y-coordinate of a pixel
      * @param color color-value of the pixel
      */
     public void setPixel(int x, int y, int color){
@@ -103,30 +103,30 @@ public class GraphBuffer {
             pixels[y*image.getWidth()*3 + x*3 + 2] = (byte)(color >> 16 & 0xFF);
         }
     }
-    
+
     /**
      * Temporary method to retrieve the image buffer. Will be removed once
      * this class is finished.
-     * 
+     *
      * @return the rendering buffer
      */
     public BufferedImage getImage(){
         return image;
     }
-    
+
     /**
      * Temporary method to retrieve the graphics context. Will be removed once
      * this class is finished.
-     * 
+     *
      * @return the graphics context
      */
     public Graphics2D getGraphicsContext(){
         return g;
     }
-    
+
     /**
-     * Plots a two dimensional array of values encoded by color. 
-     * 
+     * Plots a two dimensional array of values encoded by color.
+     *
      * @param xStartPoint the horizontal coordinate for the first pixel of the image
      * @param yStartPoint the vertical coordinate for the first pixel of the image
      * @param xPointToDataMap a map from pixel horizontal offset to data index
@@ -135,24 +135,24 @@ public class GraphBuffer {
      * @param colorMap the color map
      */
     public void drawDataImage(int xStartPoint, int yStartPoint,
-			int[] xPointToDataMap, int[] yPointToDataMap,
-			Cell2DDataset data, NumberColorMapInstance colorMap) {
+                        int[] xPointToDataMap, int[] yPointToDataMap,
+                        Cell2DDataset data, NumberColorMapInstance colorMap) {
         int previousYData = -1;
-	
-	// Loop through the points to be plotted. The length of the image is
+
+        // Loop through the points to be plotted. The length of the image is
         // given by the point to data map, since it tells how many points are mapped.
         for (int yOffset = 0; yOffset < yPointToDataMap.length; yOffset++) {
             int yData = yPointToDataMap[yOffset];
             if (yData != previousYData) {
-                for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {  
+                for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {
                     int xData = xPointToDataMap[xOffset];
-		    
+
                     // Get the value, convert to color and plot
                     int rgb = colorMap.colorFor(data.getValue(xData, yData));
-		    setPixel( xStartPoint + xOffset  , yStartPoint + yOffset , rgb );
+                    setPixel( xStartPoint + xOffset  , yStartPoint + yOffset , rgb );
                 }
-		
-	    // If the current line is the same as the previous, it's
+
+            // If the current line is the same as the previous, it's
             // faster to make a copy
             } else {
                 if (hasAlphaChannel) {
@@ -166,7 +166,7 @@ public class GraphBuffer {
             previousYData = yData;
         }
     }
-    
+
     private double xLeftValue;
     private double xRightValue;
     private double xLeftPixel;
@@ -178,7 +178,7 @@ public class GraphBuffer {
      * to represent cells. The minimum value is going to be positioned at the
      * left of the xMinPixel while the maximum value is going to be position
      * at the right of the xMaxPixel.
-     * 
+     *
      * @param range the range to be displayed
      * @param xMinPixel the pixel corresponding to the minimum
      * @param xMaxPixel the pixel corresponding to the maximum
@@ -197,7 +197,7 @@ public class GraphBuffer {
      * to represent points. The minimum value is going to be positioned in the
      * center of the xMinPixel while the maximum value is going to be position
      * in the middle of the xMaxPixel.
-     * 
+     *
      * @param range the range to be displayed
      * @param xMinPixel the pixel corresponding to the minimum
      * @param xMaxPixel the pixel corresponding to the maximum
@@ -213,17 +213,17 @@ public class GraphBuffer {
 
     /**
      * Converts the given value to the pixel position.
-     * 
+     *
      * @param value the value
      * @return the pixel where the value should be mapped
      */
-    public int xValueToPixel(double value) {   
+    public int xValueToPixel(double value) {
         return (int) xValueScale.scaleValue(value, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
     }
 
     /**
      * Converts the left side of given pixel position to the actual value.
-     * 
+     *
      * @param pixelValue the pixel
      * @return the value at the pixel
      */
@@ -233,7 +233,7 @@ public class GraphBuffer {
 
     /**
      * Converts the right side of given pixel position to the actual value.
-     * 
+     *
      * @param pixelValue the pixel
      * @return the value at the pixel
      */
@@ -243,14 +243,14 @@ public class GraphBuffer {
 
     /**
      * Converts the center of given pixel position to the actual value.
-     * 
+     *
      * @param pixelValue the pixel
      * @return the value at the pixel
      */
     public double xPixelCenterToValue(int pixelValue) {
         return xValueScale.invScaleValue(pixelValue + 0.5, xLeftValue, xRightValue, xLeftPixel, xRightPixel);
     }
-    
+
     private double yTopValue;
     private double yBottomValue;
     private double yTopPixel;
@@ -263,7 +263,7 @@ public class GraphBuffer {
      * to represent cells. The minimum value is going to be positioned at the
      * bottom of the yMinPixel while the maximum value is going to be position
      * at the top of the yMaxPixel.
-     * 
+     *
      * @param range the range to be displayed
      * @param yMinPixel the pixel corresponding to the minimum
      * @param yMaxPixel the pixel corresponding to the maximum
@@ -282,7 +282,7 @@ public class GraphBuffer {
      * to represent points. The minimum value is going to be positioned in the
      * center of the yMinPixel while the maximum value is going to be position
      * in the center of the yMaxPixel.
-     * 
+     *
      * @param range the range to be displayed
      * @param yMinPixel the pixel corresponding to the minimum
      * @param yMaxPixel the pixel corresponding to the maximum
@@ -298,37 +298,37 @@ public class GraphBuffer {
 
     /**
      * Converts the given value to the pixel position.
-     * 
+     *
      * @param value the value
      * @return the pixel where the value should be mapped
      */
     public int yValueToPixel(double value) {
         return (int) Math.ceil(yValueScale.scaleValue(value, yBottomValue, yTopValue, yBottomPixel, yTopPixel));
     }
-    
+
     /**
      * Converts the top side of given pixel position to the actual value.
-     * 
+     *
      * @param pixelValue the pixel
      * @return the value at the pixel
      */
     public double yPixelTopToValue(int pixelValue) {
         return yValueScale.invScaleValue(pixelValue - 1, yBottomValue, yTopValue, yBottomPixel, yTopPixel);
     }
-    
+
     /**
      * Converts the center of given pixel position to the actual value.
-     * 
+     *
      * @param pixelValue the pixel
      * @return the value at the pixel
      */
     public double yPixelCenterToValue(int pixelValue) {
         return yValueScale.invScaleValue(pixelValue - 0.5, yBottomValue, yTopValue, yBottomPixel, yTopPixel);
     }
-    
+
     /**
      * Converts the bottom side of given pixel position to the actual value.
-     * 
+     *
      * @param pixelValue the pixel
      * @return the value at the pixel
      */
@@ -340,10 +340,10 @@ public class GraphBuffer {
         g.setColor(color);
         g.fillRect(0, 0, width, height);
     }
-    
+
     private static final int MIN = 0;
     private static final int MAX = 1;
-    
+
     // TODO: methods to draw labels on the top and on the left side of the graph
 
     /**
@@ -352,7 +352,7 @@ public class GraphBuffer {
      * This method may not display some labels in case they would overlap with
      * each other. It does try, though, to make sure that the first and the
      * last label are always displayed.
-     * 
+     *
      * @param labels a list of x-axis labels to be drawn
      * @param valuePixelPositions the central x-coordinate of each label
      * @param labelColor color of the label text
@@ -376,17 +376,17 @@ public class GraphBuffer {
             drawLineLabel(g, metrics, labels.get(labels.size() - 1),
                     valuePixelPositions.getInt(labels.size() - 1),
                 drawRange, topPixel, false, false);
-            
+
             for (int i = 1; i < labels.size() - 1; i++) {
                 drawLineLabel(g, metrics, labels.get(i), valuePixelPositions.getInt(i),
                     drawRange, topPixel, true, false);
             }
         }
     }
-    
+
     /**
      * Draws some labels, which are plaintext, on the graph.
-     * 
+     *
      * @param graphics the graphics object containing the graph
      * @param metrics the font style
      * @param text the text of the label
@@ -402,11 +402,11 @@ public class GraphBuffer {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
         int targetX = xCenter;
         int halfWidth = metrics.stringWidth(text) / 2;
@@ -425,7 +425,7 @@ public class GraphBuffer {
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
-        
+
         if (updateMin) {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
@@ -447,23 +447,23 @@ public class GraphBuffer {
                 drawRange, leftPixel, true, false);
             drawColumnLabel(g, metrics, labels.get(labels.size() - 1), valuePixelPositions.getInt(labels.size() - 1),
                 drawRange, leftPixel, false, false);
-            
+
             for (int i = 1; i < labels.size() - 1; i++) {
                 drawColumnLabel(g, metrics, labels.get(i), valuePixelPositions.getInt(i),
                     drawRange, leftPixel, true, false);
             }
         }
     }
-    
+
     private static void drawColumnLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
         int targetY = yCenter;
         int halfHeight = metrics.getAscent() / 2;
@@ -482,24 +482,24 @@ public class GraphBuffer {
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
-        
+
         if (updateMin) {
             drawRange[MAX] = targetY - metrics.getHeight();
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
         }
     }
-    
+
     void drawHorizontalReferenceLines(ListInt referencePixels, Color lineColor, int graphLeftPixel, int graphRightPixel) {
         g.setColor(lineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-	
-	//draw a line from (graphLeftPixel, y) to (graphRightPixel, y)
+
+        //draw a line from (graphLeftPixel, y) to (graphRightPixel, y)
         for (int i = 0; i < referencePixels.size(); i++) {
             g.drawLine(graphLeftPixel, referencePixels.getInt(i), graphRightPixel, referencePixels.getInt(i));
         }
     }
-    
+
     void drawVerticalReferenceLines(ListInt referencePixels, Color lineColor, int graphBottomPixel, int graphTopPixel) {
         g.setColor(lineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -507,7 +507,7 @@ public class GraphBuffer {
             g.drawLine(referencePixels.getInt(i), graphTopPixel, referencePixels.getInt(i), graphBottomPixel);
         }
     }
-    
+
      private static class ScaledData {
         private double[] scaledX;
         private double[] scaledY;
@@ -517,12 +517,12 @@ public class GraphBuffer {
 
     public void drawValueLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ProcessValue pv) {
         ReductionScheme reductionScheme = ReductionScheme.NONE;
-        
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
         ScaledData scaledData;
-        
+
         switch (reductionScheme) {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reductionScheme + " not supported");
@@ -530,7 +530,7 @@ public class GraphBuffer {
                 scaledData = scaleNoReduction(xValues, yValues,pv);
                 break;
         }
-        
+
         // create path
         Path2D path;
         switch (interpolation) {
@@ -549,27 +549,27 @@ public class GraphBuffer {
         // Draw the line
         g.draw(path);
     }
-    
+
     public void drawValueExplicitLine(Point2DDataset data, InterpolationScheme interpolation, ReductionScheme reduction,ProcessValue pv){
- 
+
         SortedListView xValues = ListNumbers.sortedView(data.getXValues());
         ListNumber yValues = ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
         this.drawValueExplicitLine(xValues, yValues, interpolation, reduction, pv);
     }
-    
+
     private void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction,ProcessValue pv) {
-       
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        
+
         ScaledData scaledData;
-             
+
         int start = ListNumbers.binarySearchValueOrLower(xValues, xLeftValue);
         int end = ListNumbers.binarySearchValueOrHigher(xValues, xRightValue);
-        
+
         xValues = ListMath.limit(xValues, start, end + 1);
         yValues = ListMath.limit(yValues, start, end + 1);
-        
+
         switch (reduction) {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reduction + " not supported");
@@ -580,7 +580,7 @@ public class GraphBuffer {
                 scaledData = scaleFirstMaxMinLastReduction(xValues, yValues, start,pv);
                 break;
         }
-        
+
         // create path
         Path2D path;
         switch (interpolation) {
@@ -617,12 +617,12 @@ public class GraphBuffer {
         scaledData.end = dataCount;
         return scaledData;
     }
-    
+
     private ScaledData scaleFirstMaxMinLastReduction(ListNumber xValues, ListNumber yValues, int dataStart, ProcessValue pv) {
-        // The number of points generated by this is about 4 times the 
+        // The number of points generated by this is about 4 times the
         // number of points on the x axis. If the number of points is less
         // than that, it's not worth it. Don't do the data reduction.
-        int xPlotCoordWidth=300; 
+        int xPlotCoordWidth=300;
         if (xValues.size() < xPlotCoordWidth * 4) {
             return scaleNoReduction(xValues, yValues, dataStart,pv);
         }
@@ -675,7 +675,7 @@ public class GraphBuffer {
         scaledData.end = cursor;
         return scaledData;
     }
-    
+
     private static Path2D.Double nearestNeighbour(ScaledData scaledData) {
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
@@ -696,14 +696,14 @@ public class GraphBuffer {
         line.lineTo(scaledX[end - 1], scaledY[end - 1]);
         return line;
     }
-    
+
     private static Path2D.Double linearInterpolation(ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
         int start = scaledData.start;
         int end = scaledData.end;
         Path2D.Double line = new Path2D.Double();
-        
+
         for (int i = start; i < end; i++) {
             // Do I have a current value?
             if (!java.lang.Double.isNaN(scaledY[i])) {
@@ -723,11 +723,11 @@ public class GraphBuffer {
                         line.lineTo(scaledX[i] + 1, scaledY[i]);
                     }
                 }
-            } 
+            }
         }
         return line;
     }
-    
+
     private static Path2D.Double cubicInterpolation(ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
@@ -735,7 +735,7 @@ public class GraphBuffer {
         int end = scaledData.end;
         Path2D.Double path = new Path2D.Double();
         for (int i = start; i < end; i++) {
-            
+
             double y1;
             double y2;
             double x1;
@@ -744,7 +744,7 @@ public class GraphBuffer {
             double x0;
             double y3;
             double x3;
-            
+
             double bx0;
             double by0;
             double bx3;
@@ -755,7 +755,7 @@ public class GraphBuffer {
             double by1;
             double bx2;
             double by2;
-            
+
             //Do I have current value?
             if (!java.lang.Double.isNaN(scaledY[i])){
                 //Do I have previous value?
@@ -783,7 +783,7 @@ public class GraphBuffer {
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                         else{//Have current, previous, two before, but not value after
                             y2 = scaledY[i];
                             x2 = scaledX[i];
@@ -804,7 +804,7 @@ public class GraphBuffer {
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                     } else if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
                         //Have current , previous, and next, but not two before
                         path.moveTo(scaledX[i - 1], scaledY[i - 1]);

@@ -21,7 +21,7 @@ public class ArgumentExpressions {
             return new ReadFunctionArgument<>(new VStringToStringReadFunction(new CheckedReadFunction<>(function, argumentName, VString.class)));
         }
     }
-    
+
     public static ReadFunctionArgument<List<String>> stringArrayArgument(ReadFunction<?> function, String argumentName) {
         if (function == null) {
             return new ReadFunctionArgument<>();

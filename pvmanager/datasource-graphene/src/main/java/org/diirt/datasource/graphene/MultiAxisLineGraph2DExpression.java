@@ -16,14 +16,14 @@ import static org.diirt.datasource.graphene.ExpressionLanguage.functionOf;
 public class MultiAxisLineGraph2DExpression extends DesiredRateExpressionImpl<Graph2DResult> implements Graph2DExpression<MultiAxisLineGraph2DRendererUpdate> {
 
     MultiAxisLineGraph2DExpression(DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
         super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName),
                 new MultiAxisLineGraph2DFunction(functionOf(tableData),
                 functionOf(xColumnName), functionOf(yColumnName)),
                 "Multi-axis Line Graph");
     }
-    
+
     @Override
     public void update(MultiAxisLineGraph2DRendererUpdate update) {
         ((MultiAxisLineGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);

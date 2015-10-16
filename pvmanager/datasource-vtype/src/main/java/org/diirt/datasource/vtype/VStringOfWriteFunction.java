@@ -15,7 +15,7 @@ import org.diirt.datasource.WriteFunction;
  * @author carcassi
  */
 class VStringOfWriteFunction implements WriteFunction<String> {
-    
+
     private final ReadFunction<? extends VType> reference;
     private final WriteFunction<Object> argument;
     private final ValueFormat format;
@@ -30,5 +30,5 @@ class VStringOfWriteFunction implements WriteFunction<String> {
     public void writeValue(String newValue) {
         argument.writeValue(format.parseObject(newValue, reference.readValue()));
     }
-    
+
 }

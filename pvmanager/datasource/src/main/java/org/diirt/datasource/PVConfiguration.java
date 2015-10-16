@@ -16,7 +16,7 @@ import org.diirt.util.time.TimeDuration;
  * @author carcassi
  */
 public class PVConfiguration<R, W> extends CommonConfiguration {
-    
+
     private final PVReaderConfiguration<R> pvReaderConfiguration;
     private final PVWriterConfiguration<W> pvWriterConfiguration;
 
@@ -24,7 +24,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         pvReaderConfiguration = new PVReaderConfiguration<R>(readWriteExpression);
         pvWriterConfiguration = new PVWriterConfiguration<W>(readWriteExpression);
     }
-    
+
     @Override
     public PVConfiguration<R, W> from(DataSource dataSource) {
         pvReaderConfiguration.from(dataSource);
@@ -68,7 +68,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
 
     /**
      * Specifies a timeout, with a different message for the read and the write.
-     * 
+     *
      * @param timeout time before notification
      * @param readMessage exception message for the read timeout
      * @param writeMessage exception message for the write timeout
@@ -79,7 +79,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         pvWriterConfiguration.timeout(timeout, writeMessage);
         return this;
     }
-    
+
     /**
      * Adds a listener for the read events.
      *
@@ -90,7 +90,7 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         pvReaderConfiguration.readListener(listener);
         return this;
     }
-    
+
     /**
      * Adds a listener for the write events.
      *
@@ -120,11 +120,11 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         pvWriterConfiguration.routeExceptionsTo(exceptionHandler);
         return this;
     }
-    
+
     /**
      * Creates the pv such that writes are synchronous and read notifications
      * comes at most at the rate specified.
-     * 
+     *
      * @param period minimum time between read notifications
      * @return a new PV
      */
@@ -133,11 +133,11 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         PVWriter<W> pvWriter = pvWriterConfiguration.sync();
         return new PV<R, W>(pvReader, pvWriter);
     }
-    
+
     /**
      * Creates the pv such that writes are asynchronous and read notifications
      * comes at most at the rate specified.
-     * 
+     *
      * @param period minimum time between read notifications
      * @return a new PV
      */
@@ -150,5 +150,5 @@ public class PVConfiguration<R, W> extends CommonConfiguration {
         PVWriterImpl.implOf(pvWriter).setWriterForNotification(pv);
         return pv;
     }
-    
+
 }

@@ -10,7 +10,7 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 class IVShort extends VShort {
-    
+
     private final Short value;
     private final Alarm alarm;
     private final Time time;

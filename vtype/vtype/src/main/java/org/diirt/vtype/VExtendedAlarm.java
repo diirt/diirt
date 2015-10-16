@@ -20,32 +20,32 @@ import java.util.List;
  * @author carcassi
  */
 public interface VExtendedAlarm extends VType {
-    
+
     /**
      * A single alarm condition that can be on or off.
      */
     public interface AlarmCondition extends Alarm {
-        
+
         /**
          * Whether the alarm is on.
-         * 
+         *
          * @return true if alarm condition is on
          */
         public boolean isActive();
     }
-    
+
     /**
      * All the possible alarm conditions for the device, and
      * whether they are on or off.
-     * 
+     *
      * @return the alarm conditions
      */
     public List<AlarmCondition> getConditions();
-    
-    
+
+
     /**
      * A human readable error message associated to the error(s).
-     * 
+     *
      * @return a message or null
      */
     public String getMessage();

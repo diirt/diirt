@@ -11,22 +11,22 @@ import org.epics.pvdata.pv.PVField;
  *
  */
 public class PVAPVField {
-	
-	protected final PVField pvField;
-	
-	public PVAPVField(PVField pvField, boolean disconnected)
-	{
-		this.pvField = pvField;
-	}
-	
-	public PVField getPVField() {
-		return pvField;
-	}
 
-	@Override
-	public String toString() {
-		return pvField.toString();
-	}
-	
-	
+        protected final PVField pvField;
+
+        public PVAPVField(PVField pvField, boolean disconnected)
+        {
+                this.pvField = pvField;
+        }
+
+        public PVField getPVField() {
+                return pvField;
+        }
+
+        @Override
+        public String toString() {
+                return pvField.toString();
+        }
+
+
 }

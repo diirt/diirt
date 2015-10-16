@@ -14,15 +14,15 @@ import java.io.File;
 interface FileWatcherService {
     /**
      * Registers a file for updates.
-     * 
+     *
      * @param file a file
      * @param callback called when the file changes
      */
     public void addWatcher(File file, Runnable callback);
-    
+
     /**
      * Unregisters a file for updates.
-     * 
+     *
      * @param file a file
      * @param callback no longer called when the file changes
      */

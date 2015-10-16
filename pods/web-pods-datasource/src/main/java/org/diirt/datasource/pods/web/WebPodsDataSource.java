@@ -27,10 +27,10 @@ import org.diirt.datasource.vtype.DataTypeSupport;
 public final class WebPodsDataSource extends DataSource {
 
     static {
-	// Install type support for the types it generates.
-	DataTypeSupport.install();
+        // Install type support for the types it generates.
+        DataTypeSupport.install();
     }
-    
+
     private final WebPodsClient client;
     private final URI socketLocation;
     private static final ExecutorService exec = Executors.newSingleThreadExecutor(namedPool("diirt web-pods datasource connection "));
@@ -38,7 +38,7 @@ public final class WebPodsDataSource extends DataSource {
 
     /**
      * Creates a new data source with the given configuration.
-     * 
+     *
      * @param configuration data source configuration
      */
     WebPodsDataSource(WebPodsDataSourceConfiguration configuration) {
@@ -52,7 +52,7 @@ public final class WebPodsDataSource extends DataSource {
         // TODO: close client
         super.close();
     }
-    
+
     private void reconnect() {
         exec.execute(new Runnable() {
 
@@ -78,19 +78,19 @@ public final class WebPodsDataSource extends DataSource {
         }
         return client;
     }
-   
+
     @Override
-    protected ChannelHandler createChannel(String channelName) {	
-	return new WebPodsChannelHandler(this, channelName);
+    protected ChannelHandler createChannel(String channelName) {
+        return new WebPodsChannelHandler(this, channelName);
     }
 
     /**
      * The URI for the web pods server (e.g. ws://my.server.org/web-pods/socket).
-     * 
+     *
      * @return URI for the socket
      */
     public URI getSocketLocation() {
         return socketLocation;
     }
-    
+
 }

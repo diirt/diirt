@@ -21,10 +21,10 @@ import org.diirt.util.array.CircularBufferDouble;
  * @author carcassi
  */
 public class CommaSeparatedValueIO {
-    
+
     private static NumberFormat format = new DecimalFormat("0.####################");
-    
-    public static void write(Point2DDataset dataset, Writer writer) 
+
+    public static void write(Point2DDataset dataset, Writer writer)
     throws IOException {
         writer.write("x,y");
         for (int i = 0; i < dataset.getCount(); i++) {
@@ -34,14 +34,14 @@ public class CommaSeparatedValueIO {
             writer.append(format.format(dataset.getYValues().getDouble(i)));
         }
     }
-    
-    public static String write(Point2DDataset dataset) 
+
+    public static String write(Point2DDataset dataset)
     throws IOException {
         StringWriter writer = new StringWriter();
         write(dataset, writer);
         return writer.toString();
     }
-    
+
     public static Point2DDataset read(Reader reader) throws IOException {
         BufferedReader br = new BufferedReader(reader);
         String line = br.readLine();
@@ -59,7 +59,7 @@ public class CommaSeparatedValueIO {
         }
         return Point2DDatasets.lineData(xValues, yValues);
     }
-    
+
     public static Point2DDataset read(String string) throws IOException {
         return read(new StringReader(string));
     }

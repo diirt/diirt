@@ -17,43 +17,43 @@ import org.diirt.vtype.ValueUtil;
 
 /**
  * @author shroffk
- * 
+ *
  */
 class ToStringFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
-	return true;
+        return true;
     }
 
     @Override
     public boolean isVarArgs() {
-	return true;
+        return true;
     }
 
     @Override
     public String getName() {
-	return "toString";
+        return "toString";
     }
 
     @Override
     public String getDescription() {
-	return "Convert the value to a string";
+        return "Convert the value to a string";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-	return Arrays.<Class<?>> asList(VType.class);
+        return Arrays.<Class<?>> asList(VType.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-	return Arrays.asList("value");
+        return Arrays.asList("value");
     }
 
     @Override
     public Class<?> getReturnType() {
-	return VType.class;
+        return VType.class;
     }
 
     @Override
@@ -67,10 +67,10 @@ class ToStringFunction implements FormulaFunction {
         if (time == null) {
             time = ValueFactory.timeNow();
         }
-        
-	return ValueFactory.newVString(ValueUtil.getDefaultValueFormat().format(value),
+
+        return ValueFactory.newVString(ValueUtil.getDefaultValueFormat().format(value),
                 alarm,
-		time);
+                time);
 
     }
 

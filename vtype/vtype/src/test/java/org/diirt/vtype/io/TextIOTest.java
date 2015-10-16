@@ -24,7 +24,7 @@ import static org.hamcrest.CoreMatchers.*;
  * @author carcassi
  */
 public class TextIOTest {
-    
+
     @Test
     public void readList1() throws Exception {
         String inputText = "10\n" +
@@ -33,13 +33,13 @@ public class TextIOTest {
                 "4\n" +
                 "2\n" +
                 "0\n";
-        
+
         VType value = TextIO.readList(new StringReader(inputText));
         assertThat(value, instanceOf(VNumberArray.class));
         VNumberArray array = (VNumberArray) value;
         assertThat(array.getData(), equalTo((ListNumber) new ArrayDouble(10,8,6,4,2,0)));
     }
-    
+
     @Test
     public void readList2() throws Exception {
         String inputText = "A\n" +
@@ -48,13 +48,13 @@ public class TextIOTest {
                 "D\n" +
                 "E\n" +
                 "F\n";
-        
+
         VType value = TextIO.readList(new StringReader(inputText));
         assertThat(value, instanceOf(VStringArray.class));
         VStringArray array = (VStringArray) value;
         assertThat(array.getData(), equalTo(Arrays.asList("A", "B", "C", "D", "E", "F")));
     }
-    
+
     @Test
     public void writeList1() throws Exception{
         VType vType = ValueFactory.toVType(new ArrayDouble(10, 8, 6, 4, 2, 0));
@@ -68,7 +68,7 @@ public class TextIOTest {
                 "2.0" + System.lineSeparator() +
                 "0.0" + System.lineSeparator()));
     }
-    
+
     @Test
     public void writeList2() throws Exception{
         VType vType = ValueFactory.toVType(Arrays.asList("A", "B", "C", "D", "E"));

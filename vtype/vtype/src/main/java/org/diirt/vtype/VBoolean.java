@@ -10,7 +10,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 public interface VBoolean extends Scalar, Alarm, Time, VType {
-    
+
     /**
      * {@inheritDoc }
      */

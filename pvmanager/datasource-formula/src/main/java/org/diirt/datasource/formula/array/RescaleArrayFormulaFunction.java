@@ -64,15 +64,15 @@ class RescaleArrayFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray arg1 = (VNumberArray) args.get(0);
         VNumber arg2 = (VNumber) args.get(1);
         VNumber arg3 = (VNumber) args.get(2);
 
         return newVNumberArray(
-		ListMath.rescale(arg1.getData(), arg2.getValue().doubleValue(), arg3.getValue().doubleValue()),
+                ListMath.rescale(arg1.getData(), arg2.getValue().doubleValue(), arg3.getValue().doubleValue()),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args),
+                ValueUtil.latestValidTimeOrNowOf(args),
                 displayNone());
     }
 }

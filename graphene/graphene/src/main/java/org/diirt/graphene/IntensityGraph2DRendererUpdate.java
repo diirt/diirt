@@ -10,7 +10,7 @@ import org.diirt.util.stats.Ranges;
 /**
  * A set of parameters that can be applied to a <code>IntensityGraph2DRenderer</code>
  * to update its settings.
- * 
+ *
  * <p>
  * Only the parameters that are set in the update get applied to the renderer.
  * Parameters unique to the intensity graph that can be changed are:
@@ -20,7 +20,7 @@ import org.diirt.util.stats.Ranges;
  *          <li>Legend margin size between the legend and graph</li>
  *          <li>Legend margin size between the legend and the image edge</li>
  * </ul>
- * 
+ *
  * @author carcassi
  * @author sjdallst
  */
@@ -34,12 +34,12 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     private Boolean drawLegend;
 
     private NumberColorMap colorMap;
-    
+
     private Range xPixelSelectionRange;
     private Range yPixelSelectionRange;
-    
+
     // TODO: review comments (they mostly just repeat the method name)
-    
+
     /**
      * Sets this object's drawLegend to the given boolean value.
      * To be used in conjunction with IntensityGraph2DRenderer's update function.
@@ -54,7 +54,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     // TODO: add keepAspectRatio
     // If enables, the plot should stretch but keep the ratio of the image
     // the same as the one given by the range of the x and y boundaries
-    
+
     /**
      * Sets this object's colorMap to the given ColorScheme.
      * @param colorMap supported schemes: any <code>ColorScheme</code> supported by the <code>NumberColorMaps</code>
@@ -64,17 +64,17 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         this.colorMap = colorMap;
         return self();
     }
-    
+
     /**
      * Sets this object's zLabelMargin to the given margin size.
-     * @param margin integer distance(pixels) from the beginning of the z labels to the legend. 
+     * @param margin integer distance(pixels) from the beginning of the z labels to the legend.
      * @return this
      */
     public IntensityGraph2DRendererUpdate zLabelMargin(int margin) {
         this.zLabelMargin = margin;
         return self();
     }
-    
+
     /**
      * Sets this object's legendWidth to the given margin size.
      * @param width corresponds to the x-axis
@@ -84,7 +84,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         this.legendWidth = width;
         return self();
     }
-    
+
     /**
      * Sets this object's graphAreaToLegendMargin to the given margin size.
      * @param margin distance(pixels) from the end of the legend(including labels and other margins) to the end of the graphics component.
@@ -94,11 +94,11 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         this.graphAreaToLegendMargin = margin;
         return self();
     }
-    
+
     /**
      * Changes the current region of interest. The selection is given in pixels.
      * The ordering of the boundaries does not matter.
-     * 
+     *
      * @param x1 one of the horizontal boundaries
      * @param x2 the other horizontal boundary
      * @param y1 one of the vertical boundaries
@@ -118,7 +118,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
         }
         return self();
     }
-    
+
     /**
      *
      * @return Boolean drawLegend, used to determine whether an IntensityGraph2DRenderer object will add a legend to the right of the intensity graph. Can be null.
@@ -126,16 +126,16 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public Boolean getDrawLegend() {
         return drawLegend;
     }
-    
+
     /**
      *
-     * @return ColorScheme colorMap, used to determine which color scheme will be used when drawing an intensity graph. 
+     * @return ColorScheme colorMap, used to determine which color scheme will be used when drawing an intensity graph.
  Possible values include: GRAY_SCALE, JET, HOT, COOL, SPRING, BONE, COPPER, PINK
      */
     public NumberColorMap getColorMap() {
         return colorMap;
     }
-    
+
     /**
      *
      * @return Integer zLabelMargin, distance(pixels) from the beginning of the z labels to the legend.
@@ -143,7 +143,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public Integer getZLabelMargin(){
         return zLabelMargin;
     }
-    
+
     /**
      *
      * @return Integer legendWidth, corresponds to the x-axis length.
@@ -151,7 +151,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
     public Integer getLegendWidth(){
         return legendWidth;
     }
-    
+
     /**
      *
      * @return Integer graphAreaToLegendMargin, distance(pixels) from the end of the legend(including labels and other margins) to the end of the graphics component.
@@ -162,7 +162,7 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
 
     /**
      * The new selection range on the x axis.
-     * 
+     *
      * @return the selection range
      */
     public Range getXPixelSelectionRange() {
@@ -171,11 +171,11 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
 
     /**
      * The new selection range on the y axis.
-     * 
+     *
      * @return the selection range
      */
     public Range getYPixelSelectionRange() {
         return yPixelSelectionRange;
     }
-    
+
 }

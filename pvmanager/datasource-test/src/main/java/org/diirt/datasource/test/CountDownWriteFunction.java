@@ -18,7 +18,7 @@ public class CountDownWriteFunction extends ExceptionHandler {
 
     private volatile CountDownLatch latch;
     private volatile Exception exception;
-    
+
     public CountDownWriteFunction(int count) {
         latch = new CountDownLatch(count);
     }
@@ -31,30 +31,30 @@ public class CountDownWriteFunction extends ExceptionHandler {
 
     /**
      * Changes the count back to count.
-     * 
+     *
      * @param count new value for count
      */
     public void resetCount(int count) {
         latch = new CountDownLatch(count);
     }
-    
+
     /**
      * Current count.
-     * 
+     *
      * @return current count
      */
     public int getCount() {
         return (int) latch.getCount();
     }
-    
+
     /**
      * Waits that the listener count goes to zero.
-     * 
+     *
      * @param duration time to wait
      * @return false if count didn't go to zero
      * @throws InterruptedException if interrupted
      */
-    public boolean await(TimeDuration duration) 
+    public boolean await(TimeDuration duration)
     throws InterruptedException {
         return latch.await(duration.toNanosLong(), TimeUnit.NANOSECONDS);
     }
@@ -62,5 +62,5 @@ public class CountDownWriteFunction extends ExceptionHandler {
     public Exception getException() {
         return exception;
     }
-    
+
 }

@@ -10,7 +10,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 class IVShort extends IVNumeric implements VShort {
-    
+
     private final Short value;
 
     IVShort(Short value, Alarm alarm, Time time, Display display) {

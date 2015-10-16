@@ -20,7 +20,7 @@ import org.diirt.util.stats.Range;
  * @author carcassi
  */
 public class MockDataset1D implements Point1DDataset {
-    
+
     private ListNumber values;
     private double minValue = Double.POSITIVE_INFINITY;
     private double maxValue = Double.NEGATIVE_INFINITY;
@@ -50,7 +50,7 @@ public class MockDataset1D implements Point1DDataset {
     public ListNumber getValues() {
         return values;
     }
-    
+
     public static Point1DDataset gaussian(int nSamples) {
         Random rand = new Random();
         double[] values = new double[nSamples];

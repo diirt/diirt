@@ -28,14 +28,14 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 public class Log {
-    
+
     private final Runnable callback;
     private final List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
 
     public Log(Runnable callback) {
         this.callback = callback;
     }
-    
+
     public <T> PVReaderListener<T> createReadListener() {
         return new PVReaderListener<T>() {
 
@@ -46,7 +46,7 @@ public class Log {
             }
         };
     }
-    
+
     public <T> PVWriterListener<T> createWriteListener(final String name) {
         return new PVWriterListener<T>() {
 
@@ -57,13 +57,13 @@ public class Log {
             }
         };
     }
-    
+
     public List<Event> getEvents() {
         return events;
     }
-    
+
     private TimestampFormat format = new TimestampFormat("ss.NNNNNNNNN");
-    
+
     public void print(PrintStream out) {
         for (Event event : events) {
             if (event instanceof ReadEvent) {

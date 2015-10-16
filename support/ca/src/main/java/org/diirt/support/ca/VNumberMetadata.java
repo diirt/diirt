@@ -58,7 +58,7 @@ class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> extends VMeta
         if (metadata instanceof PRECISION) {
             precision = ((PRECISION) metadata).getPrecision();
         }
-        
+
         // If precision is 0 or less, we assume full precision
         if (precision < 0) {
             return NumberFormats.toStringFormat();

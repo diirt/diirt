@@ -11,20 +11,20 @@ import org.diirt.util.time.Timestamp;
 
 public class PVFieldToTimestamp  {
 
-	public static final Timestamp create(PVStructure timeStampStructure)
-	{
-		if (timeStampStructure != null)
-		{
-			PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");
-			PVInt nanosField = timeStampStructure.getIntField("nanoseconds");
-			
-			if (secsField == null || nanosField == null)
-				return null;
-			else
-				return  org.diirt.util.time.Timestamp.of(secsField.get(), nanosField.get());
-		}
-		else
-			return null;
-	}
+        public static final Timestamp create(PVStructure timeStampStructure)
+        {
+                if (timeStampStructure != null)
+                {
+                        PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");
+                        PVInt nanosField = timeStampStructure.getIntField("nanoseconds");
+
+                        if (secsField == null || nanosField == null)
+                                return null;
+                        else
+                                return  org.diirt.util.time.Timestamp.of(secsField.get(), nanosField.get());
+                }
+                else
+                        return null;
+        }
 
 }

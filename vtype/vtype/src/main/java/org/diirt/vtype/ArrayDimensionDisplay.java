@@ -16,10 +16,10 @@ import org.diirt.util.array.ListNumber;
  * @author carcassi
  */
 public interface ArrayDimensionDisplay {
-    
+
     /**
      * Returns the boundaries of the cell in the given unit.
-     * 
+     *
      * @return the boundaries
      */
     ListNumber getCellBoundaries();
@@ -31,13 +31,13 @@ public interface ArrayDimensionDisplay {
      * @return units
      */
     String getUnits();
-    
+
     /**
      * Whether the values for this dimension are organized in the
      * opposite order.
-     * 
+     *
      * @return true if values are stored in the array in the reverse order
      */
     boolean isReversed();
-    
+
 }

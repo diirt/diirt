@@ -14,19 +14,19 @@ import javafx.application.Platform;
  * @author carcassi
  */
 public class Executors {
-    
+
     private static final Logger log = Logger.getLogger(Executors.class.getName());
 
     /**
      * Executes tasks on the JavaFX Application thread using
      * Platform.runLater().
-     * 
+     *
      * @return an executor that posts events to JavaFX
      */
     public static Executor javaFXAT() {
         return JAVA_FX_EXECUTOR;
     }
-    
+
     private static final Executor JAVA_FX_EXECUTOR = new Executor() {
 
         @Override

@@ -16,14 +16,14 @@ import static org.diirt.datasource.graphene.ExpressionLanguage.functionOf;
 public class SparklineGraph2DExpression extends DesiredRateExpressionImpl<Graph2DResult> implements Graph2DExpression<SparklineGraph2DRendererUpdate> {
 
     SparklineGraph2DExpression(DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
         super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName),
                 new SparklineGraph2DFunction(functionOf(tableData),
                 functionOf(xColumnName), functionOf(yColumnName)),
                 "Sparkline Graph");
     }
-    
+
     @Override
     public void update(SparklineGraph2DRendererUpdate update) {
         ((SparklineGraph2DFunction) getFunction()).getRendererUpdateQueue().writeValue(update);

@@ -64,14 +64,14 @@ class TableRangeFilterFunction implements FormulaFunction {
         VString columnName = (VString) args.get(1);
         VType min = (VType) args.get(2);
         VType max = (VType) args.get(3);
-        
+
         if (columnName == null || columnName.getValue() == null || table == null || min == null || max == null) {
             return null;
         }
-        
+
         VTable result = VTableFactory.tableRangeFilter(table, columnName.getValue(), min, max);
-        
+
         return result;
     }
-    
+
 }

@@ -28,24 +28,24 @@ public class WriteExpressionTester {
     public Object readValue(String name) {
         return WriteRecipeUtil.valueFor(pvWriterDirector.getCurrentWriteRecipe(), name);
     }
-    
+
     public ChannelWriteRecipe recipeFor(String channelName) {
         return WriteRecipeUtil.recipeFor(pvWriterDirector.getCurrentWriteRecipe(), channelName);
     }
-    
+
     public WriteRecipe getWriteRecipe() {
         return pvWriterDirector.getCurrentWriteRecipe();
     }
-    
+
     @SuppressWarnings("unchecked")
     public WriteFunction<Object> getWriteFunction() {
         return (WriteFunction<Object>) expression.getWriteFunction();
     }
-    
+
     public WriteExpression<?> getExpression() {
         return expression;
     }
-    
+
     public void setValue(Object value) {
         getWriteFunction().writeValue(value);
     }

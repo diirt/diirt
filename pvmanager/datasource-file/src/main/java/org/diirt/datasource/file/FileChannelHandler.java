@@ -20,7 +20,7 @@ import org.diirt.vtype.ValueFactory;
  * @author carcassi
  */
 class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
-    
+
     private final File file;
     private final FileDataSource dataSource;
     private final Runnable updateTask = new Runnable() {
@@ -30,7 +30,7 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
             update();
         }
     };
-        
+
     private final FileFormat format;
 
     FileChannelHandler(FileDataSource dataSource, String channelName, File file, FileFormat format) {
@@ -39,14 +39,14 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
         this.dataSource = dataSource;
         this.format = format;
     }
-    
+
     @Override
     public void connect() {
         processConnection(file);
         update();
         dataSource.getFileWatchService().addWatcher(file, updateTask);
     }
-    
+
     private void update() {
         try {
             Object value = readValueFromFile(file);
@@ -55,7 +55,7 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
             reportExceptionToAllReadersAndWriters(ex);
         }
     }
-    
+
     protected Object readValueFromFile(File file) {
         try (FileInputStream in = new FileInputStream(file)) {
             return format.readValue(in);
@@ -86,11 +86,11 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
         if (file == null) {
             callback.channelWritten(new RuntimeException("Channel is closed"));
         }
-        
+
         if (format == null || !format.isWriteSupported()) {
             callback.channelWritten(new RuntimeException("Format does not support write"));
         }
-        
+
         // If the new value is not a VType, try to convert it using
         // the standard conversions
         if (!(newValue instanceof VType)) {
@@ -99,7 +99,7 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
                 newValue = converted;
             }
         }
-        
+
         try (OutputStream out = new FileOutputStream(file)) {
             format.writeValue(newValue, out);
             callback.channelWritten(null);

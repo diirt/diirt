@@ -65,8 +65,8 @@ class HighestSeverityFunction implements FormulaFunction {
         if (time == null) {
             time = ValueFactory.timeNow();
         }
-        
+
         return ValueFactory.newVEnum(alarm.getAlarmSeverity().ordinal(), AlarmSeverity.labels(), alarm, time);
     }
-    
+
 }

@@ -20,7 +20,7 @@ public class HistogramGraph2DExpression extends DesiredRateExpressionImpl<Graph2
                 new HistogramGraph2DFunction(functionOf(arrayData)),
                 "Histogram Graph");
     }
-    
+
     @Override
     public void update(AreaGraph2DRendererUpdate update) {
         ((HistogramGraph2DFunction) getFunction()).getUpdateQueue().writeValue(update);

@@ -15,44 +15,44 @@ import org.diirt.vtype.ValueUtil;
 
 /**
  * Function that concatenates the arguments into a single string.
- * 
+ *
  * @author shroffk
  */
 class ConcatStringsFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
-	return true;
+        return true;
     }
 
     @Override
     public boolean isVarArgs() {
-	return true;
+        return true;
     }
 
     @Override
     public String getName() {
-	return "concat";
+        return "concat";
     }
 
     @Override
     public String getDescription() {
-	return "Concatenate the strings";
+        return "Concatenate the strings";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-	return Arrays.<Class<?>> asList(VString.class);
+        return Arrays.<Class<?>> asList(VString.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-	return Arrays.asList("string");
+        return Arrays.asList("string");
     }
 
     @Override
     public Class<?> getReturnType() {
-	return VString.class;
+        return VString.class;
     }
 
     @Override
@@ -63,16 +63,16 @@ class ConcatStringsFunction implements FormulaFunction {
         }
 
         // Concatenate strings
-	StringBuilder sb = new StringBuilder();
-	for (Object object : args) {
-	    VString str = (VString) object;
-	    sb.append(str.getValue());
-	}
-        
+        StringBuilder sb = new StringBuilder();
+        for (Object object : args) {
+            VString str = (VString) object;
+            sb.append(str.getValue());
+        }
+
         // Return new value
-	return ValueFactory.newVString(sb.toString(),
+        return ValueFactory.newVString(sb.toString(),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args));
+                ValueUtil.latestValidTimeOrNowOf(args));
 
     }
 

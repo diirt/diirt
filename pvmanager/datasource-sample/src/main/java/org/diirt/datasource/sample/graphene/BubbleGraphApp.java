@@ -24,7 +24,7 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
     private String sizeColumn = null;
     private String colorColumn = null;
     private boolean highlightFocusValue;
-    
+
     public BubbleGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
                 new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'), column(\"COLOR\", 'sim://sineWaveform'))",
@@ -100,9 +100,9 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
         this.colorColumn = colorColumn;
         reconnect();
     }
-    
+
     public static void main(String[] args) {
         main(BubbleGraphApp.class);
     }
-    
+
 }

@@ -34,7 +34,7 @@ public class WriteSyntaxTest {
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getValue(), nullValue());
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), hasSize(2));
         assertThat(((WriteCache<Object>) expr.getWriteFunction()).getPrecedingChannels(), contains("a", "b"));
-        
+
         PVWriter<Object> writer = PVManager.write(channel(channelName)).from(new LocalDataSource()).sync();
         writer.write(10);
     }

@@ -25,40 +25,40 @@ public class MultilineGraphView extends BaseGraphView< LineGraph2DRendererUpdate
     private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
     @Override
     public Graph2DExpression<LineGraph2DRendererUpdate> createExpression(String dataFormula) {
-	MultilineGraph2DExpression plot = multilineGraphOf(formula(dataFormula),
-		    null,
-		    null);
-	plot.update(plot.newUpdate().interpolation(interpolationScheme.getValue()));
-	return plot;
-    } 
-    
-    public MultilineGraphView() {
-	this.interpolationScheme.addListener( new ChangeListener< InterpolationScheme >() {
+        MultilineGraph2DExpression plot = multilineGraphOf(formula(dataFormula),
+                    null,
+                    null);
+        plot.update(plot.newUpdate().interpolation(interpolationScheme.getValue()));
+        return plot;
+    }
 
-	    @Override
-	    public void changed(ObservableValue<? extends InterpolationScheme> observable, InterpolationScheme oldValue, InterpolationScheme newValue) {
-		graph.update( graph.newUpdate().interpolation( newValue ) );
-	    }
-	    
-	});
-	
-	defaultConfigurationDialog.addInterpolationSchemeListProperty( "Interpolation Scheme" , this.interpolationScheme , new InterpolationScheme[] { InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
+    public MultilineGraphView() {
+        this.interpolationScheme.addListener( new ChangeListener< InterpolationScheme >() {
+
+            @Override
+            public void changed(ObservableValue<? extends InterpolationScheme> observable, InterpolationScheme oldValue, InterpolationScheme newValue) {
+                graph.update( graph.newUpdate().interpolation( newValue ) );
+            }
+
+        });
+
+        defaultConfigurationDialog.addInterpolationSchemeListProperty( "Interpolation Scheme" , this.interpolationScheme , new InterpolationScheme[] { InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
     }
-    
+
     public void setInterpolationScheme( InterpolationScheme scheme ) {
-	this.interpolationScheme.setValue( scheme );
+        this.interpolationScheme.setValue( scheme );
     }
-    
+
     public InterpolationScheme getInterpolationScheme() {
-	return this.interpolationScheme.getValue();
+        return this.interpolationScheme.getValue();
     }
-    
+
     public Property< InterpolationScheme > interpolationSchemeProperty() {
-	return this.interpolationScheme;
+        return this.interpolationScheme;
     }
-    
+
     public ConfigurationDialog getDefaultConfigurationDialog() {
-	return this.defaultConfigurationDialog;
+        return this.defaultConfigurationDialog;
     }
-    
+
 }

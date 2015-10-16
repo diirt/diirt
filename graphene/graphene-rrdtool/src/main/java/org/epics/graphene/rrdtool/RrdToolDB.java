@@ -37,7 +37,7 @@ public class RrdToolDB {
             }
             series.add(new TimeSeries(data.getTime(), buffer));
         }
-        
+
         return series;
     }
 }

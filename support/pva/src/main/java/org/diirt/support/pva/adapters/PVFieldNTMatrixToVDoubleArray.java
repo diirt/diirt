@@ -18,43 +18,43 @@ import org.diirt.util.array.ListInt;
  */
 public class PVFieldNTMatrixToVDoubleArray extends PVFieldToVDoubleArray {
 
-	private final int rows;
-	private final int cols;
-	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
-	public PVFieldNTMatrixToVDoubleArray(PVStructure pvField, boolean disconnected) {
-		super(pvField, disconnected);
-		
-		PVIntArray dimField =
-			(PVIntArray)pvField.getScalarArrayField("dim", ScalarType.pvInt);
-		if (dimField != null)
-		{
-			int dims = dimField.getLength();
-			IntArrayData data = new IntArrayData();
-			dimField.get(0, dims, data);
+        private final int rows;
+        private final int cols;
 
-			rows = data.data[0];
-		    cols = (dims == 2) ? data.data[1] : 1;
+        /**
+         * @param pvField
+         * @param disconnected
+         */
+        public PVFieldNTMatrixToVDoubleArray(PVStructure pvField, boolean disconnected) {
+                super(pvField, disconnected);
 
-			// check for if (rows <= 0 || cols <= 0)
-		}
-		else
-		{
-	    	// column vector
-	    	rows = getData().size();
-	    	cols = 1;
-		}
-	}
+                PVIntArray dimField =
+                        (PVIntArray)pvField.getScalarArrayField("dim", ScalarType.pvInt);
+                if (dimField != null)
+                {
+                        int dims = dimField.getLength();
+                        IntArrayData data = new IntArrayData();
+                        dimField.get(0, dims, data);
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.Array#getSizes()
-	 */
-	@Override
-	public ListInt getSizes() {
-		return new ArrayInt(rows, cols);
-	}
+                        rows = data.data[0];
+                    cols = (dims == 2) ? data.data[1] : 1;
+
+                        // check for if (rows <= 0 || cols <= 0)
+                }
+                else
+                {
+                // column vector
+                rows = getData().size();
+                cols = 1;
+                }
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.Array#getSizes()
+         */
+        @Override
+        public ListInt getSizes() {
+                return new ArrayInt(rows, cols);
+        }
 
 }

@@ -25,7 +25,7 @@ public class DataSourceConfigurationLog {
         // Increasing logging at CONFIG level
         Logger.getLogger("").getHandlers()[0].setLevel(Level.CONFIG);
         Logger.getLogger("").setLevel(Level.CONFIG);
-        
+
         System.out.println("Open channel");
         PVReader<VNumber> reader = PVManager.read(vNumber("sim://noise"))
                 .readListener(new PVReaderListener<VNumber>() {
@@ -37,12 +37,12 @@ public class DataSourceConfigurationLog {
                     }
                 })
                 .maxRate(TimeDuration.ofMillis(500));
-	
-	Thread.sleep(2000);
+
+        Thread.sleep(2000);
         System.out.println("Close channel");
         reader.close();
-	Thread.sleep(1000);
-	
+        Thread.sleep(1000);
+
         System.out.println("Close data source");
         PVManager.getDefaultDataSource().close();
         System.out.println("Done");

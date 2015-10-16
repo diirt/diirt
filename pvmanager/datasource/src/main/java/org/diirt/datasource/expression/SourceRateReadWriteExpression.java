@@ -14,7 +14,7 @@ package org.diirt.datasource.expression;
  * @author carcassi
  */
 public interface SourceRateReadWriteExpression<R, W> extends SourceRateExpression<R>, WriteExpression<W>, SourceRateReadWriteExpressionList<R, W> {
-    
+
     // Override so that the return type is appropriate
     @Override
     public SourceRateReadWriteExpression<R, W> as(String name);

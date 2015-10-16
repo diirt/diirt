@@ -9,8 +9,8 @@ import java.util.Date;
 
 /**
  * Represents a time stamp at nanosecond accuracy. The time is internally stored
- * as a 64 + 32 bit value: number of seconds from the Java/UNIX epoch 
- * (1/1/1970) and the nanoseconds past that instant. 
+ * as a 64 + 32 bit value: number of seconds from the Java/UNIX epoch
+ * (1/1/1970) and the nanoseconds past that instant.
  * The range is of 292 billion years before and another 292 past the epoch.
  * <p>
  * Note that while TimeStamp are usually created according to system clocks which
@@ -139,7 +139,7 @@ public class Timestamp implements Comparable<Timestamp> {
      */
     @Override
     public int compareTo(Timestamp other) {
-	if (unixSec < other.unixSec) {
+        if (unixSec < other.unixSec) {
             return -1;
         } else if (unixSec == other.unixSec) {
             if (nanoSec < other.nanoSec) {

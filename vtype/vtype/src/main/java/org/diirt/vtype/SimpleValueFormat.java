@@ -69,7 +69,7 @@ public class SimpleValueFormat extends ValueFormat {
     /**
      * Formats a numeric array. This method can be overridden to change
      * the way numeric arrays are formatted.
-     * 
+     *
      * @param array the array to format
      * @param toAppendTo the buffer to append to
      * @param pos the position of the field
@@ -77,15 +77,15 @@ public class SimpleValueFormat extends ValueFormat {
      */
     protected StringBuffer format(VNumberArray array, StringBuffer toAppendTo, FieldPosition pos) {
         NumberFormat f = nf(array);
-        
+
         toAppendTo.append("[");
         boolean hasMore = false;
-        
+
         ListNumber data = array.getData();
         if (data.size() > maxElements) {
             hasMore = true;
         }
-        
+
         for (int i = 0; i < Math.min(data.size(), maxElements); i++) {
             if (i != 0) {
                 toAppendTo.append(", ");
@@ -96,7 +96,7 @@ public class SimpleValueFormat extends ValueFormat {
                 toAppendTo.append(f.format(data.getDouble(i)));
             }
         }
-        
+
         if (hasMore) {
             toAppendTo.append(", ...");
         }
@@ -107,7 +107,7 @@ public class SimpleValueFormat extends ValueFormat {
     /**
      * Formats a string array. This method can be overridden to change
      * the way string arrays are formatted.
-     * 
+     *
      * @param data the data to format
      * @param toAppendTo the buffer to append to
      * @param pos the position of the field
@@ -116,18 +116,18 @@ public class SimpleValueFormat extends ValueFormat {
     protected StringBuffer format(List<String> data, StringBuffer toAppendTo, FieldPosition pos) {
         toAppendTo.append("[");
         boolean hasMore = false;
-        
+
         if (data.size() > maxElements) {
             hasMore = true;
         }
-        
+
         for (int i = 0; i < Math.min(data.size(), maxElements); i++) {
             if (i != 0) {
                 toAppendTo.append(", ");
             }
             toAppendTo.append(data.get(i));
         }
-        
+
         if (hasMore) {
             toAppendTo.append(", ...");
         }
@@ -138,7 +138,7 @@ public class SimpleValueFormat extends ValueFormat {
     /**
      * Formats a boolean array. This method can be overridden to change
      * the way string arrays are formatted.
-     * 
+     *
      * @param data the data to format
      * @param toAppendTo the buffer to append to
      * @param pos the position of the field
@@ -147,18 +147,18 @@ public class SimpleValueFormat extends ValueFormat {
     protected StringBuffer format(ListBoolean data, StringBuffer toAppendTo, FieldPosition pos) {
         toAppendTo.append("[");
         boolean hasMore = false;
-        
+
         if (data.size() > maxElements) {
             hasMore = true;
         }
-        
+
         for (int i = 0; i < Math.min(data.size(), maxElements); i++) {
             if (i != 0) {
                 toAppendTo.append(", ");
             }
             toAppendTo.append(data.getBoolean(i));
         }
-        
+
         if (hasMore) {
             toAppendTo.append(", ...");
         }
@@ -171,19 +171,19 @@ public class SimpleValueFormat extends ValueFormat {
         if (array instanceof VNumberArray) {
             return format((VNumberArray) array, toAppendTo, pos);
         }
-        
+
         if (array instanceof VStringArray) {
             return format(((VStringArray) array).getData(), toAppendTo, pos);
         }
-        
+
         if (array instanceof VBooleanArray) {
             return format(((VBooleanArray) array).getData(), toAppendTo, pos);
         }
-        
+
         if (array instanceof VEnumArray) {
             return format(((VEnumArray) array).getData(), toAppendTo, pos);
         }
-        
+
         throw new UnsupportedOperationException("Type " + array.getClass().getName() + " not yet supported.");
     }
 }

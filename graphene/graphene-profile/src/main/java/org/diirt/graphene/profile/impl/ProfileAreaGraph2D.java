@@ -14,9 +14,9 @@ import org.diirt.graphene.profile.utils.DatasetFactory;
 
 /**
  * Handles profiling for <code>AreaGraph2DRenderer</code>.
- * Takes a <code>Cell1DDataset</code> dataset and repeatedly renders 
+ * Takes a <code>Cell1DDataset</code> dataset and repeatedly renders
  * through a <code>Cell1DDataset</code>.
- * 
+ *
  * @author asbarber
  */
 public class ProfileAreaGraph2D extends ProfileGraph2D<AreaGraph2DRenderer, Cell1DDataset>{
@@ -35,11 +35,11 @@ public class ProfileAreaGraph2D extends ProfileGraph2D<AreaGraph2DRenderer, Cell
     protected void render(Graphics2D graphics, AreaGraph2DRenderer renderer, Cell1DDataset data) {
         renderer.draw(graphics, data);
     }
-   
+
     @Override
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
-        
+
         map.put("None", null);
 
         return map;
@@ -49,5 +49,5 @@ public class ProfileAreaGraph2D extends ProfileGraph2D<AreaGraph2DRenderer, Cell
     public String getGraphTitle() {
         return "AreaGraph2D";
     }
-    
+
 }

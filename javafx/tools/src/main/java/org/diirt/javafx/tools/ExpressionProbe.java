@@ -48,7 +48,7 @@ import org.diirt.vtype.VTypeToString;
 import org.diirt.vtype.ValueUtil;
 
 public final class ExpressionProbe extends ScrollPane {
-    
+
     @FXML
     private TextField nameField;
     @FXML
@@ -78,7 +78,7 @@ public final class ExpressionProbe extends ScrollPane {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -87,31 +87,31 @@ public final class ExpressionProbe extends ScrollPane {
 
         propertyNameColumn.setCellValueFactory(new PropertyValueFactory<>("key"));
         propertyValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
-        
+
         setExpression(null);
-        
-        
+
+
     }
-    
+
     private Timeline timeline;
-    
+
     public void startTimer() {
         stopTimer();
-        
+
         timeline = new Timeline(new KeyFrame(
                 Duration.millis(2500),
                 ae -> channelInfo()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
-    
+
     public void stopTimer() {
         if (timeline != null) {
             timeline.stop();
             timeline = null;
         }
     }
-    
+
     public static class Property {
         private final String key;
         private final String value;
@@ -128,12 +128,12 @@ public final class ExpressionProbe extends ScrollPane {
         public String getValue() {
             return value;
         }
-        
+
     }
-    
+
     private String expression;
     private FormulaAst ast;
-    
+
     public void setExpression(String expression) {
         this.expression = expression;
         if (expression == null) {
@@ -145,7 +145,7 @@ public final class ExpressionProbe extends ScrollPane {
         }
         channelInfo();
     }
-    
+
     private void channelInfo() {
         if (ast != null && ast.getType() == FormulaAst.Type.CHANNEL) {
             // Formula is a channel
@@ -169,7 +169,7 @@ public final class ExpressionProbe extends ScrollPane {
             channelMetadata.setManaged(false);
         }
     }
-//    
+//
 //    private void numberDisplay(Display display) {
 //        if (display == null) {
 //            numberMetadata.setVisible(false);
@@ -184,7 +184,7 @@ public final class ExpressionProbe extends ScrollPane {
 //            unitField.setText(display.getUnits());
 //        }
 //    }
-//    
+//
 //    private void enumMetadata(Object value) {
 //        if (value instanceof org.diirt.vtype.Enum) {
 //            enumMetadata.setVisible(true);
@@ -195,7 +195,7 @@ public final class ExpressionProbe extends ScrollPane {
 //            enumMetadata.setManaged(false);
 //        }
 //    }
-//    
+//
 //    public static class VTableColumn {
 //        private final VTable vTable;
 //        private final int columnIndex;
@@ -204,15 +204,15 @@ public final class ExpressionProbe extends ScrollPane {
 //            this.vTable = vTable;
 //            this.columnIndex = columnIndex;
 //        }
-//        
+//
 //        public String getName() {
 //            return vTable.getColumnName(columnIndex);
 //        }
-//        
+//
 //        public String getType() {
 //            return vTable.getColumnType(columnIndex).getSimpleName();
 //        }
-//        
+//
 //        public int getSize() {
 //            Object data = vTable.getColumnData(columnIndex);
 //            if (data instanceof ListNumber) {
@@ -223,10 +223,10 @@ public final class ExpressionProbe extends ScrollPane {
 //                return 0;
 //            }
 //        }
-//        
-//        
+//
+//
 //    }
-//    
+//
 //    private void tableMetadata(Object value) {
 //        if (value instanceof org.diirt.vtype.VTable) {
 //            tableMetadata.setVisible(true);

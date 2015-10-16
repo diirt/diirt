@@ -30,11 +30,11 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 class IntensityGraph2DFunction implements ReadFunction<Graph2DResult> {
-    
+
     private ReadFunction<VNumberArray> arrayData;
-    
+
     private IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(300, 200);
-    
+
     private VNumberArray oldData;
     private Graph2DResult previousResult;
     private final QueueCollector<IntensityGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
@@ -42,7 +42,7 @@ class IntensityGraph2DFunction implements ReadFunction<Graph2DResult> {
     public IntensityGraph2DFunction(ReadFunction<?> arrayData) {
         this.arrayData = new CheckedReadFunction<VNumberArray>(arrayData, "Data", VNumberArray.class);
     }
-    
+
     public QueueCollector<IntensityGraph2DRendererUpdate> getUpdateQueue() {
         return rendererUpdateQueue;
     }
@@ -50,49 +50,49 @@ class IntensityGraph2DFunction implements ReadFunction<Graph2DResult> {
     @Override
     public Graph2DResult readValue() {
         VNumberArray data = arrayData.readValue();
-        
+
         // Data must be available
         if (data == null) {
             return null;
         }
 
         List<IntensityGraph2DRendererUpdate> updates = getUpdateQueue().readValue();
-        
+
         // If data is old and no updates, return the previous result
         if (data == oldData && updates.isEmpty()) {
             return previousResult;
         }
-        
+
         oldData = data;
-        
+
         // TODO: check array is one dimensional
 
         Cell2DDataset dataset = DatasetConversions.cell2DDatasetsFromVNumberArray(data);
-        
+
         // Process all renderer updates
         for (IntensityGraph2DRendererUpdate rendererUpdate : updates) {
             renderer.update(rendererUpdate);
         }
-        
+
         // If no size is set, don't calculate anything
         if (renderer.getImageHeight() == 0 && renderer.getImageWidth() == 0)
             return null;
-        
+
         GraphBuffer buffer = new GraphBuffer(renderer);
         renderer.draw(buffer, dataset);
-        
+
         return new Graph2DResult(data, ValueUtil.toVImage(buffer.getImage()),
                 new GraphDataRange(renderer.getXPlotRange(), dataset.getXRange(), dataset.getXRange()),
                 new GraphDataRange(renderer.getYPlotRange(), dataset.getYRange(), dataset.getYRange()),
                 -1, selectionData(data, renderer));
     }
-    
+
     private VNumberArray selectionData(VNumberArray data, IntensityGraph2DRenderer renderer) {
         if (renderer.getXIndexSelectionRange() == null ||
                 renderer.getYIndexSelectionRange() == null) {
             return null;
         }
-        
+
         ArrayDimensionDisplay xDisplay = data.getDimensionDisplay().get(1);
         int leftIndex = (int) renderer.getXIndexSelectionRange().getMinimum();
         int rightIndex = (int) renderer.getXIndexSelectionRange().getMaximum();
@@ -101,7 +101,7 @@ class IntensityGraph2DFunction implements ReadFunction<Graph2DResult> {
             leftIndex = data.getSizes().getInt(1) - 1 - leftIndex;
             rightIndex = data.getSizes().getInt(1) - 1 - rightIndex;
         }
-        
+
         ArrayDimensionDisplay yDisplay = data.getDimensionDisplay().get(0);
         int bottomIndex = (int) renderer.getYIndexSelectionRange().getMinimum();
         int topIndex = (int) renderer.getYIndexSelectionRange().getMaximum();
@@ -125,5 +125,5 @@ class IntensityGraph2DFunction implements ReadFunction<Graph2DResult> {
         }, new ArrayInt(ySize, xSize), Arrays.asList(ValueFactory.newDisplay(ListMath.limit(yDisplay.getCellBoundaries(), bottomIndex, topIndex + 1), yDisplay.getUnits()),
                 ValueFactory.newDisplay(ListMath.limit(xDisplay.getCellBoundaries(), leftIndex, rightIndex + 1), yDisplay.getUnits())), data, data, data);
     }
-    
+
 }

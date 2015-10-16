@@ -8,7 +8,7 @@ import java.util.Objects;
 import org.diirt.util.array.ListNumber;
 
 class IArrayDimensionDisplay implements ArrayDimensionDisplay {
-    
+
     private final ListNumber cellBoundaries;
     private final boolean reversed;
     private final String units;
@@ -18,12 +18,12 @@ class IArrayDimensionDisplay implements ArrayDimensionDisplay {
         this.reversed = reversed;
         this.units = units;
     }
-    
+
     @Override
     public ListNumber getCellBoundaries() {
         return cellBoundaries;
     }
-    
+
     public int getSize() {
         return getCellBoundaries().size() - 1;
     }
@@ -37,7 +37,7 @@ class IArrayDimensionDisplay implements ArrayDimensionDisplay {
     public boolean isReversed() {
         return reversed;
     }
-    
+
 
     @Override
     public int hashCode() {
@@ -52,9 +52,9 @@ class IArrayDimensionDisplay implements ArrayDimensionDisplay {
                     Objects.equals(info.isReversed(), isReversed()) &&
                     Objects.equals(info.getUnits(), getUnits()) &&
                     Objects.equals(info.getCellBoundaries(), getCellBoundaries());
-                    
+
         }
-        
+
         return false;
     }
 }

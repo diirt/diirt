@@ -14,7 +14,7 @@ import org.diirt.util.time.TimeDuration;
  * @author carcassi
  */
 class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
-    
+
     private volatile ScheduledFuture<?> scanTaskHandle;
 
     public ActiveScanDecoupler(ScheduledExecutorService scannerExecutor,
@@ -50,7 +50,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
             throw new IllegalStateException("Scan was never started");
         }
     }
-    
+
     @Override
     void newReadConnectionEvent() {
         // Do nothing
@@ -89,7 +89,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
         event.addWriteFailed(new RuntimeException());
         sendDesiredRateEvent(event);
     }
-    
+
     /**
      * If possible, submit the event right away, otherwise try again later.
      * @param event the event to submit
@@ -107,5 +107,5 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
             });
         }
     }
-    
+
 }

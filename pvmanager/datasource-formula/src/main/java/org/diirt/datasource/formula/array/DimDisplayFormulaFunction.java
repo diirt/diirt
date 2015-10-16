@@ -58,12 +58,12 @@ class DimDisplayFormulaFunction implements FormulaFunction {
     public Object calculate(final List<Object> args) {
         VNumber size = (VNumber) args.get(0);
         VBoolean invert = (VBoolean) args.get(1);
-        
+
         if (size == null || invert == null) {
             return null;
         }
-        
+
         return ValueFactory.newDisplay(size.getValue().intValue(), VTableFactory.step(0, 1), invert.getValue());
     }
-    
+
 }

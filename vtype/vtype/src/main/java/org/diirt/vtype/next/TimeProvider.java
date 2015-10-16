@@ -10,10 +10,10 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 interface TimeProvider {
-    
+
     /**
      * The time associated with this value.
-     * 
+     *
      * @return the time; not null
      */
     Time getTime();

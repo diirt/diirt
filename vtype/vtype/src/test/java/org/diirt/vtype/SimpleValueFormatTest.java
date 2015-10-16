@@ -48,7 +48,7 @@ public class SimpleValueFormatTest {
     Display display = newDisplay(Double.MIN_VALUE, Double.MIN_VALUE,
             Double.MIN_VALUE, "", NumberFormats.format(3), Double.MAX_VALUE,
             Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
-    
+
     Display displayInt = newDisplay(Double.MIN_VALUE, Double.MIN_VALUE,
             Double.MIN_VALUE, "", NumberFormats.format(0), Double.MAX_VALUE,
             Double.MAX_VALUE, Double.MAX_VALUE, Double.MIN_VALUE, Double.MAX_VALUE);
@@ -98,7 +98,7 @@ public class SimpleValueFormatTest {
         assertThat(f.format(newVStringArray(Arrays.asList("A"), alarmNone(), timeNow())), equalTo("[A]"));
         assertThat(f.format(newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow())), equalTo("[A, B, C, ...]"));
     }
-    
+
     @Test
     public void parseVDouble1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -107,7 +107,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseDouble("3.14"), equalTo(3.14));
         assertThat(f.parseDouble("1333"), equalTo(1333.0));
     }
-    
+
     @Test
     public void parseVFloat1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -116,7 +116,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseFloat("3.14"), equalTo(3.14f));
         assertThat(f.parseFloat("1333"), equalTo(1333.0f));
     }
-    
+
     @Test
     public void parseVInt1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -125,7 +125,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseInt("314"), equalTo(314));
         assertThat(f.parseInt("1333"), equalTo(1333));
     }
-    
+
     @Test
     public void parseVShort1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -134,7 +134,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseShort("314"), equalTo((short) 314));
         assertThat(f.parseShort("1333"), equalTo((short) 1333));
     }
-    
+
     @Test
     public void parseVByte1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -143,7 +143,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseByte("23"), equalTo((byte) 23));
         assertThat(f.parseByte("112"), equalTo((byte) 112));
     }
-    
+
     @Test
     public void parseVString1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -152,7 +152,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseString("Testing"), equalTo("Testing"));
         assertThat(f.parseString("Foo"), equalTo("Foo"));
     }
-    
+
     @Test
     public void parseVEnum1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -162,7 +162,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseEnum("A", labels), equalTo(0));
         assertThat(f.parseEnum("B", labels), equalTo(1));
     }
-    
+
     @Test
     public void parseVDoubleArray1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -172,7 +172,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseDoubleArray("1333, 3.14"), equalTo((ListDouble) new ArrayDouble(1333, 3.14)));
         assertThat(f.parseDoubleArray("1.0, 2.0, 3.0, 4.0"), equalTo((ListDouble) new ArrayDouble(1.0, 2.0, 3.0, 4.0)));
     }
-    
+
     @Test
     public void parseVFloatArray1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -182,7 +182,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseFloatArray("1333, 3.14"), equalTo((ListFloat) new ArrayFloat(1333f, 3.14f)));
         assertThat(f.parseFloatArray("1.0, 2.0, 3.0, 4.0"), equalTo((ListFloat) new ArrayFloat(1.0f, 2.0f, 3.0f, 4.0f)));
     }
-    
+
     @Test
     public void parseVIntArray1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -192,7 +192,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseIntArray("1333, 3"), equalTo((ListInt) new ArrayInt(1333, 3)));
         assertThat(f.parseIntArray("1, 2, 3, 4"), equalTo((ListInt) new ArrayInt(1, 2, 3, 4)));
     }
-    
+
     @Test
     public void parseVShortArray1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -202,7 +202,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseShortArray("1333, 3"), equalTo((ListShort) new ArrayShort(new short[]{1333, 3})));
         assertThat(f.parseShortArray("1, 2, 3, 4"), equalTo((ListShort) new ArrayShort(new short[]{1, 2, 3, 4})));
     }
-    
+
     @Test
     public void parseVByteArray1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -212,7 +212,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseByteArray("113, 3"), equalTo((ListByte) new ArrayByte(new byte[] {113, 3})));
         assertThat(f.parseByteArray("1, 2, 3, 4"), equalTo((ListByte) new ArrayByte(new byte[] {1, 2, 3, 4})));
     }
-    
+
     @Test
     public void parseVStringArray1() {
         ValueFormat f = new SimpleValueFormat(3);
@@ -222,7 +222,7 @@ public class SimpleValueFormatTest {
         assertThat(f.parseStringArray("a, b"), equalTo(Arrays.asList("a", "b")));
         assertThat(f.parseStringArray("a, b, c, d"), equalTo(Arrays.asList("a", "b", "c", "d")));
     }
-    
+
     @Test
     public void parseVEnumArray1() {
         ValueFormat f = new SimpleValueFormat(3);

@@ -21,7 +21,7 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
     private String name;
     private final SourceRateExpression<?> sourceRateChild;
     private final DesiredRateExpressionList<?> desiredRateChildren;
-    
+
     {
         // Make sure that the list includes this expression
         addThis();
@@ -101,12 +101,12 @@ public class DesiredRateExpressionImpl<R> extends DesiredRateExpressionListImpl<
 
     /**
      * The implementation for this expression.
-     * 
+     *
      * @return returns the implementation for this desired rate
      */
     @Override
     public final DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl() {
         return this;
     }
-    
+
 }

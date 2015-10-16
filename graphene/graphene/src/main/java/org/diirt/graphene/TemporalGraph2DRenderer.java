@@ -28,20 +28,20 @@ import org.diirt.util.time.Timestamp;
  * @author carcassi
  */
 public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererUpdate> {
-    
+
     protected double xPlotValueStart;
     protected double yPlotValueStart;
     protected double xPlotValueEnd;
     protected double yPlotValueEnd;
-    
+
     protected double yPlotCoordHeight;
     protected double xPlotCoordWidth;
-    
+
     protected double xPlotCoordStart;
     protected double yPlotCoordStart;
     protected double yPlotCoordEnd;
     protected double xPlotCoordEnd;
-    
+
     protected int xAreaStart;
     protected int yAreaStart;
     protected int yAreaEnd;
@@ -50,7 +50,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * Creates a graph renderer.
-     * 
+     *
      * @param graphWidth the graph width
      * @param graphHeight the graph height
      */
@@ -61,7 +61,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The current height of the graph.
-     * 
+     *
      * @return the graph height
      */
     public int getImageHeight() {
@@ -70,17 +70,17 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The current width of the graph.
-     * 
+     *
      * @return the graph width
      */
     public int getImageWidth() {
         return imageWidth;
     }
-    
+
     protected Graphics2D g;
-    
+
     // Renderer external parameter //
-    
+
     // Size of the image
     private int imageWidth;
     private int imageHeight;
@@ -108,9 +108,9 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     // Axis label margins
     protected int xLabelMargin = 3;
     protected int yLabelMargin = 3;
-    
+
     // Computed parameters, visible to outside //
-    
+
     private Range aggregatedValueRange;
     private TimeInterval aggregatedTimeInterval;
     private Range plotValueRange;
@@ -128,7 +128,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The current strategy to calculate the x range for the graph.
-     * 
+     *
      * @return the x axis range calculator
      */
     public AxisRange getAxisRange() {
@@ -137,7 +137,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The current strategy to calculate the y range for the graph.
-     * 
+     *
      * @return the y axis range calculator
      */
     public TimeAxisRange getTimeAxisRange() {
@@ -146,7 +146,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The aggregated range of all the data that has been rendered.
-     * 
+     *
      * @return the aggregated data x range
      */
     public Range getAggregatedRange() {
@@ -155,7 +155,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The aggregated range of all the data that has been rendered.
-     * 
+     *
      * @return the aggregated data y range
      */
     public TimeInterval getAggregatedTimeInterval() {
@@ -164,7 +164,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The range of the x axis in the last graph rendering.
-     * 
+     *
      * @return the x axis range
      */
     public Range getPlotRange() {
@@ -173,7 +173,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 
     /**
      * The range of the y axis in the last graph rendering.
-     * 
+     *
      * @return the y axis range
      */
     public TimeInterval getPlotTimeInterval() {
@@ -185,7 +185,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
      * <p>
      * When sub-classing, one should re-implement this method by first calling it
      * and then applying all the updates specific to the sub-class.
-     * 
+     *
      * @param update the update to apply
      */
     public void update(T update) {
@@ -208,7 +208,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             timeScale = update.getTimeScale();
         }
     }
-    
+
     static Range aggregateRange(Range dataRange, Range aggregatedRange) {
         if (aggregatedRange == null) {
             return dataRange;
@@ -216,7 +216,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             return dataRange.combine(aggregatedRange);
         }
     }
-    
+
     static TimeInterval aggregateTimeInterval(TimeInterval dataTimeInterval, TimeInterval aggregatedTimeInterval) {
         if (aggregatedTimeInterval == null) {
             return dataTimeInterval;
@@ -244,14 +244,14 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             return TimeInterval.between(start, end);
         }
     }
-    
+
     /**
      * Creates a new update for the given graph.
-     * 
+     *
      * @return a new update object
      */
     public abstract T newUpdate();
-    
+
     protected void calculateRanges(Range valueRange, TimeInterval timeInterval) {
         aggregatedValueRange = aggregateRange(valueRange, aggregatedValueRange);
         aggregatedTimeInterval = aggregateTimeInterval(timeInterval, aggregatedTimeInterval);
@@ -259,7 +259,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         plotValueRange = axisRange.axisRange(valueRange, valueRange);
         plotTimeInterval = timeAxisRange.axisRange(timeInterval, aggregatedTimeInterval);
     }
-    
+
     protected void drawHorizontalReferenceLines() {
         g.setColor(referenceLineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -279,7 +279,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             g.draw(line);
         }
     }
-    
+
     protected void calculateGraphArea() {
         TimeAxis timeAxis = timeScale.references(plotTimeInterval, 2, Math.max(2, getImageWidth() / 100));
         ValueAxis valueAxis = valueScale.references(plotValueRange, 2, Math.max(2, getImageHeight()/ 60));
@@ -288,13 +288,13 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         timeReferences = timeAxis.getTimestamps();
         normalizedTimeReferences = timeAxis.getNormalizedValues();
         valueReferences = new ArrayDouble(valueAxis.getTickValues());
-        
+
         labelFontMetrics = g.getFontMetrics(labelFont);
-        
+
         // Compute x axis spacing
         xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
         int areaFromBottom = bottomMargin + xLabelMaxHeight*2 + xLabelMargin + 3;
-        
+
         // Compute y axis spacing
         int[] yLabelWidths = new int[valueReferenceLabels.size()];
         yLabelMaxWidth = 0;
@@ -318,13 +318,13 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         yPlotCoordEnd = yAreaEnd - rightAreaMargin + 0.5;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
         yPlotCoordHeight = yPlotCoordEnd - yPlotCoordStart;
-        
+
         double[] xRefCoords = new double[normalizedTimeReferences.size()];
         for (int i = 0; i < xRefCoords.length; i++) {
             xRefCoords[i] = scaledX(normalizedTimeReferences.getDouble(i));
         }
         xReferenceCoords = new ArrayDouble(xRefCoords);
-        
+
         double[] yRefCoords = new double[valueReferences.size()];
         for (int i = 0; i < yRefCoords.length; i++) {
             yRefCoords[i] = scaledY(valueReferences.getDouble(i));
@@ -336,30 +336,30 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getImageWidth(), getImageHeight());
     }
-    
+
     protected void drawGraphArea() {
         drawBackground();
-        
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         // When drawing the reference line, align them to the pixel
         drawVerticalReferenceLines();
         drawHorizontalReferenceLines();;
-        
+
         drawYLabels();
         drawXLabels();
     }
-    
+
     protected void drawValueLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation) {
         // Scale data and sort data
         int dataCount = xValues.size();
         double[] scaledX = new double[dataCount];
         double[] scaledY = new double[dataCount];
 
-	for (int i = 0; i < scaledY.length; i++) {
+        for (int i = 0; i < scaledY.length; i++) {
             scaledX[i] = scaledX(xValues.getDouble(i));
             scaledY[i] = scaledY(yValues.getDouble(i));
         }
-        
+
         Path2D path;
         switch (interpolation) {
             default:
@@ -403,16 +403,16 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[0], scaledY[0]);
         for (int i = 1; i < scaledY.length; i++) {
-	    line.lineTo(scaledX[i], scaledY[i-1]);
-	    if ( !Double.isNaN( scaledY[ i ] ) ) {
-		line.lineTo(scaledX[i], scaledY[i]);
-	    }
-	    else {
-		line.moveTo( scaledX[ i ] , scaledY[ i ] );
-	    }
+            line.lineTo(scaledX[i], scaledY[i-1]);
+            if ( !Double.isNaN( scaledY[ i ] ) ) {
+                line.lineTo(scaledX[i], scaledY[i]);
+            }
+            else {
+                line.moveTo( scaledX[ i ] , scaledY[ i ] );
+            }
         }
 //        line.lineTo(scaledX[scaledX.length - 1], scaledY[scaledY.length - 1]);
-        //TODO: last value till end of the graph 
+        //TODO: last value till end of the graph
         return line;
     }
 
@@ -422,7 +422,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 //        for (int i = 1; i < scaledY.length; i++) {
 //            line.lineTo(scaledX[i], scaledY[i]);
 //        }
-        
+
          for (int i = 0; i < scaledX.length; i++) {
             // Do I have a current value?
             if (!java.lang.Double.isNaN(scaledY[i])) {
@@ -450,7 +450,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     private static Path2D.Double cubicInterpolation(double[] scaledX, double[] scaledY) {
         Path2D.Double path = new Path2D.Double();
         for (int i = 0; i < scaledX.length; i++) {
-            
+
             double y1;
             double y2;
             double x1;
@@ -459,7 +459,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             double x0;
             double y3;
             double x3;
-            
+
             double bx0;
             double by0;
             double bx3;
@@ -470,7 +470,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             double by1;
             double bx2;
             double by2;
-          
+
             //Do I have current value?
             if (!java.lang.Double.isNaN(scaledY[i])){
                 //Do I have previous value?
@@ -498,7 +498,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                         else{//Have current, previous, two before, but not value after
                             y2 = scaledY[i];
                             x2 = scaledX[i];
@@ -519,7 +519,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                     } else if (i != scaledX.length- 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
                         //Have current , previous, and next, but not two before
                         path.moveTo(scaledX[i - 1], scaledY[i - 1]);
@@ -604,19 +604,19 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
 //        }
 //        return path;
     }
-    
+
     private static final int MIN = 0;
     private static final int MAX = 1;
-    
+
     private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
         int targetY = yCenter;
         int halfHeight = metrics.getAscent() / 2;
@@ -635,23 +635,23 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
-        
+
         if (updateMin) {
             drawRange[MAX] = targetY - metrics.getHeight();
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
         }
     }
-    
+
     private static void drawVerticalReferenceLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
         int targetX = xCenter;
         int halfWidth = metrics.stringWidth(text) / 2;
@@ -670,23 +670,23 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
-        
+
         if (updateMin) {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
             drawRange[MAX] = targetX - metrics.getHeight();
         }
     }
-    
+
 
     protected final double scaledX(double value) {
-	return timeScale.scaleNormalizedTime(value, xPlotCoordStart, xPlotCoordEnd);
+        return timeScale.scaleNormalizedTime(value, xPlotCoordStart, xPlotCoordEnd);
     }
 
     protected final double scaledY(double value) {
         return valueScale.scaleValue(value, yPlotValueStart, yPlotValueEnd, yPlotCoordEnd, yPlotCoordStart);
     }
-    
+
     protected void setClip(Graphics2D g) {
         g.setClip(xAreaStart, yAreaStart, xAreaEnd - xAreaStart + 1, yAreaEnd - yAreaStart + 1);
     }
@@ -707,7 +707,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
                 drawRange, xRightLabel, true, false);
             drawHorizontalReferencesLabel(g, metrics, valueReferenceLabels.get(valueReferenceLabels.size() - 1), (int) Math.floor(yTicks.getDouble(valueReferenceLabels.size() - 1)),
                 drawRange, xRightLabel, false, false);
-            
+
             for (int i = 1; i < valueReferenceLabels.size() - 1; i++) {
                 drawHorizontalReferencesLabel(g, metrics, valueReferenceLabels.get(i), (int) Math.floor(yTicks.getDouble(i)),
                     drawRange, xRightLabel, true, false);
@@ -727,9 +727,9 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             // Draw first and last label
             int[] drawRange = new int[] {xAreaStart, xAreaEnd};
             int yTop = (int) (yAreaEnd + xLabelMargin + 1);
-	    if ( !timeReferenceLabels.get( 0 ).contains(" ") ) {
-		timeReferenceLabels.set( 0 , timeReferenceLabels.get( 0 ) + " " );
-	    }
+            if ( !timeReferenceLabels.get( 0 ).contains(" ") ) {
+                timeReferenceLabels.set( 0 , timeReferenceLabels.get( 0 ) + " " );
+            }
             String firstHalf = timeReferenceLabels.get(0).substring(0, timeReferenceLabels.get(0).indexOf(" "));
             String secondHalf = timeReferenceLabels.get(0).substring(timeReferenceLabels.get(0).indexOf(" ") + 1);
             drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(0)),
@@ -737,57 +737,57 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             drawRange[MIN] = xAreaStart;
             drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(0)),
                 drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, true, false);
-	    
-	    //XXX last label may have two parts that needs to be
-	    //drawn on two different lines
-	    //this is only a hack
-	    String lastLabel = timeReferenceLabels.get( timeReferenceLabels.size()-1 );
-	    if ( lastLabel.contains( " " ) ) {
-		firstHalf = lastLabel.substring( 0 , lastLabel.indexOf( " " ) );
-		secondHalf = lastLabel.substring( lastLabel.indexOf( " " ) );
-	    }
-	    else {
-		firstHalf = lastLabel;
-		secondHalf = "";
-	    }
-	    if ( secondHalf.equals( "" ) ) {
-		drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
-		    drawRange, yTop, false, false);
-	    }
-	    else {
-		int tmp = drawRange[ 1 ];
-		drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
-		    drawRange, yTop, false, false);
-		drawRange[ 1 ] = tmp;
-		drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
-		    drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, false, false);
-	    }
-            
-	    //XXX label splitting needs to be reviewed and reimplemented
-	    //more elegantly/concisely
+
+            //XXX last label may have two parts that needs to be
+            //drawn on two different lines
+            //this is only a hack
+            String lastLabel = timeReferenceLabels.get( timeReferenceLabels.size()-1 );
+            if ( lastLabel.contains( " " ) ) {
+                firstHalf = lastLabel.substring( 0 , lastLabel.indexOf( " " ) );
+                secondHalf = lastLabel.substring( lastLabel.indexOf( " " ) );
+            }
+            else {
+                firstHalf = lastLabel;
+                secondHalf = "";
+            }
+            if ( secondHalf.equals( "" ) ) {
+                drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+                    drawRange, yTop, false, false);
+            }
+            else {
+                int tmp = drawRange[ 1 ];
+                drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+                    drawRange, yTop, false, false);
+                drawRange[ 1 ] = tmp;
+                drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+                    drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, false, false);
+            }
+
+            //XXX label splitting needs to be reviewed and reimplemented
+            //more elegantly/concisely
             for (int i = 1; i < timeReferenceLabels.size() - 1; i++) {
-		if ( !timeReferenceLabels.get( i ).contains( " " ) ) {
-		    firstHalf = timeReferenceLabels.get( i );
-		    secondHalf = "";
-		}
-		else {
-		    firstHalf = timeReferenceLabels.get( i ).substring( 0 , timeReferenceLabels.get(i).indexOf( " " ) );
-		    secondHalf = timeReferenceLabels.get( i ).substring( timeReferenceLabels.get(i).indexOf( " " ) + 1 );
-		}
-		if ( secondHalf.equals( "" ) ) {
-		    drawVerticalReferenceLabel(g, metrics, timeReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
+                if ( !timeReferenceLabels.get( i ).contains( " " ) ) {
+                    firstHalf = timeReferenceLabels.get( i );
+                    secondHalf = "";
+                }
+                else {
+                    firstHalf = timeReferenceLabels.get( i ).substring( 0 , timeReferenceLabels.get(i).indexOf( " " ) );
+                    secondHalf = timeReferenceLabels.get( i ).substring( timeReferenceLabels.get(i).indexOf( " " ) + 1 );
+                }
+                if ( secondHalf.equals( "" ) ) {
+                    drawVerticalReferenceLabel(g, metrics, timeReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
                         drawRange, yTop, true, false);
-		}
-		else {
-		    
-		    //XXX this is a hack
-		    int tmp = drawRange[ 0 ];
-		    drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(i)),
+                }
+                else {
+
+                    //XXX this is a hack
+                    int tmp = drawRange[ 0 ];
+                    drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(i)),
                         drawRange, yTop, true , false);
-		    drawRange[ 0 ] = tmp;
-		    drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(i)),
-                        drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, true, false);		    
-		}
+                    drawRange[ 0 ] = tmp;
+                    drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(i)),
+                        drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, true, false);
+                }
             }
         }
     }

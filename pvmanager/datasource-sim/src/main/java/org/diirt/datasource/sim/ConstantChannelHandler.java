@@ -16,7 +16,7 @@ import org.diirt.vtype.ValueFactory;
  * @author carcassi
  */
 class ConstantChannelHandler extends MultiplexedChannelHandler<Object, Object> {
-    
+
     private static final Logger log = Logger.getLogger(ConstantChannelHandler.class.getName());
 
     public ConstantChannelHandler(String channelName) {

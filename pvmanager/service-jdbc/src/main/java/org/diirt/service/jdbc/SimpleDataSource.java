@@ -24,13 +24,13 @@ public class SimpleDataSource implements DataSource {
 
     /**
      * Creates the simple DataSource that wraps around a JDBC url.
-     * 
+     *
      * @param jdbcUrl source to wrap around
      */
     public SimpleDataSource(String jdbcUrl) {
         this.jdbcUrl = jdbcUrl;
     }
-    
+
     @Override
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(jdbcUrl);
@@ -75,5 +75,5 @@ public class SimpleDataSource implements DataSource {
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return false;
     }
-    
+
 }

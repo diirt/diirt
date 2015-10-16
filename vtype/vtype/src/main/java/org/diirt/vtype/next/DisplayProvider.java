@@ -10,10 +10,10 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 interface DisplayProvider {
-    
+
     /**
      * The display associated with this value.
-     * 
+     *
      * @return the display; not null
      */
     Display getDisplay();

@@ -41,5 +41,5 @@ class NormalChannel extends MultiplexedChannelHandler<Object, Object> {
     protected boolean isWriteConnected(Object payload) {
         return super.isConnected(payload);
     }
-    
+
 }

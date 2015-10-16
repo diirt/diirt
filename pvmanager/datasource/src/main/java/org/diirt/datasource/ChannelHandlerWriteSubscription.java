@@ -17,7 +17,7 @@ public class ChannelHandlerWriteSubscription {
 
     /**
      * Creates a new subscription.
-     * 
+     *
      * @param writeCache the cache where to read the value from
      * @param exceptionWriteFunction the write function to notify to process errors
      * @param connectionWriteFunction the write function to notify for connection updates
@@ -27,14 +27,14 @@ public class ChannelHandlerWriteSubscription {
         this.exceptionWriteFunction = exceptionWriteFunction;
         this.connectionWriteFunction = connectionWriteFunction;
     }
-    
+
     private final WriteCache<?> writeCache;
     private final WriteFunction<Exception> exceptionWriteFunction;
     private final WriteFunction<Boolean> connectionWriteFunction;
 
     /**
      * The cache to hold the value to write.
-     * 
+     *
      * @return the write cache
      */
     public WriteCache<?> getWriteCache() {
@@ -43,7 +43,7 @@ public class ChannelHandlerWriteSubscription {
 
     /**
      * The write function for connection/disconnection errors.
-     * 
+     *
      * @return the write function; never null
      */
     public WriteFunction<Exception> getExceptionWriteFunction() {
@@ -52,7 +52,7 @@ public class ChannelHandlerWriteSubscription {
 
     /**
      * The write function for the connection flag.
-     * 
+     *
      * @return the write function; never null
      */
     public WriteFunction<Boolean> getConnectionWriteFunction() {
@@ -88,5 +88,5 @@ public class ChannelHandlerWriteSubscription {
         }
         return true;
     }
-    
+
 }

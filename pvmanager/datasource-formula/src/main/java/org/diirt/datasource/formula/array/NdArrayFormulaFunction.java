@@ -61,14 +61,14 @@ class NdArrayFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray data = (VNumberArray) args.get(0);
         ArrayDimensionDisplay[] displays = new ArrayDimensionDisplay[args.size() - 1];
         for (int i = 0; i < displays.length; i++) {
             displays[i] = (ArrayDimensionDisplay) args.get(i + 1);
         }
-        
+
         return ValueFactory.ndArray(data, displays);
     }
-    
+
 }

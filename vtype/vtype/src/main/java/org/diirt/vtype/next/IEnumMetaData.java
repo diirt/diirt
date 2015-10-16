@@ -14,7 +14,7 @@ import java.util.List;
 class IEnumMetaData extends EnumMetaData {
 
     private final List<String> labels;
-    
+
     IEnumMetaData(List<String> labels) {
         this.labels = labels;
     }

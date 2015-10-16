@@ -12,14 +12,14 @@ import java.util.List;
 
 /**
  * Utility class to print an prefilled HTML table from a function set.
- * 
+ *
  * @author carcassi
  */
 public class PrintFunctionSetTable {
-    
+
     /**
      * Entry point for the utility.
-     * 
+     *
      * @param args command-line arguments
      */
     public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class PrintFunctionSetTable {
                 return o1.getName().compareTo(o2.getName());
             }
         });
-        
+
         System.out.println("        <table border=\"1\" style=\"border-collapse: collapse\">\n" +
 "            <thead>\n" +
 "                <tr>\n" +
@@ -44,7 +44,7 @@ public class PrintFunctionSetTable {
 "                </tr>\n" +
 "            </thead>\n" +
 "            <tbody>");
-        
+
         for (FormulaFunction formulaFunction : functions) {
             System.out.println("                <tr>");
             System.out.println("                    <td><code>" + FormulaFunctions.formatSignature(formulaFunction) + "</code></td>");
@@ -54,7 +54,7 @@ public class PrintFunctionSetTable {
             System.out.println("                    <td>Latest valid time of the arguments or now if no valid time is found</td>");
             System.out.println("                </tr>");
         }
-        
+
         System.out.println("            </tbody>\n" +
 "        </table>");
     }

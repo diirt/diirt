@@ -33,17 +33,17 @@ class DataUtils {
      * number of leap seconds (which should have been 15).
      */
     static long TS_EPOCH_SEC_PAST_1970=631152000; //7305*86400;
-    
+
     /**
      * Converts a JCA timestamp to an epics.util timestamp.
-     * 
+     *
      * @param epicsTimeStamp the epics timestamp
      * @return a new epics.util timestamp
      */
     static org.diirt.util.time.Timestamp timestampOf(gov.aps.jca.dbr.TimeStamp epicsTimeStamp) {
         if (epicsTimeStamp == null)
             return null;
-        
+
         return org.diirt.util.time.Timestamp.of(epicsTimeStamp.secPastEpoch() + TS_EPOCH_SEC_PAST_1970, 0)
                 .plus(TimeDuration.ofNanos(epicsTimeStamp.nsec()));
     }
@@ -100,17 +100,17 @@ class DataUtils {
     static boolean isTimeValid(TimeStamp timeStamp) {
         if (timeStamp == null)
             return false;
-        
+
         long sec = timeStamp.secPastEpoch() + TS_EPOCH_SEC_PAST_1970;
         if (sec == 0 || sec == TS_EPOCH_SEC_PAST_1970) {
             return false;
         }
-        
+
         long nanosec = timeStamp.nsec();
         if (nanosec < 0 || nanosec > 999_999_999) {
             return false;
         }
-        
+
         return true;
     }
 

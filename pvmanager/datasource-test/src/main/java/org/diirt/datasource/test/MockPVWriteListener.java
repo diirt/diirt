@@ -13,13 +13,13 @@ import org.diirt.datasource.PVWriterListener;
  * @author carcassi
  */
 public class MockPVWriteListener<T> implements PVWriterListener<T> {
-    
+
     public static <V> MockPVWriteListener<V> addPVWriteListener(PVWriter<V> pvWriter) {
         MockPVWriteListener<V> listener = new MockPVWriteListener<V>(pvWriter);
         pvWriter.addPVWriterListener(listener);
         return listener;
     }
-    
+
     private int counter;
     private PVWriter<T> pvWriter;
 
@@ -35,5 +35,5 @@ public class MockPVWriteListener<T> implements PVWriterListener<T> {
     public synchronized int getCounter() {
         return counter;
     }
-    
+
 }

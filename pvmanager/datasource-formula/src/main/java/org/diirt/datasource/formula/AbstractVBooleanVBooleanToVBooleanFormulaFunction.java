@@ -24,7 +24,7 @@ import org.diirt.vtype.ValueUtil;
  *    <li>time handling - returns latest time, or now if no time is available</li>
  *    <li>display handling - returns display none</li>
  * </ul>
- * 
+ *
  * @author carcassi
  */
 public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implements FormulaFunction {
@@ -33,10 +33,10 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
     private final String description;
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
-    
+
     /**
      * Creates a new function.
-     * 
+     *
      * @param name function name; can't be null
      * @param description function description; can't be null
      * @param arg1Name first argument name; can't be null
@@ -56,7 +56,7 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
         if (arg2Name == null) {
             throw new NullPointerException("Second argument name can't be null");
         }
-        
+
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VBoolean.class, VBoolean.class);
@@ -103,24 +103,24 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VBoolean arg1 = (VBoolean) args.get(0);
         VBoolean arg2 = (VBoolean) args.get(1);
-        
-	return ValueFactory.newVBoolean(
-		calculate(arg1.getValue(), arg2.getValue()),
+
+        return ValueFactory.newVBoolean(
+                calculate(arg1.getValue(), arg2.getValue()),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args));
+                ValueUtil.latestValidTimeOrNowOf(args));
     }
-    
+
     /**
      * Calculates the result based on the two arguments. This is the only
      * method one has to implement.
-     * 
+     *
      * @param arg1 the first argument
      * @param arg2 the second argument
      * @return the result
      */
     public abstract boolean calculate(boolean arg1, boolean arg2);
-    
+
 }

@@ -32,7 +32,7 @@ public class PvFunction {
                 .maxRate(TimeDuration.ofMillis(50));
 
         Thread.sleep(3000);
-        
+
         PVWriter<Object> namePv = PVManager.write(ExpressionLanguage.channel(pvNamePv))
                 .async();
         System.out.println("Write sim://noise to " + pvNamePv);
@@ -45,7 +45,7 @@ public class PvFunction {
         Thread.sleep(3000);
         System.out.println("Write sim://noise to " + pvNamePv);
         namePv.write("sim://noise");
-        
+
         Thread.sleep(3000);
         System.out.println("Closing...");
         reader.close();

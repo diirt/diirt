@@ -28,7 +28,7 @@ import static org.diirt.vtype.json.JsonArrays.*;
  * @author carcassi
  */
 class JsonVTypeBuilder implements JsonObjectBuilder {
-    
+
     private final JsonObjectBuilder builder = Json.createObjectBuilder();
 
     @Override
@@ -105,20 +105,20 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
     public JsonObject build() {
         return builder.build();
     }
-    
+
     public JsonVTypeBuilder addAlarm(Alarm alarm) {
         return add("alarm", new JsonVTypeBuilder()
                 .add("severity", alarm.getAlarmSeverity().toString())
                 .add("status", alarm.getAlarmName()));
     }
-    
+
     public JsonVTypeBuilder addTime(Time time) {
         return add("time", new JsonVTypeBuilder()
                 .add("unixSec", time.getTimestamp().getSec())
                 .add("nanoSec", time.getTimestamp().getNanoSec())
                 .addNullableObject("userTag", time.getTimeUserTag()));
     }
-    
+
     public JsonVTypeBuilder addDisplay(Display display) {
         return add("display", new JsonVTypeBuilder()
                 .add("lowAlarm", display.getLowerAlarmLimit())
@@ -129,17 +129,17 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
                 .add("highWarning", display.getUpperDisplayLimit())
                 .add("units", display.getUnits()));
     }
-    
+
     public JsonVTypeBuilder addEnum(org.diirt.vtype.Enum en) {
         return add("enum", new JsonVTypeBuilder()
                 .addListString("labels", en.getLabels()));
     }
-    
+
     public JsonVTypeBuilder addListString(String string, List<String> ls) {
         add(string, fromListString(ls));
         return this;
     }
-    
+
     public JsonVTypeBuilder addListColumnType(String string, List<Class<?>> ls) {
         JsonArrayBuilder b = Json.createArrayBuilder();
         for (Class<?> element : ls) {
@@ -189,12 +189,12 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         add(string, b);
         return this;
     }
-    
+
     public JsonVTypeBuilder addListNumber(String string, ListNumber ln) {
         add(string, fromListNumber(ln));
         return this;
     }
-    
+
     public JsonVTypeBuilder addListBoolean(String string, ListBoolean lb) {
         JsonArrayBuilder b = Json.createArrayBuilder();
         for (int i = 0; i < lb.size(); i++) {
@@ -203,7 +203,7 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         add(string, b);
         return this;
     }
-    
+
     public JsonVTypeBuilder addNullableObject(String string, Object o) {
         if (o == null) {
             addNull(string);
@@ -212,12 +212,12 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         }
         return this;
     }
-    
+
     public JsonVTypeBuilder addObject(String string, Object o) {
         if (o == null) {
             return this;
         }
-        
+
         if (o instanceof Double || o instanceof Float) {
             add(string, ((Number) o).doubleValue());
         } else if (o instanceof Byte || o instanceof Short || o instanceof Integer) {
@@ -231,10 +231,10 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         } else {
             throw new UnsupportedOperationException("Class " + o.getClass() + " not supported");
         }
-    
+
         return this;
     }
-    
+
     public JsonVTypeBuilder addType(VType vType) {
         Class<?> clazz = ValueUtil.typeOf(vType);
         return add("type", new JsonVTypeBuilder()

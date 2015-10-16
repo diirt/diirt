@@ -22,7 +22,7 @@ import static org.diirt.util.time.TimeDuration.*;
  * @author carcassi
  */
 public class MultipleChannelExamples {
-    
+
     public void m1_readMultipleChannels() {
         // Read a map with the channels named "one", "two" and "three"
         PVReader<Map<String, Object>> pvReader = PVManager
@@ -34,55 +34,55 @@ public class MultipleChannelExamples {
                     Map<String, Object> map = event.getPvReader().getValue();
                     if (map != null) {
                         System.out.println("one: " + map.get("one") +
-                                " - two: " + map.get("two") + 
+                                " - two: " + map.get("two") +
                                 " - three: " + map.get("three"));
                     }
                 }
             })
             .maxRate(ofMillis(100));
-        
+
         // Remember to close
         pvReader.close();
-        
+
         // Note that when using a composite datasource, the channels can be
-        //from different sources (e.g. "sim://noise" and "ca://mypv"). 
+        //from different sources (e.g. "sim://noise" and "ca://mypv").
     }
-    
+
     public void m2_readMultipleChannels() {
         // Write a map to the channels named "one", "two" and "three"
         PVWriter<Map<String, Object>> pvWriter = PVManager
                 .write(mapOf(channels("one", "two", "three")))
                 .async();
-        
+
         // Prepare the 3 values
         Map<String, Object> values = new HashMap<String, Object>();
         values.put("one", 1.0);
         values.put("two", 2.0);
         values.put("three", "run");
-        
+
         // Write
         pvWriter.write(values);
-        
+
         // Remember to close
         pvWriter.close();
-        
+
         // Note that when using a composite datasource, the channels can be
-        //from different sources (e.g. "sim://noise" and "ca://mypv"). 
+        //from different sources (e.g. "sim://noise" and "ca://mypv").
     }
-    
+
     public void m3_readWriteMultipleChannels() {
         // Read and write a map to the channels named "one", "two" and "three"
         PV<Map<String, Object>, Map<String, Object>> pv = PVManager
             .readAndWrite(mapOf(latestValueOf(channels("one", "two", "three"))))
             .asynchWriteAndMaxReadRate(ofMillis(100));
-        
+
         // Do something
         // ...
-        
+
         // Remember to close
         pv.close();
     }
-    
+
     public void m4_renameChannels() {
         // Read a map with the channels "one", "two" and "three"
         // reffered in the map as "setpoint", "readback" and "difference"
@@ -97,19 +97,19 @@ public class MultipleChannelExamples {
                     Map<String, Object> map = event.getPvReader().getValue();
                     if (map != null) {
                         System.out.println("setpoint: " + map.get("setpoint") +
-                                " - readback: " + map.get("readback") + 
+                                " - readback: " + map.get("readback") +
                                 " - difference: " + map.get("difference"));
                     }
                 }
             })
             .maxRate(ofMillis(100));
-        
+
         // Remember to close
         pvReader.close();
-        
+
         // Any expression however created can be renamed.
     }
-    
+
     public void m5_writeOrdering() {
         // Write a map to the channels named "one", "two" and "three"
         // Write "two" after "one" and write "three" after "two"
@@ -117,10 +117,10 @@ public class MultipleChannelExamples {
                 mapOf(channel("one")
                       .and(channel("two").after("one"))
                       .and(channel("three").after("two")))).async();
-        
+
         // Do something
         // ...
-        
+
         // Remember to close
         pvWriter.close();
     }

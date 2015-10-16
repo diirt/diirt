@@ -35,5 +35,5 @@ public abstract class IteratorDouble implements IteratorNumber {
     public long nextLong() {
         return (long) nextDouble();
     }
-    
+
 }

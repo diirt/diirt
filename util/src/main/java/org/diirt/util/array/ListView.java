@@ -23,7 +23,7 @@ class ListView {
             this.list = list;
             this.indexes = indexes;
         }
-        
+
         @Override
         public double getDouble(int index) {
             return list.getDouble(indexes.getInt(index));
@@ -33,7 +33,7 @@ class ListView {
         public int size() {
             return indexes.size();
         }
-        
+
     }
 
     /**
@@ -47,7 +47,7 @@ class ListView {
             this.list = list;
             this.indexes = indexes;
         }
-        
+
         @Override
         public float getFloat(int index) {
             return list.getFloat(indexes.getInt(index));
@@ -57,7 +57,7 @@ class ListView {
         public int size() {
             return indexes.size();
         }
-        
+
     }
 
     /**
@@ -71,7 +71,7 @@ class ListView {
             this.list = list;
             this.indexes = indexes;
         }
-        
+
         @Override
         public long getLong(int index) {
             return list.getLong(indexes.getInt(index));
@@ -81,7 +81,7 @@ class ListView {
         public int size() {
             return indexes.size();
         }
-        
+
     }
 
     /**
@@ -95,7 +95,7 @@ class ListView {
             this.list = list;
             this.indexes = indexes;
         }
-        
+
         @Override
         public int getInt(int index) {
             return list.getInt(indexes.getInt(index));
@@ -105,7 +105,7 @@ class ListView {
         public int size() {
             return indexes.size();
         }
-        
+
     }
 
     /**
@@ -119,7 +119,7 @@ class ListView {
             this.list = list;
             this.indexes = indexes;
         }
-        
+
         @Override
         public short getShort(int index) {
             return list.getShort(indexes.getInt(index));
@@ -129,7 +129,7 @@ class ListView {
         public int size() {
             return indexes.size();
         }
-        
+
     }
 
     /**
@@ -143,7 +143,7 @@ class ListView {
             this.list = list;
             this.indexes = indexes;
         }
-        
+
         @Override
         public byte getByte(int index) {
             return list.getByte(indexes.getInt(index));
@@ -153,6 +153,6 @@ class ListView {
         public int size() {
             return indexes.size();
         }
-        
+
     }
 }

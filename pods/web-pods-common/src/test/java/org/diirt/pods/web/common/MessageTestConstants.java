@@ -31,27 +31,27 @@ public class MessageTestConstants {
             + "\"readOnly\":false"
             + "}";
     public static MessageSubscribe subscribe2Message = new MessageSubscribe(1, "sim://noise", "VDouble", 10, false);
-    
+
     public static String unsubscribe1Json = "{"
             + "\"message\":\"unsubscribe\","
             + "\"id\":1"
             + "}";
     public static MessageUnsubscribe unsubscribe1Message = new MessageUnsubscribe(1);
-    
+
     public static String write1Json = "{"
             + "\"message\":\"write\","
             + "\"id\":1,"
             + "\"value\":3.14"
             + "}";
     public static MessageWrite write1Message = new MessageWrite(1, 3.14);
-    
+
     public static String write2Json = "{"
             + "\"message\":\"write\","
             + "\"id\":1,"
             + "\"value\":\"Green\""
             + "}";
     public static MessageWrite write2Message = new MessageWrite(1, "Green");
-    
+
     public static String write3Json = "{"
             + "\"message\":\"write\","
             + "\"id\":1,"
@@ -62,27 +62,27 @@ public class MessageTestConstants {
                 + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"
             + "}";
     public static MessageWrite write3Message = new MessageWrite(1, newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone()));
-    
+
     public static String write4Json = "{"
             + "\"message\":\"write\","
             + "\"id\":1,"
             + "\"value\":[1.0,2.0,3.0,4.0,5.0]"
             + "}";
     public static MessageWrite write4Message = new MessageWrite(1, new ArrayDouble(1,2,3,4,5));
-    
+
     public static String write5Json = "{"
             + "\"message\":\"write\","
             + "\"id\":1,"
             + "\"value\":[\"A\",\"B\",\"C\"]"
             + "}";
     public static MessageWrite write5Message = new MessageWrite(1, Arrays.asList("A", "B", "C"));
-    
+
     public static String pause1Json = "{"
             + "\"message\":\"pause\","
             + "\"id\":3"
             + "}";
     public static MessagePause pause1Message = new MessagePause(3);
-    
+
     public static String resume1Json = "{"
             + "\"message\":\"resume\","
             + "\"id\":4"

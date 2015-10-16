@@ -14,35 +14,35 @@ import org.diirt.vtype.VTypeToString;
  * @author msekoranja
  */
 public class PVFieldToVString extends AlarmTimeDisplayExtractor implements VString {
-	// NOTE: VString does not extend Display, it's OK (will be undefined)
-	
-	protected final String value;
+        // NOTE: VString does not extend Display, it's OK (will be undefined)
 
-	public PVFieldToVString(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        protected final String value;
 
-	public PVFieldToVString(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVString(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVString(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
-		
-		if (field instanceof PVScalar)
-			value = convert.toString((PVScalar)field);
-		else
-			value = null;
-	}
+        public PVFieldToVString(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	@Override
-	public String getValue() {
-		return value;
-	}
+        public PVFieldToVString(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
+
+                if (field instanceof PVScalar)
+                        value = convert.toString((PVScalar)field);
+                else
+                        value = null;
+        }
+
+        @Override
+        public String getValue() {
+                return value;
+        }
 
     @Override
     public String toString() {
         return VTypeToString.toString(this);
     }
-	
+
 }

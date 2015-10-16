@@ -30,185 +30,185 @@ import org.diirt.vtype.ValueFactory;
  */
 public class SimpleFileDataSource implements DataSource {
 
-	private static final Logger log = Logger.getLogger(SimpleFileDataSource.class.getName());
+        private static final Logger log = Logger.getLogger(SimpleFileDataSource.class.getName());
 
-	private final String csvFile;
-	private final String csvSplitBy = ";";
+        private final String csvFile;
+        private final String csvSplitBy = ";";
 
-	private static final Integer channel_name = 0;
-	private static final Integer smpl_time = 1;
-	private static final Integer nanosecs = 2;
-	private static final Integer severity = 3;
-	// private static final Integer status = 4;
-	private static final Integer num_val = 5;
-	private static final Integer float_val = 6;
-	private static final Integer str_val = 7;
-	private static final Integer array_nval = 8;
-	private static final Integer array_val = 9;
+        private static final Integer channel_name = 0;
+        private static final Integer smpl_time = 1;
+        private static final Integer nanosecs = 2;
+        private static final Integer severity = 3;
+        // private static final Integer status = 4;
+        private static final Integer num_val = 5;
+        private static final Integer float_val = 6;
+        private static final Integer str_val = 7;
+        private static final Integer array_nval = 8;
+        private static final Integer array_val = 9;
 
-	private TreeMap<Timestamp, Integer> indexes;
+        private TreeMap<Timestamp, Integer> indexes;
 
-	private int chunkSize = 1000;
+        private int chunkSize = 1000;
 
-	public SimpleFileDataSource(String csvFilePath) {
-		this.csvFile = csvFilePath;
-		indexes = new TreeMap<Timestamp, Integer>();
-	}
+        public SimpleFileDataSource(String csvFilePath) {
+                this.csvFile = csvFilePath;
+                indexes = new TreeMap<Timestamp, Integer>();
+        }
 
-	public SimpleFileDataSource(String csvFilePath, int chunkSize) {
-		this(csvFilePath);
-		this.chunkSize = chunkSize;
-	}
+        public SimpleFileDataSource(String csvFilePath, int chunkSize) {
+                this(csvFilePath);
+                this.chunkSize = chunkSize;
+        }
 
-	/** {@inheritDoc} */
-	@Override
-	public DataChunk getData(String channelName, Timestamp from) {
-		if (channelName == null || channelName.isEmpty() || from == null)
-			return new DataChunk();
-		try {
-			return readSamples(channelName.trim(), from);
-		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage());
-		}
-		return new DataChunk();
-	}
+        /** {@inheritDoc} */
+        @Override
+        public DataChunk getData(String channelName, Timestamp from) {
+                if (channelName == null || channelName.isEmpty() || from == null)
+                        return new DataChunk();
+                try {
+                        return readSamples(channelName.trim(), from);
+                } catch (Exception e) {
+                        log.log(Level.SEVERE, e.getMessage());
+                }
+                return new DataChunk();
+        }
 
-	private DataChunk readSamples(String channelName, Timestamp from)
-			throws Exception {
-		DataChunk chunk = new DataChunk(chunkSize);
+        private DataChunk readSamples(String channelName, Timestamp from)
+                        throws Exception {
+                DataChunk chunk = new DataChunk(chunkSize);
 
-		BufferedReader br = null;
-		String currentLine = "";
-		Timestamp lastIndex = indexes.floorKey(from);
-		Integer lineToStart = lastIndex == null ? 1 : indexes.get(lastIndex);
-		Integer lineNumber = -1;
-		try {
-			br = new BufferedReader(new FileReader(csvFile));
-			while ((currentLine = br.readLine()) != null) {
-				lineNumber++;
-				if (lineNumber < lineToStart)
-					continue;
-				String[] columns = getColumns(currentLine);
-				if (columns[channel_name] != null
-						&& columns[channel_name].equals(channelName)) {
-					// Get time stamp
-					final java.sql.Timestamp stamp = java.sql.Timestamp
-							.valueOf(columns[smpl_time]);
-					stamp.setNanos(Integer.valueOf(columns[nanosecs]));
-					final Timestamp time = fromSQLTimestamp(stamp);
-					if (time.compareTo(from) >= 0) {
-						final VType value = decodeValue(columns, time);
-						SourceData data = new SourceData(time, value);
-						if (!chunk.add(data)) {
-							TimeInterval i = chunk.getInterval();
-							if (i != null)
-								indexes.put(i.getEnd(), lineNumber);
-							break;
-						}
-					}
-				}
-			}
-		} finally {
-			if (br != null)
-				br.close();
-		}
-		return chunk;
-	}
+                BufferedReader br = null;
+                String currentLine = "";
+                Timestamp lastIndex = indexes.floorKey(from);
+                Integer lineToStart = lastIndex == null ? 1 : indexes.get(lastIndex);
+                Integer lineNumber = -1;
+                try {
+                        br = new BufferedReader(new FileReader(csvFile));
+                        while ((currentLine = br.readLine()) != null) {
+                                lineNumber++;
+                                if (lineNumber < lineToStart)
+                                        continue;
+                                String[] columns = getColumns(currentLine);
+                                if (columns[channel_name] != null
+                                                && columns[channel_name].equals(channelName)) {
+                                        // Get time stamp
+                                        final java.sql.Timestamp stamp = java.sql.Timestamp
+                                                        .valueOf(columns[smpl_time]);
+                                        stamp.setNanos(Integer.valueOf(columns[nanosecs]));
+                                        final Timestamp time = fromSQLTimestamp(stamp);
+                                        if (time.compareTo(from) >= 0) {
+                                                final VType value = decodeValue(columns, time);
+                                                SourceData data = new SourceData(time, value);
+                                                if (!chunk.add(data)) {
+                                                        TimeInterval i = chunk.getInterval();
+                                                        if (i != null)
+                                                                indexes.put(i.getEnd(), lineNumber);
+                                                        break;
+                                                }
+                                        }
+                                }
+                        }
+                } finally {
+                        if (br != null)
+                                br.close();
+                }
+                return chunk;
+        }
 
-	private VType decodeValue(final String[] columns, final Timestamp ts) throws Exception {
-		Time time = ValueFactory.newTime(ts);
-		Alarm alarm = ValueFactory.alarmNone();
-		String alarmStr = columns[severity];
-		if (alarmStr != null) {
-			for (AlarmSeverity s : AlarmSeverity.values()) {
-				if (alarmStr.startsWith(s.name())) {
-					alarm = ValueFactory.newAlarm(s, alarmStr);
-					break;
-				}
-			}
-		}
-		Display display = ValueFactory.displayNone();
-		
-		// Determine the value type
-		// Try double
-		if (columns[float_val] != null && !columns[float_val].isEmpty()) {
-			Double dbl0 = Double.valueOf(columns[float_val]);
-			// Get array elements - if any.
-			final double data[] = readBlobArrayElements(dbl0, columns);
-			if (data.length == 1) {
-				return ValueFactory.newVDouble(data[0], alarm, time, display);
-			} else {
-				return ValueFactory.newVDoubleArray(new ArrayDouble(data),
-						alarm, time, display);
-			}
-		}
+        private VType decodeValue(final String[] columns, final Timestamp ts) throws Exception {
+                Time time = ValueFactory.newTime(ts);
+                Alarm alarm = ValueFactory.alarmNone();
+                String alarmStr = columns[severity];
+                if (alarmStr != null) {
+                        for (AlarmSeverity s : AlarmSeverity.values()) {
+                                if (alarmStr.startsWith(s.name())) {
+                                        alarm = ValueFactory.newAlarm(s, alarmStr);
+                                        break;
+                                }
+                        }
+                }
+                Display display = ValueFactory.displayNone();
 
-		// Try integer
-		if (columns[num_val] != null && !columns[num_val].isEmpty()) {
-			final int num = Integer.valueOf(columns[num_val]);
-			return ValueFactory.newVInt(num, alarm, time, display);
-		}
+                // Determine the value type
+                // Try double
+                if (columns[float_val] != null && !columns[float_val].isEmpty()) {
+                        Double dbl0 = Double.valueOf(columns[float_val]);
+                        // Get array elements - if any.
+                        final double data[] = readBlobArrayElements(dbl0, columns);
+                        if (data.length == 1) {
+                                return ValueFactory.newVDouble(data[0], alarm, time, display);
+                        } else {
+                                return ValueFactory.newVDoubleArray(new ArrayDouble(data),
+                                                alarm, time, display);
+                        }
+                }
 
-		// Default to string
-		final String txt = columns[str_val];
-		return ValueFactory.newVString(txt, alarm, time);
-	}
+                // Try integer
+                if (columns[num_val] != null && !columns[num_val].isEmpty()) {
+                        final int num = Integer.valueOf(columns[num_val]);
+                        return ValueFactory.newVInt(num, alarm, time, display);
+                }
 
-	private double[] readBlobArrayElements(final double dbl0, final String[] columns)
-			throws Exception {
-		final String datatype = columns[array_nval];
+                // Default to string
+                final String txt = columns[str_val];
+                return ValueFactory.newVString(txt, alarm, time);
+        }
 
-		// ' ' or NULL indicate: Scalar, not an array
-		if (datatype == null || datatype.isEmpty())
-			return new double[] { dbl0 };
+        private double[] readBlobArrayElements(final double dbl0, final String[] columns)
+                        throws Exception {
+                final String datatype = columns[array_nval];
 
-		// Decode BLOB
-		final String[] values = columns[array_val].split(" ");
-		final double[] array = new double[values.length];
-		for (int i = 0; i < values.length; i++)
-			array[i] = Double.valueOf(values[i]);
+                // ' ' or NULL indicate: Scalar, not an array
+                if (datatype == null || datatype.isEmpty())
+                        return new double[] { dbl0 };
 
-		return array;
-	}
+                // Decode BLOB
+                final String[] values = columns[array_val].split(" ");
+                final double[] array = new double[values.length];
+                for (int i = 0; i < values.length; i++)
+                        array[i] = Double.valueOf(values[i]);
 
-	private Timestamp fromSQLTimestamp(final java.sql.Timestamp sql_time) {
-		final long millisecs = sql_time.getTime();
-		final long seconds = millisecs / 1000;
-		final int nanoseconds = sql_time.getNanos();
-		return Timestamp.of(seconds, nanoseconds);
-	}
+                return array;
+        }
 
-	private String[] getColumns(final String line) {
-		return line.split(csvSplitBy, -1);
-	}
+        private Timestamp fromSQLTimestamp(final java.sql.Timestamp sql_time) {
+                final long millisecs = sql_time.getTime();
+                final long seconds = millisecs / 1000;
+                final int nanoseconds = sql_time.getNanos();
+                return Timestamp.of(seconds, nanoseconds);
+        }
 
-	public String getCsvFile() {
-		return csvFile;
-	}
+        private String[] getColumns(final String line) {
+                return line.split(csvSplitBy, -1);
+        }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((csvFile == null) ? 0 : csvFile.hashCode());
-		return result;
-	}
+        public String getCsvFile() {
+                return csvFile;
+        }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SimpleFileDataSource other = (SimpleFileDataSource) obj;
-		if (csvFile == null) {
-			if (other.csvFile != null)
-				return false;
-		} else if (!csvFile.equals(other.csvFile))
-			return false;
-		return true;
-	}
-	
+        @Override
+        public int hashCode() {
+                final int prime = 31;
+                int result = 1;
+                result = prime * result + ((csvFile == null) ? 0 : csvFile.hashCode());
+                return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+                if (this == obj)
+                        return true;
+                if (obj == null)
+                        return false;
+                if (getClass() != obj.getClass())
+                        return false;
+                SimpleFileDataSource other = (SimpleFileDataSource) obj;
+                if (csvFile == null) {
+                        if (other.csvFile != null)
+                                return false;
+                } else if (!csvFile.equals(other.csvFile))
+                        return false;
+                return true;
+        }
+
 }

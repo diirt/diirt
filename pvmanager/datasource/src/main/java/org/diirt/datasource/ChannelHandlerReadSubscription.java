@@ -17,7 +17,7 @@ public class ChannelHandlerReadSubscription {
 
     /**
      * Creates the parameters for a new subscription.
-     * 
+     *
      * @param valueCache the cache where to write the value
      * @param exceptionWriteFunction the write function to dispatch exceptions
      * @param connectionWriteFunction the connection write function to dispatch exceptions
@@ -27,14 +27,14 @@ public class ChannelHandlerReadSubscription {
         this.exceptionWriteFunction = exceptionWriteFunction;
         this.connectionWriteFunction = connectionWriteFunction;
     }
-    
+
     private final ValueCache<?> valueCache;
     private final WriteFunction<Exception> exceptionWriteFunction;
     private final WriteFunction<Boolean> connectionWriteFunction;
 
     /**
      * The cache where to write the value.
-     * 
+     *
      * @return never null
      */
     public ValueCache<?> getValueCache() {
@@ -43,7 +43,7 @@ public class ChannelHandlerReadSubscription {
 
     /**
      * The write function for exceptions.
-     * 
+     *
      * @return never null
      */
     public WriteFunction<Exception> getExceptionWriteFunction() {
@@ -52,13 +52,13 @@ public class ChannelHandlerReadSubscription {
 
     /**
      * The write function for the connection flag.
-     * 
+     *
      * @return never null
      */
     public WriteFunction<Boolean> getConnectionWriteFunction() {
         return connectionWriteFunction;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -88,5 +88,5 @@ public class ChannelHandlerReadSubscription {
         }
         return true;
     }
-    
+
 }

@@ -27,32 +27,32 @@ public class ServiceRegistry {
 
     /**
      * Returns the default service registry.
-     * 
+     *
      * @return service registry, never null
      */
     public static ServiceRegistry getDefault() {
         return registry;
     }
-    
+
     static {
         ServiceLoaderOSGiWrapper.load(ServiceProvider.class, log, registry::registerServices);
     }
-    
+
     private final Map<String, Service> services = new ConcurrentHashMap<>();
 
     /**
      * Registers a single service. Replaces previous instance of services
      * registered with the same name.
-     * 
+     *
      * @param service a new service, can't be null
      */
     public void registerService(Service service) {
         services.put(service.getName(), service);
     }
-    
+
     /**
      * Registers all the services from the given service provider.
-     * 
+     *
      * @param serviceProvider a service provider, can't be null
      */
     public void registerServices(ServiceProvider serviceProvider) {
@@ -60,19 +60,19 @@ public class ServiceRegistry {
             registerService(service);
         }
     }
-    
+
     /**
      * Returns the names of all the registered services.
-     * 
+     *
      * @return the name of all the registered services
      */
     public Set<String> getRegisteredServiceNames() {
         return Collections.unmodifiableSet(new HashSet<>(services.keySet()));
     }
-    
+
     /**
      * Returns the service given the name.
-     * 
+     *
      * @param name the name of the service to look up
      * @return the service or null if none was found
      */
@@ -82,7 +82,7 @@ public class ServiceRegistry {
 
     /**
      * Finds the service method given by the name of the service and the method.
-     * 
+     *
      * @param serviceName the name of the service to look up
      * @param methodName the name of the method to look up
      * @return the service method, or null if none is found
@@ -94,14 +94,14 @@ public class ServiceRegistry {
         }
         return service.getServiceMethods().get(methodName);
     }
-    
+
     /**
      * Finds a service method using a lookup string of the format "service/method".
      * <p>
      * Currently, this method throws an exception if the service is not found.
-     * It is not clear whether returning null would be more appropriate in 
+     * It is not clear whether returning null would be more appropriate in
      * that case.
-     * 
+     *
      * @param fullName the service and method name for the lookup
      * @return the service
      */
@@ -116,7 +116,7 @@ public class ServiceRegistry {
         }
         return method;
     }
-    
+
     /**
      * Closes all registered services using {@link Service#close()}.
      */

@@ -16,7 +16,7 @@ import org.diirt.util.stats.Range;
  * @author carcassi
  */
 public class MockOrderedDataset2D implements Point2DDataset {
-    
+
     private ListNumber xValues;
     private ListNumber yValues;
     private Statistics xStatistics;
@@ -63,5 +63,5 @@ public class MockOrderedDataset2D implements Point2DDataset {
     public int getCount() {
         return xValues.size();
     }
-    
+
 }

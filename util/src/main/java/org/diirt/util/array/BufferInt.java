@@ -12,7 +12,7 @@ package org.diirt.util.array;
  * @author carcassi
  */
 public class BufferInt extends ListInt {
-    
+
     private int[] data;
     private int endOffset;
 
@@ -25,13 +25,13 @@ public class BufferInt extends ListInt {
 
     /**
      * Creates a new buffer.
-     * 
+     *
      * @param initialCapacity initial capacity
      */
     public BufferInt(int initialCapacity) {
         data = new int[initialCapacity];
     }
-    
+
     private void resize() {
         int oldSize = data.length;
         int newSize = oldSize * 2;
@@ -62,19 +62,19 @@ public class BufferInt extends ListInt {
 
     /**
      * Adds a new value.
-     * 
+     *
      * @param value new value
      */
     public void addInt(int value) {
         data[endOffset] = value;
         endOffset++;
-        
+
         // Grow the buffer if needed
         if (endOffset == data.length)
             resize();
-        
+
     }
-    
+
     /**
      * Removes all values from the buffer.
      */
@@ -84,7 +84,7 @@ public class BufferInt extends ListInt {
 
     /**
      * The maximum capacity for this buffer.
-     * 
+     *
      * @return maximum capacity
      */
     public int getCurrentCapacity() {

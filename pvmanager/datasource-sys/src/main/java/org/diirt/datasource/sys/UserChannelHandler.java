@@ -12,7 +12,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 class UserChannelHandler extends SystemChannelHandler {
-    
+
     private final String propertyName;
     private String previousValue = null;
 
@@ -34,5 +34,5 @@ class UserChannelHandler extends SystemChannelHandler {
             return null;
         }
     }
-    
+
 }

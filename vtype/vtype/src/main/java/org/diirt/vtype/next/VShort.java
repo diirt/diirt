@@ -8,20 +8,20 @@ package org.diirt.vtype.next;
  * Scalar short with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public abstract class VShort extends VNumber {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract Short getValue();
-    
+
     /**
      * Creates a new VShort.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time

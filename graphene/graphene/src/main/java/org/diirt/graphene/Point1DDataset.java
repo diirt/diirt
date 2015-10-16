@@ -17,28 +17,28 @@ import org.diirt.util.stats.Range;
  * @author carcassi
  */
 public interface Point1DDataset {
-    
+
     /**
      * The values of the points.
      * <p>
      * If the dataset is empty, it returns an empty list.
-     * 
+     *
      * @return the values; never null
      */
     public ListNumber getValues();
-    
+
     /**
      * The statistical information of the values.
      * <p>
      * If the dataset is empty, or if it contains only NaN values, it returns null.
-     * 
+     *
      * @return statistical information; null if no actual values in the dataset
      */
     public Statistics getStatistics();
-    
+
     /**
      * The suggested range to display the values.
-     * 
+     *
      * @return the suggested display range
      */
     public Range getDisplayRange();
@@ -47,7 +47,7 @@ public interface Point1DDataset {
      * The number of points in the dataset.
      * <p>
      * This number matches the size of the list returned by {@link #getValues() }.
-     * 
+     *
      * @return the number of values in this dataset
      */
     public int getCount();

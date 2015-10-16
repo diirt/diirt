@@ -14,7 +14,7 @@ import org.diirt.util.array.ListNumber;
  * @author carcassi
  */
 public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRendererUpdate> {
-    
+
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NONE, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
 
     public ScatterGraph2DRenderer(int width, int height) {
@@ -24,7 +24,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRender
         leftAreaMargin = 2;
         rightAreaMargin = 2;
     }
-    
+
     private InterpolationScheme interpolation = InterpolationScheme.NONE;
 
     @Override
@@ -59,7 +59,7 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRender
         for (int i = 0; i < xValues.size(); i++) {
             drawValue(g, xValues.getDouble(i), yValues.getDouble(i));
         }
-        
+
         if (interpolation != InterpolationScheme.NONE) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -67,11 +67,11 @@ public class ScatterGraph2DRenderer extends Graph2DRenderer<ScatterGraph2DRender
         }
 
     }
-    
+
     private void drawValue(Graphics2D g, double x, double y) {
         g.draw(createShape((int) scaledX(x), (int) scaledY(y)));
     }
-    
+
     private Shape createShape(double x, double y) {
         Path2D.Double path = new Path2D.Double();
         path.moveTo(x-2, y);

@@ -18,7 +18,7 @@ import org.diirt.util.config.Configuration;
  * @author carcassi
  */
 public class FileDataSourceProvider extends ConfigurableDataSourceProvider<FileDataSource, FileDataSourceConfiguration> {
-    
+
     public FileDataSourceProvider() {
         super(FileDataSourceConfiguration.class);
     }

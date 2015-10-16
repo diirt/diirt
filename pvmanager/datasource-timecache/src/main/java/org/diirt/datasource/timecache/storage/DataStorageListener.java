@@ -13,11 +13,11 @@ import org.diirt.util.time.Timestamp;
  */
 public interface DataStorageListener {
 
-	/**
-	 * Informs that the specified set of {@link Timestamp} have been removed
-	 * from storage.
-	 * @param lostSet {@link TimestampsSet} of lost {@link Timestamp}.
-	 */
-	public void dataLoss(final TimestampsSet lostSet);
+        /**
+         * Informs that the specified set of {@link Timestamp} have been removed
+         * from storage.
+         * @param lostSet {@link TimestampsSet} of lost {@link Timestamp}.
+         */
+        public void dataLoss(final TimestampsSet lostSet);
 
 }

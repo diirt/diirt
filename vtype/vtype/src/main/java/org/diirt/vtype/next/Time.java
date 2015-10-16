@@ -14,16 +14,16 @@ import org.diirt.util.time.TimestampFormat;
  * @author carcassi
  */
 public abstract class Time {
-    
+
     /**
      * The timestamp of the value, typically indicating when it was
      * generated. If disconnected, it returns the
      * time at which the disconnection was detected.
-     * 
+     *
      * @return the timestamp; not null
      */
     public abstract Instant getTimestamp();
-    
+
     /**
      * Returns a user defined tag, that can be used to store extra
      * time information, such as beam shot.
@@ -46,15 +46,15 @@ public abstract class Time {
         if (this == obj) {
             return true;
         }
-        
-	if (obj instanceof Time) {
+
+        if (obj instanceof Time) {
             Time other = (Time) obj;
-        
+
             return Objects.equals(getTimestamp(), other.getTimestamp()) &&
                 Objects.equals(getUserTag(), other.getUserTag()) &&
                 isValid() == other.isValid();
         }
-        
+
         return false;
     }
 
@@ -75,10 +75,10 @@ public abstract class Time {
             return getTimestamp().toString() + "(" + getUserTag()+ ")";
         }
     }
-    
+
     /**
      * Creates a new time.
-     * 
+     *
      * @param timestamp the timestamp
      * @param userTag the user tag
      * @param valid whether the time is valid
@@ -87,24 +87,24 @@ public abstract class Time {
     public static Time create(final Instant timestamp, final Integer userTag, final boolean valid) {
         return new ITime(timestamp, userTag, valid);
     }
-    
+
     /**
      * New time, with no user tag and valid data.
-     * 
+     *
      * @param timestamp the timestamp
      * @return the new time
      */
     public static Time create(final Instant timestamp) {
         return Time.create(timestamp, null, true);
     }
-    
+
     /**
      * New time with the current timestamp, no user tag and valid data.
-     * 
+     *
      * @return the new time
      */
     public static Time now() {
         return Time.create(Instant.now(), null, true);
     }
-    
+
 }

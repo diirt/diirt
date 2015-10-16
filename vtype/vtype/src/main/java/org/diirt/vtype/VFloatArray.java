@@ -12,7 +12,7 @@ import org.diirt.util.array.ListFloat;
  * @author carcassi
  */
 public interface VFloatArray extends VNumberArray, VType {
-    
+
     @Override
     ListFloat getData();
 }

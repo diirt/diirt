@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 public class ServiceLoaderOSGiWrapper {
-    
+
     public static <T> void load(Class<T> serviceClazz, Logger log, Consumer<T> consumer) {
         log.log(Level.CONFIG, "Fetching {0}s", serviceClazz.getSimpleName());
         int count = 0;
@@ -107,11 +107,11 @@ public class ServiceLoaderOSGiWrapper {
         }
         return providers;
     }
-    
+
     private static OSGiReflection osgi = new OSGiReflection();
-    
+
     private static class OSGiReflection {
-        
+
         private final Class<?> frameworkUtilClass = loadClass("org.osgi.framework.FrameworkUtil");
         private final Class<?> bundleClass = loadClass("org.osgi.framework.Bundle");
         private final Class<?> bundleContextClass = loadClass("org.osgi.framework.BundleContext");
@@ -126,9 +126,9 @@ public class ServiceLoaderOSGiWrapper {
         public OSGiReflection() {
             this.osgiEnabled = false;
         }
-        
-        
-        
+
+
+
         private Class<?> loadClass(String name) {
             try {
                 return Class.forName(name);
@@ -136,12 +136,12 @@ public class ServiceLoaderOSGiWrapper {
                 return null;
             }
         }
-        
+
         private Method loadMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
             if (clazz == null) {
                 return null;
             }
-            
+
             try {
                 return clazz.getMethod(name, parameterTypes);
             } catch (NoSuchMethodException | SecurityException ex) {

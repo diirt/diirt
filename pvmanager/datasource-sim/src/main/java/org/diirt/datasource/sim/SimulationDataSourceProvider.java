@@ -23,5 +23,5 @@ public class SimulationDataSourceProvider extends DataSourceProvider {
     public DataSource createInstance() {
         return new SimulationDataSource();
     }
-    
+
 }

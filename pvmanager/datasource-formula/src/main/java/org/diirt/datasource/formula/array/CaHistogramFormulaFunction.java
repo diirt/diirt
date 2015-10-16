@@ -56,11 +56,11 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
     public Class<?> getReturnType() {
         return VNumberArray.class;
     }
-    
+
     // Function state (will be different for each use of the function)
     private String previousName;
     private List<DesiredRateExpression<?>> currentExpressions;
-    
+
     Object calculateImpl(final String newName) {
         // If the name does not match, disconnect and connect
         if (!Objects.equals(newName, previousName)) {
@@ -76,7 +76,7 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
             if (newName != null) {
                 newExpressions.addAll(Collections.nCopies(3, (DesiredRateExpression<?>) null));
             }
-            
+
             // Connect new expressions
             if (newName != null) {
                 DesiredRateExpression<?> newExpression = channel(newName, Object.class);
@@ -89,7 +89,7 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
                 getDirector().disconnectReadExpression(newExpression);
                 newExpressions.set(2, newExpression);
             }
-            
+
             previousName = newName;
             currentExpressions = newExpressions;
         }
@@ -98,7 +98,7 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
         if (newName == null) {
             return null;
         }
-        
+
         // Extract values
         VNumberArray array = (VNumberArray) currentExpressions.get(0).getFunction().readValue();
         VNumber lowerRange = (VNumber) currentExpressions.get(1).getFunction().readValue();
@@ -106,8 +106,8 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
         if (array == null || lowerRange == null || upperRange == null) {
             return null;
         }
-        
-        return ValueFactory.newVNumberArray(array.getData(), array.getSizes(), 
+
+        return ValueFactory.newVNumberArray(array.getData(), array.getSizes(),
                 Arrays.asList(ValueFactory.newDisplay(VTableFactory.range(lowerRange.getValue().doubleValue(), upperRange.getValue().doubleValue()).createListNumber(array.getSizes().getInt(0)+1), "")),
                 array, array, array);
     }
@@ -120,7 +120,7 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
         if (value != null) {
             newName = value.getValue();
         }
-        
+
         return calculateImpl(newName);
     }
 
@@ -135,5 +135,5 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
         currentExpressions = null;
         previousName = null;
     }
-    
+
 }

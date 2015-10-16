@@ -22,7 +22,7 @@ public class Cell1DDatasetsTest {
     public void linearRange1() {
         ListNumber values = new ArrayDouble(5, 3, 7, -1, 2);
         Cell1DDataset dataset = Cell1DDatasets.linearRange(values, 0, 10);
-        
+
         assertThat(dataset.getXCount(), equalTo(5));
         assertThat(dataset.getXRange().getMinimum(), equalTo(0.0));
         assertThat(dataset.getXRange().getMaximum(), equalTo(10.0));
@@ -31,7 +31,7 @@ public class Cell1DDatasetsTest {
         assertThat(dataset.getStatistics().getRange().getMinimum(), equalTo((Number) (-1.0)));
         assertThat(dataset.getStatistics().getRange().getMaximum(), equalTo((Number) 7.0));
         assertThat(dataset.getStatistics().getCount(), equalTo(5));
-        
+
         // Check values
         assertThat(dataset.getXBoundaries().getDouble(0), equalTo(0.0));
         assertThat(dataset.getValue(0), equalTo(5.0));
@@ -45,13 +45,13 @@ public class Cell1DDatasetsTest {
         assertThat(dataset.getValue(4), equalTo(2.0));
         assertThat(dataset.getXBoundaries().getDouble(5), equalTo(10.0));
     }
-    
+
     @Test
     public void datasetFrom1() {
         ListNumber values = new ArrayDouble(5, 3, 7, -1, 2);
         ListNumber boundaries = new ArrayDouble(0, 2, 4, 6, 8, 10);
         Cell1DDataset dataset = Cell1DDatasets.datasetFrom(values, boundaries);
-        
+
         assertThat(dataset.getXCount(), equalTo(5));
         assertThat(dataset.getXRange().getMinimum(), equalTo(0.0));
         assertThat(dataset.getXRange().getMaximum(), equalTo(10.0));
@@ -60,7 +60,7 @@ public class Cell1DDatasetsTest {
         assertThat(dataset.getStatistics().getRange().getMinimum(), equalTo((Number) (-1.0)));
         assertThat(dataset.getStatistics().getRange().getMaximum(), equalTo((Number) 7.0));
         assertThat(dataset.getStatistics().getCount(), equalTo(5));
-        
+
         // Check values
         assertThat(dataset.getXBoundaries().getDouble(0), equalTo(0.0));
         assertThat(dataset.getValue(0), equalTo(5.0));

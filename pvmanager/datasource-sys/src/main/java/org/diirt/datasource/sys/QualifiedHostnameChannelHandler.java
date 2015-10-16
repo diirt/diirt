@@ -18,7 +18,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 class QualifiedHostnameChannelHandler extends SystemChannelHandler {
-    
+
     private String previousValue = null;
 
     public QualifiedHostnameChannelHandler(String channelName) {
@@ -43,5 +43,5 @@ class QualifiedHostnameChannelHandler extends SystemChannelHandler {
             return null;
         }
     }
-    
+
 }

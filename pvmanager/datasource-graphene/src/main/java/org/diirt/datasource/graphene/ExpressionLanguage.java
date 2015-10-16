@@ -37,17 +37,17 @@ public class ExpressionLanguage {
         BasicTypeSupport.install();
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Graph2DResult.class));
     }
-    
+
     public static HistogramGraph2DExpression histogramGraphOf(
-	    DesiredRateExpression<?> arrayData) {
-	return new HistogramGraph2DExpression(arrayData);
+            DesiredRateExpression<?> arrayData) {
+        return new HistogramGraph2DExpression(arrayData);
     }
-    
+
     public static IntensityGraph2DExpression intensityGraphOf(
-	    DesiredRateExpression<?> arrayData) {
-	return new IntensityGraph2DExpression(arrayData);
+            DesiredRateExpression<?> arrayData) {
+        return new IntensityGraph2DExpression(arrayData);
     }
-    
+
     public static LineGraph2DExpression lineGraphOf(DesiredRateExpression<? extends VNumberArray> vDoubleArray) {
         return lineGraphOf(vDoubleArray, null, null, null);
     }
@@ -55,7 +55,7 @@ public class ExpressionLanguage {
     public static LineGraph2DExpression lineGraphOf(final DesiredRateExpression<? extends VNumberArray> yArray,
             final DesiredRateExpression<? extends VNumber> xInitialOffset,
             final DesiredRateExpression<? extends VNumber> xIncrementSize) {
-        DesiredRateExpression<VTable> data = new DesiredRateExpressionImpl<>(createList(yArray, xInitialOffset, xIncrementSize), 
+        DesiredRateExpression<VTable> data = new DesiredRateExpressionImpl<>(createList(yArray, xInitialOffset, xIncrementSize),
         new ReadFunction<VTable>() {
 
             @Override
@@ -63,88 +63,88 @@ public class ExpressionLanguage {
                 VNumberArray values = yArray.getFunction().readValue();
                 VNumber offset = xInitialOffset.getFunction().readValue();
                 VNumber increment = xIncrementSize.getFunction().readValue();
-                
+
                 if (values == null || offset == null || increment == null) {
                     return null;
                 }
-                
+
                 return ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class),
-                        Arrays.asList("X", "Y"), 
+                        Arrays.asList("X", "Y"),
                         Arrays.<Object>asList(ListNumbers.linearList(offset.getValue().doubleValue(), increment.getValue().doubleValue(), values.getData().size()),
                         new ListDoubleView(values.getData())));
             }
         }, "data");
-        
+
         return lineGraphOf(data, null, null, null);
     }
 
     public static LineGraph2DExpression lineGraphOf(final DesiredRateExpression<? extends VNumberArray> xVDoubleArray,
             final DesiredRateExpression<? extends VNumberArray> yVDoubleArray) {
-        DesiredRateExpression<VTable> data = new DesiredRateExpressionImpl<>(createList(xVDoubleArray, yVDoubleArray), 
+        DesiredRateExpression<VTable> data = new DesiredRateExpressionImpl<>(createList(xVDoubleArray, yVDoubleArray),
         new ReadFunction<VTable>() {
 
             @Override
             public VTable readValue() {
                 VNumberArray xValues = xVDoubleArray.getFunction().readValue();
                 VNumberArray yValues = yVDoubleArray.getFunction().readValue();
-                
+
                 if (xValues == null || yValues == null) {
                     return null;
                 }
-                
+
                 return ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class),
-                        Arrays.asList("X", "Y"), 
+                        Arrays.asList("X", "Y"),
                         Arrays.<Object>asList(new ListDoubleView(xValues.getData()),
                         new ListDoubleView(yValues.getData())));
             }
         }, "data");
-        
+
         return lineGraphOf(data, null, null, null);
     }
     public static LineGraph2DExpression lineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> tooltipColumnName) {
-	return new LineGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> tooltipColumnName) {
+        return new LineGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
     }
-    
+
     public static MultilineGraph2DExpression multilineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
-	return new MultilineGraph2DExpression(tableData, xColumnName, yColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
+        return new MultilineGraph2DExpression(tableData, xColumnName, yColumnName);
     }
-    
+
     public static MultiAxisLineGraph2DExpression multiAxisLineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
-	return new MultiAxisLineGraph2DExpression(tableData, xColumnName, yColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
+        return new MultiAxisLineGraph2DExpression(tableData, xColumnName, yColumnName);
     }
-    
+
     public static SparklineGraph2DExpression sparklineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
-	return new SparklineGraph2DExpression(tableData, xColumnName, yColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
+        return new SparklineGraph2DExpression(tableData, xColumnName, yColumnName);
     }
-    
+
     public static ScatterGraph2DExpression scatterGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> tooltipColumnName) {
-	return new ScatterGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> tooltipColumnName) {
+        return new ScatterGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
     }
-    
+
     public static BubbleGraph2DExpression bubbleGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> sizeColumnName,
-	    DesiredRateExpression<?> tooltipColumnName) {
-	return new BubbleGraph2DExpression(tableData, xColumnName, yColumnName, sizeColumnName, tooltipColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> sizeColumnName,
+            DesiredRateExpression<?> tooltipColumnName) {
+        return new BubbleGraph2DExpression(tableData, xColumnName, yColumnName, sizeColumnName, tooltipColumnName);
     }
 
     @SafeVarargs
@@ -157,7 +157,7 @@ public class ExpressionLanguage {
         }
         return list;
     }
-    
+
     static <T> ReadFunction<T> functionOf(DesiredRateExpression<T> exp) {
         if (exp == null) {
             return null;

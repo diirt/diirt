@@ -22,7 +22,7 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
     private volatile PVWriterEvent<T> event;
     private volatile String threadName;
     private AtomicInteger notificationCount = new AtomicInteger();
-    
+
     public CountDownPVWriterListener(int count) {
         latch = new CountDownLatch(count);
     }
@@ -37,16 +37,16 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
 
     /**
      * Changes the count back to count.
-     * 
+     *
      * @param count new value for count
      */
     public void resetCount(int count) {
         latch = new CountDownLatch(count);
     }
-    
+
     /**
      * Current count.
-     * 
+     *
      * @return current count
      */
     public int getCount() {
@@ -55,7 +55,7 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
 
     /**
      * The last notified event.
-     * 
+     *
      * @return the event
      */
     public PVWriterEvent<T> getEvent() {
@@ -64,32 +64,32 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
 
     /**
      * The thread name for the last notification.
-     * 
+     *
      * @return the thread name
      */
     public String getThreadName() {
         return threadName;
     }
-    
+
     /**
      * The total number of notifications on this listener.
-     * 
+     *
      * @return the number of notifications
      */
     public int getNotificationCount() {
         return notificationCount.get();
     }
-    
+
     /**
      * Waits that the listener count goes to zero.
-     * 
+     *
      * @param duration time to wait
      * @return false if count didn't go to zero
      * @throws InterruptedException if interrupted
      */
-    public boolean await(TimeDuration duration) 
+    public boolean await(TimeDuration duration)
     throws InterruptedException {
         return latch.await(duration.toNanosLong(), TimeUnit.NANOSECONDS);
     }
-    
+
 }

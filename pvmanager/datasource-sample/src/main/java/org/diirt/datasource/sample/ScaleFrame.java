@@ -36,7 +36,7 @@ public class ScaleFrame extends javax.swing.JFrame {
         format = new SimpleValueFormat(3);
         format.setNumberFormat(NumberFormats.format(6));
     }
-    
+
     ValueFormat format;
 
     List<PVReader<Object>> pvs = new ArrayList<PVReader<Object>>();

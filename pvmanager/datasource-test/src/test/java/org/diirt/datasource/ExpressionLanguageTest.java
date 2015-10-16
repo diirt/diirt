@@ -28,7 +28,7 @@ import static org.hamcrest.CoreMatchers.*;
  * @author carcassi
  */
 public class ExpressionLanguageTest {
-    
+
     //
     // Testing channel expressions
     //
@@ -46,7 +46,7 @@ public class ExpressionLanguageTest {
         assertThat(writeCache.getValue(), nullValue());
         assertThat(writeCache.getChannelName(), equalTo("my pv"));
     }
-    
+
     @Test
     public void queue1() {
         Queue<String> queue = queueOf(String.class).maxSize(5);
@@ -65,7 +65,7 @@ public class ExpressionLanguageTest {
         assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
         assertThat(exp.getValue(), equalTo((Object) Collections.EMPTY_LIST));
     }
-    
+
     @Test
     public void cache1() {
         Cache<String> cache = cacheOf(String.class).maxSize(5);
@@ -85,11 +85,11 @@ public class ExpressionLanguageTest {
         assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
         assertThat(exp.getValue(), equalTo((Object) Arrays.asList("two", "three", "four", "five", "six")));
     }
-    
+
     //
     // Testing collection expressions
     //
-    
+
     @Test
     public void mapOf1() {
         // Dynamically adding constant expressions (i.e. that don't require connection)
@@ -108,7 +108,7 @@ public class ExpressionLanguageTest {
         referenceValue.remove("name");
         assertThat(exp.getValue(), equalTo((Object) referenceValue));
     }
-    
+
     @Test
     public void mapOf2() {
         ReadMap<Double> map = mapOf(constant(1.0).as("SETPOINT").and(constant(2.0).as("READBACK")));
@@ -118,7 +118,7 @@ public class ExpressionLanguageTest {
         referenceValue.put("SETPOINT", 1.0);
         assertThat(exp.getValue(), equalTo((Object) referenceValue));
     }
-    
+
     @Test
     public void mapOf3() {
         WriteMap<Double> map = mapOf(channels(Arrays.asList("SETPOINT", "READBACK"), Double.class, Double.class));
@@ -130,7 +130,7 @@ public class ExpressionLanguageTest {
         assertThat(exp.readValue("READBACK"), equalTo((Object) 2.0));
         assertThat(exp.readValue("SETPOINT"), equalTo((Object) 1.0));
     }
-    
+
     @Test
     public void mapOf4() {
         WriteMap<Double> map = mapOf(channels(Arrays.asList("SETPOINT", "READBACK"), Double.class, Double.class));
@@ -141,20 +141,20 @@ public class ExpressionLanguageTest {
         assertThat(exp.readValue("READBACK"), equalTo(null));
         assertThat(exp.readValue("SETPOINT"), equalTo((Object) 1.0));
     }
-    
+
     @Test
     public void mapOf5() throws Exception {
         ReadWriteMap<Double, Double> map = mapOf(latestValueOf(channels(Arrays.asList("SETPOINT", "READBACK"), Double.class, Double.class)));
         ReadExpressionTester readExp = new ReadExpressionTester(map);
         WriteExpressionTester writeExp = new WriteExpressionTester(map);
-        
+
         Map<String, Double> referenceValue = new HashMap<String, Double>();
         referenceValue.put("READBACK", 2.0);
         referenceValue.put("SETPOINT", 5.0);
         readExp.writeValue("READBACK", 2.0);
         readExp.writeValue("SETPOINT", 5.0);
         assertThat(readExp.getValue(), equalTo((Object) referenceValue));
-        
+
         Map<String, Double> value = new HashMap<String, Double>();
         value.put("SETPOINT", 1.0);
         value.put("READBACK", 3.0);
@@ -162,5 +162,5 @@ public class ExpressionLanguageTest {
         assertThat(writeExp.readValue("SETPOINT"), equalTo((Object) 1.0));
         assertThat(writeExp.readValue("READBACK"), equalTo((Object) 3.0));
     }
-    
+
 }

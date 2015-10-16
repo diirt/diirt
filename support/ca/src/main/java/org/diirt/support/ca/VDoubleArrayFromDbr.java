@@ -35,7 +35,7 @@ class VDoubleArrayFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Doub
     public ListInt getSizes() {
         return new ArrayInt(dbrValue.getDoubleValue().length);
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

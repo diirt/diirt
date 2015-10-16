@@ -11,7 +11,7 @@ package org.diirt.graphene;
 public class ScatterGraph2DRendererUpdate extends Graph2DRendererUpdate<ScatterGraph2DRendererUpdate> {
 
     private InterpolationScheme interpolation;
-    
+
     public ScatterGraph2DRendererUpdate interpolation(InterpolationScheme scheme) {
         if (scheme == null) {
             throw new NullPointerException("Interpolation scheme can't be null");
@@ -22,9 +22,9 @@ public class ScatterGraph2DRendererUpdate extends Graph2DRendererUpdate<ScatterG
         this.interpolation = scheme;
         return this;
     }
-    
+
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }
-    
+
 }

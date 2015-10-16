@@ -19,17 +19,17 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 public abstract class VNumberArray extends Array implements AlarmProvider, TimeProvider, DisplayProvider {
-    
+
     /**
      * The numeric value.
-     * 
+     *
      * @return the value
      */
     @Override
     public abstract ListNumber getData();
-    
+
     private final static ValueFormat format = new SimpleValueFormat(3);
-    
+
     /**
      * Default toString implementation for VNumberArray.
      *
@@ -51,10 +51,10 @@ public abstract class VNumberArray extends Array implements AlarmProvider, TimeP
                 .append(']');
         return builder.toString();
     }
-    
+
     /**
      * Creates a new VNumber based on the type of the data
-     * 
+     *
      * @param data the value
      * @param alarm the alarm
      * @param time the time
@@ -75,7 +75,7 @@ public abstract class VNumberArray extends Array implements AlarmProvider, TimeP
 //        } else if (value instanceof Byte) {
 //            return newVByte((Byte) value, alarm, time, display);
         }
-	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
-    
+
 }

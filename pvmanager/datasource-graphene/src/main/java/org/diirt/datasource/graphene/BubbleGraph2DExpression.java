@@ -10,7 +10,7 @@ import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
 import org.diirt.datasource.expression.DesiredRateExpressionList;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
-        
+
 /**
  * @author shroffk
  *
@@ -23,10 +23,10 @@ public class BubbleGraph2DExpression extends DesiredRateExpressionImpl<Graph2DRe
     }
 
     BubbleGraph2DExpression(DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> sizeColumnName,
-	    DesiredRateExpression<?> colorColumnName) {
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> sizeColumnName,
+            DesiredRateExpression<?> colorColumnName) {
         super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName, sizeColumnName, colorColumnName),
                 new BubbleGraph2DFunction(functionOf(tableData),
                 functionOf(xColumnName), functionOf(yColumnName), functionOf(sizeColumnName), functionOf(colorColumnName)),

@@ -119,7 +119,7 @@ public class TimestampFormat extends Format {
         if (obj == null) {
             return new StringBuffer("null");
         }
-        
+
         if (obj instanceof Timestamp) {
             Timestamp time = (Timestamp) obj;
             int begin = toAppendTo.length();
@@ -147,10 +147,10 @@ public class TimestampFormat extends Format {
     public String format(Timestamp Timestamp) {
         return format((Object) Timestamp);
     }
-    
+
     /**
      * Parses the source at the given position.
-     * 
+     *
      * @param source text to parse
      * @param pos the position
      * @return the parsed timestamp
@@ -160,15 +160,15 @@ public class TimestampFormat extends Format {
             throw new UnsupportedOperationException("Not supporting parsing of nanosecond field.");
         return Timestamp.of(dateFormat.parse(source, pos));
     }
-    
+
     @Override
     public Object parseObject(String source, ParsePosition pos) {
         return parse(source, pos);
     }
-    
+
     /**
      * Parses a String and converts it to a Timestamp.
-     * 
+     *
      * @param source the string to parse
      * @return the parsed object
      * @throws ParseException if the string does not match the pattern
@@ -181,11 +181,11 @@ public class TimestampFormat extends Format {
                 pos.getErrorIndex());
         return result;
     }
-    
+
     /**
      * This method returns the default pattern modified to add millisecond
      * after the seconds.
-     * 
+     *
      * @param locale a locale
      * @return a pattern string
      */

@@ -35,12 +35,12 @@ public class JDBCServices {
     private JDBCServices() {
         // Prevent instantiation
     }
-    
+
     private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
 
     /**
      * Creates a JDBCService based on the description of an XML file.
-     * 
+     *
      * @param input a stream with an xml file; can't be null
      * @return the new service
      */
@@ -52,10 +52,10 @@ public class JDBCServices {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/jdbcService/@ver", document);
             String serviceName = xPath.evaluate("/jdbcService/@name", document);
             String serviceDesecription = xPath.evaluate("/jdbcService/@description", document);
@@ -63,7 +63,7 @@ public class JDBCServices {
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             JDBCServiceDescription service = new JDBCServiceDescription(serviceName, serviceDesecription);
             service.dataSource(new SimpleDataSource(jdbcUrl));
             service.executorService(defaultExecutor);
@@ -76,13 +76,13 @@ public class JDBCServices {
                 String query = xPath.evaluate("query", method);
                 String resultName = xPath.evaluate("result/@name", method);
                 String resultDescription = xPath.evaluate("result/@description", method);
-                
+
                 JDBCServiceMethodDescription jdbcMethod = new JDBCServiceMethodDescription(methodName, methodDescription);
                 jdbcMethod.query(query);
                 if (!resultName.trim().isEmpty()) {
                     jdbcMethod.queryResult(resultName, resultDescription);
                 }
-                
+
                 NodeList arguments = (NodeList) xPath.evaluate("argument", method, XPathConstants.NODESET);
                 for (int nArg = 0; nArg < arguments.getLength(); nArg++) {
                     Node argument = arguments.item(nArg);
@@ -103,7 +103,7 @@ public class JDBCServices {
                 }
                 service.addServiceMethod(jdbcMethod);
             }
-            
+
             return service.createService();
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(JDBCServices.class.getName()).log(Level.FINEST, "Couldn't create service", ex);

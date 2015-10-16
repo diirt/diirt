@@ -20,7 +20,7 @@ public class MessageWrite extends Message {
 
     /**
      * Creates a new message based on the JSON representation.
-     * 
+     *
      * @param obj JSON object
      * @throws MessageDecodeException if json format is incorrect
      */
@@ -31,7 +31,7 @@ public class MessageWrite extends Message {
 
     /**
      * Creates a new message based on the given parameters.
-     * 
+     *
      * @param id the channel id
      * @param value the value to write
      */
@@ -42,13 +42,13 @@ public class MessageWrite extends Message {
 
     /**
      * The value to write.
-     * 
+     *
      * @return the new value
      */
     public Object getValue() {
         return value;
     }
-    
+
     @Override
     public void toJson(Writer writer) {
         JsonGenerator gen = Json.createGenerator(writer).writeStartObject();

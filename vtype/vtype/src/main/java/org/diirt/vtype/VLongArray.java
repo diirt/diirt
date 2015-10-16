@@ -12,7 +12,7 @@ import org.diirt.util.array.ListLong;
  * @author carcassi
  */
 public interface VLongArray extends VNumberArray, VType {
-    
+
     @Override
     ListLong getData();
 }

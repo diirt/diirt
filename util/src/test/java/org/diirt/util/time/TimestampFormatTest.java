@@ -74,7 +74,7 @@ public class TimestampFormatTest {
         time = Timestamp.of(0, 1);
         assertThat(format.format(time), equalTo("00001-'N'-1"));
     }
-    
+
     @Test
     public void parse1() throws Exception {
         TimestampFormat format = new TimestampFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -82,7 +82,7 @@ public class TimestampFormatTest {
         Timestamp time = format.parse("1976-01-01T00:00:00");
         assertThat(time, equalTo(Timestamp.of(189302400, 0)));
     }
-    
+
     @Test(expected=ParseException.class)
     public void parse2() throws Exception {
         TimestampFormat format = new TimestampFormat("yyyy-MM-dd'T'HH:mm:ss");

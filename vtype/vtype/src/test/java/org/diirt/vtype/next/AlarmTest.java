@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class AlarmTest {
-    
+
     public AlarmTest() {
     }
 
@@ -29,7 +29,7 @@ public class AlarmTest {
         assertThat(alarm.getName(), equalTo("DEVICE"));
         assertThat(alarm.toString(), equalTo("MAJOR(DEVICE)"));
     }
-    
+
     @Test
     public void none1() {
         Alarm alarm = Alarm.none();
@@ -45,5 +45,5 @@ public class AlarmTest {
         assertThat(Alarm.create(AlarmSeverity.MINOR, "HIGH"), not(equalTo(Alarm.create(AlarmSeverity.MINOR, "LOW"))));
         assertThat(Alarm.create(AlarmSeverity.MINOR, "HIGH"), not(equalTo(Alarm.create(AlarmSeverity.MAJOR, "HIGH"))));
     }
-    
+
 }

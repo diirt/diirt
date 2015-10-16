@@ -23,15 +23,15 @@ import org.epics.util.time.Timestamp;
  * @author carcassi
  */
 public class RrdToolOutputParser {
-    
+
     public TimeSeriesMulti parse(BufferedReader reader) {
         try {
             // First line has the data name
             List<String> names = Arrays.asList(reader.readLine().trim().split("(\\s+)"));
-            
+
             // Second line is blank
             reader.readLine();
-            
+
             String line;
             List<Timestamp> time = new ArrayList<>();
             List<CircularBufferDouble> buffers = new ArrayList<>(names.size());
@@ -57,7 +57,7 @@ public class RrdToolOutputParser {
             for (int i = 0; i < names.size(); i++) {
                 values.put(names.get(i), buffers.get(i));
             }
-            
+
             return new TimeSeriesMulti(time, values);
         } catch(IOException ex) {
             throw new RuntimeException("Couldn't parse file", ex);
