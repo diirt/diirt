@@ -46,7 +46,7 @@ class RegexChannelTranslator extends ChannelTranslator {
         if (allowedUsers != null && !allowedUsers.contains(request.getUser())) {
             return null;
         }
-        
+
         Matcher matcher = p.matcher(request.getChannel());
         if (matcher.matches()) {
             String translation;
@@ -60,5 +60,5 @@ class RegexChannelTranslator extends ChannelTranslator {
             return null;
         }
     }
-    
+
 }

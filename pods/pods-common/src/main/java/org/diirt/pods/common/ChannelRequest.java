@@ -11,7 +11,7 @@ package org.diirt.pods.common;
  * @author carcassi
  */
 public class ChannelRequest {
-    
+
     private final String channel;
     private final String user;
     private final String role;
@@ -21,8 +21,8 @@ public class ChannelRequest {
     public ChannelRequest(String channel) {
         this(channel, null, null, null, null);
     }
-    
-    
+
+
 
     public ChannelRequest(String channel, String user, String role, String group, String address) {
         this.channel = channel;
@@ -51,5 +51,5 @@ public class ChannelRequest {
     public String getAddress() {
         return address;
     }
-    
+
 }

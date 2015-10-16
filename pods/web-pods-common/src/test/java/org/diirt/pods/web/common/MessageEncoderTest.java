@@ -15,7 +15,7 @@ import static org.diirt.pods.web.common.MessageTestConstants.*;
  * @author carcassi
  */
 public class MessageEncoderTest {
-    
+
     public static void testEncoding(Message message, String json) throws Exception {
         MessageEncoder encoder = new MessageEncoder();
         StringWriter writer = new StringWriter();
@@ -107,5 +107,5 @@ public class MessageEncoderTest {
     public void writeEvent2Encode() throws Exception {
         testEncoding(writeEvent2Message, writeEvent2Json);
     }
-    
+
 }

@@ -28,5 +28,5 @@ class CompositeChannelTranslator extends ChannelTranslator {
         }
         return null;
     }
-    
+
 }

@@ -28,10 +28,10 @@ public class SocketFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         httpRequest.getSession().setAttribute("remoteHost", httpRequest.getRemoteHost());
-        
+
         chain.doFilter(request, response);
     }
 
@@ -44,5 +44,5 @@ public class SocketFilter implements Filter {
     public void destroy() {
         // Nothing to do
     }
-    
+
 }
