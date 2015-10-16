@@ -13,7 +13,7 @@ import org.diirt.vtype.VImage;
 import org.diirt.vtype.ValueUtil;
 
 public final class VImageView extends BorderPane {
-    
+
     private ImageView imageView;
 
     public VImageView() {
@@ -23,10 +23,10 @@ public final class VImageView extends BorderPane {
         setCenter(imageView);
         setMinSize( 0 , 0 );
     }
-    
+
     public void setVImage(VImage image) {
         if ( image != null ) {
-            
+
             //we must create a new WritableImage every time. If the WritableImage
             //is larger than the image we want to display, then SwingFXUtils.toFXImage()
             //simply draws our smaller image onto the larger WritableImage.

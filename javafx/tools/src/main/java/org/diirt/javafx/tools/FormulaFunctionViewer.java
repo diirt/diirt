@@ -25,17 +25,17 @@ import org.diirt.datasource.formula.FormulaFunctions;
 import org.diirt.datasource.formula.FormulaRegistry;
 
 public final class FormulaFunctionViewer extends HBox {
-    
+
     @FXML
     private TreeTableView<BrowserItem> functionsTreeTable;
-    
+
     public static interface BrowserItem {
         public String getName();
         public String getDescription();
         public boolean isLeaf();
         public List<BrowserItem> createChildren();
     }
-    
+
     public static class FormulaFunctionRootBrowserItem implements BrowserItem {
 
         @Override
@@ -60,9 +60,9 @@ public final class FormulaFunctionViewer extends HBox {
                     .map(name -> new FormulaFunctionSetBrowserItem(FormulaRegistry.getDefault().findFunctionSet(name)))
                     .collect(Collectors.toList());
         }
-        
+
     }
-    
+
     public static class FormulaFunctionSetBrowserItem implements BrowserItem {
         private final FormulaFunctionSet set;
 
@@ -92,9 +92,9 @@ public final class FormulaFunctionViewer extends HBox {
                     .map((f) -> new FormulaFunctionDataBrowserItem(f))
                     .collect(Collectors.toList());
         }
-        
+
     }
-    
+
     public static class FormulaFunctionDataBrowserItem implements BrowserItem {
         private final FormulaFunction function;
 
@@ -121,9 +121,9 @@ public final class FormulaFunctionViewer extends HBox {
         public List<BrowserItem> createChildren() {
             return Collections.emptyList();
         }
-        
+
     }
-    
+
     public static class TreeBrowserItem extends TreeItem<BrowserItem> {
         private boolean initializedChildren = false;
 
@@ -144,9 +144,9 @@ public final class FormulaFunctionViewer extends HBox {
             }
             return super.getChildren();
         }
-        
+
     }
-    
+
 
     public FormulaFunctionViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -154,7 +154,7 @@ public final class FormulaFunctionViewer extends HBox {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -171,11 +171,11 @@ public final class FormulaFunctionViewer extends HBox {
         TreeTableColumn<BrowserItem,String> descriptionCol = new TreeTableColumn<>("Description");
 
         functionsTreeTable.getColumns().setAll(nameCol, descriptionCol);
-        
+
         nameCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
         descriptionCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("description"));
     }
-    
+
     public static void main(String[] args) {
         JavaFXLaunchUtil.launch("Diirt - Formula Function Browser", FormulaFunctionViewer.class, args);
     }

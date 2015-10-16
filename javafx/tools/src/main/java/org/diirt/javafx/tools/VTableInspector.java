@@ -32,14 +32,14 @@ import org.diirt.vtype.table.VTableFactory;
  * @author carcassi
  */
 public class VTableInspector extends GridPane {
-    
+
     @FXML
     private ListView<Object> valuesField;
     @FXML
     private ComboBox<String> columnField;
     @FXML
     private ComboBox<String> filterField;
-    
+
 
     public VTableInspector() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -47,24 +47,24 @@ public class VTableInspector extends GridPane {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        
+
         filterField.setItems(FXCollections.observableList(Arrays.asList("All", "Not numbers")));
         filterField.getSelectionModel().select("All");
     }
-    
+
     private VTable vTable;
-    
+
     public void setValue(VTable vTable) {
         columnField.setItems(FXCollections.observableList(VTableFactory.columnNames(vTable)));
         this.vTable = vTable;
     }
-    
+
     public static void instpectValue(VTable vTable) {
         Stage stage = new Stage();
         stage.setTitle("Inspect VTable");
@@ -83,9 +83,9 @@ public class VTableInspector extends GridPane {
     private void onFilterChange(ActionEvent event) {
         filterValues();
     }
-    
+
     private static final Pattern pDouble = Pattern.compile(DOUBLE_REGEX_WITH_NAN);
-    
+
     private void filterValues() {
         String columnName = columnField.getValue();
         String filter = filterField.getValue();
@@ -109,5 +109,5 @@ public class VTableInspector extends GridPane {
     public static void main(String[] args) {
         JavaFXLaunchUtil.launch("Diirt - VTable Inspector", VTableInspector.class, args);
     }
-    
+
 }

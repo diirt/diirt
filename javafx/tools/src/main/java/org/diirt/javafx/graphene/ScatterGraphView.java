@@ -23,7 +23,7 @@ public class ScatterGraphView extends BaseGraphView< ScatterGraph2DRendererUpdat
 
     private final Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NONE );
     private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
-    
+
     @Override
     public Graph2DExpression<ScatterGraph2DRendererUpdate> createExpression(String dataFormula) {
         ScatterGraph2DExpression plot = scatterGraphOf(formula(dataFormula),
@@ -33,7 +33,7 @@ public class ScatterGraphView extends BaseGraphView< ScatterGraph2DRendererUpdat
         plot.update(plot.newUpdate().interpolation(interpolationScheme.getValue()));
         return plot;
     }
- 
+
     public ScatterGraphView() {
         this.interpolationScheme.addListener( new ChangeListener< InterpolationScheme >() {
 
@@ -41,24 +41,24 @@ public class ScatterGraphView extends BaseGraphView< ScatterGraph2DRendererUpdat
             public void changed(ObservableValue<? extends InterpolationScheme> observable, InterpolationScheme oldValue, InterpolationScheme newValue) {
                 graph.update( graph.newUpdate().interpolation( newValue ) );
             }
-            
+
         });
-        
+
         defaultConfigurationDialog.addInterpolationSchemeListProperty( "Interpolation Scheme" , this.interpolationScheme , new InterpolationScheme[] { InterpolationScheme.NONE , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
     }
-    
+
     public void setInterpolationScheme( InterpolationScheme scheme ) {
         this.interpolationScheme.setValue( scheme );
     }
-    
+
     public InterpolationScheme getInterpolationScheme() {
         return this.interpolationScheme.getValue();
     }
-    
+
     public Property< InterpolationScheme > interpolationSchemeProperty() {
         return this.interpolationScheme;
     }
-    
+
     public ConfigurationDialog getDefaultConfigurationDialog() {
         return this.defaultConfigurationDialog;
     }

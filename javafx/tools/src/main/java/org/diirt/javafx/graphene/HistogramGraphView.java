@@ -22,16 +22,16 @@ import org.diirt.graphene.AreaGraph2DRendererUpdate;
 public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate > {
 
     private final BooleanProperty highlightFocusValue = new SimpleBooleanProperty( this , "highlightFocusValue" , false );
-    
+
     private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
-    
+
     @Override
     public Graph2DExpression createExpression(String dataFormula) {
         HistogramGraph2DExpression plot = histogramGraphOf(formula(dataFormula));
         plot.update(plot.newUpdate().highlightFocusValue(highlightFocusValue.getValue()));
         return plot;
     }
-    
+
     public HistogramGraphView() {
         this.highlightFocusValue.addListener( new ChangeListener< Boolean >() {
 
@@ -40,29 +40,29 @@ public class HistogramGraphView extends BaseGraphView< AreaGraph2DRendererUpdate
                 graph.update( graph.newUpdate().highlightFocusValue( newValue ) );
             }
         });
-        
+
         this.defaultConfigurationDialog.addBooleanProperty( "Highlight Focus" , this.highlightFocusValue );
     }
-    
+
     @Override
     protected void onMouseMove(MouseEvent e) {
         if ( graph != null ) {
             graph.update(graph.newUpdate().focusPixel( (int)e.getX() ));
         }
     }
-    
+
     public void setHighlightFocusValue( boolean b ) {
         this.highlightFocusValue.setValue( b );
     }
-    
+
     public boolean isHighlightFocusValue() {
         return this.highlightFocusValue.getValue();
     }
-    
+
     public BooleanProperty highlightFocusValueProperty() {
         return this.highlightFocusValue;
     }
-    
+
     public ConfigurationDialog getDefaultConfigurationDialog() {
         return this.defaultConfigurationDialog;
     }

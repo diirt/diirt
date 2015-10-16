@@ -13,12 +13,12 @@ import javafx.stage.Stage;
 public class HistogramGraphApp extends BaseGraphApp {
 
     private final HistogramGraphView histogramGraphView = new HistogramGraphView();
-    
+
     @Override
     public BaseGraphView getGraphView() {
         return this.histogramGraphView;
     }
-    
+
     @Override
     public void start( Stage stage ) throws Exception {
         super.start( stage );
@@ -27,12 +27,12 @@ public class HistogramGraphApp extends BaseGraphApp {
                     "=arrayWithBoundaries(arrayOf(1,3,2,4,3,5), range(-10,10))",
                     "=caHistogram(\"histo\")" );
     }
-    
+
     @Override
     public void openConfigurationPanel() {
         this.histogramGraphView.getDefaultConfigurationDialog().open();
     }
-    
+
     final public static void main( String[] args ) {
         launch( args );
     }

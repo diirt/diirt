@@ -23,21 +23,21 @@ import org.diirt.service.ServiceMethod.DataDescription;
 import org.diirt.service.ServiceRegistry;
 
 /**
- * 
+ *
  * @author asbarber
  */
 public final class ServiceViewer extends HBox {
 
     @FXML
     private TreeTableView<BrowserItem> servicesTreeTable;
-    
+
     public static interface BrowserItem {
         public String getName();
         public String getDescription();
         public boolean isLeaf();
         public List<BrowserItem> createChildren();
     }
-    
+
     public static class ServiceRootBrowserItem implements BrowserItem {
 
         @Override
@@ -62,9 +62,9 @@ public final class ServiceViewer extends HBox {
                     .map(name -> new ServiceBrowserItem(ServiceRegistry.getDefault().findService(name)))
                     .collect(Collectors.toList());
         }
-        
+
     }
-    
+
     public static class ServiceBrowserItem implements BrowserItem {
         private final Service service;
 
@@ -94,9 +94,9 @@ public final class ServiceViewer extends HBox {
                     .map((f) -> new ServiceMethodBrowserItem(f.getValue()))
                     .collect(Collectors.toList());
         }
-        
+
     }
-    
+
     public static class ServiceMethodBrowserItem implements BrowserItem {
         private final ServiceMethod method;
 
@@ -122,23 +122,23 @@ public final class ServiceViewer extends HBox {
         @Override
         public List<BrowserItem> createChildren() {
             List<BrowserItem> items = new ArrayList<>();
-            
+
             items.addAll( method.getArguments().stream()
                     .map((m) -> new ServiceMethodArgumentBrowserItem(m))
                     .collect(Collectors.toList()) );
-            
+
             items.addAll( method.getResults().stream()
                     .map((m) -> new ServiceMethodArgumentBrowserItem(m))
                     .collect(Collectors.toList()) );
-            
+
             return items;
         }
-        
+
     }
-    
+
     public static class ServiceMethodArgumentBrowserItem implements BrowserItem {
         private final DataDescription parameter;
-        
+
         public ServiceMethodArgumentBrowserItem(DataDescription parameter){
             this.parameter = parameter;
         }
@@ -162,10 +162,10 @@ public final class ServiceViewer extends HBox {
         public List<BrowserItem> createChildren() {
             return Collections.emptyList();
         }
-        
-        
+
+
     }
-    
+
     public static class TreeBrowserItem extends TreeItem<BrowserItem> {
         private boolean initializedChildren = false;
 
@@ -186,9 +186,9 @@ public final class ServiceViewer extends HBox {
             }
             return super.getChildren();
         }
-        
+
     }
-    
+
 
     public ServiceViewer() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -196,7 +196,7 @@ public final class ServiceViewer extends HBox {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -212,12 +212,12 @@ public final class ServiceViewer extends HBox {
         TreeTableColumn<BrowserItem,String> descriptionCol = new TreeTableColumn<>("Description");
 
         servicesTreeTable.getColumns().setAll(nameCol, descriptionCol);
-        
+
         nameCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("name"));
         descriptionCol.setCellValueFactory(new TreeItemPropertyValueFactory<>("description"));
     }
-    
+
     public static void main(String[] args) {
         JavaFXLaunchUtil.launch("Diirt - Service Browser", ServiceViewer.class, args);
-    }    
+    }
 }

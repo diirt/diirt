@@ -346,7 +346,7 @@ public final class ServiceProbe extends VBox {
         }
 
         List<Thread> editors = new ArrayList<>();
-        
+
         // SERVICE combo box
         serviceField.getItems().addAll(FXCollections.observableList(listServices()));
         serviceField.valueProperty().addListener(new ChangeListener<Service>() {

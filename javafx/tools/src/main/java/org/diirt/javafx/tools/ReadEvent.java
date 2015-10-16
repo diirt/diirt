@@ -27,7 +27,7 @@ public class ReadEvent implements Event {
         this.value = value;
         this.lastException = lastException;
     }
-    
+
     @Override
     public Timestamp getTimestamp() {
         return timestamp;
@@ -59,5 +59,5 @@ public class ReadEvent implements Event {
     public String toString() {
         return event.toString();
     }
-    
+
 }

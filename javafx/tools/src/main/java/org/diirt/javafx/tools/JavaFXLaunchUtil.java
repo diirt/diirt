@@ -16,11 +16,11 @@ import javafx.stage.Stage;
  * @author carcassi
  */
 public class JavaFXLaunchUtil {
-    
+
     private JavaFXLaunchUtil() {
         // No instances allowed
     }
-    
+
     public static void launch(String title, Class<? extends Parent> rootClass, String... args) {
         appTitle = title;
         appRootClass = rootClass;
@@ -37,10 +37,10 @@ public class JavaFXLaunchUtil {
             // TODO put an Alert, but requires jdk 8u40
         }
     }
-    
+
     private static volatile String appTitle;
     private static volatile Class<? extends Parent> appRootClass;
-    
+
     public static class SimpleApplication extends Application {
         @Override
         public void start(Stage primaryStage) throws Exception {

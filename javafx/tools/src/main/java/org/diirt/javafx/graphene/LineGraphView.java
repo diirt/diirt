@@ -23,7 +23,7 @@ public class LineGraphView extends BaseGraphView< LineGraph2DRendererUpdate > {
 
     private final Property< InterpolationScheme > interpolationScheme = new SimpleObjectProperty< InterpolationScheme >( this , "interpolationScheme" , InterpolationScheme.NEAREST_NEIGHBOR );
     private final ConfigurationDialog defaultConfigurationDialog = new ConfigurationDialog();
-    
+
     @Override
     public Graph2DExpression<LineGraph2DRendererUpdate> createExpression(String dataFormula) {
         LineGraph2DExpression plot = lineGraphOf(formula(dataFormula),
@@ -33,7 +33,7 @@ public class LineGraphView extends BaseGraphView< LineGraph2DRendererUpdate > {
         plot.update(plot.newUpdate().interpolation(interpolationScheme.getValue()));
         return plot;
     }
-    
+
     public LineGraphView() {
         this.interpolationScheme.addListener( new ChangeListener< InterpolationScheme >() {
 
@@ -41,24 +41,24 @@ public class LineGraphView extends BaseGraphView< LineGraph2DRendererUpdate > {
             public void changed(ObservableValue<? extends InterpolationScheme> observable, InterpolationScheme oldValue, InterpolationScheme newValue) {
                 graph.update( graph.newUpdate().interpolation( newValue ) );
             }
-            
+
         });
-        
+
         this.defaultConfigurationDialog.addInterpolationSchemeListProperty( "Interpolation Scheme" , this.interpolationScheme , new InterpolationScheme[]{ InterpolationScheme.NEAREST_NEIGHBOR , InterpolationScheme.LINEAR , InterpolationScheme.CUBIC } );
     }
-    
+
     public void setInterpolationScheme( InterpolationScheme scheme ) {
         this.interpolationScheme.setValue( scheme );
     }
-    
+
     public InterpolationScheme getInterpolationScheme() {
         return this.interpolationScheme.getValue();
     }
-    
+
     public Property< InterpolationScheme > interpolationSchemeProperty() {
         return this.interpolationScheme;
     }
-    
+
     public ConfigurationDialog getDefaultConfigurationDialog() {
         return this.defaultConfigurationDialog;
     }
