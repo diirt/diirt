@@ -27,8 +27,8 @@ import org.diirt.datasource.vtype.DataTypeSupport;
 public final class WebPodsDataSource extends DataSource {
 
     static {
-	// Install type support for the types it generates.
-	DataTypeSupport.install();
+        // Install type support for the types it generates.
+        DataTypeSupport.install();
     }
     
     private final WebPodsClient client;
@@ -81,7 +81,7 @@ public final class WebPodsDataSource extends DataSource {
    
     @Override
     protected ChannelHandler createChannel(String channelName) {	
-	return new WebPodsChannelHandler(this, channelName);
+        return new WebPodsChannelHandler(this, channelName);
     }
 
     /**

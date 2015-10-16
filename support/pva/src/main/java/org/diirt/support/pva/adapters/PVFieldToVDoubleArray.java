@@ -27,52 +27,52 @@ import org.diirt.vtype.ValueUtil;
  */
 public class PVFieldToVDoubleArray extends AlarmTimeDisplayExtractor implements VDoubleArray {
 
-	private final ListInt size;
-	private final ListDouble list;
-	
-	public PVFieldToVDoubleArray(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        private final ListInt size;
+        private final ListDouble list;
+        
+        public PVFieldToVDoubleArray(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVDoubleArray(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVDoubleArray(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	public PVFieldToVDoubleArray(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
-		
-		if (field instanceof PVDoubleArray)
-		{
-			PVDoubleArray valueField = (PVDoubleArray)field;
+        public PVFieldToVDoubleArray(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
+                
+                if (field instanceof PVDoubleArray)
+                {
+                        PVDoubleArray valueField = (PVDoubleArray)field;
 
-			DoubleArrayData data = new DoubleArrayData();
-			valueField.get(0, valueField.getLength(), data);
-			
-			this.size = new ArrayInt(data.data.length);
-			this.list = new ArrayDouble(data.data);
-		}
-		else
-		{
-			size = null;
-			list = null;
-		}
-	}
+                        DoubleArrayData data = new DoubleArrayData();
+                        valueField.get(0, valueField.getLength(), data);
+                        
+                        this.size = new ArrayInt(data.data.length);
+                        this.list = new ArrayDouble(data.data);
+                }
+                else
+                {
+                        size = null;
+                        list = null;
+                }
+        }
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.Array#getSizes()
-	 */
-	@Override
-	public ListInt getSizes() {
-		return size;
-	}
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.Array#getSizes()
+         */
+        @Override
+        public ListInt getSizes() {
+                return size;
+        }
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VDoubleArray#getData()
-	 */
-	@Override
-	public ListDouble getData() {
-		return list;
-	}
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.VDoubleArray#getData()
+         */
+        @Override
+        public ListDouble getData() {
+                return list;
+        }
     
     @Override
     public String toString() {

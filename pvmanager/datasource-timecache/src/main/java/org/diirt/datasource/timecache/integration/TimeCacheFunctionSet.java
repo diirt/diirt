@@ -12,10 +12,10 @@ import org.diirt.datasource.formula.FormulaFunctionSetDescription;
  */
 public class TimeCacheFunctionSet extends FormulaFunctionSet {
 
-	public TimeCacheFunctionSet() {
-		super(new FormulaFunctionSetDescription("tc",
-				"Functions to query data threw a TimeCache")
-				.addFormulaFunction(new TCQueryFunction()));
-	}
+        public TimeCacheFunctionSet() {
+                super(new FormulaFunctionSetDescription("tc",
+                                "Functions to query data threw a TimeCache")
+                                .addFormulaFunction(new TCQueryFunction()));
+        }
 
 }

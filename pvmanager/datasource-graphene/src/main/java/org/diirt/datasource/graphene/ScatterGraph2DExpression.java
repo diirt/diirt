@@ -26,9 +26,9 @@ public class ScatterGraph2DExpression extends DesiredRateExpressionImpl<Graph2DR
     }
 
     ScatterGraph2DExpression(DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> tooltipColumnName) {
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> tooltipColumnName) {
         super(ExpressionLanguage.<Object>createList(tableData, xColumnName, yColumnName, tooltipColumnName),
                 new ScatterGraph2DFunction(functionOf(tableData),
                 functionOf(xColumnName), functionOf(yColumnName), functionOf(tooltipColumnName)),

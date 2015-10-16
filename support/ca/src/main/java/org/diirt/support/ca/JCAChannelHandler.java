@@ -162,12 +162,12 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         
         try {
             // Give the listener right away so that no event gets lost
-	    // If it's a large array, connect using lower priority
-	    if (largeArray) {
+            // If it's a large array, connect using lower priority
+            if (largeArray) {
                 channel = jcaDataSource.getContext().createChannel(getJcaChannelName(), connectionListener, Channel.PRIORITY_MIN);
-	    } else {
+            } else {
                 channel = jcaDataSource.getContext().createChannel(getJcaChannelName(), connectionListener, (short) (Channel.PRIORITY_MIN + 1));
-	    }
+            }
         } catch (CAException ex) {
             throw new RuntimeException("JCA Connection failed", ex);
         }

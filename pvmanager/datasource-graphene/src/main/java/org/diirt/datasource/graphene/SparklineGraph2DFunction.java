@@ -32,8 +32,8 @@ class SparklineGraph2DFunction implements ReadFunction<Graph2DResult> {
     private final QueueCollector<SparklineGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
     SparklineGraph2DFunction(ReadFunction<?> tableData,
-	    ReadFunction<?> xColumnName,
-	    ReadFunction<?> yColumnName) {
+            ReadFunction<?> xColumnName,
+            ReadFunction<?> yColumnName) {
         this.tableData = new CheckedReadFunction<VType>(tableData, "Data", VTable.class, VNumberArray.class);
         this.xColumnName = stringArgument(xColumnName, "X Column");
         this.yColumnName = stringArgument(yColumnName, "Y Column");

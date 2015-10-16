@@ -69,7 +69,7 @@ class ArrayOfStringFormulaFunction implements FormulaFunction {
 
         return ValueFactory.newVStringArray(data,
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args));
+                ValueUtil.latestValidTimeOrNowOf(args));
     }
 
 }

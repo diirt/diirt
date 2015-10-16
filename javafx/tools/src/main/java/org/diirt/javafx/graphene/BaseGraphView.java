@@ -68,43 +68,43 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
     private final Property<Exception> lastException = new SimpleObjectProperty<>();
     
     public BaseGraphView() {
-	
-	//allow this panel to shrink -- for some reason, JavaFX doesn't default
-	//to this
-	setMinSize( 0 , 0 );
+        
+        //allow this panel to shrink -- for some reason, JavaFX doesn't default
+        //to this
+        setMinSize( 0 , 0 );
         setCenter(imagePanel);
-	
-	//watch for mouse movements, if necessary
-	this.imagePanel.setOnMouseMoved(this::onMouseMove);
-	
-	this.imagePanel.widthProperty().addListener(new ChangeListener< Number >() {
+        
+        //watch for mouse movements, if necessary
+        this.imagePanel.setOnMouseMoved(this::onMouseMove);
+        
+        this.imagePanel.widthProperty().addListener(new ChangeListener< Number >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-		if ( graph != null ) {
-		    graph.update(graph.newUpdate().imageWidth(Math.max( 1 , newValue.intValue() ) ));
-		}
-	    }
-	});
-	
-	this.imagePanel.heightProperty().addListener( new ChangeListener< Number >() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if ( graph != null ) {
+                    graph.update(graph.newUpdate().imageWidth(Math.max( 1 , newValue.intValue() ) ));
+                }
+            }
+        });
+        
+        this.imagePanel.heightProperty().addListener( new ChangeListener< Number >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-		if ( graph != null ) {
-		    graph.update(graph.newUpdate().imageHeight(Math.max(1 , newValue.intValue())));
-		}
-	    }
-	    
-	});
-	
-	this.formula.addListener( new ChangeListener< String >() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if ( graph != null ) {
+                    graph.update(graph.newUpdate().imageHeight(Math.max(1 , newValue.intValue())));
+                }
+            }
+            
+        });
+        
+        this.formula.addListener( new ChangeListener< String >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		reconnect( newValue );
-	    }
-	});
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                reconnect( newValue );
+            }
+        });
     }
     
     /**
@@ -113,22 +113,22 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * @param formula a data formula for PVManager
      */
     public void setFormula( String formula ) {
-	this.formula.setValue( formula );
+        this.formula.setValue( formula );
     }
     
     /**
      * @return the data formula currently being displayed on the graph
      */
     public String getFormula() {
-	return this.formula.getValue();
+        return this.formula.getValue();
     }
     
     public StringProperty formulaProperty() {
-	return this.formula;
+        return this.formula;
     }
     
     public ReadOnlyProperty< Exception > lastExceptionProperty() {
-	return this.lastException;
+        return this.lastException;
     }
     
     /**
@@ -136,7 +136,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * to graph. It is null, if PVManager did not report an exception
      */
     public Exception getlastException() {
-	return this.lastException.getValue();
+        return this.lastException.getValue();
     }
     
     /**
@@ -147,7 +147,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * @param e the event associated with the mouse movement
      */
     protected void onMouseMove( MouseEvent e ) {
-	//do nothing by default
+        //do nothing by default
     }
     
     /**
@@ -164,7 +164,7 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * Redraws the graph
      */
     protected void reconnect() {
-	reconnect( this.getFormula() );
+        reconnect( this.getFormula() );
     }
     /**
      * Sends the given data formula to the data source and asks it for data. 
@@ -173,16 +173,16 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
      * @param dataFormula the data formula to use
      */
     protected void reconnect( String dataFormula ) {
-	
+        
         if (pv != null) {
             pv.close();
             imagePanel.setVImage(null);
             graph = null;
         }
-	
-	if ( dataFormula == null ) {
-	    return;
-	}
+        
+        if ( dataFormula == null ) {
+            return;
+        }
         
         graph = createExpression( dataFormula );
         
@@ -194,14 +194,14 @@ abstract public class BaseGraphView< T extends Graph2DRendererUpdate< T > > exte
 
                     @Override
                     public void pvChanged(PVReaderEvent<Graph2DResult> event) {
-			lastException.setValue( pv.lastException() );
+                        lastException.setValue( pv.lastException() );
                         if (pv.getValue() != null) {
                             imagePanel.setVImage(pv.getValue().getImage());
                         }
                     }
                 })
                 .maxRate(ofHertz(100));
-	
+        
     }
     
     /**

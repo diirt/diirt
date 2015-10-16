@@ -23,8 +23,8 @@ import org.diirt.datasource.vtype.DataTypeSupport;
 public final class FileDataSource extends DataSource {
     private final static FileFormatRegistry register = FileFormatRegistry.getDefault();
     static {
-	// Install type support for the types it generates.
-	DataTypeSupport.install();
+        // Install type support for the types it generates.
+        DataTypeSupport.install();
     }
     
     private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.util.concurrent.Executors.namedPool("diirt - file watch"));
@@ -49,17 +49,17 @@ public final class FileDataSource extends DataSource {
     
     @Override
     protected ChannelHandler createChannel(String channelName) {	
-	if (channelName.contains(".")) {
-	    String fileExt = channelName.substring(
-		    channelName.lastIndexOf('.') + 1, channelName.length());
-	    if (register.contains(fileExt)) {
-		return new FileChannelHandler(this, channelName, new File(
-			URI.create("file://" + channelName)),
-			register.getFileFormatFor(fileExt));
-	    }
-	}
-	return new FileChannelHandler(this, channelName, new File(
-		URI.create("file://" + channelName)), new CSVFileFormat());
+        if (channelName.contains(".")) {
+            String fileExt = channelName.substring(
+                    channelName.lastIndexOf('.') + 1, channelName.length());
+            if (register.contains(fileExt)) {
+                return new FileChannelHandler(this, channelName, new File(
+                        URI.create("file://" + channelName)),
+                        register.getFileFormatFor(fileExt));
+            }
+        }
+        return new FileChannelHandler(this, channelName, new File(
+                URI.create("file://" + channelName)), new CSVFileFormat());
     }
 
     @Override

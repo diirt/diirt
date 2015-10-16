@@ -16,26 +16,26 @@ import org.diirt.vtype.VTypeToString;
  */
 public class PVFieldToVDouble extends AlarmTimeDisplayExtractor implements VDouble {
 
-	protected final Double value;
-	
-	public PVFieldToVDouble(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        protected final Double value;
+        
+        public PVFieldToVDouble(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVDouble(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVDouble(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	public PVFieldToVDouble(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
+        public PVFieldToVDouble(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
 
-		if (field instanceof PVScalar)
-			value = convert.toDouble((PVScalar)field);
-	    else
-	    	value = null;
-	}
+                if (field instanceof PVScalar)
+                        value = convert.toDouble((PVScalar)field);
+            else
+            	value = null;
+        }
 
-	@Override
+        @Override
     public Double getValue()
     {
     	return value;

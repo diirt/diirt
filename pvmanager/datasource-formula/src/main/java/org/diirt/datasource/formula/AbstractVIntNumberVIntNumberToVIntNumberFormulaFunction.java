@@ -111,10 +111,10 @@ public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction im
             throw new IllegalArgumentException("Operator '" + getName() + "' only works with integers");
         }
         
-	return newVInt(
-		calculate(arg1.intValue(), arg2.intValue()),
+        return newVInt(
+                calculate(arg1.intValue(), arg2.intValue()),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args),
+                ValueUtil.latestValidTimeOrNowOf(args),
                 displayNone());
     }
     

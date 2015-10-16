@@ -47,7 +47,7 @@ public abstract class Time {
             return true;
         }
         
-	if (obj instanceof Time) {
+        if (obj instanceof Time) {
             Time other = (Time) obj;
         
             return Objects.equals(getTimestamp(), other.getTimestamp()) &&

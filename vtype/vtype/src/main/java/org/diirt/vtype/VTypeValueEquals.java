@@ -25,13 +25,13 @@ public class VTypeValueEquals {
      * @return true if equal or both null
      */
     public static boolean alarmEquals(Alarm alarm1, Alarm alarm2) {
-	if (alarm1 == null && alarm2 == null) {
-	    return true;
-	}
+        if (alarm1 == null && alarm2 == null) {
+            return true;
+        }
 
-	if (alarm1 == null || alarm2 == null) {
-	    return false;
-	}
+        if (alarm1 == null || alarm2 == null) {
+            return false;
+        }
         
         return alarm1.getAlarmSeverity().equals(alarm2.getAlarmSeverity()) &&
                 alarm1.getAlarmName().equals(alarm2.getAlarmName());
@@ -46,13 +46,13 @@ public class VTypeValueEquals {
      * @return  true if equal or both null
      */
     public static boolean timeEquals(Time time1, Time time2) {
-	if (time1 == null && time2 == null) {
-	    return true;
-	}
+        if (time1 == null && time2 == null) {
+            return true;
+        }
 
-	if (time1 == null || time2 == null) {
-	    return false;
-	}
+        if (time1 == null || time2 == null) {
+            return false;
+        }
         
         return Objects.equals(time1.getTimestamp(), time2.getTimestamp()) &&
                 Objects.equals(time1.getTimeUserTag(), time2.getTimeUserTag()) &&
@@ -67,13 +67,13 @@ public class VTypeValueEquals {
      * @return true if same type or both null
      */
     public static boolean typeEquals(Object obj1, Object obj2) {
-	if (obj1 == null && obj2 == null) {
-	    return true;
-	}
+        if (obj1 == null && obj2 == null) {
+            return true;
+        }
 
-	if (obj1 == null || obj2 == null) {
-	    return false;
-	}
+        if (obj1 == null || obj2 == null) {
+            return false;
+        }
         
         return Objects.equals(ValueUtil.typeOf(obj1), ValueUtil.typeOf(obj2));
     }
@@ -167,51 +167,51 @@ public class VTypeValueEquals {
     }
 
     public static boolean valueEquals(Object obj1, Object obj2) {
-	if (obj1 == null && obj2 == null) {
-	    return true;
-	}
+        if (obj1 == null && obj2 == null) {
+            return true;
+        }
 
-	if (obj1 == null || obj2 == null) {
-	    return false;
-	}
+        if (obj1 == null || obj2 == null) {
+            return false;
+        }
 
-	if ((obj1 instanceof VNumberArray) && (obj2 instanceof VNumberArray)) {
-	    return valueEquals((VNumberArray) obj1, (VNumberArray) obj2);
-	}
+        if ((obj1 instanceof VNumberArray) && (obj2 instanceof VNumberArray)) {
+            return valueEquals((VNumberArray) obj1, (VNumberArray) obj2);
+        }
 
-	if ((obj1 instanceof VStringArray) && (obj2 instanceof VStringArray)) {
-	    return valueEquals((VStringArray) obj1, (VStringArray) obj2);
-	}
+        if ((obj1 instanceof VStringArray) && (obj2 instanceof VStringArray)) {
+            return valueEquals((VStringArray) obj1, (VStringArray) obj2);
+        }
 
-	if ((obj1 instanceof VString) && (obj2 instanceof VString)) {
-	    return valueEquals((VString) obj1, (VString) obj2);
-	}
+        if ((obj1 instanceof VString) && (obj2 instanceof VString)) {
+            return valueEquals((VString) obj1, (VString) obj2);
+        }
 
-	if ((obj1 instanceof VEnum) && (obj2 instanceof VEnum)) {
-	    return valueEquals((VEnum) obj1, (VEnum) obj2);
-	}
+        if ((obj1 instanceof VEnum) && (obj2 instanceof VEnum)) {
+            return valueEquals((VEnum) obj1, (VEnum) obj2);
+        }
 
-	if ((obj1 instanceof VEnumArray) && (obj2 instanceof VEnumArray)) {
-	    return valueEquals((VEnumArray) obj1, (VEnumArray) obj2);
-	}
-	
-	if((obj1 instanceof VNumber) && (obj2 instanceof VNumber)) {
-	    return valueEquals((VNumber) obj1, (VNumber) obj2);
-	}
-	
-	if((obj1 instanceof VBoolean) && (obj2 instanceof VBoolean)) {
-	    return valueEquals((VBoolean) obj1, (VBoolean) obj2);
-	}
+        if ((obj1 instanceof VEnumArray) && (obj2 instanceof VEnumArray)) {
+            return valueEquals((VEnumArray) obj1, (VEnumArray) obj2);
+        }
+        
+        if((obj1 instanceof VNumber) && (obj2 instanceof VNumber)) {
+            return valueEquals((VNumber) obj1, (VNumber) obj2);
+        }
+        
+        if((obj1 instanceof VBoolean) && (obj2 instanceof VBoolean)) {
+            return valueEquals((VBoolean) obj1, (VBoolean) obj2);
+        }
 
-	if ((obj1 instanceof VBooleanArray) && (obj2 instanceof VBooleanArray)) {
-	    return valueEquals((VBooleanArray) obj1, (VBooleanArray) obj2);
-	}
-	
-	if((obj1 instanceof VTable) && (obj2 instanceof VTable)) {
-	    return valueEquals((VTable) obj1, (VTable) obj2);
-	}
+        if ((obj1 instanceof VBooleanArray) && (obj2 instanceof VBooleanArray)) {
+            return valueEquals((VBooleanArray) obj1, (VBooleanArray) obj2);
+        }
+        
+        if((obj1 instanceof VTable) && (obj2 instanceof VTable)) {
+            return valueEquals((VTable) obj1, (VTable) obj2);
+        }
 
-	return false;
+        return false;
     }
 
 }

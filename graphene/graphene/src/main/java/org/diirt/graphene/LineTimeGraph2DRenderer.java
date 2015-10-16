@@ -74,17 +74,17 @@ public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGra
         
         ListNumber xValues = data.getNormalizedTime( super.getPlotTimeInterval() );
         ListNumber yValues = data.getValues();
-	
-	//if necessary, extend the last data point to the end of the graph, 
-	//so that we don't have a random empty gap with no graph
-	if ( xValues.getDouble( xValues.size()-1 ) != 1.0 ) {
-	    if ( super.getAggregatedTimeInterval().getEnd().compareTo( super.getPlotTimeInterval().getEnd() ) < 0 ) {
-		double lastX = 1.0;
-		xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {lastX} ) );
-		double lastY = yValues.getDouble( yValues.size()-1 );
-		yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
-	    }
-	}
+        
+        //if necessary, extend the last data point to the end of the graph, 
+        //so that we don't have a random empty gap with no graph
+        if ( xValues.getDouble( xValues.size()-1 ) != 1.0 ) {
+            if ( super.getAggregatedTimeInterval().getEnd().compareTo( super.getPlotTimeInterval().getEnd() ) < 0 ) {
+                double lastX = 1.0;
+                xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {lastX} ) );
+                double lastY = yValues.getDouble( yValues.size()-1 );
+                yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
+            }
+        }
 
         setClip(g);
         g.setColor(Color.BLACK);

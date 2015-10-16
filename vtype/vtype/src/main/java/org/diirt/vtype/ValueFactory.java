@@ -388,7 +388,7 @@ public class ValueFactory {
         } else if (value instanceof Byte) {
             return newVByte((Byte) value, alarm, time, display);
         }
-	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
     
     /**
@@ -524,20 +524,20 @@ public class ValueFactory {
      */
     public static VNumberArray newVNumberArray(final ListNumber data, final ListInt sizes, final List<ArrayDimensionDisplay> dimensionDisplay,
             final Alarm alarm, final Time time, final Display display){
-	if (data instanceof ListDouble){
-	    return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListFloat){
-	    return new IVFloatArray((ListFloat) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListLong){
-	    return new IVLongArray((ListLong) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListInt){
-	    return new IVIntArray((ListInt) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListByte){
-	    return new IVByteArray((ListByte) data, sizes, dimensionDisplay, alarm, time, display);
-	} else if (data instanceof ListShort){
-	    return new IVShortArray((ListShort) data, sizes, dimensionDisplay, alarm, time, display);
-	}
-	throw new UnsupportedOperationException("Data is of an unsupported type (" + data.getClass() + ")");
+        if (data instanceof ListDouble){
+            return new IVDoubleArray((ListDouble) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListFloat){
+            return new IVFloatArray((ListFloat) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListLong){
+            return new IVLongArray((ListLong) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListInt){
+            return new IVIntArray((ListInt) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListByte){
+            return new IVByteArray((ListByte) data, sizes, dimensionDisplay, alarm, time, display);
+        } else if (data instanceof ListShort){
+            return new IVShortArray((ListShort) data, sizes, dimensionDisplay, alarm, time, display);
+        }
+        throw new UnsupportedOperationException("Data is of an unsupported type (" + data.getClass() + ")");
     }
     
     /**

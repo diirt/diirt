@@ -113,7 +113,7 @@ public class TemporalGraph2DRendererTest {
     @Ignore
     public void timeGraphAreaHours2() throws Exception {
         // TODO: Fix multi-line labels
-	TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
+        TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
 
             @Override
             public TemporalGraph2DRendererUpdate newUpdate() {
@@ -128,14 +128,14 @@ public class TemporalGraph2DRendererTest {
         renderer.calculateRanges(Ranges.range(0, 10), TimeInterval.between(start, end));
         renderer.calculateGraphArea();
         renderer.drawGraphArea();
-	ImageAssert.compareImages( "timeGraph2DArea2" , image );
+        ImageAssert.compareImages( "timeGraph2DArea2" , image );
     }
     
     @Test
     @Ignore
     public void timeGraphAreaDays1() throws Exception {
         // TODO: Fix multi-line labels
-	TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
+        TemporalGraph2DRenderer renderer = new TemporalGraph2DRenderer(1000, 400) {
 
             @Override
             public TemporalGraph2DRendererUpdate newUpdate() {
@@ -150,9 +150,9 @@ public class TemporalGraph2DRendererTest {
         renderer.calculateRanges(Ranges.range(0, 10), TimeInterval.between(start, end));
         renderer.calculateGraphArea();
         renderer.drawGraphArea();
-	ImageAssert.compareImages( "timeGraph2DAreaDays1" , image );
-	//File f = new File( "src/test/resources/org/epics/graphene/timeGraph2DAreaDays1.png" );
-	//ImageIO.write( image , "png" , f );
+        ImageAssert.compareImages( "timeGraph2DAreaDays1" , image );
+        //File f = new File( "src/test/resources/org/epics/graphene/timeGraph2DAreaDays1.png" );
+        //ImageIO.write( image , "png" , f );
     }
     
 }

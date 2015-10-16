@@ -31,32 +31,32 @@ public class HistogramOfFormulaFunction extends StatefulFormulaFunction {
 
     @Override
     public boolean isVarArgs() {
-	return false;
+        return false;
     }
 
     @Override
     public String getName() {
-	return "histogramOf";
+        return "histogramOf";
     }
 
     @Override
     public String getDescription() {
-	return "Returns a histograms of the elements in the array.";
+        return "Returns a histograms of the elements in the array.";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-	return Arrays.<Class<?>> asList(VNumberArray.class);
+        return Arrays.<Class<?>> asList(VNumberArray.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-	return Arrays.asList("Array", "index");
+        return Arrays.asList("Array", "index");
     }
 
     @Override
     public Class<?> getReturnType() {
-	return VNumber.class;
+        return VNumber.class;
     }
     
     private VNumberArray previousValue;
@@ -66,7 +66,7 @@ public class HistogramOfFormulaFunction extends StatefulFormulaFunction {
 
     @Override
     public Object calculate(List<Object> args) {
-	VNumberArray numberArray = (VNumberArray) args.get(0);
+        VNumberArray numberArray = (VNumberArray) args.get(0);
         if (numberArray == null) {
             return null;
         }
@@ -119,7 +119,7 @@ public class HistogramOfFormulaFunction extends StatefulFormulaFunction {
         previousXRange = xRange;
         previousValue = numberArray;
         previousResult = newVNumberArray(new ArrayInt(binData), new ArrayInt(nBins), Arrays.asList(newDisplay(xBoundaries, unit)),
-		numberArray, numberArray, newDisplay(0.0, 0.0, 0.0, "count", NumberFormats.format(0), maxCount, maxCount, maxCount, Double.NaN, Double.NaN));
+                numberArray, numberArray, newDisplay(0.0, 0.0, 0.0, "count", NumberFormats.format(0), maxCount, maxCount, maxCount, Double.NaN, Double.NaN));
         
         return previousResult;
     }

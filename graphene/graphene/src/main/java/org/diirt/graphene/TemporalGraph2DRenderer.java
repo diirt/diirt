@@ -355,7 +355,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         double[] scaledX = new double[dataCount];
         double[] scaledY = new double[dataCount];
 
-	for (int i = 0; i < scaledY.length; i++) {
+        for (int i = 0; i < scaledY.length; i++) {
             scaledX[i] = scaledX(xValues.getDouble(i));
             scaledY[i] = scaledY(yValues.getDouble(i));
         }
@@ -403,13 +403,13 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         Path2D.Double line = new Path2D.Double();
         line.moveTo(scaledX[0], scaledY[0]);
         for (int i = 1; i < scaledY.length; i++) {
-	    line.lineTo(scaledX[i], scaledY[i-1]);
-	    if ( !Double.isNaN( scaledY[ i ] ) ) {
-		line.lineTo(scaledX[i], scaledY[i]);
-	    }
-	    else {
-		line.moveTo( scaledX[ i ] , scaledY[ i ] );
-	    }
+            line.lineTo(scaledX[i], scaledY[i-1]);
+            if ( !Double.isNaN( scaledY[ i ] ) ) {
+                line.lineTo(scaledX[i], scaledY[i]);
+            }
+            else {
+                line.moveTo( scaledX[ i ] , scaledY[ i ] );
+            }
         }
 //        line.lineTo(scaledX[scaledX.length - 1], scaledY[scaledY.length - 1]);
         //TODO: last value till end of the graph 
@@ -680,7 +680,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     
 
     protected final double scaledX(double value) {
-	return timeScale.scaleNormalizedTime(value, xPlotCoordStart, xPlotCoordEnd);
+        return timeScale.scaleNormalizedTime(value, xPlotCoordStart, xPlotCoordEnd);
     }
 
     protected final double scaledY(double value) {
@@ -727,9 +727,9 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             // Draw first and last label
             int[] drawRange = new int[] {xAreaStart, xAreaEnd};
             int yTop = (int) (yAreaEnd + xLabelMargin + 1);
-	    if ( !timeReferenceLabels.get( 0 ).contains(" ") ) {
-		timeReferenceLabels.set( 0 , timeReferenceLabels.get( 0 ) + " " );
-	    }
+            if ( !timeReferenceLabels.get( 0 ).contains(" ") ) {
+                timeReferenceLabels.set( 0 , timeReferenceLabels.get( 0 ) + " " );
+            }
             String firstHalf = timeReferenceLabels.get(0).substring(0, timeReferenceLabels.get(0).indexOf(" "));
             String secondHalf = timeReferenceLabels.get(0).substring(timeReferenceLabels.get(0).indexOf(" ") + 1);
             drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(0)),
@@ -737,57 +737,57 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
             drawRange[MIN] = xAreaStart;
             drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(0)),
                 drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, true, false);
-	    
-	    //XXX last label may have two parts that needs to be
-	    //drawn on two different lines
-	    //this is only a hack
-	    String lastLabel = timeReferenceLabels.get( timeReferenceLabels.size()-1 );
-	    if ( lastLabel.contains( " " ) ) {
-		firstHalf = lastLabel.substring( 0 , lastLabel.indexOf( " " ) );
-		secondHalf = lastLabel.substring( lastLabel.indexOf( " " ) );
-	    }
-	    else {
-		firstHalf = lastLabel;
-		secondHalf = "";
-	    }
-	    if ( secondHalf.equals( "" ) ) {
-		drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
-		    drawRange, yTop, false, false);
-	    }
-	    else {
-		int tmp = drawRange[ 1 ];
-		drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
-		    drawRange, yTop, false, false);
-		drawRange[ 1 ] = tmp;
-		drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
-		    drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, false, false);
-	    }
             
-	    //XXX label splitting needs to be reviewed and reimplemented
-	    //more elegantly/concisely
+            //XXX last label may have two parts that needs to be
+            //drawn on two different lines
+            //this is only a hack
+            String lastLabel = timeReferenceLabels.get( timeReferenceLabels.size()-1 );
+            if ( lastLabel.contains( " " ) ) {
+                firstHalf = lastLabel.substring( 0 , lastLabel.indexOf( " " ) );
+                secondHalf = lastLabel.substring( lastLabel.indexOf( " " ) );
+            }
+            else {
+                firstHalf = lastLabel;
+                secondHalf = "";
+            }
+            if ( secondHalf.equals( "" ) ) {
+                drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+                    drawRange, yTop, false, false);
+            }
+            else {
+                int tmp = drawRange[ 1 ];
+                drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+                    drawRange, yTop, false, false);
+                drawRange[ 1 ] = tmp;
+                drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(timeReferenceLabels.size() - 1)),
+                    drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, false, false);
+            }
+            
+            //XXX label splitting needs to be reviewed and reimplemented
+            //more elegantly/concisely
             for (int i = 1; i < timeReferenceLabels.size() - 1; i++) {
-		if ( !timeReferenceLabels.get( i ).contains( " " ) ) {
-		    firstHalf = timeReferenceLabels.get( i );
-		    secondHalf = "";
-		}
-		else {
-		    firstHalf = timeReferenceLabels.get( i ).substring( 0 , timeReferenceLabels.get(i).indexOf( " " ) );
-		    secondHalf = timeReferenceLabels.get( i ).substring( timeReferenceLabels.get(i).indexOf( " " ) + 1 );
-		}
-		if ( secondHalf.equals( "" ) ) {
-		    drawVerticalReferenceLabel(g, metrics, timeReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
+                if ( !timeReferenceLabels.get( i ).contains( " " ) ) {
+                    firstHalf = timeReferenceLabels.get( i );
+                    secondHalf = "";
+                }
+                else {
+                    firstHalf = timeReferenceLabels.get( i ).substring( 0 , timeReferenceLabels.get(i).indexOf( " " ) );
+                    secondHalf = timeReferenceLabels.get( i ).substring( timeReferenceLabels.get(i).indexOf( " " ) + 1 );
+                }
+                if ( secondHalf.equals( "" ) ) {
+                    drawVerticalReferenceLabel(g, metrics, timeReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
                         drawRange, yTop, true, false);
-		}
-		else {
-		    
-		    //XXX this is a hack
-		    int tmp = drawRange[ 0 ];
-		    drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(i)),
+                }
+                else {
+                    
+                    //XXX this is a hack
+                    int tmp = drawRange[ 0 ];
+                    drawVerticalReferenceLabel(g, metrics, secondHalf, (int) Math.floor(xTicks.getDouble(i)),
                         drawRange, yTop, true , false);
-		    drawRange[ 0 ] = tmp;
-		    drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(i)),
+                    drawRange[ 0 ] = tmp;
+                    drawVerticalReferenceLabel(g, metrics, firstHalf, (int) Math.floor(xTicks.getDouble(i)),
                         drawRange, yTop + xLabelMaxHeight + xRow2LabelMargin, true, false);		    
-		}
+                }
             }
         }
     }

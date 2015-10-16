@@ -26,18 +26,18 @@ public class CSVFileFormat implements FileFormat {
     
     @Override
     public Object readValue(InputStream in) {
-	VTable value = io.importVTable(new InputStreamReader(in));
-	return value;
+        VTable value = io.importVTable(new InputStreamReader(in));
+        return value;
     }
 
     @Override
     public void writeValue(Object value, OutputStream out) {
-	io.export(value, new OutputStreamWriter(out));
+        io.export(value, new OutputStreamWriter(out));
     }
 
     @Override
     public boolean isWriteSupported() {
-	return true;
+        return true;
     }
 
     @Override

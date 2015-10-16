@@ -70,8 +70,8 @@ import org.diirt.vtype.VTable;
  */
 public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     
-	private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
-	
+        private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
+        
     @Override
     public Set<PVATypeAdapter> getAdapters() {
         return converters;
@@ -218,7 +218,7 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     final static PVATypeAdapter ToVString = new PVATypeAdapter(
     		VString.class,
     		new String[] { "epics:nt/NTScalar:1.", "string" },
-			fieldCreate.createScalar(ScalarType.pvString))
+                        fieldCreate.createScalar(ScalarType.pvString))
     	{
             @Override
             public VString createValue(final PVStructure message, PVField valueField, boolean disconnected) {
@@ -276,10 +276,10 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
     		VIntArray.class,
     		new String[] { "epics:nt/NTScalarArray:1.", "int[]", "uint[]" },
     		new Field[]
-	    		{
-	    			fieldCreate.createScalarArray(ScalarType.pvInt),
-	    			fieldCreate.createScalarArray(ScalarType.pvUInt),
-	    		})
+            		{
+            			fieldCreate.createScalarArray(ScalarType.pvInt),
+            			fieldCreate.createScalarArray(ScalarType.pvUInt),
+            		})
     	{
             @Override
             public VIntArray createValue(final PVStructure message, PVField valueField, boolean disconnected) {

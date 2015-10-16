@@ -108,10 +108,10 @@ public abstract class AbstractVNumberVNumberToVBooleanFormulaFunction implements
         VNumber arg1 = (VNumber) args.get(0);
         VNumber arg2 = (VNumber) args.get(1);
         
-	return ValueFactory.newVBoolean(
-		calculate(arg1.getValue().doubleValue(), arg2.getValue().doubleValue()),
+        return ValueFactory.newVBoolean(
+                calculate(arg1.getValue().doubleValue(), arg2.getValue().doubleValue()),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args));
+                ValueUtil.latestValidTimeOrNowOf(args));
     }
     
     /**

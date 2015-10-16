@@ -112,7 +112,7 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testPreviousValueNaNMiddle1() throws Exception {
-	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
+        Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, Double.NaN, 4, 5, 6),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(1000)),
@@ -130,7 +130,7 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testPreviousValueNaNStart1() throws Exception {
-	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
+        Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(Double.NaN, 2, 0, 4, 5, 6),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(1000)),
@@ -148,11 +148,11 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testPreviousValueNaNEnd1() throws Exception {
-	//Compare with testPreviousValueEndNotNaN() to see difference
-	//there will always be a line drawn to the end, because there was a
-	//previous value; however, when the end value is NaN, we do not
-	//jump up at the end
-	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 333 );
+        //Compare with testPreviousValueEndNotNaN() to see difference
+        //there will always be a line drawn to the end, because there was a
+        //previous value; however, when the end value is NaN, we do not
+        //jump up at the end
+        Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 333 );
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, 0 , 4, 5, Double.NaN ),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(1000)),
@@ -170,7 +170,7 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testPreviousValueEndNotNaN1() throws Exception {
-	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 333 );
+        Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 333 );
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, 0 , 4, 5, 6 ),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(1000)),
@@ -188,8 +188,8 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testPreviousValueStartNaN2() throws Exception {
-	//test how previous value deals with NaN with only 2 data points
-	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 111 );
+        //test how previous value deals with NaN with only 2 data points
+        Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 111 );
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(Double.NaN , 2 ),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(1000))));
@@ -203,7 +203,7 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testPreviousValueMultiNaNEnd1() throws Exception {
-	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
+        Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, 3 , Double.NaN , Double.NaN , Double.NaN ),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(1000)),
@@ -221,7 +221,7 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testPreviousValueBigFluctuation() throws Exception {
-	Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
+        Timestamp start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10 , 0 , 100 , 0 , 10 , 0 , 100 , -100 , 0 , 10 , 100 , -100 , 100 , -100 , 0  ),
                 Arrays.asList(start,
                 start.plus(TimeDuration.ofMillis(1)),
@@ -229,15 +229,15 @@ public class LineTimeGraph2DRendererTest {
                 start.plus(TimeDuration.ofMillis(3)),
                 start.plus(TimeDuration.ofMillis(4)),
                 start.plus(TimeDuration.ofMillis(5)),
-		start.plus(TimeDuration.ofMillis(6)),
-		start.plus(TimeDuration.ofMillis(7)),
-		start.plus(TimeDuration.ofMillis(8)),
-		start.plus(TimeDuration.ofMillis(9)),
-		start.plus(TimeDuration.ofMillis(10)),
-		start.plus(TimeDuration.ofMillis(11)),
-		start.plus(TimeDuration.ofMillis(12)),
-		start.plus(TimeDuration.ofMillis(13)),
-		start.plus(TimeDuration.ofMillis(14))));
+                start.plus(TimeDuration.ofMillis(6)),
+                start.plus(TimeDuration.ofMillis(7)),
+                start.plus(TimeDuration.ofMillis(8)),
+                start.plus(TimeDuration.ofMillis(9)),
+                start.plus(TimeDuration.ofMillis(10)),
+                start.plus(TimeDuration.ofMillis(11)),
+                start.plus(TimeDuration.ofMillis(12)),
+                start.plus(TimeDuration.ofMillis(13)),
+                start.plus(TimeDuration.ofMillis(14))));
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(300, 200);
         renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.PREVIOUS_VALUE));
@@ -269,8 +269,8 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void extraGraphArea2() throws Exception {
-	//test using a small extra graph area gap. The gap is only 1 second in
-	//this test case
+        //test using a small extra graph area gap. The gap is only 1 second in
+        //this test case
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
                 Arrays.asList(start,
@@ -292,8 +292,8 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void extraGraphArea3() throws Exception {
-	//test using a huge extra graph area gap. The gap is a minute, while
-	//the data points are just second apart
+        //test using a huge extra graph area gap. The gap is a minute, while
+        //the data points are just second apart
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
                 Arrays.asList(start,
@@ -315,8 +315,8 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void extraGraphArea4() throws Exception {
-	//test extra graph area with the data points falling perfectly
-	//in line with the gridlines
+        //test extra graph area with the data points falling perfectly
+        //in line with the gridlines
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 0);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
                 Arrays.asList(start,
@@ -338,7 +338,7 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void lessGraphArea1() throws Exception {
-	//test using an absolute time axis that doesn't fit everything.
+        //test using an absolute time axis that doesn't fit everything.
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
                 Arrays.asList(start,
@@ -360,7 +360,7 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void lessGraphArea2() throws Exception {
-	//test using an absolute time axis that barely fits anything.
+        //test using an absolute time axis that barely fits anything.
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
                 Arrays.asList(start,
@@ -382,7 +382,7 @@ public class LineTimeGraph2DRendererTest {
     
         @Test
     public void lessGraphArea3() throws Exception {
-	//test using a y-axis that does not fit the data
+        //test using a y-axis that does not fit the data
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10,20,30,40,50,60),
                 Arrays.asList(start,
@@ -404,8 +404,8 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void extraGraphAreaDegenerate1() throws Exception {
-	//test going backwards in time. Sure, it's a degenerate graph, but we
-	//will see if it handles extending to the end of the graph correctly.
+        //test going backwards in time. Sure, it's a degenerate graph, but we
+        //will see if it handles extending to the end of the graph correctly.
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10,20,30,40,50,25),
                 Arrays.asList(start,
@@ -426,9 +426,9 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void extraGraphAreaDegenerate2() throws Exception {
-	//test going backwards in time with no extra graph area. Essentially,
-	//our data points extend the whole x axis range, but the last data point
-	//has x value less than other data points
+        //test going backwards in time with no extra graph area. Essentially,
+        //our data points extend the whole x axis range, but the last data point
+        //has x value less than other data points
         Timestamp start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,-1),
                 Arrays.asList(start,
@@ -452,26 +452,26 @@ public class LineTimeGraph2DRendererTest {
         Timestamp start = TimeScalesTest.create(2015, 3, 8, 1, 0, 0, 0);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 90,34,58,66,61,16,90,24,87,61,97,89,4,89,63,70,67,66,64,2 ),
                 Arrays.asList(start,
-		    start.plus(TimeDuration.ofMinutes(2.4)),
-		    start.plus(TimeDuration.ofMinutes(3.3)),
-		    start.plus(TimeDuration.ofMinutes(4.3)),
-		    start.plus(TimeDuration.ofMinutes(21.1)),
-		    start.plus(TimeDuration.ofMinutes(21.2)),
-		    start.plus(TimeDuration.ofMinutes(27.9)),
-		    start.plus(TimeDuration.ofMinutes(30.5)),
-		    start.plus(TimeDuration.ofMinutes(34.2)),
-		    start.plus(TimeDuration.ofMinutes(45.7)),
-		    start.plus(TimeDuration.ofMinutes(46.9)),
-		    start.plus(TimeDuration.ofMinutes(51.9)),
-		    start.plus(TimeDuration.ofMinutes(60.0)),
-		    start.plus(TimeDuration.ofMinutes(60.8)),
-		    start.plus(TimeDuration.ofMinutes(67.0)),
-		    start.plus(TimeDuration.ofMinutes(75.4)),
-		    start.plus(TimeDuration.ofMinutes(81.1)),
-		    start.plus(TimeDuration.ofMinutes(82.7)),
-		    start.plus(TimeDuration.ofMinutes(85.3)),
-		    start.plus(TimeDuration.ofMinutes(94.8))
-		));
+                    start.plus(TimeDuration.ofMinutes(2.4)),
+                    start.plus(TimeDuration.ofMinutes(3.3)),
+                    start.plus(TimeDuration.ofMinutes(4.3)),
+                    start.plus(TimeDuration.ofMinutes(21.1)),
+                    start.plus(TimeDuration.ofMinutes(21.2)),
+                    start.plus(TimeDuration.ofMinutes(27.9)),
+                    start.plus(TimeDuration.ofMinutes(30.5)),
+                    start.plus(TimeDuration.ofMinutes(34.2)),
+                    start.plus(TimeDuration.ofMinutes(45.7)),
+                    start.plus(TimeDuration.ofMinutes(46.9)),
+                    start.plus(TimeDuration.ofMinutes(51.9)),
+                    start.plus(TimeDuration.ofMinutes(60.0)),
+                    start.plus(TimeDuration.ofMinutes(60.8)),
+                    start.plus(TimeDuration.ofMinutes(67.0)),
+                    start.plus(TimeDuration.ofMinutes(75.4)),
+                    start.plus(TimeDuration.ofMinutes(81.1)),
+                    start.plus(TimeDuration.ofMinutes(82.7)),
+                    start.plus(TimeDuration.ofMinutes(85.3)),
+                    start.plus(TimeDuration.ofMinutes(94.8))
+                ));
         BufferedImage image = new BufferedImage(500, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(500, 200);
         renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));
@@ -485,26 +485,26 @@ public class LineTimeGraph2DRendererTest {
         Timestamp start = TimeScalesTest.create(2014, 12, 31, 23, 30, 0, 0);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 929,333,542,304,153,631,562,98,187,285,710,688,399,528,679,102,533,156,526,941 ),
                 Arrays.asList(start,
-		    start.plus(TimeDuration.ofMinutes(2.4)),
-		    start.plus(TimeDuration.ofMinutes(3.3)),
-		    start.plus(TimeDuration.ofMinutes(4.3)),
-		    start.plus(TimeDuration.ofMinutes(21.1)),
-		    start.plus(TimeDuration.ofMinutes(21.2)),
-		    start.plus(TimeDuration.ofMinutes(27.9)),
-		    start.plus(TimeDuration.ofMinutes(30.5)),
-		    start.plus(TimeDuration.ofMinutes(34.2)),
-		    start.plus(TimeDuration.ofMinutes(45.7)),
-		    start.plus(TimeDuration.ofMinutes(46.9)),
-		    start.plus(TimeDuration.ofMinutes(51.9)),
-		    start.plus(TimeDuration.ofMinutes(60.0)),
-		    start.plus(TimeDuration.ofMinutes(60.8)),
-		    start.plus(TimeDuration.ofMinutes(67.0)),
-		    start.plus(TimeDuration.ofMinutes(75.4)),
-		    start.plus(TimeDuration.ofMinutes(81.1)),
-		    start.plus(TimeDuration.ofMinutes(82.7)),
-		    start.plus(TimeDuration.ofMinutes(85.3)),
-		    start.plus(TimeDuration.ofMinutes(94.8))
-		));
+                    start.plus(TimeDuration.ofMinutes(2.4)),
+                    start.plus(TimeDuration.ofMinutes(3.3)),
+                    start.plus(TimeDuration.ofMinutes(4.3)),
+                    start.plus(TimeDuration.ofMinutes(21.1)),
+                    start.plus(TimeDuration.ofMinutes(21.2)),
+                    start.plus(TimeDuration.ofMinutes(27.9)),
+                    start.plus(TimeDuration.ofMinutes(30.5)),
+                    start.plus(TimeDuration.ofMinutes(34.2)),
+                    start.plus(TimeDuration.ofMinutes(45.7)),
+                    start.plus(TimeDuration.ofMinutes(46.9)),
+                    start.plus(TimeDuration.ofMinutes(51.9)),
+                    start.plus(TimeDuration.ofMinutes(60.0)),
+                    start.plus(TimeDuration.ofMinutes(60.8)),
+                    start.plus(TimeDuration.ofMinutes(67.0)),
+                    start.plus(TimeDuration.ofMinutes(75.4)),
+                    start.plus(TimeDuration.ofMinutes(81.1)),
+                    start.plus(TimeDuration.ofMinutes(82.7)),
+                    start.plus(TimeDuration.ofMinutes(85.3)),
+                    start.plus(TimeDuration.ofMinutes(94.8))
+                ));
         BufferedImage image = new BufferedImage(500, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(700, 200);
         renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));
@@ -515,15 +515,15 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testMultilineLabelsEnd() throws Exception {
-	//tests what happens if we have a date and time for the last label
-	//on the graph
+        //tests what happens if we have a date and time for the last label
+        //on the graph
         Timestamp start = TimeScalesTest.create(2014, 12, 31, 23, 30, 0, 0);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 1 , 2 , 3 , 4 ),
                 Arrays.asList(start,
-			start.plus( TimeDuration.ofMinutes( 10 ) ) ,
-			start.plus( TimeDuration.ofMinutes( 20 ) ) ,
-			start.plus( TimeDuration.ofMinutes( 30 ) )
-		));
+                        start.plus( TimeDuration.ofMinutes( 10 ) ) ,
+                        start.plus( TimeDuration.ofMinutes( 20 ) ) ,
+                        start.plus( TimeDuration.ofMinutes( 30 ) )
+                ));
         BufferedImage image = new BufferedImage(500, 200, BufferedImage.TYPE_3BYTE_BGR);
         LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(500, 200);
         renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));
@@ -534,15 +534,15 @@ public class LineTimeGraph2DRendererTest {
     
     @Test
     public void testMultilineLabelsStartMiddleEnd() throws Exception {
-	//tests what happens if we have a date and time for the first, last labels
-	//on the graph, and many in the middle
+        //tests what happens if we have a date and time for the first, last labels
+        //on the graph, and many in the middle
         Timestamp start = TimeScalesTest.create(2015, 4, 1, 0, 0, 0, 0);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 1 , 2 , 3 , 4 ),
                 Arrays.asList(start,
-			start.plus( TimeDuration.ofHours( 720 ) ) , /*go past all of April*/
-			start.plus( TimeDuration.ofHours( 720 + 744 ) ) , /*go past all of May*/
-			start.plus( TimeDuration.ofHours( 720 + 744 + 720 ) ) /*go past all of June*/
-		));
+                        start.plus( TimeDuration.ofHours( 720 ) ) , /*go past all of April*/
+                        start.plus( TimeDuration.ofHours( 720 + 744 ) ) , /*go past all of May*/
+                        start.plus( TimeDuration.ofHours( 720 + 744 + 720 ) ) /*go past all of June*/
+                ));
         BufferedImage image = new BufferedImage(30000, 100, BufferedImage.TYPE_3BYTE_BGR);
         LineTimeGraph2DRenderer renderer = new LineTimeGraph2DRenderer(30000, 100);
         renderer.update(new LineTimeGraph2DRendererUpdate().interpolation(InterpolationScheme.LINEAR ));

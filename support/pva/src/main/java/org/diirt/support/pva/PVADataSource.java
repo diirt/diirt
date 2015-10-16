@@ -41,16 +41,16 @@ public class PVADataSource extends DataSource {
     	
         this.defaultPriority = defaultPriority;
         
-		try {
-			ClientFactory.start();
-		    final ChannelProviderRegistry registry = ChannelProviderRegistryFactory.getChannelProviderRegistry();
-		    this.pvaChannelProvider = registry.createProvider("pva");
-		    if (this.pvaChannelProvider == null)
-		    	throw new RuntimeException("pvAccess ChannelProvider not installed");
-		    
-		} catch (Throwable th) {
-			throw new RuntimeException("Failed to intialize pvAccess context.", th);
-		}
+                try {
+                        ClientFactory.start();
+                    final ChannelProviderRegistry registry = ChannelProviderRegistryFactory.getChannelProviderRegistry();
+                    this.pvaChannelProvider = registry.createProvider("pva");
+                    if (this.pvaChannelProvider == null)
+                    	throw new RuntimeException("pvAccess ChannelProvider not installed");
+                    
+                } catch (Throwable th) {
+                        throw new RuntimeException("Failed to intialize pvAccess context.", th);
+                }
     }
 
     public PVADataSource(ChannelProvider channelProvider, short defaultPriority) {

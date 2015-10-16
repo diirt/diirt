@@ -99,7 +99,7 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
 
         return ValueFactory.newVNumberArray(data,
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args),
+                ValueUtil.latestValidTimeOrNowOf(args),
                 display);
     }
 

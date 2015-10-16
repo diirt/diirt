@@ -45,7 +45,7 @@ public class FileFormatRegistry {
      */
     public void registerFileFormat(String extension, FileFormat format) {
         log.log(Level.FINE, "File datasource: registering extension {0}", extension);
-	fileFormatRegistry.put(extension, format);
+        fileFormatRegistry.put(extension, format);
     }
     
     /**
@@ -77,6 +77,6 @@ public class FileFormatRegistry {
      * @return true if there is a FileFormat registered for this file extension
      */
     public boolean contains(String extension) {
-	return fileFormatRegistry.containsKey(extension);
+        return fileFormatRegistry.containsKey(extension);
     }
 }

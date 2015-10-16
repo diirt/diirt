@@ -24,10 +24,10 @@ public class AlarmFunctionSetTest {
 
     @Test
     public void highestSeverity() {
-	VString dataA = newVString("a", alarmNone(), timeNow());
-	VString dataB = newVString("b", alarmNone(), timeNow());
-	VString dataC = newVString("c", alarmNone(), timeNow());
-	VString dataD = newVString("d", newAlarm(AlarmSeverity.MAJOR, "Help!"), timeNow());
+        VString dataA = newVString("a", alarmNone(), timeNow());
+        VString dataB = newVString("b", alarmNone(), timeNow());
+        VString dataC = newVString("c", alarmNone(), timeNow());
+        VString dataD = newVString("d", newAlarm(AlarmSeverity.MAJOR, "Help!"), timeNow());
 
         VEnum expected1 = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
         VEnum expected2 = newVEnum(2, AlarmSeverity.labels(), alarmNone(), timeNow());
@@ -39,8 +39,8 @@ public class AlarmFunctionSetTest {
 
     @Test
     public void alarmOf() {
-	VString dataA = newVString("a", alarmNone(), timeNow());
-	VString dataB = newVString("d", newAlarm(AlarmSeverity.MAJOR, "Help!"), timeNow());
+        VString dataA = newVString("a", alarmNone(), timeNow());
+        VString dataB = newVString("d", newAlarm(AlarmSeverity.MAJOR, "Help!"), timeNow());
 
         VEnum expected1 = newVEnum(0, AlarmSeverity.labels(), alarmNone(), timeNow());
         VEnum expected2 = newVEnum(2, AlarmSeverity.labels(), alarmNone(), timeNow());

@@ -317,7 +317,7 @@ public class TimeDuration implements Comparable<TimeDuration> {
 
     @Override
     public int compareTo(TimeDuration other) {
-	if (sec < other.sec) {
+        if (sec < other.sec) {
             return -1;
         } else if (sec == other.sec) {
             if (nanoSec < other.nanoSec) {

@@ -13,8 +13,8 @@ import org.diirt.vtype.VType;
  */
 public interface Data extends Comparable<Data> {
 
-	public Timestamp getTimestamp();
+        public Timestamp getTimestamp();
 
-	public VType getValue();
+        public VType getValue();
 
 }

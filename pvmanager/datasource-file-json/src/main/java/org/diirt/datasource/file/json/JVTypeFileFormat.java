@@ -44,7 +44,7 @@ public class JVTypeFileFormat implements FileFormat {
 
     @Override
     public boolean isWriteSupported() {
-	return true;
+        return true;
     }
 
     @Override

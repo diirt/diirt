@@ -36,8 +36,8 @@ class MultilineGraph2DFunction implements ReadFunction<Graph2DResult> {
     private final QueueCollector<LineGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
     MultilineGraph2DFunction(ReadFunction<?> tableData,
-	    ReadFunction<?> xColumnName,
-	    ReadFunction<?> yColumnName) {
+            ReadFunction<?> xColumnName,
+            ReadFunction<?> yColumnName) {
         this.tableData = new CheckedReadFunction<VType>(tableData, "Data", VTable.class, VNumberArray.class);
         this.xColumnNames = stringArrayArgument(xColumnName, "X Columns");
         this.yColumnNames = stringArrayArgument(yColumnName, "Y Columns");

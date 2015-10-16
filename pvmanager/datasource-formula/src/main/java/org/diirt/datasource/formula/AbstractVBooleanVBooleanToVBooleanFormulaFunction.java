@@ -107,10 +107,10 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
         VBoolean arg1 = (VBoolean) args.get(0);
         VBoolean arg2 = (VBoolean) args.get(1);
         
-	return ValueFactory.newVBoolean(
-		calculate(arg1.getValue(), arg2.getValue()),
+        return ValueFactory.newVBoolean(
+                calculate(arg1.getValue(), arg2.getValue()),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args));
+                ValueUtil.latestValidTimeOrNowOf(args));
     }
     
     /**

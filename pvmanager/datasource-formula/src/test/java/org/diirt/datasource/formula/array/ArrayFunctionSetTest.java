@@ -72,7 +72,7 @@ public class ArrayFunctionSetTest {
     public void arraySum() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(4, 6, 8), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
-	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "arraySum", VNumberArray.class, VNumber.class)
                 .compareReturnValue(array, array2, number)
                 .compareReturnValue(null, null, number)
@@ -92,7 +92,7 @@ public class ArrayFunctionSetTest {
         VNumberArray array = newVDoubleArray(new ArrayDouble(0, 2, 4), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVDoubleArray(new ArrayDouble(0, -2, -4), alarmNone(), timeNow(), displayNone());
-	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "arraySub", VNumberArray.class, VNumber.class)
                 .compareReturnValue(array, array2, number)
                 .compareReturnValue(null, null, number)
@@ -172,7 +172,7 @@ public class ArrayFunctionSetTest {
                 .latestTimeReturned();
         array = newVDoubleArray(new ArrayDouble(6, 3, 2), alarmNone(), timeNow(), displayNone());
         array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
-	VNumber number = newVNumber(12, alarmNone(), timeNow(), displayNone());
+        VNumber number = newVNumber(12, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "arrayDiv", VNumber.class, VNumberArray.class)
                 .compareReturnValue(array, number, array2)
                 .compareReturnValue(null, null, array2)
@@ -181,7 +181,7 @@ public class ArrayFunctionSetTest {
                 .latestTimeReturned();
         array = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
         array2 = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
-	number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        number = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "arrayDiv", VNumberArray.class, VNumber.class)
                 .compareReturnValue(array, array2, number)
                 .compareReturnValue(null, null, number)
@@ -195,7 +195,7 @@ public class ArrayFunctionSetTest {
         VNumberArray array = newVDoubleArray(new ArrayDouble(1, 4, 9), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
         VNumberArray array3 = newVDoubleArray(new ArrayDouble(2, 4, 8), alarmNone(), timeNow(), displayNone());
-	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "arrayPow", VNumberArray.class, VNumber.class)
                 .compareReturnValue(array, array2, number)
                 .compareReturnValue(null, null, number)
@@ -214,7 +214,7 @@ public class ArrayFunctionSetTest {
     public void multiplyVNumberArrayVNumber() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(2, 4, 6), alarmNone(), timeNow(), displayNone());
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
-	VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        VNumber number = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "*", VNumberArray.class, VNumber.class)
                 .compareReturnValue(array, array2, number)
                 .compareReturnValue(null, null, number)
@@ -233,8 +233,8 @@ public class ArrayFunctionSetTest {
     public void rescaleArray() {
         VNumberArray data = newVDoubleArray(new ArrayDouble(1, 2, 3), alarmNone(), timeNow(), displayNone());
         VNumberArray expected = newVDoubleArray(new ArrayDouble(3, 5, 7), alarmNone(), timeNow(), displayNone());
-	VNumber offset = newVNumber(1, alarmNone(), timeNow(), displayNone());
-	VNumber scale = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        VNumber offset = newVNumber(1, alarmNone(), timeNow(), displayNone());
+        VNumber scale = newVNumber(2, alarmNone(), timeNow(), displayNone());
         FunctionTester.findBySignature(set, "rescale", VNumberArray.class, VNumber.class, VNumber.class)
                 .compareReturnValue(expected, data, scale, offset)
                 .compareReturnValue(null, null, scale, offset)
@@ -248,8 +248,8 @@ public class ArrayFunctionSetTest {
     public void subArray() {
         VNumberArray data = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarmNone(), timeNow(), displayNone());
         VNumberArray expected = newVDoubleArray(new ArrayDouble(2, 3, 4), alarmNone(), timeNow(), displayNone());
-	VNumber start = newVNumber(2, alarmNone(), timeNow(), displayNone());
-	VNumber end = newVNumber(5, alarmNone(), timeNow(), displayNone());
+        VNumber start = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        VNumber end = newVNumber(5, alarmNone(), timeNow(), displayNone());
         
         FunctionTester.findBySignature(set, "subArray", VNumberArray.class, VNumber.class, VNumber.class)
                 .compareReturnValue(expected, data, start, end)
@@ -266,8 +266,8 @@ public class ArrayFunctionSetTest {
         Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
         Time time = newTime(Timestamp.of(16548379, 0));
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarm, time, displayNone());
-	VNumber index = newVNumber(5, alarmNone(), timeNow(), displayNone());
-	VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
+        VNumber index = newVNumber(5, alarmNone(), timeNow(), displayNone());
+        VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
         
         FunctionTester.findBySignature(set, "elementAt", VNumberArray.class, VNumber.class)
                 .compareReturnValue(expected, array, index)
@@ -284,8 +284,8 @@ public class ArrayFunctionSetTest {
         Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
         Time time = newTime(Timestamp.of(16548379, 0));
         VStringArray array2 = newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarm, time);
-	VNumber index = newVNumber(2, alarmNone(), timeNow(), displayNone());
-	VString expected = newVString("C", alarmNone(),timeNow());
+        VNumber index = newVNumber(2, alarmNone(), timeNow(), displayNone());
+        VString expected = newVString("C", alarmNone(),timeNow());
         
         FunctionTester.findBySignature(set, "elementAt", VStringArray.class, VNumber.class)
                 .compareReturnValue(expected, array, index)
@@ -305,7 +305,7 @@ public class ArrayFunctionSetTest {
         ListNumberProvider generator = VTableFactory.step(-1, 0.5);
         VNumberArray expected = ValueFactory.newVNumberArray(new ArrayDouble(1,2,3,4), new ArrayInt(4),
                 Arrays.asList(ValueFactory.newDisplay(new ArrayDouble(-1, -0.5, 0, 0.5, 1), "")), alarmNone(), timeNow(), displayNone());
-	
+        
         FunctionTester.findBySignature(set, "arrayWithBoundaries", VNumberArray.class, ListNumberProvider.class)
                 .compareReturnValue(expected, array, generator)
                 .compareReturnValue(null, array, null)
@@ -317,7 +317,7 @@ public class ArrayFunctionSetTest {
     
     @Test
     public void histogramOf() {
-	ListDouble data = new ArrayDouble(0, 10, 3, 3, 3.5, 4, 4.5, 3, 7, 3.1);
+        ListDouble data = new ArrayDouble(0, 10, 3, 3, 3.5, 4, 4.5, 3, 7, 3.1);
         ListInt expectedData = new ArrayInt(1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -328,10 +328,10 @@ public class ArrayFunctionSetTest {
                                            1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
-	VNumberArray array = newVDoubleArray(data, alarmNone(),
-		timeNow(), displayNone());
-	VNumberArray expected = newVIntArray(expectedData, alarmNone(),
-		timeNow(), displayNone());
+        VNumberArray array = newVDoubleArray(data, alarmNone(),
+                timeNow(), displayNone());
+        VNumberArray expected = newVIntArray(expectedData, alarmNone(),
+                timeNow(), displayNone());
         
         FunctionTester.findByName(set, "histogramOf")
                 .compareReturnValue(expected, array);
@@ -352,7 +352,7 @@ public class ArrayFunctionSetTest {
                 Arrays.asList(ValueFactory.newDisplay(new ArrayDouble(-1, -0.5, 0, 0.5, 1), "")), alarmNone(), timeNow(), displayNone());
         VNumberArray expected1 = ValueFactory.newVNumberArray(new ArrayDouble(0,4), alarmNone(), time, displayNone());
         VNumberArray expected2 = ValueFactory.newVNumberArray(new ArrayDouble(-1,1), alarmNone(), time, displayNone());
-	
+        
         FunctionTester.findBySignature(set, "arrayRangeOf", VNumberArray.class)
                 .compareReturnValue(expected1, array)
                 .compareReturnValue(expected2, array3)

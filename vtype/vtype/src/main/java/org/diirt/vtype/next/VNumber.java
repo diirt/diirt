@@ -65,7 +65,7 @@ public abstract class VNumber extends Scalar implements DisplayProvider {
         } else if (value instanceof Byte) {
             return VByte.create((Byte) value, alarm, time, display);
         }
-	throw new IllegalArgumentException("Only standard Java implementations of Number are supported");
+        throw new IllegalArgumentException("Only standard Java implementations of Number are supported");
     }
     
 }

@@ -22,7 +22,7 @@ import org.diirt.datasource.ValueCache;
  */
 public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannelHandler, PVStructure> {
 
-	// e.g. VDouble.class
+        // e.g. VDouble.class
     private final Class<?> typeClass;
     
     // PVStructure requirements
@@ -191,11 +191,11 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
      */
     public abstract Object createValue(PVStructure message, PVField valueField, boolean disconnected);
 
-	@Override
-	public String toString() {
-		return "PVATypeAdapter [typeClass=" + typeClass + ", ntIds="
-				+ Arrays.toString(ntIds) + ", valueFieldTypes="
-				+ Arrays.toString(valueFieldTypes) + "]";
-	}
+        @Override
+        public String toString() {
+                return "PVATypeAdapter [typeClass=" + typeClass + ", ntIds="
+                                + Arrays.toString(ntIds) + ", valueFieldTypes="
+                                + Arrays.toString(valueFieldTypes) + "]";
+        }
     
 }

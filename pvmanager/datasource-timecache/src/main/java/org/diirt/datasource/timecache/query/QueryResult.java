@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface QueryResult {
 
-	public List<QueryData> getData();
+        public List<QueryData> getData();
 
 }

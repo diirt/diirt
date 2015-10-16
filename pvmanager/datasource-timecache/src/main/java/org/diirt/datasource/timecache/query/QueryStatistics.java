@@ -15,71 +15,71 @@ import org.diirt.util.time.Timestamp;
  */
 public class QueryStatistics {
 
-	private final String channelName;
-	private final TimeInterval interval;
-	private final int queryID;
+        private final String channelName;
+        private final TimeInterval interval;
+        private final int queryID;
 
-	private int storageHit = 0;
-	private int sourceHit = 0;
-	private TimeDuration duration;
+        private int storageHit = 0;
+        private int sourceHit = 0;
+        private TimeDuration duration;
 
-	private Timestamp start;
+        private Timestamp start;
 
-	public QueryStatistics(String channelName, TimeInterval interval,
-			int queryID) {
-		this.channelName = channelName;
-		this.interval = interval;
-		this.queryID = queryID;
-	}
+        public QueryStatistics(String channelName, TimeInterval interval,
+                        int queryID) {
+                this.channelName = channelName;
+                this.interval = interval;
+                this.queryID = queryID;
+        }
 
-	public synchronized void newDataFromStorage(int count) {
-		storageHit += count;
-	}
+        public synchronized void newDataFromStorage(int count) {
+                storageHit += count;
+        }
 
-	public synchronized void newDataFromSource(int count) {
-		sourceHit += count;
-	}
+        public synchronized void newDataFromSource(int count) {
+                sourceHit += count;
+        }
 
-	public void queryStarted() {
-		this.start = Timestamp.now();
-	}
+        public void queryStarted() {
+                this.start = Timestamp.now();
+        }
 
-	public void queryCompleted() {
-		this.duration = Timestamp.now().durationBetween(start);
-	}
+        public void queryCompleted() {
+                this.duration = Timestamp.now().durationBetween(start);
+        }
 
-	public int getStorageHit() {
-		return storageHit;
-	}
+        public int getStorageHit() {
+                return storageHit;
+        }
 
-	public int getSourceHit() {
-		return sourceHit;
-	}
+        public int getSourceHit() {
+                return sourceHit;
+        }
 
-	public TimeDuration getDuration() {
-		return duration;
-	}
+        public TimeDuration getDuration() {
+                return duration;
+        }
 
-	public String getChannelName() {
-		return channelName;
-	}
+        public String getChannelName() {
+                return channelName;
+        }
 
-	public TimeInterval getInterval() {
-		return interval;
-	}
+        public TimeInterval getInterval() {
+                return interval;
+        }
 
-	public int getQueryID() {
-		return queryID;
-	}
+        public int getQueryID() {
+                return queryID;
+        }
 
-	public String toConsoleString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Query >> " + String.format("%04d", queryID) + " << ("
-				+ CacheHelper.format(interval) + " for " + channelName + ")");
-		sb.append("\tsourceHit: " + String.format("%10d", sourceHit));
-		sb.append("\tstorageHit: " + String.format("%10d", storageHit));
-		sb.append("\tduration: " + duration);
-		return sb.toString();
-	}
+        public String toConsoleString() {
+                StringBuilder sb = new StringBuilder();
+                sb.append("Query >> " + String.format("%04d", queryID) + " << ("
+                                + CacheHelper.format(interval) + " for " + channelName + ")");
+                sb.append("\tsourceHit: " + String.format("%10d", sourceHit));
+                sb.append("\tstorageHit: " + String.format("%10d", storageHit));
+                sb.append("\tduration: " + duration);
+                return sb.toString();
+        }
 
 }

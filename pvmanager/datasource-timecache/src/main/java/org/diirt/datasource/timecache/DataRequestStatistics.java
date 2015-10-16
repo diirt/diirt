@@ -16,43 +16,43 @@ import org.diirt.util.time.Timestamp;
  */
 public class DataRequestStatistics {
 
-	private final DataSource source;
-	private final Timestamp start;
-	private TimeInterval interval;
-	private TimeDuration duration;
+        private final DataSource source;
+        private final Timestamp start;
+        private TimeInterval interval;
+        private TimeDuration duration;
 
-	public DataRequestStatistics(final DataSource source) {
-		this.start = Timestamp.now();
-		this.source = source;
-	}
+        public DataRequestStatistics(final DataSource source) {
+                this.start = Timestamp.now();
+                this.source = source;
+        }
 
-	public void intervalCompleted() {
-		this.duration = Timestamp.now().durationBetween(start);
-	}
+        public void intervalCompleted() {
+                this.duration = Timestamp.now().durationBetween(start);
+        }
 
-	public Timestamp getStart() {
-		return start;
-	}
+        public Timestamp getStart() {
+                return start;
+        }
 
-	public TimeDuration getDuration() {
-		return duration;
-	}
+        public TimeDuration getDuration() {
+                return duration;
+        }
 
-	public DataSource getSource() {
-		return source;
-	}
+        public DataSource getSource() {
+                return source;
+        }
 
-	public TimeInterval getInterval() {
-		return interval;
-	}
+        public TimeInterval getInterval() {
+                return interval;
+        }
 
-	public void setInterval(TimeInterval interval) {
-		this.interval = interval;
-	}
+        public void setInterval(TimeInterval interval) {
+                this.interval = interval;
+        }
 
-	public String toConsoleString() {
-		return CacheHelper.format(start) + " => "
-				+ CacheHelper.format(interval) + ": " + duration;
-	}
+        public String toConsoleString() {
+                return CacheHelper.format(start) + " => "
+                                + CacheHelper.format(interval) + ": " + duration;
+        }
 
 }

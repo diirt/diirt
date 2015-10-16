@@ -48,7 +48,7 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
      * @param arg2Name second argument name; can't be null
      */
     public AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunction(String name, String description,
-	    String arg1Name, String arg2Name) {
+            String arg1Name, String arg2Name) {
         // Validate parameters
         if (name == null) {
             throw new NullPointerException("Function name can't be null");
@@ -63,44 +63,44 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
             throw new NullPointerException("Second argument name can't be null");
         }
         
-	this.name = name;
-	this.description = description;
-	this.argumentNames = Arrays.asList(arg1Name, arg2Name);
+        this.name = name;
+        this.description = description;
+        this.argumentNames = Arrays.asList(arg1Name, arg2Name);
     }
 
     @Override
     public final boolean isPure() {
-	return true;
+        return true;
     }
 
     @Override
     public final boolean isVarArgs() {
-	return false;
+        return false;
     }
  
     @Override
     public final String getName() {
-	return name;
+        return name;
     }
 
     @Override
     public final String getDescription() {
-	return description;
+        return description;
     }
 
     @Override
     public final List<Class<?>> getArgumentTypes() {
-	return argumentTypes;
+        return argumentTypes;
     }
 
     @Override
     public final List<String> getArgumentNames() {
-	return argumentNames;
+        return argumentNames;
     }
 
     @Override
     public final Class<?> getReturnType() {
-	return VNumberArray.class;
+        return VNumberArray.class;
     }
 
     @Override
@@ -112,10 +112,10 @@ public abstract class AbstractVNumberArrayVNumberArrayToVNumberArrayFormulaFunct
         VNumberArray arg1 = (VNumberArray) args.get(0);
         VNumberArray arg2 = (VNumberArray) args.get(1);
         
-	return newVNumberArray(
-		calculate(arg1.getData(), arg2.getData()),
+        return newVNumberArray(
+                calculate(arg1.getData(), arg2.getData()),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args),
+                ValueUtil.latestValidTimeOrNowOf(args),
                 displayNone());
     }
 

@@ -72,7 +72,7 @@ public abstract class Display {
             return true;
         }
         
-	if (obj instanceof Display) {
+        if (obj instanceof Display) {
             Display other = (Display) obj;
         
             return Objects.equals(getFormat(), other.getFormat()) &&

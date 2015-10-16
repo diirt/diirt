@@ -42,7 +42,7 @@ public abstract class Alarm {
             return true;
         }
         
-	if (obj instanceof Alarm) {
+        if (obj instanceof Alarm) {
             Alarm other = (Alarm) obj;
         
             return getSeverity().equals(other.getSeverity()) &&

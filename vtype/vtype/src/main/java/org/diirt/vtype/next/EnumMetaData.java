@@ -32,7 +32,7 @@ public abstract class EnumMetaData {
             return true;
         }
         
-	if (obj instanceof EnumMetaData) {
+        if (obj instanceof EnumMetaData) {
             EnumMetaData other = (EnumMetaData) obj;
         
             return getLabels().equals(other.getLabels());

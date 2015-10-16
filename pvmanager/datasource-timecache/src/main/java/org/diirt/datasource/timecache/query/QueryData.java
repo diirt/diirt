@@ -16,22 +16,22 @@ import org.diirt.vtype.VType;
  */
 public interface QueryData {
 
-	/**
-	 * The time range where the data is defined
-	 */
-	public TimeInterval getTimeInterval();
+        /**
+         * The time range where the data is defined
+         */
+        public TimeInterval getTimeInterval();
 
-	/**
-	 * The number of elements. <p> Both data and timestamps will have this
-	 * number of elements.
-	 */
-	public int getCount();
+        /**
+         * The number of elements. <p> Both data and timestamps will have this
+         * number of elements.
+         */
+        public int getCount();
 
-	/**
-	 * The time for each element.
-	 */
-	public List<Timestamp> getTimestamps();
+        /**
+         * The time for each element.
+         */
+        public List<Timestamp> getTimestamps();
 
-	public List<VType> getData();
+        public List<VType> getData();
 
 }

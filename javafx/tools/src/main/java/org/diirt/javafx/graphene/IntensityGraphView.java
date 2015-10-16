@@ -31,48 +31,48 @@ public class IntensityGraphView extends BaseGraphView< IntensityGraph2DRendererU
     
     @Override
     public Graph2DExpression<IntensityGraph2DRendererUpdate> createExpression(String dataFormula) {
-	return intensityGraphOf( formula(dataFormula) );
+        return intensityGraphOf( formula(dataFormula) );
     }
     
     @Override
     protected void reconnect( String formula ) {
-	super.reconnect( formula );
-	updateGraph();
+        super.reconnect( formula );
+        updateGraph();
     }
     
     public IntensityGraphView() {
-	this.colorMap.addListener( new ChangeListener< NumberColorMap >() {
+        this.colorMap.addListener( new ChangeListener< NumberColorMap >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends NumberColorMap> observable, NumberColorMap oldValue, NumberColorMap newValue) {
-		if ( graph != null ) {
-		    graph.update( graph.newUpdate().colorMap( newValue ) );
-		}
-	    }
-	    
-	});
-	this.drawLegend.addListener( new ChangeListener< Boolean >() {
+            @Override
+            public void changed(ObservableValue<? extends NumberColorMap> observable, NumberColorMap oldValue, NumberColorMap newValue) {
+                if ( graph != null ) {
+                    graph.update( graph.newUpdate().colorMap( newValue ) );
+                }
+            }
+            
+        });
+        this.drawLegend.addListener( new ChangeListener< Boolean >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-		graph.update( graph.newUpdate().drawLegend( newValue ) );
-	    }
-	    
-	});
-	Collection< NumberColorMap > maps = NumberColorMaps.getRegisteredColorSchemes().values();
-	NumberColorMap[] allowedMappings = new NumberColorMap[ maps.size() ];
-	allowedMappings = maps.toArray( allowedMappings );
-	this.defaultConfigurationDialog.addNumberColorMapListProperty( "Color Map" , colorMap , allowedMappings );
-	this.defaultConfigurationDialog.addBooleanProperty( "Draw Legend" , this.drawLegend );
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                graph.update( graph.newUpdate().drawLegend( newValue ) );
+            }
+            
+        });
+        Collection< NumberColorMap > maps = NumberColorMaps.getRegisteredColorSchemes().values();
+        NumberColorMap[] allowedMappings = new NumberColorMap[ maps.size() ];
+        allowedMappings = maps.toArray( allowedMappings );
+        this.defaultConfigurationDialog.addNumberColorMapListProperty( "Color Map" , colorMap , allowedMappings );
+        this.defaultConfigurationDialog.addBooleanProperty( "Draw Legend" , this.drawLegend );
     }
     
     public NumberColorMap getColorMap() {
-	return this.colorMap.getValue();
+        return this.colorMap.getValue();
     }
     
     public void setColorMap( NumberColorMap map ) {
-	this.colorMap.setValue( map );
-	updateGraph();
+        this.colorMap.setValue( map );
+        updateGraph();
     }
     
     public boolean isDrawLegend() {
@@ -95,6 +95,6 @@ public class IntensityGraphView extends BaseGraphView< IntensityGraph2DRendererU
     }
     
     public ConfigurationDialog getDefaultConfigurationDialog() {
-	return this.defaultConfigurationDialog;
+        return this.defaultConfigurationDialog;
     }
 }

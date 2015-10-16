@@ -37,32 +37,32 @@ public class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
 
     @Override
     public boolean isVarArgs() {
-	return false;
+        return false;
     }
 
     @Override
     public String getName() {
-	return "histogram2DOf";
+        return "histogram2DOf";
     }
 
     @Override
     public String getDescription() {
-	return "Returns a 2D histogram from a table.";
+        return "Returns a 2D histogram from a table.";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-	return Arrays.<Class<?>> asList(VTable.class, VString.class, VString.class);
+        return Arrays.<Class<?>> asList(VTable.class, VString.class, VString.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-	return Arrays.asList("Table", "Y Column", "X Column");
+        return Arrays.asList("Table", "Y Column", "X Column");
     }
 
     @Override
     public Class<?> getReturnType() {
-	return VNumberArray.class;
+        return VNumberArray.class;
     }
     
     private ListNumber previousXData;
@@ -150,7 +150,7 @@ public class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
         previousXData = xData;
         previousYData = yData;
         previousResult = newVNumberArray(new ArrayInt(binData), new ArrayInt(nYBins, nXBins), Arrays.asList(newDisplay(yBoundaries, ""), newDisplay(xBoundaries, "")),
-		   alarmNone(), timeNow(), newDisplay(0.0, 0.0, 0.0, "count", NumberFormats.format(0), maxCount, maxCount, maxCount, Double.NaN, Double.NaN));
+                   alarmNone(), timeNow(), newDisplay(0.0, 0.0, 0.0, "count", NumberFormats.format(0), maxCount, maxCount, maxCount, Double.NaN, Double.NaN));
         
         return previousResult;
     }

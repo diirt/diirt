@@ -37,12 +37,12 @@ public class DataSourceConfigurationLog {
                     }
                 })
                 .maxRate(TimeDuration.ofMillis(500));
-	
-	Thread.sleep(2000);
+        
+        Thread.sleep(2000);
         System.out.println("Close channel");
         reader.close();
-	Thread.sleep(1000);
-	
+        Thread.sleep(1000);
+        
         System.out.println("Close data source");
         PVManager.getDefaultDataSource().close();
         System.out.println("Done");

@@ -16,19 +16,19 @@ public class IntensityGraphApp extends BaseGraphApp {
 
     @Override
     public BaseGraphView getGraphView() {
-	return this.intensityGraphView;
+        return this.intensityGraphView;
     }
     
     @Override
     public void openConfigurationPanel() {
-	this.intensityGraphView.getDefaultConfigurationDialog().open();
+        this.intensityGraphView.getDefaultConfigurationDialog().open();
     }
     
     @Override
     public void start( Stage stage ) throws Exception {
-	super.start( stage );
-	
-	this.addDataFormulae( "sim://gaussianWaveform",
+        super.start( stage );
+        
+        this.addDataFormulae( "sim://gaussianWaveform",
                     "sim://sine2DWaveform(1,50,45,100,100,0.1)",
                     "=ndArray(arrayOf(1,3,2,4,3,5), dimDisplay(3,FALSE), dimDisplay(2,FALSE))",
                     "=ndArray('13SIM1:image1:ArrayData', dimDisplay('13SIM1:cam1:ArraySizeY_RBV', TRUE), dimDisplay('13SIM1:cam1:ArraySizeX_RBV', FALSE))",
@@ -37,7 +37,7 @@ public class IntensityGraphApp extends BaseGraphApp {
     }
     
     final public static void main( String[] args ) {
-	launch( args );
+        launch( args );
     }
     
 }

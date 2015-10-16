@@ -17,14 +17,14 @@ public class MultiAxisLineGraphApp extends BaseGraphApp {
     
     @Override
     public BaseGraphView getGraphView() {
-	return this.multiAxislineGraphView;
+        return this.multiAxislineGraphView;
     }
     
     @Override
     public void start( Stage stage ) throws Exception {
-	super.start( stage );
-	
-	this.addDataFormulae( "=tableOf(column(\"Sine\", 'sim://sineWaveform(1,50,100,0.01)'), column(\"Triangle\", 'sim://triangleWaveform(2,50,100,0.01)'), column(\"Triangle\", 'sim://squareWaveform(3,50,100,0.01)'))",
+        super.start( stage );
+        
+        this.addDataFormulae( "=tableOf(column(\"Sine\", 'sim://sineWaveform(1,50,100,0.01)'), column(\"Triangle\", 'sim://triangleWaveform(2,50,100,0.01)'), column(\"Triangle\", 'sim://squareWaveform(3,50,100,0.01)'))",
                     "sim://gaussianWaveform",
                     "sim://sineWaveform",
                     "sim://triangleWaveform",
@@ -33,10 +33,10 @@ public class MultiAxisLineGraphApp extends BaseGraphApp {
     
     @Override
     public void openConfigurationPanel() {
-	this.multiAxislineGraphView.getDefaultConfigurationDialog().open();
+        this.multiAxislineGraphView.getDefaultConfigurationDialog().open();
     }
     
     final public static void main( String[] args ) {
-	launch( args );
+        launch( args );
     }
 }

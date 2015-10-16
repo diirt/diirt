@@ -39,13 +39,13 @@ public class ExpressionLanguage {
     }
     
     public static HistogramGraph2DExpression histogramGraphOf(
-	    DesiredRateExpression<?> arrayData) {
-	return new HistogramGraph2DExpression(arrayData);
+            DesiredRateExpression<?> arrayData) {
+        return new HistogramGraph2DExpression(arrayData);
     }
     
     public static IntensityGraph2DExpression intensityGraphOf(
-	    DesiredRateExpression<?> arrayData) {
-	return new IntensityGraph2DExpression(arrayData);
+            DesiredRateExpression<?> arrayData) {
+        return new IntensityGraph2DExpression(arrayData);
     }
     
     public static LineGraph2DExpression lineGraphOf(DesiredRateExpression<? extends VNumberArray> vDoubleArray) {
@@ -102,49 +102,49 @@ public class ExpressionLanguage {
         return lineGraphOf(data, null, null, null);
     }
     public static LineGraph2DExpression lineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> tooltipColumnName) {
-	return new LineGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> tooltipColumnName) {
+        return new LineGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
     }
     
     public static MultilineGraph2DExpression multilineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
-	return new MultilineGraph2DExpression(tableData, xColumnName, yColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
+        return new MultilineGraph2DExpression(tableData, xColumnName, yColumnName);
     }
     
     public static MultiAxisLineGraph2DExpression multiAxisLineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
-	return new MultiAxisLineGraph2DExpression(tableData, xColumnName, yColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
+        return new MultiAxisLineGraph2DExpression(tableData, xColumnName, yColumnName);
     }
     
     public static SparklineGraph2DExpression sparklineGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName) {
-	return new SparklineGraph2DExpression(tableData, xColumnName, yColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName) {
+        return new SparklineGraph2DExpression(tableData, xColumnName, yColumnName);
     }
     
     public static ScatterGraph2DExpression scatterGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> tooltipColumnName) {
-	return new ScatterGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> tooltipColumnName) {
+        return new ScatterGraph2DExpression(tableData, xColumnName, yColumnName, tooltipColumnName);
     }
     
     public static BubbleGraph2DExpression bubbleGraphOf(
-	    DesiredRateExpression<?> tableData,
-	    DesiredRateExpression<?> xColumnName,
-	    DesiredRateExpression<?> yColumnName,
-	    DesiredRateExpression<?> sizeColumnName,
-	    DesiredRateExpression<?> tooltipColumnName) {
-	return new BubbleGraph2DExpression(tableData, xColumnName, yColumnName, sizeColumnName, tooltipColumnName);
+            DesiredRateExpression<?> tableData,
+            DesiredRateExpression<?> xColumnName,
+            DesiredRateExpression<?> yColumnName,
+            DesiredRateExpression<?> sizeColumnName,
+            DesiredRateExpression<?> tooltipColumnName) {
+        return new BubbleGraph2DExpression(tableData, xColumnName, yColumnName, sizeColumnName, tooltipColumnName);
     }
 
     @SafeVarargs

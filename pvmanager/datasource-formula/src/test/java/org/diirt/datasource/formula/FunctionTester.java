@@ -47,23 +47,23 @@ public class FunctionTester {
     
     public static FunctionTester findByName(FormulaFunctionSet set, String name) {
         Collection<FormulaFunction> functions = set.findFunctions(name);
-	assertThat("Function '" + name + "' not found.", functions.isEmpty(),
-		equalTo(false));
-	assertThat("Multiple matches for function '" + name + "'.", functions.size(),
-		equalTo(1));
+        assertThat("Function '" + name + "' not found.", functions.isEmpty(),
+                equalTo(false));
+        assertThat("Multiple matches for function '" + name + "'.", functions.size(),
+                equalTo(1));
         return new FunctionTester(functions.iterator().next());
     }
     
     public static FunctionTester findBySignature(FormulaFunctionSet set, String name, Class<?>... argTypes) {
         Collection<FormulaFunction> functions = set.findFunctions(name);
-	assertThat("Function '" + name + "' not found.", functions.isEmpty(),
-		equalTo(false));
+        assertThat("Function '" + name + "' not found.", functions.isEmpty(),
+                equalTo(false));
         
         functions = FormulaFunctions.findArgTypeMatch(Arrays.asList(argTypes), functions);
-	assertThat("No matches found for function '" + name + "'.", functions.isEmpty(),
-		equalTo(false));
-	assertThat("Multiple matches for function '" + name + "'.", functions.size(),
-		equalTo(1));
+        assertThat("No matches found for function '" + name + "'.", functions.isEmpty(),
+                equalTo(false));
+        assertThat("Multiple matches for function '" + name + "'.", functions.size(),
+                equalTo(1));
         return new FunctionTester(functions.iterator().next());
     }
     
@@ -76,7 +76,7 @@ public class FunctionTester {
         if (convertTypes) {
             args = convertTypes(args);
         }
-	Object result = function.calculate(Arrays.asList(args));
+        Object result = function.calculate(Arrays.asList(args));
         Assert.assertThat(result, matcher);
         return this;
     }
@@ -86,11 +86,11 @@ public class FunctionTester {
             expected = convertType(expected);
             args = convertTypes(args);
         }
-	Object result = function.calculate(Arrays.asList(args));
+        Object result = function.calculate(Arrays.asList(args));
         if (result instanceof VDouble && expected instanceof VDouble) {
             assertThat("Wrong result for function '" + function.getName() + "("
                     + Arrays.toString(args) + ")'.", ((VDouble) result).getValue().doubleValue(),
-		closeTo(((VDouble) expected).getValue().doubleValue(), 0.0001));
+                closeTo(((VDouble) expected).getValue().doubleValue(), 0.0001));
         } else {
             assertThat(
                     "Wrong result for function '" + function.getName() + "("
@@ -142,11 +142,11 @@ public class FunctionTester {
         if (convertTypes) {
             args = convertTypes(args);
         }
-	Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
-	assertThat(
-		"Wrong result for function '" + function.getName() + "("
-			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
-			+ ") expected (" + VTypeToString.alarmToString(expected) + ")",
+        Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
+        assertThat(
+                "Wrong result for function '" + function.getName() + "("
+                        + Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
+                        + ") expected (" + VTypeToString.alarmToString(expected) + ")",
                 VTypeValueEquals.alarmEquals(result, expected), equalTo(true));
         return this;
     }
@@ -155,12 +155,12 @@ public class FunctionTester {
         if (convertTypes) {
             args = convertTypes(args);
         }
-	Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
-	assertThat(
-		"Wrong result for function '" + function.getName() + "("
-			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
-			+ ") expected (" + VTypeToString.timeToString(expected) + ")",
-		VTypeValueEquals.timeEquals(result, expected), equalTo(true));
+        Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
+        assertThat(
+                "Wrong result for function '" + function.getName() + "("
+                        + Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
+                        + ") expected (" + VTypeToString.timeToString(expected) + ")",
+                VTypeValueEquals.timeEquals(result, expected), equalTo(true));
         return this;
     }
     

@@ -139,7 +139,7 @@ public class Timestamp implements Comparable<Timestamp> {
      */
     @Override
     public int compareTo(Timestamp other) {
-	if (unixSec < other.unixSec) {
+        if (unixSec < other.unixSec) {
             return -1;
         } else if (unixSec == other.unixSec) {
             if (nanoSec < other.nanoSec) {

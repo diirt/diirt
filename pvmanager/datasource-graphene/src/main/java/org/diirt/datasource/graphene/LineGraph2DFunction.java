@@ -33,9 +33,9 @@ class LineGraph2DFunction implements ReadFunction<Graph2DResult> {
     private final QueueCollector<LineGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
     LineGraph2DFunction(ReadFunction<?> tableData,
-	    ReadFunction<?> xColumnName,
-	    ReadFunction<?> yColumnName,
-	    ReadFunction<?> tooltipColumnName) {
+            ReadFunction<?> xColumnName,
+            ReadFunction<?> yColumnName,
+            ReadFunction<?> tooltipColumnName) {
         this.tableData = new CheckedReadFunction<VType>(tableData, "Data", VTable.class, VNumberArray.class);
         this.xColumnName = stringArgument(xColumnName, "X Column");
         this.yColumnName = stringArgument(yColumnName, "Y Column");

@@ -34,72 +34,72 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
     
     @Override
     public Graph2DExpression<BubbleGraph2DRendererUpdate> createExpression(String dataFormula) {
-	BubbleGraph2DExpression plot = bubbleGraphOf(formula(dataFormula),
-	    formulaArg(xColumn.getValue()),
-	    formulaArg(yColumn.getValue()),
-	    formulaArg(sizeColumn.getValue()),
-	    formulaArg(colorColumn.getValue())
-	);
-	return plot;
+        BubbleGraph2DExpression plot = bubbleGraphOf(formula(dataFormula),
+            formulaArg(xColumn.getValue()),
+            formulaArg(yColumn.getValue()),
+            formulaArg(sizeColumn.getValue()),
+            formulaArg(colorColumn.getValue())
+        );
+        return plot;
     }
     
     @Override
     public void reconnect( String data ) {
-	super.reconnect( data );
-	if ( graph != null ) {
-	    graph.update( graph.newUpdate().highlightFocusValue( highlightFocusValue.getValue() ) );
-	}
+        super.reconnect( data );
+        if ( graph != null ) {
+            graph.update( graph.newUpdate().highlightFocusValue( highlightFocusValue.getValue() ) );
+        }
     }
     
     public BubbleGraphView() {
-	
-	this.highlightFocusValue.addListener( new ChangeListener< Boolean >() {
+        
+        this.highlightFocusValue.addListener( new ChangeListener< Boolean >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-		graph.update( graph.newUpdate().highlightFocusValue( newValue ) );
-	    }
-	});
-	
-	this.xColumn.addListener( new ChangeListener< String >() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                graph.update( graph.newUpdate().highlightFocusValue( newValue ) );
+            }
+        });
+        
+        this.xColumn.addListener( new ChangeListener< String >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		BubbleGraphView.super.reconnect();
-	    }
-	});
-	
-	this.yColumn.addListener( new ChangeListener< String >() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                BubbleGraphView.super.reconnect();
+            }
+        });
+        
+        this.yColumn.addListener( new ChangeListener< String >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		BubbleGraphView.super.reconnect();
-	    }
-	    
-	});
-	
-	this.sizeColumn.addListener( new ChangeListener< String >() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                BubbleGraphView.super.reconnect();
+            }
+            
+        });
+        
+        this.sizeColumn.addListener( new ChangeListener< String >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		BubbleGraphView.super.reconnect();
-	    }
-	    
-	});
-	
-	this.colorColumn.addListener( new ChangeListener< String >() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                BubbleGraphView.super.reconnect();
+            }
+            
+        });
+        
+        this.colorColumn.addListener( new ChangeListener< String >() {
 
-	    @Override
-	    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		BubbleGraphView.super.reconnect();
-	    }
-	});
-	
-	this.defaultConfigurationDialog.addStringProperty( "X Column" , this.xColumn );
-	this.defaultConfigurationDialog.addStringProperty( "Y Column" , this.yColumn );
-	this.defaultConfigurationDialog.addStringProperty( "Size Column" , this.sizeColumn );
-	this.defaultConfigurationDialog.addStringProperty( "Color Column" , this.colorColumn );
-	this.defaultConfigurationDialog.addBooleanProperty( "Highlight Focus" , this.highlightFocusValue );
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                BubbleGraphView.super.reconnect();
+            }
+        });
+        
+        this.defaultConfigurationDialog.addStringProperty( "X Column" , this.xColumn );
+        this.defaultConfigurationDialog.addStringProperty( "Y Column" , this.yColumn );
+        this.defaultConfigurationDialog.addStringProperty( "Size Column" , this.sizeColumn );
+        this.defaultConfigurationDialog.addStringProperty( "Color Column" , this.colorColumn );
+        this.defaultConfigurationDialog.addBooleanProperty( "Highlight Focus" , this.highlightFocusValue );
     }
     
     @Override
@@ -108,7 +108,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
     }
     
     public BooleanProperty highlightFocusValueProperty() {
-	return this.highlightFocusValue;
+        return this.highlightFocusValue;
     }
     
     public boolean isHighlightFocusValue() {
@@ -120,7 +120,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
     }
     
     public StringProperty xColumnProperty() {
-	return this.xColumn;
+        return this.xColumn;
     }
     
     public String getXColumn() {
@@ -132,7 +132,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
     }
     
     public StringProperty yColumnProperty() {
-	return this.yColumn;
+        return this.yColumn;
     }
     
     public String getYColumn() {
@@ -144,7 +144,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
     }
     
     public StringProperty sizeColumnProperty() {
-	return this.sizeColumn;
+        return this.sizeColumn;
     }
     
     public String getSizeColumn() {
@@ -156,7 +156,7 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
     }
     
     public StringProperty colorColumnProperty() {
-	return this.colorColumn;
+        return this.colorColumn;
     }
     
     public String getColorColumn() {
@@ -168,6 +168,6 @@ public class BubbleGraphView extends BaseGraphView< BubbleGraph2DRendererUpdate 
     }
     
     public ConfigurationDialog getDefaultConfigurationDialog() {
-	return this.defaultConfigurationDialog;
+        return this.defaultConfigurationDialog;
     }
 }

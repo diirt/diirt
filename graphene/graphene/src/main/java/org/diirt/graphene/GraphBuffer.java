@@ -135,24 +135,24 @@ public class GraphBuffer {
      * @param colorMap the color map
      */
     public void drawDataImage(int xStartPoint, int yStartPoint,
-			int[] xPointToDataMap, int[] yPointToDataMap,
-			Cell2DDataset data, NumberColorMapInstance colorMap) {
+                        int[] xPointToDataMap, int[] yPointToDataMap,
+                        Cell2DDataset data, NumberColorMapInstance colorMap) {
         int previousYData = -1;
-	
-	// Loop through the points to be plotted. The length of the image is
+        
+        // Loop through the points to be plotted. The length of the image is
         // given by the point to data map, since it tells how many points are mapped.
         for (int yOffset = 0; yOffset < yPointToDataMap.length; yOffset++) {
             int yData = yPointToDataMap[yOffset];
             if (yData != previousYData) {
                 for (int xOffset = 0; xOffset < xPointToDataMap.length; xOffset++) {  
                     int xData = xPointToDataMap[xOffset];
-		    
+                    
                     // Get the value, convert to color and plot
                     int rgb = colorMap.colorFor(data.getValue(xData, yData));
-		    setPixel( xStartPoint + xOffset  , yStartPoint + yOffset , rgb );
+                    setPixel( xStartPoint + xOffset  , yStartPoint + yOffset , rgb );
                 }
-		
-	    // If the current line is the same as the previous, it's
+                
+            // If the current line is the same as the previous, it's
             // faster to make a copy
             } else {
                 if (hasAlphaChannel) {
@@ -493,8 +493,8 @@ public class GraphBuffer {
     void drawHorizontalReferenceLines(ListInt referencePixels, Color lineColor, int graphLeftPixel, int graphRightPixel) {
         g.setColor(lineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
-	
-	//draw a line from (graphLeftPixel, y) to (graphRightPixel, y)
+        
+        //draw a line from (graphLeftPixel, y) to (graphRightPixel, y)
         for (int i = 0; i < referencePixels.size(); i++) {
             g.drawLine(graphLeftPixel, referencePixels.getInt(i), graphRightPixel, referencePixels.getInt(i));
         }

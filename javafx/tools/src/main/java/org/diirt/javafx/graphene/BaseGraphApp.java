@@ -56,27 +56,27 @@ abstract public class BaseGraphApp extends Application {
     
     @Override
     public void start( Stage stage ) throws Exception {
-	this.pnlGraph = getGraphView();
-	this.pnlError = new MessagePanel( pnlGraph.lastExceptionProperty() );
-	
-	BorderPane mainPanel = new BorderPane();
-	    mainPanel.setTop( this.pnlData );
-	    mainPanel.setCenter( this.pnlGraph );
-	    mainPanel.setBottom( this.pnlError );
-	    
-	//allow components to shrink
-	this.pnlData.setMinSize( 0 , 0 );
-	this.pnlGraph.setMinSize( 0 , 0 );
-	this.pnlError.setMinSize( 0 , 0 );
-	
-	
-	
-	Scene scene = new Scene( mainPanel );
-	stage.setTitle( "diirt - BaseGraphApp" );
-	stage.setScene( scene );
-	stage.setWidth( 500 );
-	stage.setHeight( 500 );
-	stage.show();
+        this.pnlGraph = getGraphView();
+        this.pnlError = new MessagePanel( pnlGraph.lastExceptionProperty() );
+        
+        BorderPane mainPanel = new BorderPane();
+            mainPanel.setTop( this.pnlData );
+            mainPanel.setCenter( this.pnlGraph );
+            mainPanel.setBottom( this.pnlError );
+            
+        //allow components to shrink
+        this.pnlData.setMinSize( 0 , 0 );
+        this.pnlGraph.setMinSize( 0 , 0 );
+        this.pnlError.setMinSize( 0 , 0 );
+        
+        
+        
+        Scene scene = new Scene( mainPanel );
+        stage.setTitle( "diirt - BaseGraphApp" );
+        stage.setScene( scene );
+        stage.setWidth( 500 );
+        stage.setHeight( 500 );
+        stage.show();
     }
     
     /**
@@ -86,75 +86,75 @@ abstract public class BaseGraphApp extends Application {
      * @param formulae the formulae to add
      */
     public void addDataFormulae( String... formulae ) {
-	for ( String s : formulae ) {
-	    this.pnlData.addDataFormulae( s );
-	}
+        for ( String s : formulae ) {
+            this.pnlData.addDataFormulae( s );
+        }
     }
     
     /**
      * Panel allowing the user to select some data to graph.
      */
     private class DataSelectionPanel extends BorderPane {
-	
-	/**
-	 * the allowed data formulae are stored here and the user can
-	 * select from this list
-	 */
-	final private Label lblData = new Label( "Data:" );
-	final private ComboBox<String> cboSelectData = new ComboBox<String>();
-	final private Button cmdConfigure = new Button( "Configure..." );
-	
-	public DataSelectionPanel() {
-	    this.setPadding( new Insets( 5 , 5 , 5 , 5 ) );
-	    
-	    GridPane pnlCenter = new GridPane();
-	    pnlCenter.setHgap( 5 );
-	    this.cboSelectData.setPrefWidth( 0 );
-	    pnlCenter.addRow( 0 , this.lblData , this.cboSelectData , this.cmdConfigure );
-	    
-	    ColumnConstraints allowResize = new ColumnConstraints();
-	    allowResize.setHgrow( Priority.ALWAYS );
-	    ColumnConstraints noResize = new ColumnConstraints();
-	    pnlCenter.getColumnConstraints().addAll( noResize , allowResize , noResize );
-	    
-	    this.setCenter( pnlCenter );
-	    
-	    //allow the combo box to stretch out and fill panel completely
-	    this.cboSelectData.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
-	    this.cboSelectData.setEditable( true );
-	    
-	    //watches for when the user selects a new data formula
-	    cboSelectData.valueProperty().addListener( new ChangeListener< String >() {
+        
+        /**
+         * the allowed data formulae are stored here and the user can
+         * select from this list
+         */
+        final private Label lblData = new Label( "Data:" );
+        final private ComboBox<String> cboSelectData = new ComboBox<String>();
+        final private Button cmdConfigure = new Button( "Configure..." );
+        
+        public DataSelectionPanel() {
+            this.setPadding( new Insets( 5 , 5 , 5 , 5 ) );
+            
+            GridPane pnlCenter = new GridPane();
+            pnlCenter.setHgap( 5 );
+            this.cboSelectData.setPrefWidth( 0 );
+            pnlCenter.addRow( 0 , this.lblData , this.cboSelectData , this.cmdConfigure );
+            
+            ColumnConstraints allowResize = new ColumnConstraints();
+            allowResize.setHgrow( Priority.ALWAYS );
+            ColumnConstraints noResize = new ColumnConstraints();
+            pnlCenter.getColumnConstraints().addAll( noResize , allowResize , noResize );
+            
+            this.setCenter( pnlCenter );
+            
+            //allow the combo box to stretch out and fill panel completely
+            this.cboSelectData.setMaxSize( Double.MAX_VALUE , Double.MAX_VALUE );
+            this.cboSelectData.setEditable( true );
+            
+            //watches for when the user selects a new data formula
+            cboSelectData.valueProperty().addListener( new ChangeListener< String >() {
 
-		@Override
-		public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     pnlGraph.setFormula(newValue);
-		}
-		
-	    });
-	    
-	    this.cmdConfigure.setOnAction( new EventHandler< ActionEvent >() {
+                }
+                
+            });
+            
+            this.cmdConfigure.setOnAction( new EventHandler< ActionEvent >() {
 
-		@Override
-		public void handle(ActionEvent event) {
-		    openConfigurationPanel();
-		}
-		
-	    });
-	}
-	
-	/**
-	 * Adds the given data formulae objects to the list of acceptable
-	 * data formulae.
-	 * 
-	 * @param f the data formula objects to add
-	 */
-	final public void addDataFormulae( String... s ) {
-	    this.cboSelectData.getItems().addAll( s );
-	    if ( cboSelectData.getItems().size() > 0 ) {
-		this.cboSelectData.setValue( this.cboSelectData.getItems().get( 0 ) );
-	    }
-	}
+                @Override
+                public void handle(ActionEvent event) {
+                    openConfigurationPanel();
+                }
+                
+            });
+        }
+        
+        /**
+         * Adds the given data formulae objects to the list of acceptable
+         * data formulae.
+         * 
+         * @param f the data formula objects to add
+         */
+        final public void addDataFormulae( String... s ) {
+            this.cboSelectData.getItems().addAll( s );
+            if ( cboSelectData.getItems().size() > 0 ) {
+                this.cboSelectData.setValue( this.cboSelectData.getItems().get( 0 ) );
+            }
+        }
     }
     
     /**
@@ -164,7 +164,7 @@ abstract public class BaseGraphApp extends Application {
      */
     public void openConfigurationPanel() {
         // TODO: we should have BaseGraphView have a standard openConfigurationDialog
-	//do nothing, by default
+        //do nothing, by default
     }
     
     /**
@@ -172,25 +172,25 @@ abstract public class BaseGraphApp extends Application {
      * source.
      */
     private class MessagePanel extends BorderPane {
-	
-	final private Label lblMessage = new Label();
-	final private ReadOnlyProperty< Exception > lastException;
-	
-	public MessagePanel( ReadOnlyProperty< Exception > lastException ) {
-	    this.setCenter( lblMessage );
-	    this.lastException = lastException;
-	    this.lastException.addListener( new ChangeListener< Exception >() {
+        
+        final private Label lblMessage = new Label();
+        final private ReadOnlyProperty< Exception > lastException;
+        
+        public MessagePanel( ReadOnlyProperty< Exception > lastException ) {
+            this.setCenter( lblMessage );
+            this.lastException = lastException;
+            this.lastException.addListener( new ChangeListener< Exception >() {
 
-		@Override
-		public void changed(ObservableValue<? extends Exception> observable, Exception oldValue, Exception newValue) {
-		    setMessage( newValue == null? "" : newValue.getMessage() );
-		}
-		
-	    });
-	}
-	
-	public void setMessage( String message ) {
-	    this.lblMessage.setText( message );
-	}
+                @Override
+                public void changed(ObservableValue<? extends Exception> observable, Exception oldValue, Exception newValue) {
+                    setMessage( newValue == null? "" : newValue.getMessage() );
+                }
+                
+            });
+        }
+        
+        public void setMessage( String message ) {
+            this.lblMessage.setText( message );
+        }
     }
 }

@@ -34,9 +34,9 @@ final class LinearAbsoluteTimeScale implements TimeScale {
     @Override
     public TimeAxis references(TimeInterval range, int minRefs, int maxRefs) {
         // Validate input. Make sure requested references range makes sense.
-	if ( (maxRefs < minRefs) || (minRefs < 0 ) || (maxRefs < 0) ) {
-	    throw new IllegalArgumentException( "Invalid references range: " + minRefs + " < # references < " + maxRefs );
-	}
+        if ( (maxRefs < minRefs) || (minRefs < 0 ) || (maxRefs < 0) ) {
+            throw new IllegalArgumentException( "Invalid references range: " + minRefs + " < # references < " + maxRefs );
+        }
         
         // First guess at the time between references.
         // Get the smallest required period, and then round down

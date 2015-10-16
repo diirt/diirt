@@ -75,7 +75,7 @@ public abstract class VNumberArray extends Array implements AlarmProvider, TimeP
 //        } else if (value instanceof Byte) {
 //            return newVByte((Byte) value, alarm, time, display);
         }
-	throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
     
 }
