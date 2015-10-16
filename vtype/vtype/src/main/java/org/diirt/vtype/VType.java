@@ -10,5 +10,5 @@ package org.diirt.vtype;
  * @author carcassi
  */
 public interface VType {
-    
+
 }

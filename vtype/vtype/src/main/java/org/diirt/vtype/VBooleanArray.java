@@ -12,7 +12,7 @@ import org.diirt.util.array.ListBoolean;
  * @author carcassi
  */
 public interface VBooleanArray extends Array, Alarm, Time, VType {
-    
+
     /**
      * {@inheritDoc }
      * @return the data

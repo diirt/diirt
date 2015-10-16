@@ -10,7 +10,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 class IVFloat extends IVNumeric implements VFloat {
-    
+
     private final Float value;
 
     IVFloat(Float value, Alarm alarm, Time time, Display display) {

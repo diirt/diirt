@@ -118,7 +118,7 @@ public abstract class ValueFormat extends Format {
     public Object parseObject(String source, ParsePosition pos) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     /**
      * Parses the string given the object as a reference.
      * <p>
@@ -126,7 +126,7 @@ public abstract class ValueFormat extends Format {
      * reference (e.g. if reference is a VDouble, it will parse the string as a double).
      * The data in the reference will also be used for the actual parsing (e.g.
      * if reference is Enum, the labels will be used to match the string).
-     * 
+     *
      * @param source the text to parse
      * @param reference the vtype object to reference
      * @return the parsed representation
@@ -174,15 +174,15 @@ public abstract class ValueFormat extends Format {
         if (reference instanceof VEnumArray) {
             return parseEnumArray(source, ((VEnumArray) reference).getLabels());
         }
-        
+
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(reference) + " is not supported");
     }
-    
+
     /**
      * Parses the string and returns a double representation.
      * <p>
      * Default implementation uses {@link Double#parseDouble(java.lang.String) }
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -194,12 +194,12 @@ public abstract class ValueFormat extends Format {
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
-    
+
     /**
      * Parses the string and returns a float representation.
      * <p>
      * Default implementation uses {@link Float#parseFloat(java.lang.String) }
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -211,12 +211,12 @@ public abstract class ValueFormat extends Format {
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
-    
+
     /**
      * Parses the string and returns an integer representation.
      * <p>
      * Default implementation uses {@link Integer#parseInt(java.lang.String) }
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -228,12 +228,12 @@ public abstract class ValueFormat extends Format {
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
-    
+
     /**
      * Parses the string and returns a short representation.
      * <p>
      * Default implementation uses {@link Short#parseShort(java.lang.String) }
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -245,12 +245,12 @@ public abstract class ValueFormat extends Format {
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
-    
+
     /**
      * Parses the string and returns a byte representation.
      * <p>
      * Default implementation uses {@link Byte#parseByte(java.lang.String) }
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -262,28 +262,28 @@ public abstract class ValueFormat extends Format {
             throw new RuntimeException(ex.getMessage(), ex);
         }
     }
-    
+
     /**
      * Parses the string and returns a string representation.
      * <p>
      * Default implementation returns the string.
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
     public String parseString(String source) {
         return source;
     }
-    
+
     /**
      * Parses the string and returns the index in the enum.
      * <p>
      * Default implementation matches the label and returns the index.
-     * 
+     *
      * @param source the text to parse
      * @param labels the labels for the enum
      * @return the parsed representation
-     */    
+     */
     public int parseEnum(String source, List<String> labels) {
         int index = labels.indexOf(source);
         if (index != -1) {
@@ -291,13 +291,13 @@ public abstract class ValueFormat extends Format {
         }
         throw new RuntimeException(source  + " is not part of enum " + labels);
     }
-    
+
     /**
      * Parses the string and returns a double array representation.
      * <p>
      * Default implementation expects a comma separated list, and parses
      * each element with {@link #parseDouble(java.lang.String) }.
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -309,13 +309,13 @@ public abstract class ValueFormat extends Format {
         }
         return new ArrayDouble(values);
     }
-    
+
     /**
      * Parses the string and returns a float array representation.
      * <p>
      * Default implementation expects a comma separated list, and parses
      * each element with {@link #parseFloat(java.lang.String) }.
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -327,13 +327,13 @@ public abstract class ValueFormat extends Format {
         }
         return new ArrayFloat(values);
     }
-    
+
     /**
      * Parses the string and returns an int array representation.
      * <p>
      * Default implementation expects a comma separated list, and parses
      * each element with {@link #parseInt(java.lang.String) }.
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -345,13 +345,13 @@ public abstract class ValueFormat extends Format {
         }
         return new ArrayInt(values);
     }
-    
+
     /**
      * Parses the string and returns a short array representation.
      * <p>
      * Default implementation expects a comma separated list, and parses
      * each element with {@link #parseShort(java.lang.String) }.
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -363,13 +363,13 @@ public abstract class ValueFormat extends Format {
         }
         return new ArrayShort(values);
     }
-    
+
     /**
      * Parses the string and returns a byte array representation.
      * <p>
      * Default implementation expects a comma separated list, and parses
      * each element with {@link #parseByte(java.lang.String) }.
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -381,13 +381,13 @@ public abstract class ValueFormat extends Format {
         }
         return new ArrayByte(values);
     }
-    
+
     /**
      * Parses the string and returns a string array representation.
      * <p>
      * Default implementation expects a comma separated list, and parses
      * each element with {@link #parseString(java.lang.String) }.
-     * 
+     *
      * @param source the text to parse
      * @return the parsed representation
      */
@@ -399,13 +399,13 @@ public abstract class ValueFormat extends Format {
         }
         return values;
     }
-    
+
     /**
      * Parses the string and returns an array of indexes in the enum.
      * <p>
      * Default implementation expects a comma separated list, and parses
      * each element with {@link #parseEnum(java.lang.String, java.util.List) }.
-     * 
+     *
      * @param source the text to parse
      * @param labels the labels for the enum
      * @return the parsed representation

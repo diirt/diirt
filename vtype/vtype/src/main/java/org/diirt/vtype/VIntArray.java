@@ -12,7 +12,7 @@ import org.diirt.util.array.ListInt;
  * @author carcassi
  */
 public interface VIntArray extends VNumberArray, VType {
-    
+
     @Override
     ListInt getData();
 }

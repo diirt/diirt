@@ -30,7 +30,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class CSVIOTest {
-    
+
     public CSVIOTest() {
     }
 
@@ -79,7 +79,7 @@ public class CSVIOTest {
     @Test
     public void exportVTable() {
         VTable value = ValueFactory.newVTable(Arrays.<Class<?>>asList(String.class, Double.TYPE, Integer.TYPE),
-                                   Arrays.asList("Name", "Value", "Index"), 
+                                   Arrays.asList("Name", "Value", "Index"),
                                    Arrays.<Object>asList(Arrays.asList("A", "B", "C", "D", "E"),
                                           new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123),
                                           new ArrayInt(1,2,3,4,5)));
@@ -95,7 +95,7 @@ public class CSVIOTest {
     @Test
     public void exportVTable2() {
         VTable value = ValueFactory.newVTable(Arrays.<Class<?>>asList(String.class, Double.TYPE, Integer.TYPE, Timestamp.class),
-                                   Arrays.asList("Name", "Value", "Index", "Time"), 
+                                   Arrays.asList("Name", "Value", "Index", "Time"),
                                    Arrays.<Object>asList(Arrays.asList("A", "B", "C", "D", "E"),
                                           new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123),
                                           new ArrayInt(1,2,3,4,5),
@@ -108,7 +108,7 @@ public class CSVIOTest {
                 "\"D\" 1.23E-7 4 \"1969/12/31 19:02:16.0 -0500\"\n" +
                 "\"E\" 123.0 5 \"1969/12/31 19:02:17.0 -0500\"\n");
     }
-    
+
     public static void exportTest(CSVIO io, Object value, String csv) {
         assertThat(io.canExport(value), equalTo(true));
         StringWriter writer = new StringWriter();
@@ -124,7 +124,7 @@ public class CSVIOTest {
                 "\"C\" 2.34567891234E11 3\n" +
                 "\"D\" 1.23E-7 4\n" +
                 "\"E\" 123.0 5\n";
-        
+
         CSVIO io = new CSVIO();
         VTable value = io.importVTable(new StringReader(inputText));
         assertThat(value.getColumnCount(), equalTo(3));

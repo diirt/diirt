@@ -26,7 +26,7 @@ public interface Display {
 
     /**
      * Lowest possible value (included). Never null.
-     * 
+     *
      * @return lower limit
      */
     Double getLowerCtrlLimit();

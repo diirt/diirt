@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class TimeTest {
-    
+
     public TimeTest() {
     }
 
@@ -29,7 +29,7 @@ public class TimeTest {
         assertThat(time.isValid(), equalTo(false));
         assertThat(time.toString(), equalTo("1970-01-01T00:02:03.000000123Z(4)"));
     }
-    
+
     @Test
     public void now1() {
         Instant timestamp = Instant.now();
@@ -49,5 +49,5 @@ public class TimeTest {
         assertThat(Time.create(Instant.ofEpochSecond(123, 123), 4, false), not(equalTo(Time.create(Instant.ofEpochSecond(123, 123), 3, false))));
         assertThat(Time.create(Instant.ofEpochSecond(123, 123), 4, false), not(equalTo(Time.create(Instant.ofEpochSecond(123, 123), 4, true))));
     }
-    
+
 }

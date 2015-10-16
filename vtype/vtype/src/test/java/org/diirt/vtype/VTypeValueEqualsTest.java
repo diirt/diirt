@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class VTypeValueEqualsTest {
-    
+
     public VTypeValueEqualsTest() {
     }
 

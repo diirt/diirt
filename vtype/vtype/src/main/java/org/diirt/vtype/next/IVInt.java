@@ -10,7 +10,7 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 class IVInt extends VInt {
-    
+
     private final Integer value;
     private final Alarm alarm;
     private final Time time;

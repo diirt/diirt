@@ -11,7 +11,7 @@ import java.util.List;
  * @author carcassi
  */
 class IVEnum extends IVMetadata implements VEnum {
-    
+
     private final int index;
     private final List<String> labels;
 
@@ -43,5 +43,5 @@ class IVEnum extends IVMetadata implements VEnum {
     public String toString() {
         return VTypeToString.toString(this);
     }
-    
+
 }

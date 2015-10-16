@@ -19,7 +19,7 @@ public class VTypeValueEquals {
 
     /**
      * Tests whether two alarms have the same name and severity.
-     * 
+     *
      * @param alarm1 first alarm
      * @param alarm2 second alarm
      * @return true if equal or both null
@@ -32,7 +32,7 @@ public class VTypeValueEquals {
         if (alarm1 == null || alarm2 == null) {
             return false;
         }
-        
+
         return alarm1.getAlarmSeverity().equals(alarm2.getAlarmSeverity()) &&
                 alarm1.getAlarmName().equals(alarm2.getAlarmName());
     }
@@ -40,7 +40,7 @@ public class VTypeValueEquals {
     /**
      * Tests whether the two time have the same timestamp, user tag
      * and if they are both valid.
-     * 
+     *
      * @param time1 first time
      * @param time2 second time
      * @return  true if equal or both null
@@ -53,7 +53,7 @@ public class VTypeValueEquals {
         if (time1 == null || time2 == null) {
             return false;
         }
-        
+
         return Objects.equals(time1.getTimestamp(), time2.getTimestamp()) &&
                 Objects.equals(time1.getTimeUserTag(), time2.getTimeUserTag()) &&
                 time1.isTimeValid() == time2.isTimeValid();
@@ -61,7 +61,7 @@ public class VTypeValueEquals {
 
     /**
      * Tests whether the two objects are of the same VType.
-     * 
+     *
      * @param obj1 first object
      * @param obj2 second object
      * @return true if same type or both null
@@ -74,14 +74,14 @@ public class VTypeValueEquals {
         if (obj1 == null || obj2 == null) {
             return false;
         }
-        
+
         return Objects.equals(ValueUtil.typeOf(obj1), ValueUtil.typeOf(obj2));
     }
-    
+
     /**
      * Checks whether the two table have the same data: equal column names, number
      * of rows and columns and their value.
-     * 
+     *
      * @param arg1 a table
      * @param arg2 another table
      * @return true if the values are equals
@@ -90,11 +90,11 @@ public class VTypeValueEquals {
         if (arg1.getColumnCount() != arg2.getColumnCount()) {
             return false;
         }
-        
+
         if (arg1.getRowCount() != arg2.getRowCount()) {
             return false;
         }
-        
+
         for (int i = 0; i < arg1.getColumnCount(); i++) {
             if (!arg1.getColumnName(i).equals(arg2.getColumnName(i))) {
                 return false;
@@ -103,19 +103,19 @@ public class VTypeValueEquals {
             if (!arg1.getColumnType(i).equals(arg2.getColumnType(i))) {
                 return false;
             }
-            
+
             if (!arg1.getColumnData(i).equals(arg2.getColumnData(i))) {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Checks whether the two array have the data: equal data and
      * equal sizes.
-     * 
+     *
      * @param array1 first array
      * @param array2 second array
      * @return true if equal data or both null
@@ -126,7 +126,7 @@ public class VTypeValueEquals {
 
     /**
      * Checks whether the two number have the same value.
-     * 
+     *
      * @param number1 the first number
      * @param number2 the second number
      * @return true if equal value or both null
@@ -137,7 +137,7 @@ public class VTypeValueEquals {
 
     /**
      * Checks whether the two booleans have the same value.
-     * 
+     *
      * @param bool1 the first boolean
      * @param bool2 the second boolean
      * @return true if equal value or both null
@@ -145,7 +145,7 @@ public class VTypeValueEquals {
     public static boolean valueEquals(VBoolean bool1, VBoolean bool2) {
         return bool1.getValue().equals(bool2.getValue());
     }
-    
+
     public static boolean valueEquals(VBooleanArray bool1, VBooleanArray bool2) {
         return bool1.getData().equals(bool2.getData());
     }
@@ -194,11 +194,11 @@ public class VTypeValueEquals {
         if ((obj1 instanceof VEnumArray) && (obj2 instanceof VEnumArray)) {
             return valueEquals((VEnumArray) obj1, (VEnumArray) obj2);
         }
-        
+
         if((obj1 instanceof VNumber) && (obj2 instanceof VNumber)) {
             return valueEquals((VNumber) obj1, (VNumber) obj2);
         }
-        
+
         if((obj1 instanceof VBoolean) && (obj2 instanceof VBoolean)) {
             return valueEquals((VBoolean) obj1, (VBoolean) obj2);
         }
@@ -206,7 +206,7 @@ public class VTypeValueEquals {
         if ((obj1 instanceof VBooleanArray) && (obj2 instanceof VBooleanArray)) {
             return valueEquals((VBooleanArray) obj1, (VBooleanArray) obj2);
         }
-        
+
         if((obj1 instanceof VTable) && (obj2 instanceof VTable)) {
             return valueEquals((VTable) obj1, (VTable) obj2);
         }

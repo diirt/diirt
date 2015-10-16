@@ -13,7 +13,7 @@ import org.diirt.util.time.Timestamp;
  * @author carcassi
  */
 class IVMetadata implements Alarm, Time {
-    
+
     private final Alarm alarm;
     private final Time time;
 

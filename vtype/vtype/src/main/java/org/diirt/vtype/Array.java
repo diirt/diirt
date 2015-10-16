@@ -25,7 +25,7 @@ import org.diirt.util.array.ListNumber;
  *     }
  *   }
  * }</pre></blockquote>
- * 
+ *
  * @author carcassi
  */
 public interface Array {
@@ -41,7 +41,7 @@ public interface Array {
      * regardless of numeric type.
      * <p>
      * If a numeric array is actually needed, refer to {@link CollectionNumbers}.
-     * 
+     *
      * @return the array data
      */
     Object getData();
@@ -53,7 +53,7 @@ public interface Array {
      * Each number represents the size of each dimension. The total number
      * of elements in the array is therefore the product of all the
      * numbers in the list returned.
-     * 
+     *
      * @return the dimension sizes
      */
     ListInt getSizes();

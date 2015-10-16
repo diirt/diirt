@@ -19,7 +19,7 @@ import org.diirt.vtype.VTable;
  * @author carcassi
  */
 public class VColumn {
-    
+
     private final String name;
     private final Class<?> type;
     private final Object data;
@@ -29,7 +29,7 @@ public class VColumn {
         this.type = type;
         this.data = data;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -37,15 +37,15 @@ public class VColumn {
     public Class<?> getType() {
         return type;
     }
-    
+
     public Object getData() {
         return data;
     }
-    
+
     public static VColumn from(VTable table, int index) {
         return new VColumn(table.getColumnName(index), table.getColumnType(index), table.getColumnData(index));
     }
-    
+
     public static VColumn from(VTable table, String column) {
         if (column == null || table == null) {
             return null;
@@ -57,7 +57,7 @@ public class VColumn {
         }
         return null;
     }
-    
+
     public static Map<String, VColumn> columnMap(VTable table) {
         Map<String, VColumn> columns = new HashMap<>();
         for (int index = 0; index < table.getColumnCount(); index++) {
@@ -65,7 +65,7 @@ public class VColumn {
         }
         return columns;
     }
-    
+
     public static Object combineData(Class<?> type, int size, ListInt offsets, List<VColumn> columns) {
         if (String.class.equals(type)) {
             return combineStringData(size, offsets, columns);
@@ -74,7 +74,7 @@ public class VColumn {
         }
         throw new UnsupportedOperationException("Type " + type + " not supported for column combineData");
     }
-    
+
     private static Object combineStringData(final int size, final ListInt offsets, final List<VColumn> columns) {
         return new AbstractList<String>() {
 
@@ -84,7 +84,7 @@ public class VColumn {
                 if (columns.get(tableIndex) == null) {
                     return null;
                 }
-                
+
                 int rowIndex = index - offsets.getInt(tableIndex);
                 // TODO: mismatched type should be handled better
                 if (columns.get(tableIndex).getType() != String.class) {
@@ -105,7 +105,7 @@ public class VColumn {
             }
         };
     }
-    
+
     private static Object combineDoubleData(final int size, final ListInt offsets, final List<VColumn> columns) {
         return new ListDouble() {
 
@@ -115,7 +115,7 @@ public class VColumn {
                 if (columns.get(tableIndex) == null) {
                     return Double.NaN;
                 }
-                
+
                 int rowIndex = index - offsets.getInt(tableIndex);
                 // TODO: mismatched type should be handled better
                 if (!ListNumber.class.isInstance(columns.get(tableIndex).getData())) {
@@ -136,5 +136,5 @@ public class VColumn {
             }
         };
     }
-    
+
 }

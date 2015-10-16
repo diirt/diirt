@@ -42,7 +42,7 @@ class RangeFilter {
         this.min = min;
         this.max = max;
     }
-    
+
     public boolean filterRow(int rowIndex) {
         if (min instanceof VNumber) {
             double columnValue = ((ListNumber) table.getColumnData(columnIndex)).getDouble(rowIndex);
@@ -59,5 +59,5 @@ class RangeFilter {
         }
         throw new IllegalStateException("Unexpected error");
     }
-    
+
 }

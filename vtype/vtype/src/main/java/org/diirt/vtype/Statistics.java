@@ -22,21 +22,21 @@ public interface Statistics {
 
     /**
      * The average. Never null.
-     * 
+     *
      * @return the average
      */
     Double getAverage();
 
     /**
      * The standard deviation. Never null.
-     * 
+     *
      * @return the standard deviation
      */
     Double getStdDev();
 
     /**
      * The minimum value.
-     * 
+     *
      * @return the minimum
      */
     Double getMin();
@@ -50,7 +50,7 @@ public interface Statistics {
 
     /**
      * The number of samples.
-     * 
+     *
      * @return the number of samples
      */
     Integer getNSamples();

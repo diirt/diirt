@@ -63,7 +63,7 @@ public class VTypeToJsonTest {
         jsonWriter.writeObject(json);
         assertThat(writer.toString(), equalTo(text));
     }
-    
+
     public void compareVType(VType expected, VType actual) {
         assertThat("Type mismatch", VTypeValueEquals.typeEquals(actual, expected), equalTo(true));
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(actual, expected), equalTo(true));
@@ -74,13 +74,13 @@ public class VTypeToJsonTest {
             assertThat("Time mismatch", VTypeValueEquals.timeEquals((Time) actual, (Time) expected), equalTo(true));
         }
     }
-    
+
     public JsonObject parseJson(String json) {
         try (JsonReader reader = Json.createReader(new StringReader(json))) {
             return reader.readObject();
         }
     }
-    
+
     public VDouble vDouble = newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone());
     public String vDoubleJson = "{\"type\":{\"name\":\"VDouble\",\"version\":1},"
             + "\"value\":3.14,"
@@ -199,12 +199,12 @@ public class VTypeToJsonTest {
             + "\"columnNames\":[\"Name\",\"Index\",\"Value\",\"Timestamp\"],"
             + "\"columnTypes\":[\"String\",\"int\",\"double\",\"Timestamp\"],"
             + "\"columnValues\":[[\"\",\"B\",\"C\"],[1,2,3],[null,1.25,-0.1],[1234,2345,3456]]}";
-    
+
     @Test
     public void serializeVDouble() {
         compareJson(VTypeToJson.toJson(vDouble), vDoubleJson);
     }
-    
+
     @Test
     public void serializeVFloat() {
         compareJson(VTypeToJson.toJson(vFloat), vFloatJson);
@@ -239,7 +239,7 @@ public class VTypeToJsonTest {
     public void serializeVString() {
         compareJson(VTypeToJson.toJson(vString), vStringJson);
     }
-        
+
     @Test
     public void serializeVEnum() {
         compareJson(VTypeToJson.toJson(vEnum), vEnumJson);
@@ -404,5 +404,5 @@ public class VTypeToJsonTest {
     public void parseVTable2() {
         compareVType(vTable2, VTypeToJson.toVType(parseJson(vTable2Json)));
     }
-    
+
 }

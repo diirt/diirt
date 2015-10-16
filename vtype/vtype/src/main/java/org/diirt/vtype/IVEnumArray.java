@@ -13,7 +13,7 @@ import org.diirt.util.array.ListInt;
  * @author carcassi
  */
 class IVEnumArray extends IVMetadata implements VEnumArray {
-    
+
     private final ListInt indexes;
     private final List<String> labels;
     private final ListInt sizes;
@@ -59,5 +59,5 @@ class IVEnumArray extends IVMetadata implements VEnumArray {
     public String toString() {
         return VTypeToString.toString(this);
     }
-    
+
 }

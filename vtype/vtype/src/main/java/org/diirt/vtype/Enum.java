@@ -7,7 +7,7 @@ package org.diirt.vtype;
 import java.util.List;
 
 /**
- * Metadata for enumerations. 
+ * Metadata for enumerations.
  *
  * @author carcassi
  */

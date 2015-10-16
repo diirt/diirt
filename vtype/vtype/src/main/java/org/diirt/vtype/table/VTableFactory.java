@@ -37,20 +37,20 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class VTableFactory {
- 
+
     public static VTable join(List<VTable> tables) {
         return join(tables.toArray(new VTable[tables.size()]));
     }
-    
+
     public static VTable join(VTable... tables) {
         if (tables.length == 0) {
             return null;
         }
-        
+
         if (tables.length == 1) {
             return tables[0];
         }
-        
+
         // Find columns to join
         Map<String, int[]> commonColumnsIndexes = null;
         for (int nTable = 0; nTable < tables.length; nTable++) {
@@ -61,7 +61,7 @@ public class VTableFactory {
                     int[] indexes = new int[tables.length];
                     indexes[0] = i;
                     commonColumnsIndexes.put(vTable.getColumnName(i), indexes);
-                    
+
                 }
             } else {
                 commonColumnsIndexes.keySet().retainAll(columnNames(vTable));
@@ -72,17 +72,17 @@ public class VTableFactory {
                 }
             }
         }
-        
+
         if (commonColumnsIndexes.isEmpty()) {
             throw new UnsupportedOperationException("Case not implemented yet");
         }
-        
+
         List<EqualValueFilter> filters = new ArrayList<>();
         for (Map.Entry<String, int[]> entry : commonColumnsIndexes.entrySet()) {
             int[] indexes = entry.getValue();
             filters.add(new EqualValueFilter(Arrays.asList(tables), indexes));
         }
-        
+
         // Find rows
         boolean done = false;
         List<BufferInt> rowIndexes = new ArrayList<>();
@@ -119,7 +119,7 @@ public class VTableFactory {
                 }
             }
         }
-        
+
         List<String> columnNames = new ArrayList<>();
         List<Class<?>> columnTypes = new ArrayList<>();
         List<Object> columnData = new ArrayList<>();
@@ -150,10 +150,10 @@ public class VTableFactory {
                 }
             }
         }
-        
+
         return ValueFactory.newVTable(columnTypes, columnNames, columnData);
     }
-    
+
     public static VTable union(VString extraColumnName, final VStringArray extraColumnData, final VTable... tables) {
         // Prune nulls
         final List<String> extraColumnDataPruned = new ArrayList<>();
@@ -166,11 +166,11 @@ public class VTableFactory {
                 tablesPruned.add(table);
             }
         }
-        
+
         if (tablesPruned.isEmpty()) {
             return null;
         }
-        
+
         List<String> columnNames = new ArrayList<>();
         List<Class<?>> columnTypes = new ArrayList<>();
         List<Map<String, VColumn>> tableColumns = new ArrayList<>();
@@ -198,7 +198,7 @@ public class VTableFactory {
         }
         final int rowCount = currentOffset;
         final ListInt offsets = new ArrayInt(tableOffsets);
-        
+
         List<Object> columnData = new ArrayList<>();
         if (extraColumnName != null) {
             columnData.add(new AbstractList<String>() {
@@ -215,7 +215,7 @@ public class VTableFactory {
                 }
             });
         }
-        
+
         for (int i = 1; i < columnNames.size(); i++) {
             String columnName = columnNames.get(i);
             List<VColumn> columns = new ArrayList<>();
@@ -224,10 +224,10 @@ public class VTableFactory {
             }
             columnData.add(VColumn.combineData(columnTypes.get(i), rowCount, offsets, columns));
         }
-        
+
         return ValueFactory.newVTable(columnTypes, columnNames, columnData);
     }
-    
+
     private static Object selectColumnData(VTable table, int column, ListInt indexes) {
         Class<?> type = table.getColumnType(column);
         if (type.isPrimitive()) {
@@ -236,7 +236,7 @@ public class VTableFactory {
             return createView((List<?>) table.getColumnData(column), indexes);
         }
     }
-    
+
     private static <T> List<T> createView(final List<T> list, final ListInt indexes) {
         return new AbstractList<T>() {
 
@@ -251,7 +251,7 @@ public class VTableFactory {
             }
         };
     }
-    
+
     private static Object createView(final Object columnData, final ListInt indexes) {
         if (columnData instanceof List) {
             List<?> data = (List<?>) columnData;
@@ -262,7 +262,7 @@ public class VTableFactory {
             throw new IllegalArgumentException("Unsupported column data " + columnData);
         }
     }
-    
+
     public static VTable select(final VTable table, final ListInt indexes) {
         List<String> names = columnNames(table);
         List<Class<?>> types = columnTypes(table);
@@ -280,7 +280,7 @@ public class VTableFactory {
         };
         return ValueFactory.newVTable(types, names, data);
     }
-    
+
     public static VTable newVTable(Column... columns) {
         List<String> columnNames = new ArrayList<>();
         columnNames.addAll(Collections.<String>nCopies(columns.length, null));
@@ -288,7 +288,7 @@ public class VTableFactory {
         columnTypes.addAll(Collections.<Class<?>>nCopies(columns.length, null));
         List<Object> columnData = new ArrayList<>();
         columnData.addAll(Collections.nCopies(columns.length, null));
-        
+
         int size = -1;
         // First add all the static columns
         for (int i = 0; i < columns.length; i++) {
@@ -301,11 +301,11 @@ public class VTableFactory {
                 columnData.set(i, data);
             }
         }
-        
+
         if (size == -1) {
             throw new IllegalArgumentException("At least one column must be of a defined size");
         }
-        
+
         // Then add all the generated columns
         for (int i = 0; i < columns.length; i++) {
             Column column = columns[i];
@@ -316,10 +316,10 @@ public class VTableFactory {
                 columnData.set(i, data);
             }
         }
-        
+
         return ValueFactory.newVTable(columnTypes, columnNames, columnData);
     }
-    
+
     private static int sizeOf(Object data) {
         if (data instanceof ListNumber) {
             return ((ListNumber) data).size();
@@ -327,11 +327,11 @@ public class VTableFactory {
             return ((List<?>) data).size();
         }
     }
-    
+
     public static Column column(String name, final VNumberArray numericArray) {
         // TODO: for now rewrapping in VDouble. Will need to make table work with
         // all primitive types so that this is not an issue
-        
+
         final ListDouble data;
         if (numericArray.getData() instanceof ListDouble) {
             data = (ListDouble) numericArray.getData();
@@ -349,7 +349,7 @@ public class VTableFactory {
                 }
             };
         }
-        
+
         return new Column(name, double.class, false) {
             @Override
             public Object getData(int size) {
@@ -362,10 +362,10 @@ public class VTableFactory {
             }
         };
     }
-    
+
     public static Column column(String name, final VStringArray stringArray) {
         final List<String> data = stringArray.getData();
-        
+
         return new Column(name, String.class, false) {
             @Override
             public Object getData(int size) {
@@ -378,7 +378,7 @@ public class VTableFactory {
             }
         };
     }
-    
+
     public static Column column(final String name, final ListNumberProvider dataProvider) {
         return new Column(name, dataProvider.getType(), true) {
             @Override
@@ -386,14 +386,14 @@ public class VTableFactory {
                 return dataProvider.createListNumber(size);
             }
         };
-    } 
+    }
 
     public static ListNumberProvider range(final double min, final double max) {
         return new Range(min, max);
     }
-    
+
     private static class Range extends ListNumberProvider {
-        
+
         private final double min;
         private final double max;
 
@@ -408,13 +408,13 @@ public class VTableFactory {
             return ListNumbers.linearListFromRange(min, max, size);
         }
     };
-    
+
     public static ListNumberProvider step(final double initialValue, final double increment) {
         return new Step(initialValue, increment);
     }
-    
+
     private static class Step extends ListNumberProvider {
-        
+
         private final double initialValue;
         private final double increment;
 
@@ -429,7 +429,7 @@ public class VTableFactory {
             return ListNumbers.linearList(initialValue, increment, size);
         }
     };
-    
+
     public static VTable extractRow(VTable vTable, int row) {
         if (vTable == null || row >= vTable.getRowCount() || row < 0) {
             return null;
@@ -444,7 +444,7 @@ public class VTableFactory {
         }
         return ValueFactory.newVTable(columnTypes, columnNames, columnData);
     }
-    
+
     private static VTable extractRows(VTable vTable, ListInt indexes) {
         if (vTable == null || indexes == null) {
             return null;
@@ -459,7 +459,7 @@ public class VTableFactory {
         }
         return ValueFactory.newVTable(columnTypes, columnNames, columnData);
     }
-    
+
     private static Object extractColumnData(Object columnData, int... rows) {
         if (columnData instanceof List) {
             List<Object> data = new ArrayList<>(rows.length);
@@ -478,7 +478,7 @@ public class VTableFactory {
         }
         return null;
     }
-    
+
     public static List<String> columnNames(final VTable vTable) {
         return new AbstractList<String>() {
             @Override
@@ -492,7 +492,7 @@ public class VTableFactory {
             }
         };
     }
-    
+
     public static List<Class<?>> columnTypes(final VTable vTable) {
         return new AbstractList<Class<?>>() {
             @Override
@@ -506,11 +506,11 @@ public class VTableFactory {
             }
         };
     }
-    
+
     public static VTable valueTable(List<? extends VType> values) {
         return valueTable(null, values);
     }
-    
+
     public static VTable valueTable(List<String> names, List<? extends VType> values) {
         int nullValue = values.indexOf(null);
         if (nullValue != -1) {
@@ -527,11 +527,11 @@ public class VTableFactory {
                 }
             }
         }
-        
+
         if (values.isEmpty()) {
             return valueNumberTable(names, values);
         }
-        
+
         if (values.get(0) instanceof VNumber) {
             for (VType vType : values) {
                 if (!(vType instanceof VNumber)) {
@@ -540,22 +540,22 @@ public class VTableFactory {
             }
             return valueNumberTable(names, values);
         }
-        
+
         throw new IllegalArgumentException("Type " + ValueUtil.typeOf(values.get(0)).getSimpleName() + " not supported for value table");
     }
-    
+
     private static VTable valueNumberTable(List<String> names, List<? extends VType> values) {
         double[] data = new double[values.size()];
         List<String> severity = new ArrayList<>();
         List<String> status = new ArrayList<>();
-        
+
         for (int i = 0; i < values.size(); i++) {
             VNumber vNumber = (VNumber) values.get(i);
             data[i] = vNumber.getValue().doubleValue();
             severity.add(vNumber.getAlarmSeverity().name());
             status.add(vNumber.getAlarmName());
         }
-        
+
         if (names == null) {
             return newVTable(column("Value", newVDoubleArray(new ArrayDouble(data), alarmNone(), timeNow(), displayNone())),
                     column("Severity", newVStringArray(severity, alarmNone(), timeNow())),
@@ -567,7 +567,7 @@ public class VTableFactory {
                     column("Status", newVStringArray(status, alarmNone(), timeNow())));
         }
     }
-    
+
     public static VTable tableValueFilter(VTable table, String columnName, Object value) {
         ValueFilter valueFilter = new ValueFilter(table, columnName, value);
         BufferInt indexes = new BufferInt();
@@ -576,10 +576,10 @@ public class VTableFactory {
                 indexes.addInt(i);
             }
         }
-        
+
         return extractRows(table, indexes);
     }
-    
+
     public static VTable tableStringMatchFilter(VTable table, String columnName, String substring) {
         StringMatchFilter filter = new StringMatchFilter(table, columnName, substring);
         BufferInt indexes = new BufferInt();
@@ -588,10 +588,10 @@ public class VTableFactory {
                 indexes.addInt(i);
             }
         }
-        
+
         return extractRows(table, indexes);
     }
-    
+
     public static VTable tableRangeFilter(VTable table, String columnName, Object min, Object max) {
         RangeFilter valueFilter = new RangeFilter(table, columnName, min, max);
         BufferInt indexes = new BufferInt();
@@ -600,34 +600,34 @@ public class VTableFactory {
                 indexes.addInt(i);
             }
         }
-        
+
         return extractRows(table, indexes);
     }
-    
+
     public static void validateTable(VTable vTable) {
         for (int i = 0; i < vTable.getColumnCount(); i++) {
             Class<?> type = null;
             String name = null;
             Object data = null;
-            
+
             try {
                 type = vTable.getColumnType(i);
             } catch (RuntimeException ex) {
                 throw new IllegalArgumentException("Can't get column " + i + " type", ex);
             }
-            
+
             try {
                 name = vTable.getColumnName(i);
             } catch (RuntimeException ex) {
                 throw new IllegalArgumentException("Can't get column " + i + " name", ex);
             }
-            
+
             try {
                 data = vTable.getColumnData(i);
             } catch (RuntimeException ex) {
                 throw new IllegalArgumentException("Can't get column " + i + " data", ex);
             }
-            
+
             if (String.class.equals(type)) {
                 if (!(data instanceof List)) {
                     throw new IllegalArgumentException("Data for column " + i + " (" + name + ") is not a List<String> (" + data + ")");

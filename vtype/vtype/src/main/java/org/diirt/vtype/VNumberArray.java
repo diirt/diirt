@@ -18,10 +18,10 @@ import org.diirt.util.array.ListNumber;
 public interface VNumberArray extends Array, Alarm, Time, Display, VType {
     @Override
     ListNumber getData();
-    
+
     /**
      * Returns the boundaries of each cell.
-     * 
+     *
      * @return the dimension display; can't be null
      */
     List<ArrayDimensionDisplay> getDimensionDisplay();

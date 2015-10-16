@@ -8,20 +8,20 @@ package org.diirt.vtype.next;
  * Scalar double with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public abstract class VDouble extends VNumber {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract Double getValue();
-    
+
     /**
      * Creates a new VDouble.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time

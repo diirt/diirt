@@ -10,7 +10,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 class IVByte extends IVNumeric implements VByte {
-    
+
     private final Byte value;
 
     IVByte(Byte value, Alarm alarm, Time time, Display display) {
