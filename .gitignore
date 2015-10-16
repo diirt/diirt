@@ -10,3 +10,4 @@ release.properties
 .classpath
 logs.txt
 *.failed.png
+checkstyle-output.xml
