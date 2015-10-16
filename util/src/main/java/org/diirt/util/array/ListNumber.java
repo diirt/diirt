@@ -10,7 +10,7 @@ package org.diirt.util.array;
  * @author Gabriele Carcassi
  */
 public interface ListNumber extends CollectionNumber {
-    
+
     /**
      * Returns the element at the specified position in this list casted to a double.
      *
@@ -20,7 +20,7 @@ public interface ListNumber extends CollectionNumber {
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     double getDouble(int index);
-    
+
     /**
      * Returns the element at the specified position in this list casted to a float.
      *
@@ -30,7 +30,7 @@ public interface ListNumber extends CollectionNumber {
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     float getFloat(int index);
-    
+
     /**
      * Returns the element at the specified position in this list casted to a long.
      *
@@ -40,7 +40,7 @@ public interface ListNumber extends CollectionNumber {
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     long getLong(int index);
-    
+
     /**
      * Returns the element at the specified position in this list casted to an int.
      *
@@ -50,7 +50,7 @@ public interface ListNumber extends CollectionNumber {
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     int getInt(int index);
-    
+
     /**
      * Returns the element at the specified position in this list casted to a short.
      *
@@ -60,7 +60,7 @@ public interface ListNumber extends CollectionNumber {
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     short getShort(int index);
-    
+
     /**
      * Returns the element at the specified position in this list casted to a byte.
      *
@@ -70,71 +70,71 @@ public interface ListNumber extends CollectionNumber {
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     byte getByte(int index);
-    
+
     /**
      * Changes the element at the specified position, casting to the internal
      * representation.
-     * 
+     *
      * @param index position of the element to change
      * @param value the new value
      * @throws IndexOutOfBoundsException if the index is out of range
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     void setDouble(int index, double value);
-    
+
     /**
      * Changes the element at the specified position, casting to the internal
      * representation.
-     * 
+     *
      * @param index position of the element to change
      * @param value the new value
      * @throws IndexOutOfBoundsException if the index is out of range
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     void setFloat(int index, float value);
-    
+
     /**
      * Changes the element at the specified position, casting to the internal
      * representation.
-     * 
+     *
      * @param index position of the element to change
      * @param value the new value
      * @throws IndexOutOfBoundsException if the index is out of range
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     void setLong(int index, long value);
-    
+
     /**
      * Changes the element at the specified position, casting to the internal
      * representation.
-     * 
+     *
      * @param index position of the element to change
      * @param value the new value
      * @throws IndexOutOfBoundsException if the index is out of range
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     void setInt(int index, int value);
-    
+
     /**
      * Changes the element at the specified position, casting to the internal
      * representation.
-     * 
+     *
      * @param index position of the element to change
      * @param value the new value
      * @throws IndexOutOfBoundsException if the index is out of range
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     void setShort(int index, short value);
-    
+
     /**
      * Changes the element at the specified position, casting to the internal
      * representation.
-     * 
+     *
      * @param index position of the element to change
      * @param value the new value
      * @throws IndexOutOfBoundsException if the index is out of range
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     void setByte(int index, byte value);
-    
+
 }

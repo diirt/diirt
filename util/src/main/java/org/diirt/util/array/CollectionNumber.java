@@ -18,17 +18,17 @@ import java.util.Collection;
  * @author Gabriele Carcassi
  */
 public interface CollectionNumber {
-    
+
     /**
      * Returns an iterator over the elements of the collection.
-     * 
+     *
      * @return a new iterator
      */
     IteratorNumber iterator();
-    
+
     /**
      * Returns the number of elements in the collection.
-     * 
+     *
      * @return the number of elements in the collection
      */
     int size();

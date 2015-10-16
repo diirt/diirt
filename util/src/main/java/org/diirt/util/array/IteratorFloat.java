@@ -35,5 +35,5 @@ public abstract class IteratorFloat implements IteratorNumber {
     public long nextLong() {
         return (long) nextFloat();
     }
-    
+
 }

@@ -22,10 +22,10 @@ package org.diirt.util.time;
  * @author carcassi
  */
 public class TimeRelativeInterval {
-    
+
     private final Object start;
     private final Object end;
-    
+
     private TimeRelativeInterval(Object start, Object end) {
         this.start = start;
         this.end = end;
@@ -34,15 +34,15 @@ public class TimeRelativeInterval {
     public static TimeRelativeInterval of(Timestamp start, Timestamp end) {
         return new TimeRelativeInterval(start, end);
     }
-    
+
     public boolean isIntervalAbsolute() {
         return isStartAbsolute() && isEndAbsolute();
     }
-    
+
     public boolean isStartAbsolute() {
         return start instanceof Timestamp || start == null;
     }
-    
+
     public boolean isEndAbsolute() {
         return end instanceof Timestamp || end == null;
     }
@@ -58,19 +58,19 @@ public class TimeRelativeInterval {
     public Timestamp getAbsoluteStart() {
         return (Timestamp) start;
     }
-    
+
     public Timestamp getAbsoluteEnd() {
         return (Timestamp) end;
     }
-    
+
     public TimeDuration getRelativeStart() {
         return (TimeDuration) start;
     }
-    
+
     public TimeDuration getRelativeEnd() {
         return (TimeDuration) end;
     }
-    
+
     public TimeInterval toAbsoluteInterval(Timestamp reference) {
         Timestamp absoluteStart;
         if (isStartAbsolute()) {
@@ -86,6 +86,6 @@ public class TimeRelativeInterval {
         }
         return TimeInterval.between(absoluteStart, absoluteEnd);
     }
-    
-    
+
+
 }

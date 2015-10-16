@@ -82,7 +82,7 @@ public class TimeInterval {
             boolean endEqual = (getEnd() == other.getEnd()) || (getEnd() != null && getEnd().equals(other.getEnd()));
             return startEqual && endEqual;
         }
-        
+
         return false;
     }
 

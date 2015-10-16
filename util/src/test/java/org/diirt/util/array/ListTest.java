@@ -13,7 +13,7 @@ import static org.diirt.util.array.CollectionTest.testCollection;
  * @author carcassi
  */
 public class ListTest {
-    
+
     public ListTest() {
     }
 
@@ -24,7 +24,7 @@ public class ListTest {
     @org.junit.AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Test
     public void testListFloat() {
         ListFloat coll = new ListFloat() {
@@ -39,7 +39,7 @@ public class ListTest {
         };
         testCollection(coll);
     }
-    
+
     @Test
     public void testListLong() {
         ListLong coll = new ListLong() {
@@ -56,7 +56,7 @@ public class ListTest {
         testCollection(coll);
         testList(coll);
     }
-    
+
     @Test
     public void testListInt() {
         ListInt coll = new ListInt() {
@@ -72,7 +72,7 @@ public class ListTest {
         testCollection(coll);
         testList(coll);
     }
-    
+
     @Test
     public void testListShort() {
         ListShort coll = new ListShort() {
@@ -88,7 +88,7 @@ public class ListTest {
         testCollection(coll);
         testList(coll);
     }
-    
+
     @Test
     public void testListByte() {
         ListByte coll = new ListByte() {
@@ -117,5 +117,5 @@ public class ListTest {
             assertEquals((byte) 1, coll.getByte(i));
         }
     }
-    
+
 }

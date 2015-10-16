@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class ArrayBooleanTest {
-    
+
     public ArrayBooleanTest() {
     }
 
@@ -40,7 +40,7 @@ public class ArrayBooleanTest {
         array.setBoolean(3, true);
         assertThat(array.wrappedArray(), equalTo(new boolean[] {false, false, true, true}));
     }
-    
+
     @Test
     public void serialization1() throws Exception {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();

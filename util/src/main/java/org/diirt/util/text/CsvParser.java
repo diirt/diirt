@@ -45,7 +45,7 @@ import static org.diirt.util.text.StringUtil.DOUBLE_REGEX_WITH_NAN;
  * @author carcassi
  */
 public class CsvParser {
-    
+
     // Configuration
     private final String separators;
     private final Header header;
@@ -65,13 +65,13 @@ public class CsvParser {
          * and one of them is not a string (e.g. number) then the first
          * line is interpreted as data.
          */
-        AUTO, 
-        
+        AUTO,
+
         /**
          * The first line is the header.
          */
         FIRST_LINE,
-        
+
         /**
          * The data contains no header, and the first line is data.
          * <p>
@@ -79,7 +79,7 @@ public class CsvParser {
          * spreadsheets columns: A, B, ..., Y, Z, AA, AB, ..., AZ, BA, and so on.
          */
         NONE};
-    
+
     private class State {
         // Parser state
         private int nColumns;
@@ -89,21 +89,21 @@ public class CsvParser {
         private List<Boolean> columnTimestampParsable;
         private List<List<String>> columnTokens;
         private String currentSeparator;
-        
+
         // Regex object used for parsing
         private Matcher mLineTokens;
         private final Matcher mQuote = pQuote.matcher("");
         private final Matcher mDouble = pDouble.matcher("");
-        
+
         // Keep data on best matched separator
         private String bestSeparator;
         private int bestNLines = -1;
     }
-    
-    
+
+
     private static final Pattern pQuote = Pattern.compile("\"\"");
     private static final Pattern pDouble = Pattern.compile(DOUBLE_REGEX_WITH_NAN);
-    
+
     /**
      * Automatic parser: auto-detects whether the first line is a header or not
      * and tries the most common separators (i.e. ',' ';' 'TAB' 'SPACE').
@@ -117,7 +117,7 @@ public class CsvParser {
 
     /**
      * Returns the list of separators that are going to be tried while parsing.
-     * 
+     *
      * @return a string with all the possible separators
      */
     public String getSeparators() {
@@ -129,7 +129,7 @@ public class CsvParser {
      * <p>
      * Each character of the string is tried until the parsing is
      * successful.
-     * 
+     *
      * @param separators the new list of separators
      * @return a new parser
      */
@@ -140,16 +140,16 @@ public class CsvParser {
     /**
      * Returns the way that the parser handles the header (the first line of
      * the csv file).
-     * 
+     *
      * @return the header configuration of the parser
      */
     public Header getHeader() {
         return header;
     }
-    
+
     /**
      * Creates a new parser with the given header handling.
-     * 
+     *
      * @param header the header configuration for the parser
      * @return a new parser
      */
@@ -157,16 +157,16 @@ public class CsvParser {
         return new CsvParser(separators, header);
     }
 
-    
+
     /**
      * Parser the text provided by the reader with the format defined in this
      * parser. This method is thread-safe.
      * <p>
      * If the parsing fails, this method does not throw an exception but
      * will have information in the result. The idea is that, in the future,
-     * the parser can provide multiple reasons as why the parsing failed or 
+     * the parser can provide multiple reasons as why the parsing failed or
      * event incomplete results.
-     * 
+     *
      * @param reader a reader
      * @return the parsed information
      */
@@ -174,19 +174,19 @@ public class CsvParser {
         // State used for parsing. Since each call has its own state,
         // the parsing is thread safe.
         State state = new State();
-        
+
         // Divide into lines.
         // Note that means we are going to keep in memory the whole file.
         // This is not very memory efficient. But since we have to do multiple
         // passes to find the right separator, we don't have much choice.
         // Also: the actual parsed result will need to stay in memory anyway.
         List<String> lines = csvLines(reader);
-        
+
         // Try each seaparater
         separatorLoop:
         for(int nSeparator = 0; nSeparator < getSeparators().length(); nSeparator++) {
             state.currentSeparator = getSeparators().substring(nSeparator, nSeparator+1);
-            
+
             // Taken from Mastering Regular Exceptions
             // Disabled comments so that space could work as possible separator
             String regex = // puts a doublequoted field in group(1) and an unquoted field into group(2)
@@ -203,7 +203,7 @@ public class CsvParser {
                     ")";
             // Compile the matcher once for all the parsing
             state.mLineTokens = Pattern.compile(regex).matcher("");
-            
+
             // Try to parse the first line (the titles)
             // If only one columns is found, proceed to next separator
             state.columnNames = parseTitles(state, lines.get(0));
@@ -211,7 +211,7 @@ public class CsvParser {
             if (state.nColumns == 1) {
                 continue;
             }
-            
+
             // Prepare the data structures to hold column data while parsing
             state.columnMismatch = false;
             state.columnNumberParsable = new ArrayList<>(state.nColumns);
@@ -222,7 +222,7 @@ public class CsvParser {
                 state.columnTimestampParsable.add(false);
                 state.columnTokens.add(new ArrayList<String>());
             }
-            
+
             // Parse each line
             // If one line does not match the number of columns found in the first
             // line, pass to the next separator
@@ -236,19 +236,19 @@ public class CsvParser {
                     continue separatorLoop;
                 }
             }
-            
+
             // The parsing succeeded! No need to try other separator
             break;
-            
+
         }
-        
+
         // We are out of the loop: did we end because we parsed correctly,
         // or because even the last separator was a mismatch?
         if (state.columnMismatch) {
             return new CsvParserResult(null, null, null, 0, false, "Parsing failed: number of columns not constant. Using separator '"
                     + state.bestSeparator + "', line " + (state.bestNLines + 1));
         }
-        
+
         // Parsing was successful.
         // Should the first line be used as data?
         if (header == Header.NONE || (header == Header.AUTO && isFirstLineData(state, state.columnNames))) {
@@ -257,7 +257,7 @@ public class CsvParser {
                 state.columnNames.set(i, alphabeticName(i));
             }
         }
-        
+
         // Now it's time to convert the tokens to the actual type.
         List<Object> columnValues = new ArrayList<>(state.nColumns);
         List<Class<?>> columnTypes = new ArrayList<>(state.nColumns);
@@ -270,16 +270,16 @@ public class CsvParser {
                 columnTypes.add(String.class);
             }
         }
-        
+
         // Prepare result, and remember to clear the state, so
         // we don't keep references to junk
         CsvParserResult result = new CsvParserResult(state.columnNames, columnValues, columnTypes, state.columnTokens.get(0).size(), true, null);
         return result;
     }
-    
+
     /**
      * Given a list of tokens, convert them to a list of numbers.
-     * 
+     *
      * @param tokens the tokens to be converted
      * @return the number list
      */
@@ -297,7 +297,7 @@ public class CsvParser {
 
     /**
      * Divides the whole text into lines.
-     * 
+     *
      * @param reader the source of text
      * @return the lines
      */
@@ -337,11 +337,11 @@ public class CsvParser {
             throw new RuntimeException("Couldn't process data", ex);
         }
     }
-    
+
     /**
      * Determines whether the string contains an even number of double quote
      * characters.
-     * 
+     *
      * @param string the given string
      * @return true if contains even number of '"'
      */
@@ -362,7 +362,7 @@ public class CsvParser {
 
     /**
      * Parses the first line to get the column names.
-     * 
+     *
      * @param line the text line
      * @return the column names
      */
@@ -385,7 +385,7 @@ public class CsvParser {
 
     /**
      * Parses a line, saving the tokens, and determines the type match.
-     * 
+     *
      * @param line a new line
      */
     private void parseLine(State state, String line) {
@@ -397,7 +397,7 @@ public class CsvParser {
             line = " " + line;
             firstEmpty = true;
         }
-        
+
         // Match using the parser
         state.mLineTokens.reset(line);
         int nColumn = 0;
@@ -407,7 +407,7 @@ public class CsvParser {
                 state.columnMismatch = true;
                 return;
             }
-            
+
             String token;
             if (state.mLineTokens.start(2) >= 0) {
                 // The token was unquoted. Check if it could be a number.
@@ -432,10 +432,10 @@ public class CsvParser {
             state.columnMismatch = true;
         }
     }
-    
+
     /**
      * Check whether the token can be parsed to a number.
-     * 
+     *
      * @param state the state of the parser
      * @param token the token
      * @return true if token matches a double
@@ -446,11 +446,11 @@ public class CsvParser {
         }
         return state.mDouble.reset(token).matches();
     }
-    
+
     /**
      * Checks whether the header can be safely interpreted as data.
      * This is used for the auto header detection.
-     * 
+     *
      * @param state the state of the parser
      * @param headerTokens the header
      * @return true if header should be handled as data
@@ -474,10 +474,10 @@ public class CsvParser {
         // a number) then we'll assume the header is actually data.
         return !allStrings && headerCompatible;
     }
-    
+
     /**
      * Takes an elements and a list and returns a new list with both.
-     * 
+     *
      * @param head the first element
      * @param tail the rest of the elements
      * @return a list with all elements
@@ -500,7 +500,7 @@ public class CsvParser {
             }
         };
     }
-    
+
     static String alphabeticName(int i) {
         String name = "";
         while (true) {
@@ -513,11 +513,11 @@ public class CsvParser {
             }
         }
     }
-    
+
     /**
      * Parses a line of text representing comma separated values and returns
      * the values themselves.
-     * 
+     *
      * @param line the line to parse
      * @param separatorChar the regular expression for the separator
      * @return the list of values
@@ -535,7 +535,7 @@ public class CsvParser {
         Matcher mMain = Pattern.compile(regex).matcher("");
         Matcher mQuote = Pattern.compile("\"\"").matcher("");
         Matcher mDouble = Pattern.compile(DOUBLE_REGEX_WITH_NAN).matcher("");
-        
+
         List<Object> values = new ArrayList<>();
         mMain.reset(line);
         while (mMain.find()) {

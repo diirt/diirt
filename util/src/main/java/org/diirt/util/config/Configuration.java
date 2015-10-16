@@ -30,14 +30,14 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 public class Configuration {
-   
+
     private static Logger log = Logger.getLogger(Configuration.class.getName());
     private static final File configurationDirectory = configurationDirectory();
-    
+
     private static File configurationDirectory() {
         // First look for java property
         String diirtHome = System.getProperty("diirt.home");
-        
+
         // Second look for environment variable
         if (diirtHome == null) {
             diirtHome = System.getenv("DIIRT_HOME");
@@ -57,7 +57,7 @@ public class Configuration {
     public static File getDirectory() {
         return configurationDirectory;
     }
-    
+
     public static File getFile(String relativeFilePath, Object obj, String defaultResource) throws IOException {
         File file = new File(Configuration.getDirectory(), relativeFilePath);
         if (!file.exists()) {
@@ -72,11 +72,11 @@ public class Configuration {
             }
             log.log(Level.INFO, "Initializing configuration file " + file);
         }
-        
+
         log.log(Level.INFO, "Loading " + file);
         return file;
     }
-    
+
     public static InputStream getFileAsStream(String relativeFilePath, Object obj, String defaultResource) throws IOException {
         return new FileInputStream(getFile(relativeFilePath, obj, defaultResource));
     }

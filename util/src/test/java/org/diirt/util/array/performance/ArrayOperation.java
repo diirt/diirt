@@ -13,7 +13,7 @@ import org.diirt.util.array.IteratorNumber;
  */
 public abstract class ArrayOperation {
     public abstract double compute(CollectionNumber collection);
-    
+
     public static final ArrayOperation average = new ArrayOperation() {
 
         @Override
@@ -27,7 +27,7 @@ public abstract class ArrayOperation {
             return sum;
         }
     };
-    
+
     public static final ArrayOperation sum = new ArrayOperation() {
 
         @Override
@@ -40,7 +40,7 @@ public abstract class ArrayOperation {
             return sum;
         }
     };
-    
-    
-    
+
+
+
 }

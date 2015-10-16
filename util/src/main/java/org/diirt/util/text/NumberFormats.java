@@ -24,7 +24,7 @@ public final class NumberFormats {
             new ConcurrentHashMap<Integer, DecimalFormat>();
     private static volatile Locale currentLocale;
     private static volatile DecimalFormatSymbols symbols;
-    
+
     static {
         Locale newLocale = Locale.getDefault();
         DecimalFormatSymbols newSymbols = new DecimalFormatSymbols(newLocale);
@@ -52,7 +52,7 @@ public final class NumberFormats {
         }
         return precisionFormat.get(precision);
     }
-    
+
     private static NumberFormat toStringFormat = new NumberFormat() {
 
         @Override

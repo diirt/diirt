@@ -11,7 +11,7 @@ package org.diirt.util.array;
  * @author Gabriele Carcassi
  */
 public abstract class ListBoolean {
-    
+
     /**
      * Returns the element at the specified position in this list.
      *
@@ -24,17 +24,17 @@ public abstract class ListBoolean {
 
     /**
      * Changes the element at the specified position.
-     * 
+     *
      * @param index position of the element to change
      * @param value the new value
      * @throws IndexOutOfBoundsException if the index is out of range
      *         (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public abstract void setBoolean(int index, boolean value);
-    
+
     /**
      * Returns the number of elements in the collection.
-     * 
+     *
      * @return the number of elements in the collection
      */
     public abstract int size();
@@ -43,7 +43,7 @@ public abstract class ListBoolean {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        
+
         if (obj instanceof ListBoolean) {
             ListBoolean other = (ListBoolean) obj;
 
@@ -57,7 +57,7 @@ public abstract class ListBoolean {
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -69,5 +69,5 @@ public abstract class ListBoolean {
         }
         return result;
     }
-    
+
 }
