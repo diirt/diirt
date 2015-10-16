@@ -38,7 +38,7 @@ public class PVFieldToVLong extends AlarmTimeDisplayExtractor implements VLong {
         @Override
     public Long getValue()
     {
-    	return value;
+        return value;
     }
 
     @Override

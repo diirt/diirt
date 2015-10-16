@@ -129,73 +129,73 @@ public final class NTUtils {
 
         public static Object scalarArrayToList(PVScalarArray scalarArray, boolean readOnly)
         {
-    	int len = scalarArray.getLength();
+        int len = scalarArray.getLength();
                 ScalarType elementType = scalarArray.getScalarArray().getElementType();
                 switch (elementType)
                 {
                 case pvDouble:
                 {
-        	DoubleArrayData data = new DoubleArrayData();
-        	((PVDoubleArray)scalarArray).get(0, len, data);
-        	return new ArrayDouble(data.data, readOnly);
+                DoubleArrayData data = new DoubleArrayData();
+                ((PVDoubleArray)scalarArray).get(0, len, data);
+                return new ArrayDouble(data.data, readOnly);
                 }
                 case pvFloat:
                 {
-        	FloatArrayData data = new FloatArrayData();
-        	((PVFloatArray)scalarArray).get(0, len, data);
-        	return new ArrayFloat(data.data, readOnly);
+                FloatArrayData data = new FloatArrayData();
+                ((PVFloatArray)scalarArray).get(0, len, data);
+                return new ArrayFloat(data.data, readOnly);
                 }
                 case pvInt:
                 case pvUInt:
                 {
-        	IntArrayData data = new IntArrayData();
-        	if (elementType == ScalarType.pvInt)
-        		((PVIntArray)scalarArray).get(0, len, data);
-        	else
-        		((PVUIntArray)scalarArray).get(0, len, data);
-        	return new ArrayInt(data.data, readOnly);
+                IntArrayData data = new IntArrayData();
+                if (elementType == ScalarType.pvInt)
+                        ((PVIntArray)scalarArray).get(0, len, data);
+                else
+                        ((PVUIntArray)scalarArray).get(0, len, data);
+                return new ArrayInt(data.data, readOnly);
                 }
                 case pvString:
                 {
-        	StringArrayData data = new StringArrayData();
-        	((PVStringArray)scalarArray).get(0, len, data);
-        	return Arrays.asList(data.data);
+                StringArrayData data = new StringArrayData();
+                ((PVStringArray)scalarArray).get(0, len, data);
+                return Arrays.asList(data.data);
                 }
                 case pvLong:
                 case pvULong:
                 {
-        	LongArrayData data = new LongArrayData();
-        	if (elementType == ScalarType.pvLong)
-        		((PVLongArray)scalarArray).get(0, len, data);
-        	else
-        		((PVULongArray)scalarArray).get(0, len, data);
-        	return new ArrayLong(data.data, readOnly);
+                LongArrayData data = new LongArrayData();
+                if (elementType == ScalarType.pvLong)
+                        ((PVLongArray)scalarArray).get(0, len, data);
+                else
+                        ((PVULongArray)scalarArray).get(0, len, data);
+                return new ArrayLong(data.data, readOnly);
                 }
                 case pvShort:
                 case pvUShort:
                 {
-        	ShortArrayData data = new ShortArrayData();
-        	if (elementType == ScalarType.pvShort)
-        		((PVShortArray)scalarArray).get(0, len, data);
-        	else
-        		((PVUShortArray)scalarArray).get(0, len, data);
-        	return new ArrayShort(data.data, readOnly);
+                ShortArrayData data = new ShortArrayData();
+                if (elementType == ScalarType.pvShort)
+                        ((PVShortArray)scalarArray).get(0, len, data);
+                else
+                        ((PVUShortArray)scalarArray).get(0, len, data);
+                return new ArrayShort(data.data, readOnly);
                 }
                 case pvByte:
                 case pvUByte:
                 {
-        	ByteArrayData data = new ByteArrayData();
-        	if (elementType == ScalarType.pvByte)
-        		((PVByteArray)scalarArray).get(0, len, data);
-        	else
-        		((PVUByteArray)scalarArray).get(0, len, data);
-        	return new ArrayByte(data.data, readOnly);
+                ByteArrayData data = new ByteArrayData();
+                if (elementType == ScalarType.pvByte)
+                        ((PVByteArray)scalarArray).get(0, len, data);
+                else
+                        ((PVUByteArray)scalarArray).get(0, len, data);
+                return new ArrayByte(data.data, readOnly);
                 }
                 case pvBoolean:
                 {
-        	BooleanArrayData data = new BooleanArrayData();
-        	((PVBooleanArray)scalarArray).get(0, len, data);
-        	return new ArrayBoolean(data.data, readOnly);
+                BooleanArrayData data = new BooleanArrayData();
+                ((PVBooleanArray)scalarArray).get(0, len, data);
+                return new ArrayBoolean(data.data, readOnly);
                 }
                 default:
                         throw new IllegalArgumentException("unsupported scalar array element type: " + elementType);

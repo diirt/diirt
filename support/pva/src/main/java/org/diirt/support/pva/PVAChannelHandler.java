@@ -295,7 +295,7 @@ public class PVAChannelHandler extends
 
     @Override
     protected boolean isWriteConnected(PVAChannelHandler channel) {
-    	// NOTE: access-rights not yet supported
+        // NOTE: access-rights not yet supported
                 final Channel c = channel.getChannel();
                 return c != null && c.isConnected();
     }
@@ -433,7 +433,7 @@ public class PVAChannelHandler extends
 
 
                         // set BitSet
-                        bitSet.clear();	// re-connect case
+                        bitSet.clear(); // re-connect case
                         if (this.channelPutValueField != null)
                                 bitSet.set(channelPutValueField.getFieldOffset());
                 }
@@ -551,8 +551,8 @@ public class PVAChannelHandler extends
                                 //  TODO no convert.fromBoolean
                                 //convert.fromBoolean((PVScalar)field, ((Boolean)newValue).booleanValue());
                                 convert.fromByte((PVScalar)field, ((Boolean)newValue).booleanValue() ? (byte)1 : (byte)0);
-    		else
-    			throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into scalar '" + channelPutValueField.getField() + "'");
+                else
+                        throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into scalar '" + channelPutValueField.getField() + "'");
         }
         else if (channelPutValueField instanceof PVScalarArray)
         {
@@ -568,50 +568,50 @@ public class PVAChannelHandler extends
             }
             else if (!newValue.getClass().isArray())
             {
-            	// create an array
-            	Object newValueArray = Array.newInstance(newValue.getClass(), 1);
-            	Array.set(newValueArray, 0, newValue);
-            	newValue = newValueArray;
+                // create an array
+                Object newValueArray = Array.newInstance(newValue.getClass(), 1);
+                Array.set(newValueArray, 0, newValue);
+                newValue = newValueArray;
             }
 
             if (newValue instanceof double[])
-    			convert.fromDoubleArray((PVScalarArray)field, 0, ((double[])newValue).length, (double[])newValue, 0);
-    		else if (newValue instanceof int[])
-    			convert.fromIntArray((PVScalarArray)field, 0, ((int[])newValue).length, (int[])newValue, 0);
-    		else if (newValue instanceof String[])
-    			convert.fromStringArray((PVScalarArray)field, 0, ((String[])newValue).length, (String[])newValue, 0);
+                        convert.fromDoubleArray((PVScalarArray)field, 0, ((double[])newValue).length, (double[])newValue, 0);
+                else if (newValue instanceof int[])
+                        convert.fromIntArray((PVScalarArray)field, 0, ((int[])newValue).length, (int[])newValue, 0);
+                else if (newValue instanceof String[])
+                        convert.fromStringArray((PVScalarArray)field, 0, ((String[])newValue).length, (String[])newValue, 0);
             // special case from string to array
-    		else if (newValue instanceof String)
-    		{
-    			String str = ((String)newValue).trim();
+                else if (newValue instanceof String)
+                {
+                        String str = ((String)newValue).trim();
 
-    			// remove []
-    			if (str.charAt(0) == '[' && str.charAt(str.length()-1) == ']')
-    				str = str.substring(1, str.length()-1);
+                        // remove []
+                        if (str.charAt(0) == '[' && str.charAt(str.length()-1) == ']')
+                                str = str.substring(1, str.length()-1);
 
-    			// split on commas and whitespaces
-    			String[] splitValues = str.split("[,\\s]+");
-    			convert.fromStringArray((PVScalarArray)field, 0, splitValues.length, splitValues, 0);
-    		}
+                        // split on commas and whitespaces
+                        String[] splitValues = str.split("[,\\s]+");
+                        convert.fromStringArray((PVScalarArray)field, 0, splitValues.length, splitValues, 0);
+                }
 
-    		else if (newValue instanceof byte[])
-    			convert.fromByteArray((PVScalarArray)field, 0, ((byte[])newValue).length, (byte[])newValue, 0);
-    		else if (newValue instanceof short[])
-    			convert.fromShortArray((PVScalarArray)field, 0, ((short[])newValue).length, (short[])newValue, 0);
-    		else if (newValue instanceof long[])
-    			convert.fromLongArray((PVScalarArray)field, 0, ((long[])newValue).length, (long[])newValue, 0);
-    		else if (newValue instanceof float[])
-    			convert.fromFloatArray((PVScalarArray)field, 0, ((float[])newValue).length, (float[])newValue, 0);
-    		else if (newValue instanceof boolean[])
-    		{
-    			boolean[] bArray = (boolean[])newValue;
-    			byte[] byteArray = new byte[bArray.length];
-    			for (int i = 0; i < bArray.length; i++)
-    				byteArray[i] = bArray[i] ? (byte)1 : (byte)0;
-    			convert.fromByteArray((PVScalarArray)field, 0, byteArray.length, byteArray, 0);
-    		}
-    		else
-    			throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into array'" + channelPutValueField.getField() + "'");
+                else if (newValue instanceof byte[])
+                        convert.fromByteArray((PVScalarArray)field, 0, ((byte[])newValue).length, (byte[])newValue, 0);
+                else if (newValue instanceof short[])
+                        convert.fromShortArray((PVScalarArray)field, 0, ((short[])newValue).length, (short[])newValue, 0);
+                else if (newValue instanceof long[])
+                        convert.fromLongArray((PVScalarArray)field, 0, ((long[])newValue).length, (long[])newValue, 0);
+                else if (newValue instanceof float[])
+                        convert.fromFloatArray((PVScalarArray)field, 0, ((float[])newValue).length, (float[])newValue, 0);
+                else if (newValue instanceof boolean[])
+                {
+                        boolean[] bArray = (boolean[])newValue;
+                        byte[] byteArray = new byte[bArray.length];
+                        for (int i = 0; i < bArray.length; i++)
+                                byteArray[i] = bArray[i] ? (byte)1 : (byte)0;
+                        convert.fromByteArray((PVScalarArray)field, 0, byteArray.length, byteArray, 0);
+                }
+                else
+                        throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into array'" + channelPutValueField.getField() + "'");
         }
                 else
                         throw new RuntimeException("Unsupported write, cannot put '" + newValue.getClass() + "' into '" + channelPutValueField.getField() + "'");
@@ -626,7 +626,7 @@ public class PVAChannelHandler extends
         protected PVATypeAdapter findTypeAdapter(
                         ValueCache<?> cache, PVAChannelHandler connection) {
                 PVATypeAdapter pta = null;
-                try	{
+                try     {
                         pta = pvaTypeSupport.find(cache, connection);
                 } catch (Throwable th) { th.printStackTrace(); }
                 return pta;

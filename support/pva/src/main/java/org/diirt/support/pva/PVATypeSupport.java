@@ -32,12 +32,12 @@ public class PVATypeSupport extends DataSourceTypeSupport {
     }
 
     final static PVATypeAdapter ToPVAPVStructure = new PVATypeAdapter(
-    		PVAPVStructure.class,
-    		null)
-    	{
+                PVAPVStructure.class,
+                null)
+        {
             @Override
             public PVAPVStructure createValue(final PVStructure message, PVField valueType, boolean disconnected) {
-            	return new PVAPVStructure(message, disconnected);
+                return new PVAPVStructure(message, disconnected);
             }
         };
 
@@ -50,18 +50,18 @@ public class PVATypeSupport extends DataSourceTypeSupport {
      * @return the matched type adapter
      */
     protected PVATypeAdapter find(ValueCache<?> cache, PVAChannelHandler channel) {
-    	try
-    	{
-    		return find(adapters.getAdapters(), cache, channel);
-    	} catch (IllegalStateException ise) {
-    		// TODO ultra-ugly
-    		if (ise.getMessage().indexOf("no match found") != -1)
-    		{
-    			if (channel.getChannelType().getType() == Type.structure)
-    	        	return ToPVAPVStructure;
-    		}
-    		throw ise;
-    	}
+        try
+        {
+                return find(adapters.getAdapters(), cache, channel);
+        } catch (IllegalStateException ise) {
+                // TODO ultra-ugly
+                if (ise.getMessage().indexOf("no match found") != -1)
+                {
+                        if (channel.getChannelType().getType() == Type.structure)
+                        return ToPVAPVStructure;
+                }
+                throw ise;
+        }
     }
 
 }

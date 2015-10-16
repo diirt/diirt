@@ -33,11 +33,11 @@ public class PVADataSource extends DataSource {
     private final PVATypeSupport pvaTypeSupport = new PVATypeSupport(new PVAVTypeAdapterSet());
 
     public PVADataSource() {
-    	this(ChannelProvider.PRIORITY_DEFAULT);
+        this(ChannelProvider.PRIORITY_DEFAULT);
     }
 
     public PVADataSource(short defaultPriority) {
-    	super(true);
+        super(true);
 
         this.defaultPriority = defaultPriority;
 
@@ -46,7 +46,7 @@ public class PVADataSource extends DataSource {
                     final ChannelProviderRegistry registry = ChannelProviderRegistryFactory.getChannelProviderRegistry();
                     this.pvaChannelProvider = registry.createProvider("pva");
                     if (this.pvaChannelProvider == null)
-                    	throw new RuntimeException("pvAccess ChannelProvider not installed");
+                        throw new RuntimeException("pvAccess ChannelProvider not installed");
 
                 } catch (Throwable th) {
                         throw new RuntimeException("Failed to intialize pvAccess context.", th);
@@ -64,8 +64,8 @@ public class PVADataSource extends DataSource {
     }
 
     public void close() {
-    	if (this.pvaChannelProvider != null)
-    		pvaChannelProvider.destroy();
+        if (this.pvaChannelProvider != null)
+                pvaChannelProvider.destroy();
     }
 
     @Override

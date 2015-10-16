@@ -49,9 +49,9 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
         @SuppressWarnings("serial")
         static class PrintfFormat extends java.text.NumberFormat
     {
-    	private final String format;
-    	public PrintfFormat(String printfFormat)
-    	{
+        private final String format;
+        public PrintfFormat(String printfFormat)
+        {
                         // probe format
                         boolean allOK = true;
                         try {
@@ -61,15 +61,15 @@ public class AlarmTimeDisplayExtractor extends AlarmTimeExtractor implements Dis
                         }
                         // accept it if all is OK
                         this.format = allOK ? printfFormat : null;
-    	}
+        }
 
-    	private final String internalFormat(double number)
-    	{
-    		if (format != null)
-    			return String.format(format, number);
-    		else
-    			return String.valueOf(number);
-    	}
+        private final String internalFormat(double number)
+        {
+                if (format != null)
+                        return String.format(format, number);
+                else
+                        return String.valueOf(number);
+        }
 
         @Override
         public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {

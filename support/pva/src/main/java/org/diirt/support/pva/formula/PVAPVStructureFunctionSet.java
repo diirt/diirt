@@ -360,7 +360,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                         Set<PVATypeAdapter> typeAdapters = PVAVTypeAdapterSet.converters;
                     for (PVATypeAdapter converter : typeAdapters) {
                         if (converter.match(fieldStructure))
-                        	return converter.createValue(pvFieldStructure, null, false);
+                                return converter.createValue(pvFieldStructure, null, false);
                     }
 
                     // not found, simply return PVAPVStructure
@@ -632,7 +632,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                         Set<PVATypeAdapter> typeAdapters = PVAVTypeAdapterSet.converters;
                     for (PVATypeAdapter converter : typeAdapters) {
                         if (converter.match(fieldStructure))
-                        	return converter.getClass();
+                                return converter.getClass();
                     }
 
                     // not found, simply return PVAPVStructure

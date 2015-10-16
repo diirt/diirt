@@ -528,7 +528,7 @@ public class NTNDArrayFunctionSet extends FormulaFunctionSet {
                                                 int p = 0;
                                                 for (int i = 0; i < valueArraySize; i++)
                                                 {
-                                                        int tc = (int)(bad.data[i] * 255);	// assuming [0 - 1.0]
+                                                        int tc = (int)(bad.data[i] * 255);      // assuming [0 - 1.0]
                                                         byte c = (tc > 127) ? (byte)(tc-256) : (byte)tc;
                                                         // B = G = R = c
                                                         data[p++] = c;

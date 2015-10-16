@@ -38,7 +38,7 @@ public class PVFieldToVInt extends AlarmTimeDisplayExtractor implements VInt {
         @Override
     public Integer getValue()
     {
-    	return value;
+        return value;
     }
 
     @Override

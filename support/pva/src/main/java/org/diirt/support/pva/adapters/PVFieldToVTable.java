@@ -59,16 +59,16 @@ public class PVFieldToVTable implements VTable {
                         int nameIndex = 0;
                 for (PVField pvColumn : valueField.getPVFields())
                 {
-                	PVScalarArray scalarArray = (PVScalarArray)pvColumn;
+                        PVScalarArray scalarArray = (PVScalarArray)pvColumn;
 
-                	types.add(NTUtils.scalarArrayElementClass(scalarArray));
-                	values.add(NTUtils.scalarArrayToList(scalarArray, true));
-                	names.add(labels != null ? labels[nameIndex] : pvColumn.getFieldName());
+                        types.add(NTUtils.scalarArrayElementClass(scalarArray));
+                        values.add(NTUtils.scalarArrayToList(scalarArray, true));
+                        names.add(labels != null ? labels[nameIndex] : pvColumn.getFieldName());
 
-                	int len = scalarArray.getLength();
-        		if (len > maxRowCount) maxRowCount = len;
+                        int len = scalarArray.getLength();
+                        if (len > maxRowCount) maxRowCount = len;
 
-                	nameIndex++;
+                        nameIndex++;
                 }
 
                 rowCount = maxRowCount;

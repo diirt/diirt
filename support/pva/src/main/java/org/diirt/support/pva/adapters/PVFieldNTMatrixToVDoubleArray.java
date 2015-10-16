@@ -43,9 +43,9 @@ public class PVFieldNTMatrixToVDoubleArray extends PVFieldToVDoubleArray {
                 }
                 else
                 {
-            	// column vector
-            	rows = getData().size();
-            	cols = 1;
+                // column vector
+                rows = getData().size();
+                cols = 1;
                 }
         }
 

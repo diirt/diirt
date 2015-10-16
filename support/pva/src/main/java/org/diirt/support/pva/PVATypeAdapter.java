@@ -36,7 +36,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
      * @param ntIds array of IDs this adapter is able convert, <code>null</code> allowed
      */
     public PVATypeAdapter(Class<?> typeClass, String[] ntIds) {
-    	this(typeClass, ntIds, (Field[])null);
+        this(typeClass, ntIds, (Field[])null);
     }
 
     /**
@@ -47,7 +47,7 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
      * @param fieldType <code>Field</code> instance this adapter is able convert
      */
     public PVATypeAdapter(Class<?> typeClass, String[] ntIds, Field fieldType) {
-    	this(typeClass, ntIds, new Field[] { fieldType });
+        this(typeClass, ntIds, new Field[] { fieldType });
     }
 
     /**
@@ -67,38 +67,38 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
         // If one of the IDs does not match, no match
         if (ntIds != null)
         {
-        	boolean match = false;
-        	String ntId = structure.getID();
-        	// TODO "structure" ID ??
-        	for (String id : ntIds)
-        		if (ntId.startsWith(id))	// ignore minor version
-        		{
-        			match = true;
-        			break;
-        		}
+                boolean match = false;
+                String ntId = structure.getID();
+                // TODO "structure" ID ??
+                for (String id : ntIds)
+                        if (ntId.startsWith(id))        // ignore minor version
+                        {
+                                match = true;
+                                break;
+                        }
 
-        	if (!match)
-        		return false;
+                if (!match)
+                        return false;
         }
 
         // If the type of the channel does not match, no match
         if (valueFieldTypes != null)
         {
-        	boolean match = false;
-        	// we assume Structure here
-        	Field channelValueType = structure.getField("value");
-        	if (channelValueType != null)
-    		{
-            	for (Field vf : valueFieldTypes)
-            		if (channelValueType.equals(vf))
-            		{
-            			match = true;
-            			break;
-            		}
+                boolean match = false;
+                // we assume Structure here
+                Field channelValueType = structure.getField("value");
+                if (channelValueType != null)
+                {
+                for (Field vf : valueFieldTypes)
+                        if (channelValueType.equals(vf))
+                        {
+                                match = true;
+                                break;
+                        }
 
-            	if (!match)
-            		return false;
-    		}
+                if (!match)
+                        return false;
+                }
         }
 
         // Everything matches
@@ -108,47 +108,47 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
     @Override
     public int match(ValueCache<?> cache, PVAChannelHandler channel) {
 
-    	// If the generated type can't be put in the cache, no match
+        // If the generated type can't be put in the cache, no match
         if (!cache.getType().isAssignableFrom(typeClass))
             return 0;
 
         // If one of the IDs does not match, no match
         if (ntIds != null)
         {
-        	boolean match = false;
-        	String ntId = channel.getChannelType().getID();
-        	// TODO "structure" ID ??
-        	for (String id : ntIds)
-        		if (ntId.startsWith(id))	// ignore minor version
-        		{
-        			match = true;
-        			break;
-        		}
+                boolean match = false;
+                String ntId = channel.getChannelType().getID();
+                // TODO "structure" ID ??
+                for (String id : ntIds)
+                        if (ntId.startsWith(id))        // ignore minor version
+                        {
+                                match = true;
+                                break;
+                        }
 
-        	if (!match)
-        		return 0;
+                if (!match)
+                        return 0;
         }
 
         // If the type of the channel does not match, no match
         if (valueFieldTypes != null)
         {
-        	boolean match = false;
-        	// we assume Structure here
-        	Field channelType = channel.getChannelType();
-        	Field channelValueType = (channelType.getType() == Type.structure) ?
-        			((Structure)channelType).getField("value") : channelType;
-        	if (channelValueType != null)
-    		{
-            	for (Field vf : valueFieldTypes)
-            		if (channelValueType.equals(vf))
-            		{
-            			match = true;
-            			break;
-            		}
+                boolean match = false;
+                // we assume Structure here
+                Field channelType = channel.getChannelType();
+                Field channelValueType = (channelType.getType() == Type.structure) ?
+                                ((Structure)channelType).getField("value") : channelType;
+                if (channelValueType != null)
+                {
+                for (Field vf : valueFieldTypes)
+                        if (channelValueType.equals(vf))
+                        {
+                                match = true;
+                                break;
+                        }
 
-            	if (!match)
-            		return 0;
-    		}
+                if (!match)
+                        return 0;
+                }
         }
 
         // Everything matches
@@ -164,17 +164,17 @@ public abstract class PVATypeAdapter implements DataSourceTypeAdapter<PVAChannel
     @SuppressWarnings("unchecked")
     public boolean updateCache(@SuppressWarnings("rawtypes") ValueCache cache, PVAChannelHandler channel, PVStructure message) {
 
-    	PVField valueField = null;
-    	String extractFieldName = channel.getExtractFieldName();
-    	if (extractFieldName != null)
-    	{
-    		if (channel.getChannelType().getType() == Type.structure)
-    			message = message.getStructureField(extractFieldName);
-    		else
-    			// this avoids problem when scalars/scalar arrays needs to be passed as PVStructure message
-    			valueField = message.getSubField(extractFieldName);
+        PVField valueField = null;
+        String extractFieldName = channel.getExtractFieldName();
+        if (extractFieldName != null)
+        {
+                if (channel.getChannelType().getType() == Type.structure)
+                        message = message.getStructureField(extractFieldName);
+                else
+                        // this avoids problem when scalars/scalar arrays needs to be passed as PVStructure message
+                        valueField = message.getSubField(extractFieldName);
 
-    	}
+        }
 
         Object value = createValue(message, valueField, !channel.isConnected());
         cache.writeValue(value);

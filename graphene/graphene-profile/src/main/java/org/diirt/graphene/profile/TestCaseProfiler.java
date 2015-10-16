@@ -725,15 +725,15 @@ public final class TestCaseProfiler {
      *
      *      Render Method       Resolution      Average Time (ms)
      *      -------------       ----------      ----------------
-     *      Set Pixel           1024x768	113.06
-     *      Draw Rect           1024x768	252.89
-     *      Byte Array          1024x768	16.22
-     *      Set Pixel           1440x1080	263.84
-     *      Draw Rect           1440x1080	748.26
-     *      Byte Array          1440x1080	89.22
-     *      Set Pixel           1600x1200	298.23
-     *      Draw Rect           1600x1200	921.2
-     *      Byte Array          1600x1200	68.57
+     *      Set Pixel           1024x768        113.06
+     *      Draw Rect           1024x768        252.89
+     *      Byte Array          1024x768        16.22
+     *      Set Pixel           1440x1080       263.84
+     *      Draw Rect           1440x1080       748.26
+     *      Byte Array          1440x1080       89.22
+     *      Set Pixel           1600x1200       298.23
+     *      Draw Rect           1600x1200       921.2
+     *      Byte Array          1600x1200       68.57
      *
      * The "Byte Array" method is the fastest.
      *

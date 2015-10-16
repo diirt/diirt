@@ -86,8 +86,8 @@ public class GraphBuffer {
      * Changes the pixel at the given coordinates to the given color.
      * TODO: make sure all other plotting functions use this.
      *
-     * @param x	x-coordinate of a pixel
-     * @param y	y-coordinate of a pixel
+     * @param x x-coordinate of a pixel
+     * @param y y-coordinate of a pixel
      * @param color color-value of the pixel
      */
     public void setPixel(int x, int y, int color){

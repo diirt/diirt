@@ -32,13 +32,13 @@ public class PVFieldToVDouble extends AlarmTimeDisplayExtractor implements VDoub
                 if (field instanceof PVScalar)
                         value = convert.toDouble((PVScalar)field);
             else
-            	value = null;
+                value = null;
         }
 
         @Override
     public Double getValue()
     {
-    	return value;
+        return value;
     }
 
     @Override

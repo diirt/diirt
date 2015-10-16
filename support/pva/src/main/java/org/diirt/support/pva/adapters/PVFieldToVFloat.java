@@ -31,7 +31,7 @@ public class PVFieldToVFloat extends AlarmTimeDisplayExtractor implements VFloat
                 if (field instanceof PVScalar)
                         value = convert.toFloat((PVScalar)field);
             else
-            	value = null;
+                value = null;
         }
 
         @Override
