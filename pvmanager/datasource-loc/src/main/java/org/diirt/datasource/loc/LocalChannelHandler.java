@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.loc;
 
-import java.util.ArrayList;
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.ChannelHandlerReadSubscription;
 import org.diirt.datasource.MultiplexedChannelHandler;
