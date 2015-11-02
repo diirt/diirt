@@ -399,48 +399,59 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
 
     private final ConnectionListener connectionListener = new ConnectionListener() {
 
-            @Override
-            public void connectionChanged(ConnectionEvent ev) {
-                synchronized(JCAChannelHandler.this) {
-                    try {
-                        if (log.isLoggable(Level.FINEST)) {
-                            log.log(Level.FINEST, "JCA connectionChanged for channel {0} event {1}", new Object[] {getChannelName(), ev});
-                        }
+        @Override
+        public void connectionChanged(ConnectionEvent ev) {
+            Runnable processConnection = new Runnable() {
 
-                        // Take the channel from the event so that there is no
-                        // synchronization problem
-                        Channel channel = (Channel) ev.getSource();
-
-                        // Check whether the channel is large and was opened
-                        // as large. Reconnect if does not match
-                        if (ev.isConnected() && channel.getElementCount() >= LARGE_ARRAY && !largeArray) {
-                            disconnect();
-                            largeArray = true;
-                            connect();
-                            return;
-                        }
-
-                        processConnection(new JCAConnectionPayload(JCAChannelHandler.this, channel, getConnectionPayload()));
-                        if (ev.isConnected()) {
-                            // If connected, no write access and exception was not sent, notify writers
-                            if (!channel.getWriteAccess() && !sentReadOnlyException) {
-                                reportExceptionToAllWriters(createReadOnlyException());
-                                sentReadOnlyException = true;
+                @Override
+                public void run() {
+                    synchronized (JCAChannelHandler.this) {
+                        try {
+                            if (log.isLoggable(Level.FINEST)) {
+                                log.log(Level.FINEST, "JCA connectionChanged for channel {0} event {1}",
+                                        new Object[] { getChannelName(), ev });
                             }
 
-                            // Setup monitors on connection
-                            setup(channel);
-                        } else {
-                            resetMessage();
-                            // Next connection, resend the read only exception if that's the case
-                            sentReadOnlyException = false;
-                            needsMonitor = true;
-                        }
+                            // Take the channel from the event so that there is
+                            // no
+                            // synchronization problem
+                            Channel channel = (Channel) ev.getSource();
 
-                    } catch (Exception ex) {
-                        reportExceptionToAllReadersAndWriters(ex);
+                            // Check whether the channel is large and was opened
+                            // as large. Reconnect if does not match
+                            if (ev.isConnected() && channel.getElementCount() >= LARGE_ARRAY && !largeArray) {
+                                disconnect();
+                                largeArray = true;
+                                connect();
+                                return;
+                            }
+
+                            processConnection(new JCAConnectionPayload(JCAChannelHandler.this, channel, getConnectionPayload()));
+                            if (ev.isConnected()) {
+                                // If connected, no write access and exception
+                                // was not sent, notify writers
+                                if (!channel.getWriteAccess() && !sentReadOnlyException) {
+                                    reportExceptionToAllWriters(createReadOnlyException());
+                                    sentReadOnlyException = true;
+                                }
+
+                                // Setup monitors on connection
+                                setup(channel);
+                            } else {
+                                resetMessage();
+                                // Next connection, resend the read only
+                                // exception if that's the case
+                                sentReadOnlyException = false;
+                                needsMonitor = true;
+                            }
+
+                        } catch (Exception ex) {
+                            reportExceptionToAllReadersAndWriters(ex);
+                        }
                     }
                 }
+            };
+            new Thread(processConnection).start();
 
                 // XXX: because of the JNI implementation this section cannot
                 // be part of the previous atomic section. The problem is that
