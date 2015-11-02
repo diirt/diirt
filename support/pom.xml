@@ -15,5 +15,6 @@
         <module>cf</module>
         <module>ca</module>
         <module>pva</module>
+        <module>jms</module>
     </modules>
 </project>
