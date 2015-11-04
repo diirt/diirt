@@ -49,7 +49,6 @@ System.out.println("connecting "+selector);
             Destination destination = jmsDatasource.getSession().createTopic(getChannelName());
             // Create a MessageConsumer from the Session to the Topic or
             // Queue
-            selector = "commandId = 17";
             if (selector != null && !selector.isEmpty()) {
                 consumer = jmsDatasource.getSession().createConsumer(destination, selector);
             } else {

@@ -183,7 +183,7 @@ public class JMSDatasourceIT {
 
         List<String> eventList1 = new ArrayList<String>();
         
-        final PVReader<?> pv1 = PVManager.read(channel(topic)).readListener((event) -> {
+        final PVReader<?> pv1 = PVManager.read(channel(topic + "{property = 'ID1'}")).readListener((event) -> {
             if (event.isValueChanged()) {
                 eventList1.add(event.getPvReader().getValue().toString());
                 log.info("pv1 event" + event.getPvReader().getValue());
@@ -191,8 +191,8 @@ public class JMSDatasourceIT {
         }).maxRate(ofHertz(100));
 
         try {
-           writeTextMessage(topic, "ID1", 10);
-           writeTextMessage(topic, "ID2", 10);
+           writeTextMessageWithProperty(topic, "ID1", "ID1", 10);
+           writeTextMessageWithProperty(topic, "ID2", "ID2", 10);
         } catch (Exception e) {
             
         } finally {
@@ -212,6 +212,18 @@ public class JMSDatasourceIT {
      * @throws InterruptedException 
      */
     private static void writeTextMessage(String topic, String textID, int count) throws JMSException, InterruptedException {
+        writeTextMessageWithProperty(topic, null, textID, count);
+    }
+
+    /**
+     * A helper method used by tests to write plain text message/s with a property to a topic
+     * 
+     * @param topic The topic to write the message to
+     * @param count The number of times the message should be written
+     * @throws JMSException
+     * @throws InterruptedException 
+     */
+    private static void writeTextMessageWithProperty(String topic, String Property, String textID, int count) throws JMSException, InterruptedException {
         // Create the destination (Topic or Queue)
         Destination destination = session.createTopic(topic);
 
@@ -224,6 +236,9 @@ public class JMSDatasourceIT {
         //String text = "SimpleTopicProducer - From: " + Thread.currentThread().getName() + " : " + textID;
         String text = textID;
         TextMessage message = session.createTextMessage(text);
+        if (Property != null) {
+            message.setStringProperty("property", Property);
+        }
         for (int i = 0; i < count; i++) {
 
             Thread.sleep(100);
