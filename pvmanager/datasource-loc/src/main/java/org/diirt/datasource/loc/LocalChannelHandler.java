@@ -104,13 +104,16 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                     throw new IllegalArgumentException("Value" + newValue + " can not be accepted by VEnum.");
                 }
                 newValue = ValueFactory.newVEnum(newIndex, firstEnum.getLabels(), alarmNone(), timeNow());
+            } else if (VString.class.equals(type) && newValue instanceof String) {
+                newValue = ValueFactory.newVString((String)newValue, alarmNone(), timeNow());
             } else {
-                // If the string can be parse to a number, do it
+                // If the string can be parsed to a number, do it
                 if (newValue instanceof String) {
                     String value = (String) newValue;
                     try {
                         newValue = Double.valueOf(value);
                     } catch (NumberFormatException ex) {
+                        // Not a double - continue
                     }
                 }
                 // If new value is not a VType, try to convert it
