@@ -36,15 +36,15 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:https://github.com/diirt/diirt.git</connection>
-        <developerConnection>scm:git:https://github.com/diirt/diirt.git</developerConnection>
+        <connection>scm:git:https://github.com/ControlSystemStudio/diirt.git</connection>
+        <developerConnection>scm:git:https://github.com/ControlSystemStudio/diirt.git</developerConnection>
         <url>https://github.com/diirt/diirt.git</url>
         <tag>HEAD</tag>
     </scm>
     <distributionManagement>
         <site>
             <id>diirt.org</id>
-            <url>scm:git:ssh://git@github.com/diirt/diirt.org.git</url>
+            <url>scm:git:ssh://git@github.com/ControlSystemStudio/diirt.org.git</url>
         </site>
     </distributionManagement>
     <developers>
