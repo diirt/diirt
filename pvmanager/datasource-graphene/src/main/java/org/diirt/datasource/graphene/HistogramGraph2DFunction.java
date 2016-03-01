@@ -5,17 +5,10 @@
 package org.diirt.datasource.graphene;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import org.diirt.graphene.*;
 import org.diirt.datasource.QueueCollector;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueUtil;
 
 /**

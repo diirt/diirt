@@ -17,10 +17,7 @@ import org.diirt.datasource.PVWriterListener;
 import org.diirt.util.time.Timestamp;
 import org.diirt.util.time.TimestampFormat;
 import org.diirt.vtype.Alarm;
-import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.VTypeValueEquals;
 import org.diirt.vtype.ValueUtil;
 
 /**

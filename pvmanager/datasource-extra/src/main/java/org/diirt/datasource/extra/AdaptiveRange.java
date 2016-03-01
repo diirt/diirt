@@ -7,7 +7,6 @@ package org.diirt.datasource.extra;
 import java.text.NumberFormat;
 import java.util.List;
 import org.diirt.vtype.Display;
-import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.util.array.ListNumber;
 

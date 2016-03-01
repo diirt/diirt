@@ -7,7 +7,6 @@ package org.diirt.datasource.integration;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.PVManager;
-import org.diirt.support.ca.JCADataSource;
 import org.diirt.support.ca.JCADataSourceConfiguration;
 
 /**

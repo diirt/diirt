@@ -56,7 +56,6 @@ import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 
 /**
  * PVManager expression language support for value types.

@@ -13,7 +13,6 @@ import java.util.List;
 import org.diirt.datasource.ReadFunction;
 import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.util.array.ListDouble;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Converts numeric types to VDouble.

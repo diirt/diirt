@@ -6,15 +6,11 @@ package org.diirt.datasource.sys;
 
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.ChannelWriteCallback;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.text.NumberFormats;
-import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.DisplayBuilder;
 

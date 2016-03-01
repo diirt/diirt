@@ -9,9 +9,6 @@ import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
 import org.diirt.datasource.expression.DesiredRateExpressionList;
-import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 
 /**

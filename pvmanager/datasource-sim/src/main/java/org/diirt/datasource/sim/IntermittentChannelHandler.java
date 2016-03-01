@@ -16,7 +16,6 @@ import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.util.FunctionParser;
 import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VType;
 import static org.diirt.vtype.ValueFactory.*;
 
 /**

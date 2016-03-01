@@ -6,9 +6,6 @@ package org.diirt.datasource.sample.graphene;
 
 import java.awt.event.MouseEvent;
 import org.diirt.graphene.BubbleGraph2DRendererUpdate;
-import org.diirt.graphene.InterpolationScheme;
-import org.diirt.graphene.ScatterGraph2DRendererUpdate;
-import org.diirt.datasource.graphene.ScatterGraph2DExpression;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
 import org.diirt.datasource.graphene.BubbleGraph2DExpression;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;

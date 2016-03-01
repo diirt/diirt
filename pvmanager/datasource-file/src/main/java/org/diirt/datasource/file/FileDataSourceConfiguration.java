@@ -6,7 +6,6 @@ package org.diirt.datasource.file;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;

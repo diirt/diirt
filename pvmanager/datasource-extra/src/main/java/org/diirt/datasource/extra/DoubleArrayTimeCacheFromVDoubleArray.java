@@ -13,7 +13,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.Display;
-import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.time.Timestamp;

@@ -7,7 +7,6 @@ package org.diirt.datasource.graphene;
 import org.diirt.graphene.LineGraph2DRendererUpdate;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
-import org.diirt.datasource.expression.DesiredRateExpressionList;
 import static org.diirt.datasource.graphene.ExpressionLanguage.functionOf;
 
 /**

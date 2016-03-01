@@ -12,7 +12,6 @@ import org.diirt.datasource.CompositeDataSourceConfiguration;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
-import org.diirt.support.ca.JCADataSource;
 import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.support.ca.JCADataSourceConfiguration;
 import static org.diirt.util.concurrent.Executors.swingEDT;
