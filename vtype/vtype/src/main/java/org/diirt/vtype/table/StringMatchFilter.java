@@ -5,10 +5,6 @@
 package org.diirt.vtype.table;
 
 import java.util.List;
-import java.util.Objects;
-import org.diirt.util.array.ListNumber;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 
 /**

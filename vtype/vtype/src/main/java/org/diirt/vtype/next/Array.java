@@ -4,7 +4,6 @@
  */
 package org.diirt.vtype.next;
 
-import org.diirt.vtype.*;
 import java.util.List;
 import org.diirt.util.array.CollectionNumbers;
 import org.diirt.util.array.ListInt;

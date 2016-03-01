@@ -4,7 +4,6 @@
  */
 package org.diirt.vtype.next;
 
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 
 /**
