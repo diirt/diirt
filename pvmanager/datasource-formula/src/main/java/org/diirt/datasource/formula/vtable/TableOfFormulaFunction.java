@@ -10,7 +10,6 @@ import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.table.Column;
-import org.diirt.vtype.table.ListNumberProvider;
 import org.diirt.vtype.table.VTableFactory;
 
 /**

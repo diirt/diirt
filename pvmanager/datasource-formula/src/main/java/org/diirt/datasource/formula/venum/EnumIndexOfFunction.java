@@ -14,7 +14,6 @@ import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
 import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;
 
 /**

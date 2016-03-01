@@ -10,7 +10,6 @@ import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.Time;
 
-import org.diirt.vtype.VString;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;

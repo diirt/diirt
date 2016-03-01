@@ -9,11 +9,8 @@ import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
 import org.diirt.vtype.ArrayDimensionDisplay;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.table.VTableFactory;
 
 /**
  *
