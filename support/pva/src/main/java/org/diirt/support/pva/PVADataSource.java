@@ -8,11 +8,9 @@ import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.vtype.DataTypeSupport;
 import org.epics.pvaccess.ClientFactory;
-import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.client.ChannelProviderRegistry;
 import org.epics.pvaccess.client.ChannelProviderRegistryFactory;
-import org.epics.pvaccess.client.impl.remote.ClientContextImpl;
 
 /**
  *

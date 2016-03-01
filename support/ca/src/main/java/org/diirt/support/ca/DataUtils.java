@@ -9,14 +9,10 @@ import gov.aps.jca.dbr.Status;
 import gov.aps.jca.dbr.TimeStamp;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.AlarmSeverity;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Utilities to convert JCA types to VData types.

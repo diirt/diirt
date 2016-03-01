@@ -10,7 +10,6 @@ import java.util.List;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVShortArray;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.PVUShortArray;
 import org.epics.pvdata.pv.ShortArrayData;
 import org.diirt.vtype.VShortArray;

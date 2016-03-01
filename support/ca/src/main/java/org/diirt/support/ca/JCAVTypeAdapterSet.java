@@ -17,12 +17,10 @@ import org.diirt.vtype.VShortArray;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VFloatArray;
-import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Pattern;
 import org.diirt.datasource.ValueCache;
 
 /**

@@ -11,7 +11,6 @@ import org.epics.pvdata.pv.ByteArrayData;
 import org.epics.pvdata.pv.PVByteArray;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.PVUByteArray;
 import org.diirt.vtype.VByteArray;
 import org.diirt.vtype.VTypeToString;
