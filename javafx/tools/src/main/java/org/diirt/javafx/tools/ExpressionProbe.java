@@ -4,48 +4,27 @@
  */
 package org.diirt.javafx.tools;
 
-import com.sun.javafx.collections.ElementObservableListDecorator;
-import com.sun.javafx.collections.ImmutableObservableList;
-import com.sun.javafx.collections.ObservableListWrapper;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.animation.Animation;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.PVManager;
-import org.diirt.datasource.formula.ExpressionLanguage;
 import org.diirt.datasource.formula.FormulaAst;
-import org.diirt.util.array.ListNumber;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.ValueUtil;
 
 public final class ExpressionProbe extends ScrollPane {
 
