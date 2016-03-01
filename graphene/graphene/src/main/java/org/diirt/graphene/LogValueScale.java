@@ -5,10 +5,7 @@
 package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import static org.diirt.graphene.ValueAxis.orderOfMagnitude;
 import org.diirt.util.array.CircularBufferDouble;
 import org.diirt.util.array.CollectionNumbers;
 import org.diirt.util.array.ListDouble;

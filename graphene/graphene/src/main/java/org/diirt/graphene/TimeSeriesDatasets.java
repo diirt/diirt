@@ -9,7 +9,6 @@ import org.diirt.util.stats.Statistics;
 import java.util.List;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
 

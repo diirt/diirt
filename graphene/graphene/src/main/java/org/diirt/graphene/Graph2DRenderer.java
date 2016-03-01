@@ -25,7 +25,6 @@ import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListMath;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.stats.Ranges;
 
 /**
  * The base class for all graph renderers.
