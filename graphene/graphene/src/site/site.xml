@@ -34,6 +34,6 @@
           img="http://web-static-cloudfront.s3.amazonaws.com/images/badges/BuiltOnDEV.png"/>
     <logo name="Maven" href="http://maven.apache.org/"
           img="http://maven.apache.org/images/logos/maven-feather.png"/>
-  </poweredBy>    
+  </poweredBy>
 </project>
 

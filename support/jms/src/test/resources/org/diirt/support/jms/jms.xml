@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jms version="1">
-  <!-- JMS connection configuration =================================== 
+  <!-- JMS connection configuration ===================================
     Example to configure the dataSource option -->
   <dataSourceOptions brokerURL="tcp://localhost:61616"/>
 </jms>

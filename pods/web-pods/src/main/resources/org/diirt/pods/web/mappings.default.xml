@@ -6,7 +6,7 @@
     clients) to local channels and formulas (as seen from the server). It
     allows to translate the name through regular expressions, regulate the
     web pods protocol permissions and authorization.
-    
+
       The file consists in a list of rules, that are matched at subscription time
     against the incoming channel name and authentication parameters
     (currently only the username).
@@ -14,7 +14,7 @@
     no mapping is established and the subscription results in an error.
     It is therefore possible to write rules that are never reachable.
     Each rule is defined through a <mapping> entitity and a series of attributes.
-    
+
       The incoming channel name can be translated with a regex substitution
     string. This allows to map different parts of the name space to different
     channel datasources or formula patterns. The incoming channel pattern is
@@ -24,17 +24,17 @@
         http://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
     The 'channel' field is mandatory, while the 'substitution' field is optional.
     If the subsitution field is missing, the channel name remains unchanged.
-      
+
       The 'permission' attribute can have the following values:
     * READ_WRITE - the matched channel can be opened as both read only or read/write
     * READ_ONLY - the matched channel can be opened in read only mode. If
       read/write is requested, the channel will be opened in read only mode.
     * NONE - the matched channel can not be opened
     The 'permission' field is mandatory.
-    
+
       The 'user' attribute contains a comma separated list of usernames. If
     present, the match is successful only if the subscription is authenticated
-    and the username matches one in the list. If missing, any request can 
+    and the username matches one in the list. If missing, any request can
     potentially be a match (i.e. the username is not used during the match).
 
 -->

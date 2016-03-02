@@ -10,12 +10,12 @@
     <packaging>pom</packaging>
     <name>graphene</name>
     <description>A library to create graphs suitable for real time scientific data visualization.</description>
-    
+
     <modules>
         <module>graphene</module>
         <module>graphene-profile</module>
     </modules>
-    
+
     <build>
         <plugins>
             <plugin>

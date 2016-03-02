@@ -21,7 +21,7 @@
                     <execution>
                         <id>bundle-manifest</id>
                         <phase>process-classes</phase>
-                        <goals>    
+                        <goals>
                             <goal>manifest</goal>
                         </goals>
                     </execution>

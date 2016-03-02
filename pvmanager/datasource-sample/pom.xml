@@ -20,7 +20,7 @@
                     <execution>
                         <id>bundle-manifest</id>
                         <phase>process-classes</phase>
-                        <goals>    
+                        <goals>
                             <goal>manifest</goal>
                         </goals>
                     </execution>
@@ -31,7 +31,7 @@
                     </instructions>
                 </configuration>
             </plugin>
-            
+
             <!-- This plugin is added for ServiceRegistration -->
             <plugin>
                 <groupId>eu.somatik.serviceloader-maven-plugin</groupId>
@@ -48,7 +48,7 @@
                             <goal>generate</goal>
                         </goals>
                     </execution>
-                </executions>                
+                </executions>
             </plugin>
         </plugins>
     </build>
