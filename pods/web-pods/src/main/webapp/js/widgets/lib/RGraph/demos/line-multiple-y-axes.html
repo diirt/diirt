@@ -11,9 +11,9 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/jquery.min.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>Combining more then two Line objects</title>
-    
+
     <meta name="keywords" content="demo line y axis yaxis drawing api" />
     <meta name="description" content="Multiple Line charts each with their own Y axis using the drawing API Y axis object" />
     <meta name="robots" content="noindex,nofollow" />
@@ -21,13 +21,13 @@
 <body>
 
     <h1>Combining more than two Line objects with multiple Y axes</h1>
-    
+
     <p>
         This demonstration shows how you can use the YAxis drawing API object to draw multiple axes on your chart.
     </p>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -51,7 +51,7 @@
                 .Set('noaxes', true)
                 .Set('ylabels', false)
                 .Draw();
-    
+
             var line2 = new RGraph.Line('cvs', [54,53,56,58,57,53,49,52,53,56,61,58])
                 .Set('ymax', 100)
                 .Set('background.grid', false)
@@ -64,7 +64,7 @@
                 .Set('ylabels', false)
                 .Set('noaxes', true)
                 .Draw();
-    
+
             var line3 = new RGraph.Line('cvs', [31,35,32,36,34,32,33,35,28,17,18,18])
                 .Set('ymax', 50)
                 .Set('background.grid', false)
@@ -77,9 +77,9 @@
                 .Set('gutter.top', gutterTop)
                 .Set('tooltips', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
                 .Draw();
-    
-    
-    
+
+
+
             /**
             * This draws the extra axes. It's run whenever the line3 object is drawn
             */

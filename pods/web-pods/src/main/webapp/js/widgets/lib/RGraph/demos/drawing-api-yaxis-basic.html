@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
@@ -11,14 +11,14 @@
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
 
     <title>An example of the drawing API y axis</title>
-    
+
     <meta name="keywords" content="demo drawing api y axis yaxis" />
     <meta name="description" content="An example of the drawing API Y axis object" />
     <meta name="robots" content="noindex,nofollow" />
 
 </head>
 <body>
-        
+
     <h1>An example of the drawing API Y axis</h1>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -33,17 +33,17 @@
                 .Set('colors', ['blue','blue','blue','blue','blue','red','red','red','red','red'])
                 .Set('gutter.left', 50)
                 .Draw();
-            
+
             var yaxes = new RGraph.Drawing.YAxis('cvs', 50)
                 .Set('max', 100)
                 .Set('title', 'A custom Y axis')
                 .Draw();
-                
+
             yaxes.onclick = function (e, obj)
             {
                 alert('The Y axis has been clicked!');
             }
-                
+
             yaxes.onmousemove = function (e, obj)
             {
                 e.target.style.cursor = 'pointer';

@@ -9,13 +9,13 @@
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.vprogress.js" ></script>
-    
+
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <meta name="keywords" content="bar combine combined vprogress" />
     <meta name="description" content="A Bar chart that has been combined with the VProgress chart" />
     <meta name="robots" content="noindex,nofollow" />
-    
+
     <style>
         .RGraph_tooltip img {
             display: none;
@@ -35,14 +35,14 @@
 <body>
 
     <h1>Combined grouped Bar and VProgress chart</h1>
-    
+
     <p>
         A demo of the VProgress bar combined with a grouped Bar chart. It could be used to show different peoples stats over two years
         for example. Red is one year, yellow is the previous. The tooltip styling has been overridden using stylesheets
         and the positioning has been overridden by redefining the .positionTooltip() function on each vertical
         progress bar object (as well as defining a mousemove event on the canvas to update the tooltips position).
     </p>
-    
+
     <canvas id="cvs" width="600" height="250"></canvas>
         <script>
             var people = ['Rob','Luis','Kinga'];
@@ -67,19 +67,19 @@
                 var h = 0;
                 context.strokeStyle = 'black';
                 context.strokeRect(x, y, w, h);
-            }     
+            }
 
             /**
             * Now create the VProgress bars
             */
             for (var i=0,j=0; i<bar.coords.length; ++i,++j) {
-                
+
                 if (i % 3 == 0) {
                     j = 0;
                 }
-                
+
                 var coords = bar.coords[i];
-                
+
                 var vp = new RGraph.VProgress('cvs',0,100, [25,75])
                     .Set('gutter.left', coords[0])
                     .Set('gutter.top', coords[1])
@@ -107,7 +107,7 @@
                     tooltip.style.top = (y  - tooltip.offsetHeight - 3) + 'px';
                     tooltip.style.left = (x - 3) + 'px';
                 }
-                
+
                 vp.canvas.onmousemove = function (e)
                 {
                     var tooltip = RGraph.Registry.Get('chart.tooltip');
@@ -117,7 +117,7 @@
                         tooltip.style.left = (e.pageX + 3) + 'px';
                     }
                 }
-                
+
                 vp.canvas.onmouseout = function (e)
                 {
                     RGraph.HideTooltip();
@@ -125,8 +125,8 @@
                 }
             }
         </script>
-        
+
         <br />
-        
+
 </body>
 </html>

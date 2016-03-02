@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
@@ -10,7 +10,7 @@
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
 
     <title>The (old) front page Pie chart</title>
-    
+
     <meta name="keywords" content="demo pie front page" />
     <meta name="description" content="The (old) front page Pie chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,14 +18,14 @@
 <body>
 
     <h1>The (old) front page Pie chart</h1>
-    
+
     <p>
         This is the Pie chart from the front page. It starts with the RoundRobin effect and allows you to click to explode
         the Pie chart segments.
     </p>
 
     <canvas id="cvs" width="350" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -44,27 +44,27 @@
                 .Set('labels', ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'])
                 .Set('labels.sticks', true)
                 .Set('labels.sticks.length', 15);
-            
+
             !ISIE || ISIE9UP ? RGraph.Effects.Pie.RoundRobin(pie, {frames:30}) : pie.Draw();
-            
+
             pie.onclick = function (e, shape)
             {
                 var index = shape.index;
                 var obj = shape.object;
-                
+
                 // Reset all the segments to 10
                 obj.Set('exploded', 10);
-                
+
                 obj.Explode(index, 15);
-                
+
                 e.stopPropagation();
             }
-            
+
             pie.onmousemove = function (e, shape)
             {
                 e.target.style.cursor = 'pointer';
             }
-            
+
             window.addEventListener('mousedown', function (e)
             {
                 pie.Set('exploded', 10);
@@ -72,7 +72,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

@@ -7,11 +7,11 @@
     <script src="../libraries/RGraph.drawing.poly.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/jquery.min.js" ></script>
-    
+
     <title>A dual color clickable filled range Line chart</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="demo range line threshold dual two colors" />
     <meta name="description" content="A range Line chart which shows two colors - the threshold of which is settable" />
     <meta name="robots" content="noindex,nofollow" />
@@ -19,7 +19,7 @@
 <body>
 
     <h1>A dual color clickable filled range Line chart</h1>
-    
+
     <p>
         By using the Poly drawing API object with a filled range chart you can make the filled range clickable.
     </p>
@@ -41,7 +41,7 @@
                 .Set('numxticks', 19)
                 .Set('background.grid.autofit.numvlines', 19)
             RGraph.Effects.Line.jQuery.Trace(line, null, drawPoly);
-            
+
             function drawPoly ()
             {
                 /**

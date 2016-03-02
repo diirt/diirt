@@ -7,19 +7,19 @@
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/jquery.min.js" ></script>
-    
+
     <title>A combined Bar and Spline chart</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="bar line combined spline" />
     <meta name="description" content="A combined Bar and Line chart where the line is a spline" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-    
+
     <h1>A combined Bar and Spline chart</h1>
-    
+
     <p>
         Here the two charts are animated using the RGraph effects library. The Line chart uses the Trace effect and the Bar
         chart uses the Grow effect.
@@ -32,7 +32,7 @@
             .Set('colors', ['#ddf'])
             .Set('ylabels', false)
         RGraph.Effects.Bar.Grow(bar);
-        
+
         line = new RGraph.Line('cvs', [41,43,45,54,42,41,21,18,12,11])
             .Set('spline', true)
             .Set('shadow', true)

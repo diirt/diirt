@@ -2,15 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A customised Pie chart</title>
-    
+
     <meta name="keywords" content="demo pie customised" />
     <meta name="description" content="A customised Pie chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -20,7 +20,7 @@
     <h1>A customised Pie chart</h1>
 
     <canvas id="cvs" width="480" height="250" !style="border:1px solid #ccc">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -38,16 +38,16 @@
                 .Set('shadow.offsety', 2)
                 .Set('shadow.blur', 3)
                 .Set('exploded', 7)
-            
+
             for (var i=0; i<data.length; ++i) {
                 pie.Get('labels')[i] = pie.Get('chart.labels')[i] + ', ' + data[i] + '%';
             }
-            
+
             pie.Draw();
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

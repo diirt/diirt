@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
@@ -11,7 +11,7 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/RGraph.waterfall.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Waterfall chart with Grow effect and a combo Line/Bar on the same page</title>
 
     <meta name="keywords" content="demo waterfall animated" />
@@ -32,23 +32,23 @@
                 .Set('labels', ['sample', 'sample', 'sample'])
                 .Set('tooltips', ['sample', 'sample', 'sample'])
                 .Set('xaxispos', 'center')
-             
+
              RGraph.Effects.Waterfall.Grow(waterfall1);
-             
+
              // Combo - ensure the Bar chart is created first
              var bar = new RGraph.Bar('cvs2', [14,3,5,2,2])
                 .Set('tooltips', ['A','B','C','D','E'])
-             
+
              var line = new RGraph.Line('cvs2', [4,8,6,3,5])
                 .Set('tickmarks', 'endcircle')
                 .Set('linewidth', 3)
-             
+
              var combo = new RGraph.CombinedChart(bar, line);
              combo.Draw();
     	 }
      </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

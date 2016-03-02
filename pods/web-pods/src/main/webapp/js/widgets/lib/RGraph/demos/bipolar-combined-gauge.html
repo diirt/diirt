@@ -2,15 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bipolar.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.gauge.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A bipolar chart with a Gauge on the same page</title>
-    
+
     <meta name="keywords" content="demo bipolar combined gauge" />
     <meta name="description" content="A page with two canvas tags that show a Bipolar chart and a Gauge chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,7 +18,7 @@
 <body>
 
     <h1>A bipolar chart with a Gauge on the same page</h1>
-    
+
     <p>
         This an example of two different charts (on two different canvases) on one page. If you don't use the window.onload
         event then Chrome can sometimes have trouble showing the charts.
@@ -26,7 +26,7 @@
 
     <canvas id="cvs1" width="600" height="250">[No canvas support]</canvas>
     <canvas id="cvs2" width="250" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {

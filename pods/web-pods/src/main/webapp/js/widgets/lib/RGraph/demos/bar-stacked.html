@@ -2,22 +2,22 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A stacked bar chart</title>
-    
+
     <meta name="keywords" content="demo stacked bar ondraw text" />
     <meta name="description" content="A demonstration of a stacked Bar chart. The chart uses the ondraw event to add some text to the chart" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A stacked bar chart</h1>
-    
+
     <p>
         This is a stacked Bar chart. The labels that are inside the bars are achieved by using a DOM1 style ondraw event.
     </p>
@@ -45,15 +45,15 @@
                 .Set('background.grid.border', false)
                 .Set('axis.color', '#ccc')
                 .Set('noyaxis', true)
-                
+
                 .Set('key', ['Monday','Tuesday','Wednesday'])
                 .Set('chart.key.position.gutter.boxed', true)
                 .Set('key.position', 'gutter');
-            
+
             bar.Set('key.position.x', bar.canvas.width - 300)
                 .Set('key.position.y', 20)
                 .Set('key.colors', ['blue','#c00','#0c0'])
-            
+
                 .ondraw = function (obj)
                 {
                     for (var i=0; i<obj.coords.length; ++i) {
@@ -61,7 +61,7 @@
                         RGraph.Text(obj.context, 'Verdana', 10, obj.coords[i][0] + (obj.coords[i][2] / 2), obj.coords[i][1] + (obj.coords[i][3] / 2),obj.data_arr[i].toString(),'center', 'center', null,null,null,true);
                     }
                 }
-            
+
             bar.Draw();
         }
     </script>

@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
-    
+
     <title>Pie chart RoundRobin then Explode</title>
 
     <meta name="keywords" content="demo pie roundrobin effects explode exploding" />
@@ -20,7 +20,7 @@
     <h1>Pie chart effect then explode</h1>
 
     <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
-    
+
     <script>
         var pie1 = new RGraph.Pie('cvs', [21,12,25,17,7])
             .Set('radius', 100)
@@ -34,7 +34,7 @@
             .Set('shadow.offsety', 0)
             .Set('shadow.color', '#000')
             .Set('text.color', '#999')
-        
+
         var explode = 20;
 
         function myExplode (obj)
@@ -48,10 +48,10 @@
 
         if (RGraph.isOld()) {
             pie1.Draw();
-        
+
         } else if (navigator.userAgent.toLowerCase().indexOf('firefox') >= 0) {
             RGraph.Effects.Pie.RoundRobin(pie1);
-        
+
         } else {
             /**
             * The RoundRobin callback initiates the exploding
@@ -62,7 +62,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

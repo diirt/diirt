@@ -4,11 +4,11 @@
     <script src="../libraries/RGraph.drawing.yaxis.js" ></script>
     <script src="../libraries/RGraph.drawing.xaxis.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    
+
     <title>A quarter axis Line chart</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="demo line quarter axis" />
     <meta name="description" content="A demonstration of how you can combine the Line chart and drawing axis objects to produce a chart with an offset X axis" />
     <meta name="robots" content="noindex,nofollow" />
@@ -16,23 +16,23 @@
 <body>
 
     <h1>A quarter axis Line chart</h1>
-    
+
     <p>
         A Line chart (or Bar or Scatter) which has the X aaxis part way up the scale (instead of the center) is not supported by
         default. But by using the X/Y axis drawing API objects you can achieve the same effect. The method is quite involved however
         and not straightforward. It involves two Y axis objects - the upper and the lower axes, an X axis object and a Line chart
         with chart.outofbounds set to true (and the background grid and axes disabled). The background grid here is manually drawn
     </p>
-    
+
     <p>
     `   As this demo is a lot of code - you might find it easier to "build your page around the chart" instead of trying to incorporate
         the chart into your page.
     </p>
-    
+
     <p style="padding: 3px; border: 1px solid gray; background-color: #eee; border-radius: 5px">
         <b>Note:</b>
         This demo differs from <a href="line-quarter-axis.html">the other quarter axis demo</a> in that the upper and lower halves
-        are coloured differently - in this case in order to show positive and negative temperatures.        
+        are coloured differently - in this case in order to show positive and negative temperatures.
     </p>
 
     <canvas id="cvs" width="600" height="350">[No canvas support]</canvas>
@@ -42,7 +42,7 @@
         {
             var data = [19,13,5,-4,-6,-1,3];
             var context = document.getElementById("cvs").getContext('2d');
-            
+
             // Draw the background grid
             context.strokeStyle = '#eee';
             for (var i=25; i<=575; i+=25) context.strokeRect(i + 0.5, 25, 0, 300);
@@ -71,7 +71,7 @@
                 .Set('scale.zerostart', false)
                 .Set('units.pre', '-')
                 .Draw();
-            
+
             // Draw the X axis
             var xaxis = new RGraph.Drawing.XAxis('cvs', 225)
                 .Set('xaxispos', 'center')
@@ -90,8 +90,8 @@
             xaxis.context.save();
                 xaxis.context.rect(0,0,600,225);
                 xaxis.context.clip();
-            
-            
+
+
                 // Draw the line chart
                 var line = new RGraph.Line('cvs', data)
                     .Set('hmargin', 25)
@@ -105,7 +105,7 @@
                     .Set('fillstyle', 'rgba(255,0,0,0.3)')
                     .Set('ymax', 20)
                     .Draw();
-            
+
             // This gets rid of the clip() effect
             xaxis.context.restore();
 
@@ -117,8 +117,8 @@
             xaxis.context.save();
                 xaxis.context.rect(0,225,600,125);
                 xaxis.context.clip();
-            
-            
+
+
                 // Draw the line chart
                 var line = new RGraph.Line('cvs', data)
                     .Set('hmargin', 25)
@@ -133,7 +133,7 @@
                     .Set('ymax', 20)
                     .Set('colors', ['blue'])
                     .Draw();
-            
+
             // This gets rid of the clip() effect
             xaxis.context.restore();
         }

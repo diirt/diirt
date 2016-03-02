@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
-    
+
     <title>Pie chart Explode</title>
 
     <meta name="keywords" content="demo pie explodes exploding clicked onclick" />
@@ -18,14 +18,14 @@
 <body>
 
     <h1>Pie chart explode (onclick)</h1>
-    
+
     <p>
         This Pie chart is similar to <a href="pie11.html">the pie11.html demo.</a> But instead of using the onmousemove event
         this uses the onclick event.
     </p>
 
     <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
-    
+
 <script>
     window.onload = function ()
     {
@@ -36,18 +36,18 @@
             .Set('exploded', 5)
             .Set('radius', 100)
             .Draw();
-        
-            
+
+
         // Add the click listener for the third segment
         pie.onclick = function (e, shape)
         {
             if (!pie.Get('exploded') || !pie.Get('chart.exploded')[shape['index']]) {
                 pie.Explode(shape['index'], 25);
             }
-            
+
             e.stopPropagation();
         }
-        
+
         // Add the mousemove listener for the third segment
         pie.onmousemove = function (e, shape)
         {
@@ -63,7 +63,7 @@
     }
 </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

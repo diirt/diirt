@@ -2,16 +2,16 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.drawing.rect.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A demo of a logarithmic chart</title>
-    
+
     <meta name="keywords" content="demo line logarithmic log logarithm" />
     <meta name="description" content="A Line chart using specific labels to give a logarithmic axis" />
     <meta name="robots" content="noindex,nofollow" />
@@ -19,18 +19,18 @@
 <body>
 
     <h1>A demo of a logarithmic chart</h1>
-    
+
     <p>
         This demonstrates a logarithmic chart using log(10). It has custom Y labels.
     </p>
 
     <canvas id="cvs" width="600" height="300">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
             var data = [999999,5,6,4,6,8012,12,7];
-            
+
             for (var i=0;i<data.length; ++i) {
                 data[i] = log10(data[i]);
             }
@@ -45,7 +45,7 @@
             var line = new RGraph.Line('cvs', data)
                 .Set('numyticks', 6)
                 .Set('ymax', 6);
-            
+
             line.Set('ylabels.specific', [
                                           RGraph.number_format(line, 1000000),
                                           RGraph.number_format(line, 100000),

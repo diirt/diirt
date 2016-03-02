@@ -2,22 +2,22 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.drawing.xaxis.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.scatter.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>An example of the drawing API X axis</title>
-    
+
     <meta name="keywords" content="demo drawing api x axis xaxis" />
     <meta name="description" content="An example of the drawing API X axis object" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>An example of the drawing API X axis (with a scale)</h1>
 
 
@@ -32,7 +32,7 @@
                 .Set('xaxis', false)
                 .Set('noyaxis', true)
                 .Draw();
-            
+
             var xaxis = new RGraph.Drawing.XAxis('cvs', scatter.canvas.height - 25)
                 .Set('max', 500)
                 .Draw();

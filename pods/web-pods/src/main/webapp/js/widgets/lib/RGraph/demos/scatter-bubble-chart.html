@@ -8,9 +8,9 @@
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Scatter chart as a Bubble chart variant using post-processing</title>
-    
+
     <meta name="keywords" content="demo scatter bubbles tooltips" />
     <meta name="description" content="A Scatter chart which is configured to use Bubbles and hides the tooltips when you move the mouse away from a Bubble" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,13 +18,13 @@
 <body>
 
     <h1>A Scatter chart as a Bubble chart variant using the new Bubble chart class</h1>
-    
+
     <p>
         The Scatter chart now has a dedicated Bubble chart class as part of the file.
     </p>
 
     <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -49,7 +49,7 @@
                                                         [50,60,70,80,90,84,86,87] // Bubble data
                                                        )
                 .Draw();
-            
+
             /**
             * This custom onmousemove event listener hides the tooltip if the mouse
             * is not over a mark.
@@ -67,7 +67,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/animations.css" type="text/css" media="screen" />
 
     <link rel="icon" type="image/png" href="images/favicon.png">
-    
+
     <script src="libraries/RGraph.common.core.js" ></script>
     <script src="libraries/RGraph.common.dynamic.js" ></script>
     <script src="libraries/RGraph.common.key.js" ></script>
@@ -23,7 +23,7 @@
         window.onload = function ()
         {
             var bar = new RGraph.Bar('cvs_bar', [[45,-60],[-65,-30],[40,80],[59,-48]])
-                .Set('colors', ['rgba(255, 176, 176, 0.5)', 'rgba(153, 208, 249,0.5)']) 
+                .Set('colors', ['rgba(255, 176, 176, 0.5)', 'rgba(153, 208, 249,0.5)'])
                 .Set('labels', ['Luis', 'Kevin', 'John', 'Gregory'])
                 .Set('tooltips', ['Luis','Luis','Kevin','Kevin','John','John','Gregory','Gregory'])
                 .Set('tooltips.event', 'onmousemove')
@@ -42,7 +42,7 @@
                 .Set('key.interactive', true)
                 .Set('key.position', 'gutter')
                 .Set('key.interactive.highlight.chart', 'rgba(255,255,255,0.7)')
-            
+
             RGraph.Effects.Fade.In(bar, {'duration': 250});
             RGraph.Effects.jQuery.Expand(bar, {bounce: false});
         }
@@ -51,9 +51,9 @@
 <body>
 
     <a href="http://www.rgraph.net" target="_blank" rel="nofollow"><div style="display: inline; width: 64px; height: 64px; padding-bottom: 5px"><img border="0" src="images/logo.png" alt="The RGraph logo" width="64" height="64" title="The RGraph logo" /></div></a>
-    
+
     <img src="images/title.png" width="666" height="69" alt="RGraph: Free HTML5 and Javascript charts" />
-    
+
 
     <canvas width="600" height="250" id="cvs_bar" style="float: right" class="animated rotateIn"></canvas>
 
@@ -61,7 +61,7 @@
         <p>
             Demos of some of the various charts and features provided by RGraph
         </p>
-        
+
         <p align="left">
             <a href="./demos/" rel="nofollow"><b>Go to the demos (local) &raquo;</b></a>
         </p>

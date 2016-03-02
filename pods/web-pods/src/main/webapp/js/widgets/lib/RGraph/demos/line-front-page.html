@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
@@ -10,9 +10,9 @@
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/jquery.min.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A basic Line chart</title>
-    
+
     <meta name="keywords" content="demo line basic" />
     <meta name="description" content="A basic Line chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -20,13 +20,13 @@
 <body>
 
     <h1>The line chart from the front page</h1>
-    
+
     <p>
         It uses the RGraph <i>ondraw</i> event to draw the Y labels in a custom fashion.
     </p>
 
     <canvas id="cvs" width="400" height="200">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -82,8 +82,8 @@
                                               '<b>October</b><br />The peak is now subsiding',
                                               '<b>November</b><br />Still subsiding',
                                               '<b>December</b><br />Rising again after the last fall',
-    
-    
+
+
                                               '<b>January</b><br />Started off the year quite averagely as with Robert',
                                               '<b>February</b><br />Rising as with Robert',
                                               '<b>March</b><br />Not as good as Robert, but OK',
@@ -98,7 +98,7 @@
                                               '<b>December</b><br />Rising again for Christmas'
                                              ]);
 
-                
+
                 RGraph.Effects.Line.jQuery.UnfoldFromCenterTrace(myLine, {'duration': 1000});
             }
         }

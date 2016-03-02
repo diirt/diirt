@@ -2,15 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A line chart showing US prison population</title>
-    
+
     <meta name="keywords" content="demo line tickmarks tooltips" />
     <meta name="description" content="A line chart with custom tickmarks and custom styled tooltips" />
     <meta name="robots" content="noindex,nofollow" />
@@ -20,11 +20,11 @@
     <h1>A line chart showing US prison population</h1>
 
     <canvas id="cvs" width="900" height="250">[No canvas support]</canvas>
-    
+
 
     <script>
         var data = [0.140652855, 0.156898821, 0.17392137, 0.181314164, 0.190083403, 0.204936627, 0.219226948, 0.232290443, 0.248576086, 0.276869432, 0.297991221, 0.314307072, 0.333516451, 0.352770502, 0.380347379, 0.410398994, 0.425115587, 0.439371182, 0.45309086, 0.47202617, 0.466500291, 0.466535618, 0.475166227, 0.478867548, 0.485024967, 0.489713802, 0.500002324, 0.503305103, 0.500315325, 0.496573444];
- 
+
 		var line = new RGraph.Line('cvs', data)
             .Set('title', 'Interactive chart of percent U.S. population incarcerated.')
             .Set('text.font', 'Arial')
@@ -47,7 +47,7 @@
         {
     	    var ctx = obj.canvas.getContext("2d");
     	    ctx.fillStyle = "white";
-    	    
+
             if(index == 3 || index == 4 || (index >= 13 && index<= 16) || index == 20){
     		    ctx.fillStyle = "#4C2288";
     	    }
@@ -65,14 +65,14 @@
         <a href="./">&laquo; Back</a>
     </p>
 
-    <div style="display: none"> 
-        <div id="1983"><a href="http://en.wikipedia.org/wiki/Corrections_Corporation_of_America">Corrections Corporation of America</a> is founded</a></div> 
-        <div id="1984"><a href="http://www.enotes.com/major-acts-congress/sentencing-reform-act" rel="nofollow">Sentencing Reform Act</a> passed</a></div> 
-        <div id="1993"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes law</a> enacted in Washington</div> 
-        <div id="1994"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes laws</a> enacted in California, Colorado, Connecticut, Indiana, Kansas, Nevada, North Dakota</div> 
-        <div id="1995"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes laws</a> enacted in Arkansas, Georgia, Maryland, Montana,<br/> New Jersey, New Mexico, North Carolina, Pennsylvania, South Carolina,<br/> Utah, Vermont, Wisconsin</div> 
-        <div id="1996"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes laws</a> enacted in Florida, Tennessee, Virginia</div> 
-        <div id="2000"><a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29">Substance Abuse and Crime Prevention Act</a> passed in California</div> 
+    <div style="display: none">
+        <div id="1983"><a href="http://en.wikipedia.org/wiki/Corrections_Corporation_of_America">Corrections Corporation of America</a> is founded</a></div>
+        <div id="1984"><a href="http://www.enotes.com/major-acts-congress/sentencing-reform-act" rel="nofollow">Sentencing Reform Act</a> passed</a></div>
+        <div id="1993"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes law</a> enacted in Washington</div>
+        <div id="1994"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes laws</a> enacted in California, Colorado, Connecticut, Indiana, Kansas, Nevada, North Dakota</div>
+        <div id="1995"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes laws</a> enacted in Arkansas, Georgia, Maryland, Montana,<br/> New Jersey, New Mexico, North Carolina, Pennsylvania, South Carolina,<br/> Utah, Vermont, Wisconsin</div>
+        <div id="1996"><a href="http://en.wikipedia.org/wiki/Three_strikes_law">Three strikes laws</a> enacted in Florida, Tennessee, Virginia</div>
+        <div id="2000"><a href="http://en.wikipedia.org/wiki/California_Proposition_36_%282000%29">Substance Abuse and Crime Prevention Act</a> passed in California</div>
     </div>
 
     <style>

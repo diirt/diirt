@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
@@ -10,7 +10,7 @@
     <script src="../libraries/RGraph.pie.js" ></script>
 
     <title>A Pie chart that retrieves JSON data via AJAX</title>
-    
+
     <meta name="keywords" content="demo pie json ajax" />
     <meta name="description" content="A Pie chart that retrieves JSON data via AJAX" />
     <meta name="robots" content="noindex,nofollow" />
@@ -20,7 +20,7 @@
     <h1>A Pie chart that retrieves JSON data via AJAX</h1>
 
     <canvas id="cvs" width="450" height="350">[No canvas support]</canvas>
-    
+
     <script>
         function drawPie (json)
         {
@@ -31,11 +31,11 @@
                 .Set('centerx', 175)
                 .Draw();
         }
-        
+
         RGraph.AJAX.getJSON('/getdata.html?json', drawPie);
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

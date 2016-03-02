@@ -11,7 +11,7 @@
         <script>
             // Calculating URL from document location, so that examples work no
             // matter where they are deployed. Typical use would hard-code URL
-            var wsUri = document.location.protocol.replace("http", "ws") + "//" + document.location.host + "/" + 
+            var wsUri = document.location.protocol.replace("http", "ws") + "//" + document.location.host + "/" +
                     document.location.pathname.split("/")[1] + "/socket";
             var wp = new Client(wsUri);
         </script>
@@ -20,7 +20,7 @@
         <script type="text/javascript" src="//www.google.com/jsapi"></script>
         <script type="text/javascript" language="javascript" src="../js/widgets/wp-table.js"></script>
         <link rel="stylesheet" href="../js/widgets/wp-table.css">
-        
+
         <!-- Bootstrap is used to make this page look decent. It's not needed by the widgets. -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
@@ -62,12 +62,12 @@
                 </div>
             </div>
         </nav>
-        
+
         <div class="container-fluid" >
             <h1>Read-only table widget (wp-table)</h1>
             <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
             <p><b>NOTE: the table has some known issues. It does not resize properly. On update, it changes the scroll position of both the page and the table itself.</b></p>
-            
+
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default">

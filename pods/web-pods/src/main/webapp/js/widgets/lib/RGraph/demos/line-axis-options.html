@@ -6,9 +6,9 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Line chart with the X axis in the middle</title>
-    
+
     <meta name="keywords" content="demo line axis options" />
     <meta name="description" content="A Line chart that shows the various axis options that you can manipulate" />
     <meta name="robots" content="noindex,nofollow" />
@@ -24,11 +24,11 @@
     <button onclick="obj = getObject(); obj.Set('chart.ymin', obj.Get('chart.ymin') ? 0 : 50); RGraph.Redraw();">Toggle ymin (50) setting</button>
     <button onclick="obj = getObject(); obj.Set('chart.noxaxis', obj.Get('chart.noxaxis') ? false : true); RGraph.Redraw();">Toggle X axis </button>
     <button onclick="obj = getObject(); obj.Set('chart.labels', obj.Get('chart.labels') ? null : ['Q1','Q2','Q3','Q4']); RGraph.Redraw();">Toggle X labels</button>
-    
+
     <br />
 
     <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
-    
+
     <script>
         function getObject ()
         {
@@ -47,7 +47,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

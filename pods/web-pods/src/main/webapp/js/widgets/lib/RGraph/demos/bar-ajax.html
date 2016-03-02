@@ -2,12 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
-    
+
     <title>A Bar chart using AJAX</title>
-    
+
     <meta name="keywords" content="bar data ajax" />
     <meta name="description" content="A Bar chart fetching its data via AJAX" />
     <meta name="robots" content="noindex,nofollow" />
@@ -33,7 +33,7 @@
                 .Set('scale.round', true)
                 .Draw();
         }
-        
+
         RGraph.AJAX.getCSV('/getdata.html', drawGraph)
     </script>
 

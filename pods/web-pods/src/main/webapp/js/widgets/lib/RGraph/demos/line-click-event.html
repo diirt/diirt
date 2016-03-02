@@ -2,16 +2,16 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Line and Pie chart with tooltips and click events</title>
-    
+
     <meta name="keywords" content="demo line pie tooltips events" />
     <meta name="description" content="A Line and Pie chart with tooltips and custom events" />
     <meta name="robots" content="noindex,nofollow" />
@@ -22,7 +22,7 @@
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
     <canvas id="cvs2" width="200" height="200">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -31,7 +31,7 @@
                 .Set('tooltips', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
                 .Set('events.click', function (e, shape) {alert('The Line chart click event');})
                 .Draw();
-            
+
             var pie = new RGraph.Pie('cvs2', [5,6])
                 .Set('exploded', 5)
                 .Set('strokestyle', 'rgba(0,0,0,0)')
