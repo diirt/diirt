@@ -6,10 +6,7 @@ package org.diirt.datasource.vtype;
 
 import org.diirt.vtype.VNumberArray;
 import java.util.Arrays;
-import java.util.List;
 import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.datasource.expression.DesiredRateExpression;
-import org.diirt.vtype.VNumberArray;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

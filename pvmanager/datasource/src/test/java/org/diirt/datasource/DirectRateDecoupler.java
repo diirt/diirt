@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.DesiredRateEvent;
-import org.diirt.datasource.SourceDesiredRateDecoupler;
-import org.diirt.datasource.DesiredRateEventListener;
 import java.util.concurrent.ScheduledExecutorService;
 import org.diirt.util.time.TimeDuration;
 

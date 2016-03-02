@@ -15,7 +15,6 @@ import org.diirt.datasource.timecache.DataRequestThread;
 import org.diirt.datasource.timecache.PVCache;
 import org.diirt.datasource.timecache.PVCacheListener;
 import org.diirt.datasource.timecache.PVCacheStatistics;
-import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
 
 public class PVCacheMock implements PVCache {

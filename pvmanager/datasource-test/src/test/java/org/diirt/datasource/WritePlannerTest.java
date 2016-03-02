@@ -7,8 +7,6 @@ package org.diirt.datasource;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Collections;
-import org.diirt.datasource.ChannelHandler;
-import org.diirt.datasource.WritePlanner;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;

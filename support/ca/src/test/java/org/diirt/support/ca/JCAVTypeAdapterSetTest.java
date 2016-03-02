@@ -4,13 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCATypeAdapter;
-import org.diirt.support.ca.JCAMessagePayload;
-import org.diirt.support.ca.JCAChannelHandler;
-import org.diirt.support.ca.JCAVTypeAdapterSet;
-import org.diirt.support.ca.JCADataSource;
-import org.diirt.support.ca.DataUtils;
-import org.diirt.support.ca.JCAConnectionPayload;
 import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VByteArray;
 import org.diirt.vtype.VStringArray;

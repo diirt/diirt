@@ -14,12 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.diirt.datasource.timecache.Cache;
-import org.diirt.datasource.timecache.CacheConfig;
-import org.diirt.datasource.timecache.CacheImpl;
-import org.diirt.datasource.timecache.DataRequestStatistics;
-import org.diirt.datasource.timecache.PVCache;
-import org.diirt.datasource.timecache.PVCacheStatistics;
 import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
 import org.diirt.datasource.timecache.impl.SimpleMemoryStorage;
 import org.diirt.datasource.timecache.query.Query;

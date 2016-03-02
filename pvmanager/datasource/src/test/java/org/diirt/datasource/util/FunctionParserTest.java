@@ -6,7 +6,6 @@ package org.diirt.datasource.util;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.util.FunctionParser;
 import org.diirt.util.array.ArrayDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;

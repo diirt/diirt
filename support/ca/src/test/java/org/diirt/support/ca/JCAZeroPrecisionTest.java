@@ -4,10 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCATypeAdapter;
-import org.diirt.support.ca.JCAMessagePayload;
-import org.diirt.support.ca.JCAVTypeAdapterSet;
-import org.diirt.support.ca.JCAConnectionPayload;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBR_CTRL_Double;

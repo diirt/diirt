@@ -4,18 +4,12 @@
  */
 package org.diirt.datasource.test;
 
-import org.diirt.datasource.test.CountDownPVWriterListener;
-import org.diirt.datasource.test.CountDownPVReaderListener;
-import org.diirt.datasource.test.CountDownWriteFunction;
-import org.diirt.datasource.test.TestDataSource;
-import java.util.Objects;
 import org.diirt.datasource.DataSource;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.TimeoutException;
 import org.diirt.util.time.TimeDuration;

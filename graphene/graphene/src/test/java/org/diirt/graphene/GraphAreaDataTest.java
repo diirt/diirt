@@ -4,10 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.ValueScales;
-import org.diirt.graphene.GraphAreaData;
-import org.diirt.graphene.FontUtil;
-import org.diirt.graphene.GraphBuffer;
 import java.awt.Color;
 import org.diirt.util.stats.Ranges;
 import org.junit.Test;

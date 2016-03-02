@@ -4,14 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
-import org.diirt.graphene.Graph2DRenderer;
-import org.diirt.graphene.ReductionScheme;
-import org.diirt.graphene.ScatterGraph2DRenderer;
-import org.diirt.graphene.Graph2DRendererUpdate;
-import org.diirt.graphene.AreaGraph2DRenderer;
-import org.diirt.graphene.InterpolationScheme;
-import org.diirt.graphene.Point2DDatasets;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;

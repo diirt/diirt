@@ -6,16 +6,9 @@ package org.diirt.datasource.formula;
 
 import java.util.Collections;
 import java.util.List;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VDouble;
 import org.antlr.runtime.*;
-import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.datasource.expression.DesiredRateExpression;
 import org.junit.Test;
 import static org.diirt.datasource.formula.FormulaAst.*;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VString;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 

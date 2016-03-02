@@ -52,7 +52,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import org.diirt.graphene.Graph2DRendererUpdate;
 import org.diirt.graphene.profile.impl.ProfileAreaGraph2D;
 import org.diirt.graphene.profile.impl.ProfileBubbleGraph2D;
 import org.diirt.graphene.profile.impl.ProfileHistogram1D;

@@ -4,8 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Cell1DDataset;
-import org.diirt.graphene.Cell1DDatasets;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListNumber;
 import org.junit.Test;

@@ -4,11 +4,8 @@
  */
 package org.diirt.datasource.integration;
 
-import org.diirt.datasource.integration.VTypeMatchMask;
-import org.diirt.datasource.integration.Validators;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

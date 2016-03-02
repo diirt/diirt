@@ -6,11 +6,6 @@ package org.diirt.datasource;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import org.diirt.datasource.DataSourceTypeAdapter;
-import org.diirt.datasource.DataSourceTypeSupport;
-import org.diirt.datasource.ValueCache;
-import org.diirt.datasource.ValueCacheImpl;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

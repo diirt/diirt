@@ -10,7 +10,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.diirt.datasource.test.ExpressionLanguage.*;
-import org.diirt.datasource.test.TestDataSource;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

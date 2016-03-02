@@ -6,15 +6,12 @@ package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Random;
 import org.junit.Test;
 import org.diirt.util.array.*;
 import org.diirt.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import org.diirt.graphene.NumberColorMaps;
-import org.diirt.graphene.NumberColorMapGradient;
 
 /**
  *

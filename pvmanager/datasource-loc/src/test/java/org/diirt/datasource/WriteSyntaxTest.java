@@ -4,12 +4,8 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PVWriter;
-import org.diirt.datasource.WriteCache;
 import org.diirt.datasource.expression.ChannelExpression;
 import org.diirt.datasource.expression.WriteExpression;
-import org.diirt.datasource.expression.WriteExpressionImpl;
 import org.diirt.datasource.loc.LocalDataSource;
 import org.junit.Test;
 import static org.junit.Assert.*;

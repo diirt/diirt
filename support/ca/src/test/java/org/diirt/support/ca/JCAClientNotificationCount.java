@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
 import static org.diirt.datasource.ExpressionLanguage.channel;
 import static org.diirt.util.time.TimeDuration.ofHertz;
 

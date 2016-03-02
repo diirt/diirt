@@ -4,11 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
-import org.diirt.graphene.MultiAxisLineGraph2DRendererUpdate;
-import org.diirt.graphene.MultiAxisLineGraph2DRenderer;
-import org.diirt.graphene.InterpolationScheme;
-import org.diirt.graphene.Point2DDatasets;
 import org.diirt.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

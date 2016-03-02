@@ -7,12 +7,6 @@ package org.diirt.datasource.timecache;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.diirt.datasource.timecache.Cache;
-import org.diirt.datasource.timecache.CacheConfig;
-import org.diirt.datasource.timecache.CacheFactory;
-import org.diirt.datasource.timecache.CacheImpl;
-import org.diirt.datasource.timecache.PVCache;
-import org.diirt.datasource.timecache.PVCacheImpl;
 import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
 import org.diirt.datasource.timecache.impl.SimpleMemoryStorage;
 import org.diirt.datasource.timecache.query.Query;

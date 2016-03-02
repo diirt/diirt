@@ -5,7 +5,6 @@
 package org.diirt.vtype;
 
 import java.util.List;
-import org.diirt.vtype.Enum;
 import org.diirt.util.array.ListInt;
 
 /**

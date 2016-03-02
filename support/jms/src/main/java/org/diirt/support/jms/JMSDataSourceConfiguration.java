@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.diirt.support.jms;
 
@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 
 /**
  * Configuration for {@link JMSDatasource}
- * 
+ *
  * @author Kunal Shroff
  *
  */
@@ -34,7 +34,7 @@ public class JMSDataSourceConfiguration extends DataSourceConfiguration<JMSDatas
 
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/jms/@version", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);

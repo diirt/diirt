@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.diirt.support.jms;
 
@@ -137,7 +137,7 @@ public class JMSDatasourceIT {
     }
 
     /**
-     * 
+     *
      */
     @Test
     public void topicMultipleSubscribers(){
@@ -146,7 +146,7 @@ public class JMSDatasourceIT {
 
         List<String> eventList1 = new ArrayList<String>();
         List<String> eventList2 = new ArrayList<String>();
-        
+
         final PVReader<?> pv1 = PVManager.read(channel(topic)).readListener((event) -> {
             eventList1.add(event.getPvReader().getValue().toString());
             log.info("pv1 event" + event.getPvReader().getValue());
@@ -156,11 +156,11 @@ public class JMSDatasourceIT {
             eventList2.add(event.getPvReader().getValue().toString());
             log.info("pv2 event" + event.getPvReader().getValue());
         }).maxRate(ofHertz(100));
-        
+
         try {
            writeTextMessage(topic, "topicMultipleSubscribers", 10);
         } catch (Exception e) {
-            
+
         } finally {
             pv1.close();
             pv2.close();
@@ -172,8 +172,8 @@ public class JMSDatasourceIT {
 
     /**
      * Parse the name to support defining the read and write types / the
-     * sytax is as follows 
-     * 
+     * sytax is as follows
+     *
      * jms://topic_name<readType, writeType>{filter}
      **/
     @Test
@@ -182,7 +182,7 @@ public class JMSDatasourceIT {
         PVManager.setDefaultDataSource(jms);
 
         List<String> eventList1 = new ArrayList<String>();
-        
+
         final PVReader<?> pv1 = PVManager.read(channel(topic + "{property = 'ID1'}")).readListener((event) -> {
             if (event.isValueChanged()) {
                 eventList1.add(event.getPvReader().getValue().toString());
@@ -194,7 +194,7 @@ public class JMSDatasourceIT {
            writeTextMessageWithProperty(topic, "ID1", "ID1", 10);
            writeTextMessageWithProperty(topic, "ID2", "ID2", 10);
         } catch (Exception e) {
-            
+
         } finally {
             pv1.close();
         }
@@ -205,11 +205,11 @@ public class JMSDatasourceIT {
 
     /**
      * A helper method used by tests to write plain text message/s to a topic
-     * 
+     *
      * @param topic The topic to write the message to
      * @param count The number of times the message should be written
      * @throws JMSException
-     * @throws InterruptedException 
+     * @throws InterruptedException
      */
     private static void writeTextMessage(String topic, String textID, int count) throws JMSException, InterruptedException {
         writeTextMessageWithProperty(topic, null, textID, count);
@@ -217,11 +217,11 @@ public class JMSDatasourceIT {
 
     /**
      * A helper method used by tests to write plain text message/s with a property to a topic
-     * 
+     *
      * @param topic The topic to write the message to
      * @param count The number of times the message should be written
      * @throws JMSException
-     * @throws InterruptedException 
+     * @throws InterruptedException
      */
     private static void writeTextMessageWithProperty(String topic, String Property, String textID, int count) throws JMSException, InterruptedException {
         // Create the destination (Topic or Queue)

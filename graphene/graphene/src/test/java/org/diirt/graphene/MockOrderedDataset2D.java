@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
 import org.diirt.util.stats.StatisticsUtil;
 import org.diirt.util.stats.Statistics;
 import org.diirt.util.array.ArrayDouble;

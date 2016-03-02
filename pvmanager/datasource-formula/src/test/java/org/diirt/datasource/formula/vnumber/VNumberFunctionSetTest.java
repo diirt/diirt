@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource.formula.vnumber;
 
-import org.diirt.datasource.formula.vnumber.VNumberFunctionSet;
-import java.util.Arrays;
-import java.util.List;
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FunctionTester;
 import org.diirt.util.time.TimeDuration;

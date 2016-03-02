@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.DataUtils;
 import gov.aps.jca.dbr.TimeStamp;
 import org.junit.Test;
 import static org.junit.Assert.*;

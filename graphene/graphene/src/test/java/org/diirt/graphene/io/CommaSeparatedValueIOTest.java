@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene.io;
 
-import org.diirt.graphene.io.CommaSeparatedValueIO;
 import java.io.IOException;
 import org.diirt.graphene.Point2DDataset;
 import org.diirt.graphene.Point2DDatasets;

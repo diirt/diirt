@@ -4,11 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.TimeSeriesDatasets;
-import org.diirt.graphene.TimeSeriesDataset;
-import org.diirt.graphene.LineTimeGraph2DRenderer;
-import org.diirt.graphene.InterpolationScheme;
-import org.diirt.graphene.LineTimeGraph2DRendererUpdate;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
@@ -19,7 +14,6 @@ import org.diirt.util.time.Timestamp;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 /**
  *

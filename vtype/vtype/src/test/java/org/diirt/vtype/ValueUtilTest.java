@@ -4,16 +4,6 @@
  */
 package org.diirt.vtype;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.VNumberArray;
 import java.awt.Color;
 import java.util.Arrays;
 import org.junit.Test;
@@ -27,7 +17,6 @@ import org.diirt.util.array.ArrayFloat;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.text.NumberFormats;
 import org.diirt.util.time.Timestamp;
 
 /**

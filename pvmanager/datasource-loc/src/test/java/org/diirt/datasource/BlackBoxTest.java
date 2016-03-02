@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PV;
-import org.diirt.datasource.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import static org.diirt.datasource.ExpressionLanguage.*;

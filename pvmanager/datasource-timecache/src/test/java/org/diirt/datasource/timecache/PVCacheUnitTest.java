@@ -12,12 +12,6 @@ import java.util.SortedSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.diirt.datasource.timecache.Data;
-import org.diirt.datasource.timecache.DataChunk;
-import org.diirt.datasource.timecache.DataRequestListener;
-import org.diirt.datasource.timecache.DataRequestThread;
-import org.diirt.datasource.timecache.PVCacheImpl;
-import org.diirt.datasource.timecache.PVCacheListener;
 import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
 import org.diirt.datasource.timecache.impl.SimpleMemoryStorage;
 import org.diirt.datasource.timecache.source.DataSource;

@@ -11,7 +11,6 @@ import org.diirt.datasource.WriteCache;
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.ChannelHandlerReadSubscription;
 import org.diirt.vtype.VDouble;
-import org.diirt.datasource.loc.LocalChannelHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

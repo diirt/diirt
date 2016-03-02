@@ -6,9 +6,6 @@ package org.epics.graphene.rrdtool;
 
 import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import org.epics.graphene.Point2DDataset;
-import org.epics.graphene.Point2DDatasets;
 import org.epics.graphene.ScatterGraph2DRenderer;
 import org.epics.util.array.CollectionNumber;
 import org.epics.util.array.IteratorNumber;

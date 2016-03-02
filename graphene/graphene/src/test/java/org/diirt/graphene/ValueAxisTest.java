@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.ValueAxis;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;

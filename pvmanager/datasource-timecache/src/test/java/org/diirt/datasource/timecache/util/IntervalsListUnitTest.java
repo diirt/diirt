@@ -6,7 +6,6 @@ package org.diirt.datasource.timecache.util;
 
 import java.text.ParseException;
 
-import org.diirt.datasource.timecache.util.IntervalsList;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.util.time.Timestamp;
 import org.junit.Assert;

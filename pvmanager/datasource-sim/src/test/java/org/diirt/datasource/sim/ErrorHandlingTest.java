@@ -16,7 +16,6 @@ import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
 import org.diirt.datasource.expression.SourceRateExpression;
 import org.diirt.datasource.expression.SourceRateExpressionImpl;
-import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.util.time.TimeDuration;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;

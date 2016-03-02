@@ -4,9 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.AxisRange;
-import org.diirt.graphene.AxisRanges;
-import org.diirt.graphene.AxisRangeInstance;
 import org.diirt.util.stats.Range;
 import org.diirt.util.stats.Ranges;
 import org.junit.Test;

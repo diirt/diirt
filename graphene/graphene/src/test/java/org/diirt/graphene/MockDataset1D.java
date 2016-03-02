@@ -4,14 +4,10 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point1DDataset;
 import org.diirt.util.stats.StatisticsUtil;
 import org.diirt.util.stats.Statistics;
 import java.util.Random;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.CollectionDouble;
-import org.diirt.util.array.CollectionNumber;
-import org.diirt.util.array.IteratorDouble;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.stats.Range;
 

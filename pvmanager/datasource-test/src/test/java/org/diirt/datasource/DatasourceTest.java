@@ -4,10 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.datasource.DataSource;
-import org.diirt.datasource.ReadRecipe;
-import org.diirt.datasource.ChannelHandler;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.mockito.Mock;

@@ -4,8 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.LabelColorSchemes;
-import org.diirt.graphene.LabelColorScheme;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
