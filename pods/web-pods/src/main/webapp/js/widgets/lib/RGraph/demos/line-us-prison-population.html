@@ -25,7 +25,7 @@
     <script>
         var data = [0.140652855, 0.156898821, 0.17392137, 0.181314164, 0.190083403, 0.204936627, 0.219226948, 0.232290443, 0.248576086, 0.276869432, 0.297991221, 0.314307072, 0.333516451, 0.352770502, 0.380347379, 0.410398994, 0.425115587, 0.439371182, 0.45309086, 0.47202617, 0.466500291, 0.466535618, 0.475166227, 0.478867548, 0.485024967, 0.489713802, 0.500002324, 0.503305103, 0.500315325, 0.496573444];
 
-		var line = new RGraph.Line('cvs', data)
+        var line = new RGraph.Line('cvs', data)
             .Set('title', 'Interactive chart of percent U.S. population incarcerated.')
             .Set('text.font', 'Arial')
             .Set('background.barcolor1', 'rgba(255,255,255,1)')
@@ -40,17 +40,17 @@
             .Set('tickmarks', myTick)
             .Set('tooltips', ['id:1980', 'id:1981', 'id:1982', 'id:1983', 'id:1984', 'id:1985','id:1986','id:1987', 'id:1988', 'id:1989', 'id:1990', 'id:1991', 'id:1992', 'id:1993', 'id:1994', 'id:1995', 'id:1996', 'id:1997', 'id:1998', 'id:1999', 'id:2000', 'id:2001', 'id:2002', 'id:2003', 'id:2004', 'id:2005', 'id:2006', 'id:2007', 'id:2008', 'id:2009'])
             .Set('tooltips.css.class', 'tooltip')
-		    .Set('numxticks', 29)
+            .Set('numxticks', 29)
             .Draw();
 
-	    function myTick (obj, data, value, index, x, y, color, prevX, prevY)
+    function myTick (obj, data, value, index, x, y, color, prevX, prevY)
         {
-    	    var ctx = obj.canvas.getContext("2d");
-    	    ctx.fillStyle = "white";
+            var ctx = obj.canvas.getContext("2d");
+            ctx.fillStyle = "white";
 
             if(index == 3 || index == 4 || (index >= 13 && index<= 16) || index == 20){
-    		    ctx.fillStyle = "#4C2288";
-    	    }
+                ctx.fillStyle = "#4C2288";
+            }
 
             // Draw your custom tick here
             ctx.beginPath();

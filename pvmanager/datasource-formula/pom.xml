@@ -46,7 +46,7 @@
                 <configuration>
                     <instructions>
                         <!-- antlr does not have a Manifest, so BND is
-			     unable to find the version. -->
+                             unable to find the version. -->
                         <Require-Bundle>org.antlr.runtime;bundle-version="[$(version;==;${antlr.runtime.version}),$(version;+;${antlr.runtime.version}))"</Require-Bundle>
                         <Import-Package>*</Import-Package>
                     </instructions>

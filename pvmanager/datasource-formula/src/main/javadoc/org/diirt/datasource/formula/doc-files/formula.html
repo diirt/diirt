@@ -24,7 +24,7 @@ mypv+123   : the pv called "mypv+123"
         Any string of text that starts with = must be followed by and expression.
         <p>
             Pvs in expressions must be single quoted:
-	</p>
+    </p>
 <pre>='mypv123'  : the pv called "mypv123"
 ='mypv+123' : the pv called "mypv+123"
 ='123'      : the pv called "123"</pre>
@@ -34,14 +34,14 @@ mypv+123   : the pv called "mypv+123"
         <p>
             Expressions can contain numeric and string constants. Their definition
             matches Java.
-	</p>
+    </p>
 <pre>="Some text" : a constant string
 =123         : the constant integer 123
 =3.14        : the constant double 3.14
 =1e5         : the constant double 100,000 in exponential notation</pre>
         <p>
             Expressions can be combined with operators and functions.
-	</p>
+    </p>
 <pre>=1000 * 'mypv' + 300 : the value from a pv called "mypv" multiplied by 1,000 and summed to 300
 =log('mypv')         : the logarithm of the pv called "mypv"
 =arrayOf(1,2,3,4,5)  : an array containing the first 5 integers</pre>
