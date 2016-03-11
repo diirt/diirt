@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.graphene;
 
-import org.diirt.datasource.graphene.DatasetConversions;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.graphene.Point2DDataset;

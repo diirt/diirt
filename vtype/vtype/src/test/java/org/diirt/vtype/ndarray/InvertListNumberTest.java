@@ -4,14 +4,8 @@
  */
 package org.diirt.vtype.ndarray;
 
-import org.diirt.vtype.ndarray.InvertListNumber;
-import java.util.Arrays;
-import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

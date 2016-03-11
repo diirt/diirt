@@ -6,7 +6,6 @@ package org.diirt.datasource.sim;
 
 import org.diirt.vtype.VDouble;
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Function to simulate a signal shaped like a sine. The warning

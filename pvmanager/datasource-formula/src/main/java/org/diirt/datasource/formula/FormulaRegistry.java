@@ -4,15 +4,12 @@
  */
 package org.diirt.datasource.formula;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.config.ServiceLoaderOSGiWrapper;
 import org.diirt.vtype.ValueFactory;

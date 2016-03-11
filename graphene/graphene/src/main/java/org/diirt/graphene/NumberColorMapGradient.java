@@ -6,9 +6,7 @@ package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
 import javafx.scene.paint.Color;
-import java.util.ArrayList;
 import java.util.List;
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
 
 /**

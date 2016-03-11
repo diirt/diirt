@@ -4,23 +4,6 @@
  */
 package org.diirt.vtype;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VShort;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.SimpleValueFormat;
-import org.diirt.vtype.VEnumArray;
-import org.diirt.vtype.VShortArray;
-import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VFloat;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VByteArray;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VByte;
-import org.diirt.vtype.VFloatArray;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;

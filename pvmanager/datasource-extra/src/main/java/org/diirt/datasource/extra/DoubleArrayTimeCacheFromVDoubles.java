@@ -14,7 +14,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.Display;
-import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VNumber;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.CollectionNumbers;

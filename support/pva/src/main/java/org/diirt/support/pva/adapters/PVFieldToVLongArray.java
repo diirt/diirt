@@ -11,7 +11,6 @@ import org.epics.pvdata.pv.LongArrayData;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVLongArray;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.PVULongArray;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ArrayLong;

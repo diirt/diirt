@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource;
 
-import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -4,26 +4,6 @@
  */
 package org.diirt.vtype;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.ArrayDimensionDisplay;
-import org.diirt.vtype.VEnumArray;
-import org.diirt.vtype.VShortArray;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VFloat;
-import org.diirt.vtype.VBooleanArray;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.VByteArray;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.VFloatArray;
-import org.diirt.vtype.VTypeValueEquals;
-import org.diirt.vtype.VLongArray;
 import java.util.Arrays;
 import org.diirt.util.array.ArrayBoolean;
 import org.diirt.util.array.ArrayByte;

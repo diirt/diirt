@@ -4,8 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.NameParser;
-import org.diirt.datasource.sim.Replay;
 import java.util.List;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VDouble;

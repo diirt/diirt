@@ -5,7 +5,6 @@
 package org.diirt.support.ca;
 
 import gov.aps.jca.Context;
-import gov.aps.jca.JCALibrary;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.datasource.ChannelHandler;

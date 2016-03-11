@@ -2,11 +2,11 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.hprogress.js" ></script>
-    
+
     <title>An adjustable HProgress chart</title>
 
     <meta name="keywords" content="demo hprogress adjustable" />
@@ -18,7 +18,7 @@
     <h1>A basic HProgress chart</h1>
 
     <canvas id="cvs" width="600" height="100">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -28,18 +28,18 @@
                 .Set('gutter.right', 30)
                 .Set('margin', 5)
                 .Draw();
-            
+
             hprogress.canvas.onclick = function (e)
             {
                 var value = hprogress.getValue(e);
                 hprogress.value = value;
-                
+
                 RGraph.Effects.HProgress.Grow(hprogress);
             }
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

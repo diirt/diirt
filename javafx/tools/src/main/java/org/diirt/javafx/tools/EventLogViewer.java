@@ -9,15 +9,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.ValueUtil;
 
 public final class EventLogViewer extends HBox {
 

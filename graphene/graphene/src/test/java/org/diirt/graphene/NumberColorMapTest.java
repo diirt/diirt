@@ -4,21 +4,16 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.NumberColorMapInstance;
-import org.diirt.graphene.NumberColorMaps;
 import org.diirt.util.stats.Range;
 import  javafx.scene.paint.Color;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import javax.management.RuntimeErrorException;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
 
 /**
  *

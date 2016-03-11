@@ -5,7 +5,6 @@
 package org.diirt.datasource;
 
 import java.util.Objects;
-import org.diirt.datasource.util.NullUtils;
 
 /**
  * Dedicated notification type support.

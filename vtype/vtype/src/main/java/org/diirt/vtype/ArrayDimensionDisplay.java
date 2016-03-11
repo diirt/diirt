@@ -4,7 +4,6 @@
  */
 package org.diirt.vtype;
 
-import java.util.List;
 import org.diirt.util.array.ListNumber;
 
 /**

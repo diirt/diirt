@@ -4,8 +4,6 @@
  */
 package org.diirt.vtype.io;
 
-import org.diirt.vtype.io.TextIO;
-import java.io.FileWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;

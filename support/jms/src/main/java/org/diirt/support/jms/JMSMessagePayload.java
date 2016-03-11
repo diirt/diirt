@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.diirt.support.jms;
 

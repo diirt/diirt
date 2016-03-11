@@ -2,21 +2,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A grouped bar chart</title>
-    
+
     <meta name="keywords" content="grouped bar" />
     <meta name="description" content="This demonstration shows a grouped Bar chart" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A grouped bar chart</h1>
-    
+
     <p>
         This is a grouped Bar chart.
     </p>
@@ -36,13 +36,13 @@
                 .Set('background.grid.vlines', false)
                 .Set('background.grid.border', false)
                 .Draw();
-                
+
             window.__bar9__ = bar9;
         }
     </script>
-    
+
     <br />
-    
+
     <i>chart.hmargin.grouped</i> setting:<input type="text" id="hmarginGrouped" value="1" onkeyup="window.__bar9__.Set('chart.hmargin.grouped', Number(this.value)); RGraph.Clear(document.getElementById('cvs')); window.__bar9__.Draw();" size="1" />
 
 

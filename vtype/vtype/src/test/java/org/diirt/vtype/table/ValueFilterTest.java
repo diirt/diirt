@@ -4,7 +4,6 @@
  */
 package org.diirt.vtype.table;
 
-import org.diirt.vtype.table.ValueFilter;
 import java.util.Arrays;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.vtype.VTable;

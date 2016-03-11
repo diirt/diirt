@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource;
 
-import java.util.Arrays;
-import org.diirt.datasource.ConnectionCollector;
-import org.diirt.datasource.WriteFunction;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;

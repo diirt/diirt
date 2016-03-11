@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;

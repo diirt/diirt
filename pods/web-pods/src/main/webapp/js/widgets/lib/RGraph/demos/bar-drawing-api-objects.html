@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
@@ -10,9 +10,9 @@
     <script src="../libraries/RGraph.drawing.yaxis.js" ></script>
     <script src="../libraries/RGraph.drawing.rect.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Bar chart made with the Drawing API objects</title>
-    
+
     <meta name="keywords" content="bar drawing api" />
     <meta name="description" content="A Bar chart that is made up from drawing API objects" />
     <meta name="robots" content="noindex,nofollow" />
@@ -20,13 +20,13 @@
 <body>
 
     <h1>A Bar chart made with the Drawing API objects</h1>
-    
+
     <p>
         This is a demo of the Drawing API objects being used to make a bar chart all by themselves (without the actual Bar chart).
     </p>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         var data = [100,80,60,40,20];
         var labels = ['Fred','Barney','Wilma','Betty','Dino'];
@@ -46,43 +46,43 @@
             .Set('noyaxis', true)
             .Set('tooltips', ['The Y axis shows a scale of how much the characters did<br /> something - at some point'])
             .Draw();
-    
+
         for (var i=0; i<data.length; ++i) {
 
             var w = ((600-50-25) / data.length) - (hmargin * 2);
             var h = (data[i] / max) * (xaxis.canvas.height - 25 - 25);
             var x = 50 + (((600-50-25) / data.length) * i) + hmargin;
             var y = 250 - 25 - h;
-        
+
             var rect = new RGraph.Drawing.Rect('cvs', x, y, w, h)
                 .Set('tooltips', [labels[i]])
                 .Set('highlight.stroke', 'rgba(0,0,0,0)')
                 .Draw();
         }
-        
+
         RGraph.Redraw();
     </script>
-    
+
     <p>
         <b>Is it quicker than using the standard Bar chart?</b><br />
         No.
     </p>
-    
+
     <p>
         <b>Is it easier to implement than the standard Bar chart?</b><br />
         No.
     </p>
-    
+
     <p>
         <b>Is it easier to maintain than the standard Bar chart?</b><br />
         No.
     </p>
-    
+
     <p>
         <b>Does it encompass all of the features of the standard Bar chart?</b><br />
         No.
     </p>
-    
+
     <p>
         <b>So why?</b><br />
         It's just an example of three of the drawing API objects - the XAxis, the Yaxis and the Rect. If what you want is a Bar

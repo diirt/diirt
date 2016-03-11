@@ -7,14 +7,8 @@ package org.diirt.support.pva.rpcservice;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.diirt.service.AbstractFileServiceProvider;
 import org.diirt.service.Service;
-import org.diirt.service.ServiceProvider;
 
 /**
  * A pva rpcservice factory that crawls a directory for xml files, and creates

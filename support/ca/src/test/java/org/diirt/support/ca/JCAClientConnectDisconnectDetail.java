@@ -4,10 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,7 +12,6 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.test.CountDownPVReaderListener;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

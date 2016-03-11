@@ -2,15 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Bar chart combined with a Line chart</title>
-    
+
     <meta name="keywords" content="bar combined line chart" />
     <meta name="description" content="A Bar chart combined with a Line chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,10 +18,10 @@
 <body>
 
     <h1>A Bar chart combined with a Line chart</h1>
-    
+
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -38,14 +38,14 @@
                                 'Q1\r\n2011','Q2\r\n2011','Q3\r\n2011','Q4\r\n2011',
                                 'Q1\r\n2012','Q2\r\n2012','Q3\r\n2012','Q4\r\n2012'
                                ])
-                .Set('ymax', 8) 
-            
+                .Set('ymax', 8)
+
             var line = new RGraph.Line('cvs', [-2,-1,0.5,2.2,2.8,3.2,4.7,5.7,5.9,4.5,6.5,7.5,6.8,5.8,5.8])
                 .Set('colors', ['#C66260'])
                 .Set('xaxispos', 'center')
                 .Set('ymax', 8)
                 .Set('linewidth', 4)
-            
+
             var combo = new RGraph.CombinedChart(bar, line)
                 .Draw();
         }

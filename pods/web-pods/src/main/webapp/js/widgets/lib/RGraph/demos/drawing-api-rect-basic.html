@@ -2,22 +2,22 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/RGraph.drawing.rect.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A basic example of the drawing API rect object</title>
-    
+
     <meta name="keywords" content="demo drawing api rect" />
     <meta name="description" content="A basic example of the drawing API rect object" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A basic example of the drawing API rect object</h1>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -31,9 +31,9 @@
                 .Set('background.grid.vlines', false)
                 .Set('background.grid.border', false)
                 .Draw();
-            
+
             var coords = line.coords[2];
-            
+
             var rect = new RGraph.Drawing.Rect('cvs', coords[0] - 15, coords[1] - 15, 30,30)
                 .Set('fillstyle', 'rgba(255,0,0,0.25)')
                 .Set('strokestyle', '#000')

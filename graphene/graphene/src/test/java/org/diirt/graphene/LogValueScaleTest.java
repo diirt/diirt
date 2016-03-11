@@ -4,10 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.ValueAxis;
-import org.diirt.graphene.ValueScales;
-import org.diirt.graphene.LogValueScale;
-import org.diirt.graphene.ValueScale;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

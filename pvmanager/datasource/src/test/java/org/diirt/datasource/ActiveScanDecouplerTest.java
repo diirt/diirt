@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.SourceDesiredRateDecoupler;
-import org.diirt.datasource.ActiveScanDecoupler;
 import java.util.concurrent.Callable;
 import org.diirt.util.time.TimeDuration;
 import org.junit.Test;

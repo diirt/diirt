@@ -4,9 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.ValueScales;
-import org.diirt.graphene.FontUtil;
-import org.diirt.graphene.GraphBuffer;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +13,6 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.graphene.Cell2DDataset;
-import org.diirt.graphene.Cell2DDatasets;
 /**
  *
  * @author carcassi

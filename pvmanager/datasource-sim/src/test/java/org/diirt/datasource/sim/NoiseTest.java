@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.Noise;
 import org.diirt.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;

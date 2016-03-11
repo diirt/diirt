@@ -12,7 +12,6 @@ import javafx.beans.property.StringProperty;
 import org.diirt.javafx.tools.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.diirt.datasource.PVManager;

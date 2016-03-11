@@ -8,7 +8,7 @@
     </parent>
     <artifactId>vtype-all</artifactId>
     <packaging>pom</packaging>
-    
+
     <name>vtype</name>
     <description>A set of standard types for value processing.</description>
     <modules>

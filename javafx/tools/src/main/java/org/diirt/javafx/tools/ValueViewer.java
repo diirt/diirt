@@ -4,14 +4,11 @@
  */
 package org.diirt.javafx.tools;
 
-import com.sun.javafx.collections.ElementObservableListDecorator;
 import com.sun.javafx.collections.ImmutableObservableList;
-import com.sun.javafx.collections.ObservableListWrapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

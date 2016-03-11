@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.formula.array;
 
-import org.diirt.datasource.formula.array.ArrayFunctionSet;
 import static org.diirt.vtype.ValueFactory.*;
 
 import java.util.Arrays;

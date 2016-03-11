@@ -5,9 +5,7 @@
 package org.diirt.datasource.graphene;
 
 import java.util.Arrays;
-import java.util.List;
 import org.diirt.datasource.BasicTypeSupport;
-import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.NotificationSupport;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.TypeSupport;
@@ -18,7 +16,6 @@ import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
 import org.diirt.datasource.expression.DesiredRateExpressionList;
 import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
-import org.diirt.datasource.expression.SourceRateExpression;
 import org.diirt.util.array.ListNumbers;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.ValueFactory;

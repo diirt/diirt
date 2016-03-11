@@ -5,11 +5,7 @@
 package org.diirt.datasource;
 
 import java.util.ArrayList;
-import org.diirt.datasource.DesiredRateEvent;
-import org.diirt.datasource.SourceDesiredRateDecoupler;
-import org.diirt.datasource.DesiredRateEventListener;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.time.Timestamp;

@@ -10,9 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.StatefulFormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.IteratorNumber;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListNumbers;
 import org.diirt.util.stats.Range;
@@ -21,13 +19,10 @@ import org.diirt.util.stats.Statistics;
 import org.diirt.util.stats.StatisticsUtil;
 import org.diirt.util.text.NumberFormats;
 
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.table.VTableFactory;
 
 /**
  * @author shroffk

@@ -2,14 +2,14 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.waterfall.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Waterfall chart with Grow effect</title>
 
     <meta name="keywords" content="demo waterfall grow effect" />
@@ -21,7 +21,7 @@
     <h1>A Waterfall chart with Grow effect</h1>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -51,12 +51,12 @@
                 .Set('shadow.offsety', 0)
                 .Set('gutter.left', 50)
                 .Set('xaxispos', 'center')
-            
+
             RGraph.Effects.Waterfall.Grow(waterfall1);
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

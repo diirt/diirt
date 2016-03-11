@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    
+
     <title>A dynamically updating Line chart</title>
-    
+
     <meta name="keywords" content="demo line dynamic" />
     <meta name="description" content="A dynamically updating Line chart. The data here is simply generated randomly but could just as easily be retrieved from a server via AJAX (for example)." />
     <meta name="robots" content="noindex,nofollow" />
@@ -16,14 +16,14 @@
 <body>
 
     <h1>A dynamically updating Line chart</h1>
-    
+
     <p>
         This chart updates itself 20 times a second.New values are appended to the data that's displayed and old values are removed
         from the data. Careful use is made of local variables (which are the fastest kind) - so that the updates are done smoothly.
     </p>
 
     <canvas id="cvs" width="1000" height="250">[No canvas support]</canvas>
-    
+
     <script>
 
         window.onload = function (e)
@@ -34,16 +34,16 @@
             var data      = [];
             var l         = 0; // The letter 'L' - NOT a one
             var numvalues = 1200;
-        
+
             // Pre-pad the arrays with null values
             for (var i=0; i<numvalues; ++i) {
                 data.push(null);
             }
-        
+
             function drawGraph ()
             {
                 RG.Clear(canvas);
-                
+
 
                 if (!obj) {
                     obj = new RG.Line('cvs', [])
@@ -62,11 +62,11 @@
                         .Set('ymax', 50)
                         .Set('xticks', 25)
                         .Set('filled', true);
-                    
+
                     var grad = obj.context.createLinearGradient(0,0,0,250);
                     grad.addColorStop(0, '#efefef');
                     grad.addColorStop(0.9, 'rgba(0,0,0,0)');
-    
+
                     obj.Set('chart.fillstyle', [grad]);
                 }
 
@@ -74,16 +74,16 @@
                 var len          = data.length;
                 var lastvalue    = RG.is_null(data[len - 1]) ? 26 : data[len - 1];
                 var random_value = RG.random(lastvalue  - 2,lastvalue  + 2);
-               
+
                random_value = Math.max(random_value, 0);
                random_value = Math.min(random_value, 50);
 
                 data.push(random_value);
-                
+
                 if (data.length > numvalues) {
                     data = RG.array_shift(data);
                 }
-    
+
                 if (ISIE8) {
                     alert('[MSIE] Sorry, Internet Explorer 8 is not fast enough to support dynamic charts');
                 } else {
@@ -92,7 +92,7 @@
                     setTimeout(drawGraph, 50);
                 }
             }
-        
+
             drawGraph();
         }
     </script>

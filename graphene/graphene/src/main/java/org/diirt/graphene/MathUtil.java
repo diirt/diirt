@@ -4,8 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.array.IteratorDouble;
-
 /**
  *
  * @author carcassi

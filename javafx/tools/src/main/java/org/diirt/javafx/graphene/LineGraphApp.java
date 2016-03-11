@@ -5,7 +5,7 @@
 package org.diirt.javafx.graphene;
 
 import javafx.stage.Stage;
-import org.diirt.graphene.InterpolationScheme;
+import static javafx.application.Application.launch;
 
 /**
  *

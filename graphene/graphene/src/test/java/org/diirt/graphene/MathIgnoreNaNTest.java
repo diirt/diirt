@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.MathIgnoreNaN;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

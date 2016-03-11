@@ -6,7 +6,6 @@ package org.diirt.vtype.next;
 
 import java.time.Instant;
 import java.util.Objects;
-import org.diirt.util.time.TimestampFormat;
 
 /**
  * Time information.

@@ -4,8 +4,6 @@
  */
 package org.diirt.vtype.next;
 
-import java.util.List;
-
 /**
  * Scalar enum with alarm and timestamp.
  * Given that enumerated values are of very limited use without

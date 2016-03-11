@@ -4,11 +4,9 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.datasource.vtype.DataTypeSupport;
 import java.util.List;
 
 import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.util.time.TimeDuration;
 import org.junit.BeforeClass;
 import org.junit.Test;

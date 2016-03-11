@@ -2,29 +2,29 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.drawing.rect.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A heat-map like chart using the drawing API rect object</title>
-    
+
     <meta name="keywords" content="demo drawing api rect" />
     <meta name="description" content="An example of the drawing API rect object" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A heat map like chart using the drawing API rect object</h1>
-    
+
     <p>
         This chart was inspired by Facebooks "heat map"-esque visualisation for determining what computers (though it doesn't have to be
         computers) are either malfunctioning or sending alerts. In a large datacenter each column could be a particular rack and each
         individual square a specific computer.
     </p>
-    
+
     <p>
         Each individual square is a drawing API Rect object - so each can be assigned its own tooltip, colors and click/mousemove events.
     </p>
@@ -51,7 +51,7 @@
         {
             // 25 "clusters of computers" (sticking to the datacenter analogy)
             for (var y=0; y<25; ++y) {
-            
+
                 // 60 "Computers per cluster" (sticking to the datacenter analogy)
                 for (var x=0; x<60; ++x) {
                     var rect = new RGraph.Drawing.Rect('cvs',x*10,y*10,10,10);

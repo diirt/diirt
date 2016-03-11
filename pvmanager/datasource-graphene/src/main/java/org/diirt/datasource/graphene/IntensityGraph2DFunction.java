@@ -4,24 +4,16 @@
  */
 package org.diirt.datasource.graphene;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.diirt.graphene.*;
 import org.diirt.datasource.QueueCollector;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListMath;
 import org.diirt.vtype.ArrayDimensionDisplay;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.diirt.support.jms;
 
@@ -29,10 +29,10 @@ public class JMSChannelHandler extends MultiplexedChannelHandler<Object, Object>
     private JMSDatasource jmsDatasource;
     private MessageConsumer consumer;
 
-    private String selector; 
+    private String selector;
     private String readType;
     private String writeType;
-    
+
     public JMSChannelHandler(String channelName, JMSDatasource jmsDatasource) {
         super(channelName);
         this.jmsDatasource = jmsDatasource;

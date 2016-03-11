@@ -10,7 +10,6 @@ package org.diirt.datasource.extra;
  */
 
 
-import org.diirt.datasource.extra.Interpolations;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

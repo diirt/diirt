@@ -11,7 +11,6 @@ import org.epics.pvdata.pv.FloatArrayData;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVFloatArray;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
 import org.diirt.vtype.VFloatArray;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayFloat;

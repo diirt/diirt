@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import gov.aps.jca.Channel;
 import org.diirt.datasource.DataSourceTypeSupport;
 import org.diirt.datasource.ValueCache;
 

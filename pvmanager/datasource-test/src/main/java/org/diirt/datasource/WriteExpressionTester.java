@@ -4,10 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.WriteFunction;
-import org.diirt.datasource.ChannelWriteRecipe;
-import org.diirt.datasource.PVWriterDirector;
-import org.diirt.datasource.WriteRecipe;
 import org.diirt.datasource.test.WriteRecipeUtil;
 import org.diirt.datasource.expression.WriteExpression;
 

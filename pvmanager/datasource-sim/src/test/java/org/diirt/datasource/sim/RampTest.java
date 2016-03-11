@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.Ramp;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VDouble;
 import org.junit.Test;

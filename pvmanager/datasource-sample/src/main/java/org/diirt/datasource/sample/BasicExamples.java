@@ -16,7 +16,6 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
 import org.diirt.datasource.TimeoutException;
-import org.diirt.datasource.WriteFunction;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

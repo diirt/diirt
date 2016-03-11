@@ -5,7 +5,6 @@
 package org.diirt.datasource;
 
 import java.io.InputStream;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.config.Configuration;

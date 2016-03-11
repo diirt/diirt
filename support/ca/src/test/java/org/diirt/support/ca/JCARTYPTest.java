@@ -4,9 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCAMessagePayload;
-import org.diirt.support.ca.JCAChannelHandler;
-import org.diirt.support.ca.JCADataSource;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBR;

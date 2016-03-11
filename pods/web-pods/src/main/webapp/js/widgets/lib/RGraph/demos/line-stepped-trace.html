@@ -2,16 +2,16 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/jquery.min.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A stepped Line chart with Trace effect</title>
-    
+
     <meta name="keywords" content="demo line stepped trace effects" />
     <meta name="description" content="A stepped Line chart that uses the Trace effect" />
     <meta name="robots" content="noindex,nofollow" />
@@ -19,13 +19,13 @@
 <body>
 
     <h1>A stepped Line chart with Trace effect</h1>
-    
+
     <p>
         Also has a dashed line drawn at Y=50
     </p>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -45,7 +45,7 @@
             line.Set('key.position.x', line.canvas.width - line.Get('chart.gutter.right'));
             line.Set('key.color.shape', 'circle');
             line.Set('linewidth', 3);
-            
+
             line.ondraw = function (obj)
             {
                 var y  = Math.round(obj.getYCoord(50));

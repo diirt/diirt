@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Line chart with out-of-bounds values</title>
-    
+
     <meta name="keywords" content="demo line out of bounds" />
     <meta name="description" content="A Line chart which shows the out-of-bounds values" />
     <meta name="robots" content="noindex,nofollow" />
@@ -16,14 +16,14 @@
 <body>
 
     <h1>A Line chart with out-of-bounds value</h1>
-    
+
     <p>
         This Line shows that you can set a chart.ymax value but instead of having breaks in the line for values that go beyond it,
         you can set chart.outofbounds to true and the vaues will be shown.
     </p>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {

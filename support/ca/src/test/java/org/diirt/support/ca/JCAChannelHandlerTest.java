@@ -4,8 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCAChannelHandler;
-import org.diirt.support.ca.JCADataSource;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

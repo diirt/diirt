@@ -8,7 +8,6 @@ import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
 import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.ValueUtil;
 
 /**
  * Numeric array with alarm, timestamp, display and control information.

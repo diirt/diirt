@@ -5,7 +5,6 @@
 package org.diirt.datasource.formula.math;
 
 import org.diirt.datasource.formula.FunctionTester;
-import org.diirt.datasource.formula.math.MathFunctionSet;
 import org.junit.Test;
 
 /**

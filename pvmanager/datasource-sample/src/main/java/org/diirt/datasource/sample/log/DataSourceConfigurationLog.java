@@ -6,8 +6,6 @@ package org.diirt.datasource.sample.log;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.diirt.datasource.CompositeDataSource;
-import org.diirt.datasource.DataSourceProvider;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;

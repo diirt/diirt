@@ -59,15 +59,15 @@ public class Configuration {
     }
 
     /**
-	 * A temporary method added to allow the mapping of osgi preferences to java
-	 * system properties. This is needed due to the limited options in
-	 * controlling the startup order of java declarative services and osgi
-	 * services
-	 */
+     * A temporary method added to allow the mapping of osgi preferences to java
+     * system properties. This is needed due to the limited options in
+     * controlling the startup order of java declarative services and osgi
+     * services
+     */
     public static synchronized void reset() {
-    	configurationDirectory = configurationDirectory();
+        configurationDirectory = configurationDirectory();
     }
-    
+
     public static File getFile(String relativeFilePath, Object obj, String defaultResource) throws IOException {
         File file = new File(Configuration.getDirectory(), relativeFilePath);
         if (!file.exists()) {

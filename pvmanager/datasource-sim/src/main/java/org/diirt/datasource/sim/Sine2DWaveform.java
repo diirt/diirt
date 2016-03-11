@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.vtype.VDoubleArray;

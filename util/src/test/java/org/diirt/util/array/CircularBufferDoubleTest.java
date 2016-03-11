@@ -4,13 +4,9 @@
  */
 package org.diirt.util.array;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.BeforeClass;
 import static org.diirt.util.array.CollectionTest.testCollection;
 import static org.diirt.util.array.ListTest.testList;
 

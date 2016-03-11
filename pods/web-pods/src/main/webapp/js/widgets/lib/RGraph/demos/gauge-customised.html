@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.gauge.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A customised Gauge chart</title>
-    
+
     <meta name="keywords" content="demo gauge customised" />
     <meta name="description" content="A customised Gauge chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,7 +18,7 @@
     <h1>A customised Gauge chart</h1>
 
     <canvas id="cvs" width="250" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -36,7 +36,7 @@
                 .Set('background.color', 'black')
                 .Set('background.gradient', true)
                 .Set('centerpin.color', '#666');
-            
+
             gauge.Set('needle.colors', [RGraph.RadialGradient(gauge, 125, 125, 0, 125, 125, 25, 'transparent', 'white'),
                                         RGraph.RadialGradient(gauge, 125, 125, 0, 125, 125, 25, 'transparent', '#d66')])
                 .Set('needle.size', [null, 50])

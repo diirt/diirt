@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.epics.util.array.ListDouble;
-import org.epics.util.time.TimeDuration;
 import org.epics.util.time.Timestamp;
 import org.epics.util.time.TimestampFormat;
 

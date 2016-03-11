@@ -6,17 +6,9 @@ package org.diirt.datasource;
 
 import org.diirt.datasource.test.WriteRecipeUtil;
 import org.diirt.datasource.test.MockDataSource;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import org.diirt.datasource.ChannelReadRecipe;
-import org.diirt.datasource.ChannelWriteRecipe;
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PVReader;
-import org.diirt.datasource.PVWriter;
-import org.diirt.datasource.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;
 import static org.diirt.datasource.ExpressionLanguage.*;

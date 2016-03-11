@@ -4,11 +4,7 @@
  */
 package org.diirt.util.time;
 
-import java.text.ParseException;
-import java.util.TimeZone;
-
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
 
 /**

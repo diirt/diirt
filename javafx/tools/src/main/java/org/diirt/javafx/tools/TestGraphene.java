@@ -5,9 +5,6 @@
 package org.diirt.javafx.tools;
 
 import javafx.application.Application;
-import static javafx.application.Application.launch;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 

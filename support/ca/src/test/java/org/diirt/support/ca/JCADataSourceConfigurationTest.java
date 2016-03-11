@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import com.cosylab.epics.caj.CAJConstants;
 import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;

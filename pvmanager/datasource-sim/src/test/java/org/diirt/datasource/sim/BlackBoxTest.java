@@ -4,11 +4,9 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
-import java.util.concurrent.Callable;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import static org.diirt.util.time.TimeDuration.*;
 import static org.hamcrest.Matchers.*;

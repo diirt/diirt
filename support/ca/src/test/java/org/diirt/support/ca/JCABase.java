@@ -4,15 +4,11 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 import java.util.ArrayList;
 import java.util.List;
 import org.diirt.datasource.PVManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**

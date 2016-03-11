@@ -2,21 +2,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Bar chart with post processing</title>
-    
+
     <meta name="keywords" content="demo bar post processing ondraw" />
     <meta name="description" content="A Bar chart the shows you that by using the ondraw event along with the coordinates you can do post-processing on your charts" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A Bar chart with post processing</h1>
-    
+
     <p>
         This Bar chart uses the custom RGraph ondraw event to add highlight to each bar.
     </p>
@@ -35,7 +35,7 @@
                 .Set('background.grid.vlines', false)
                 .Set('background.grid.border', false)
                 .Set('hmargin', 5)
-            
+
             // New, more compact, "DOM1-esque", style of adding events
             bar7.ondraw = function (obj)
             {
@@ -52,7 +52,7 @@
                     obj.context.fillRect(x,y,w,h)
                 }
             }
-            
+
             bar7.Draw();
         }
     </script>

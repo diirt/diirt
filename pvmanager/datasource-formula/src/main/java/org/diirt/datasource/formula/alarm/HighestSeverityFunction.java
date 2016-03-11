@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.formula.alarm;
 
-import java.util.AbstractList;
 import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;

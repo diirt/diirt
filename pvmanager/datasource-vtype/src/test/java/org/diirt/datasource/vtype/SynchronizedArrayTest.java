@@ -5,11 +5,8 @@
 package org.diirt.datasource.vtype;
 
 import org.diirt.vtype.VMultiDouble;
-import org.diirt.datasource.vtype.DataTypeSupport;
 import java.util.Arrays;
 import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.datasource.vtype.DataTypeSupport;
-import org.diirt.vtype.VMultiDouble;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.util.time.TimeDuration.*;

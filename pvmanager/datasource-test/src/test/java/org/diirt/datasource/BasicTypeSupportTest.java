@@ -5,13 +5,9 @@
 package org.diirt.datasource;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.diirt.datasource.BasicTypeSupport;
-import org.diirt.datasource.Notification;
-import org.diirt.datasource.NotificationSupport;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;

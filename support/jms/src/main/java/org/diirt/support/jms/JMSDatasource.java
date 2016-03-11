@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.diirt.support.jms;
 
@@ -36,7 +36,7 @@ public class JMSDatasource extends DataSource {
         // Install type support for the types it generates.
         DataTypeSupport.install();
     }
-    
+
     public JMSDatasource(JMSDataSourceConfiguration configuration) {
         super(true);
         this.configuration = configuration;
@@ -61,8 +61,8 @@ public class JMSDatasource extends DataSource {
     protected ChannelHandler createChannel(String channelName) {
         /**
          * Parse the name to support defining the read and write types / the
-         * sytax is as follows 
-         * 
+         * sytax is as follows
+         *
          * jms://topic_name<readType, writeType>{filter}
          **/
         List<Object> parsedTokens = parseName(channelName);
@@ -90,7 +90,7 @@ public class JMSDatasource extends DataSource {
                 System.out.println("setting selection" + parsedTokens.get(1).toString());
                 channel.setSelectors(parsedTokens.get(1).toString());
             }
-        } 
+        }
     }
 
     private List<Object> parseName(String channelName) {

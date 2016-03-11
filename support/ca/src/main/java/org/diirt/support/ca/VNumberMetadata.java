@@ -5,7 +5,6 @@
 package org.diirt.support.ca;
 
 import gov.aps.jca.dbr.CTRL;
-import gov.aps.jca.dbr.DBR_CTRL_Float;
 import gov.aps.jca.dbr.PRECISION;
 import gov.aps.jca.dbr.TIME;
 import java.text.NumberFormat;

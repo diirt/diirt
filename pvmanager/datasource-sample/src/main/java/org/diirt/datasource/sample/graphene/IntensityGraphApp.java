@@ -7,7 +7,6 @@ package org.diirt.datasource.sample.graphene;
 import org.diirt.graphene.IntensityGraph2DRenderer;
 import org.diirt.graphene.IntensityGraph2DRendererUpdate;
 import org.diirt.graphene.NumberColorMap;
-import org.diirt.graphene.NumberColorMaps;
 import static org.diirt.datasource.formula.ExpressionLanguage.formula;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 import org.diirt.datasource.graphene.Graph2DExpression;

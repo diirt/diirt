@@ -4,7 +4,6 @@
  */
 package org.diirt.vtype.io;
 
-import org.diirt.vtype.io.CSVIO;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;

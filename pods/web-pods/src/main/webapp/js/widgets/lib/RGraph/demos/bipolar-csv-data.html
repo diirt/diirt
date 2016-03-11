@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bipolar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A basic Bipolar chart</title>
-    
+
     <meta name="keywords" content="demo nipolar csv div" />
     <meta name="description" content="A demonstration of a Bipolar chart that uses data that is contained in hidden DIV tags in the page as a comma separated list of values." />
     <meta name="robots" content="noindex,nofollow" />
@@ -16,7 +16,7 @@
 <body>
 
     <h1>A Bipolar chart using CSV data</h1>
-    
+
     <p>
         The CSV data is hidden in the page using a hidden DIV. It's then retrieved using document.getElementById()
         and split up using the Javascript .split() function. The resulting array is an array of STRINGS so it's converted
@@ -24,13 +24,13 @@
     </p>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
             var left  = document.getElementById("csv-data-left").innerHTML.split(/,/);
             var right = document.getElementById("csv-data-right").innerHTML.split(/,/);
-            
+
             // Since they're strings, convert them to numbers
             for (var i=0; i<left.length; ++i) {left[i] = Number(left[i]);}
             for (var i=0; i<right.length; ++i) {right[i] = Number(right[i]);}
@@ -44,7 +44,7 @@
     <p>
         <a href="./">&laquo; Back</a>
     </p>
-    
+
     <div id="csv-data-left" style="display: none">6,8,6,3,5,2,4</div>
     <div id="csv-data-right" style="display: none">4,8,6,3,5,2,4</div>
 

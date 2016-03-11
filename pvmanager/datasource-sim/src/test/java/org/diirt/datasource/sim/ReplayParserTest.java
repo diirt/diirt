@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.XmlVDouble;
-import org.diirt.datasource.sim.XmlValues;
-import org.diirt.datasource.sim.ReplayParser;
 import java.net.URI;
 import org.diirt.vtype.AlarmSeverity;
 import org.junit.Test;

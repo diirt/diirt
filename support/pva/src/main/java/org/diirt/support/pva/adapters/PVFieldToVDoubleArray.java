@@ -11,7 +11,6 @@ import org.epics.pvdata.pv.DoubleArrayData;
 import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.util.array.ArrayDouble;

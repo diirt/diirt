@@ -4,12 +4,7 @@
  */
 package org.diirt.datasource.pods.web;
 
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.diirt.datasource.ConfigurableDataSourceProvider;
-import org.diirt.datasource.DataSourceProvider;
-import org.diirt.util.config.Configuration;
 
 /**
  * Factory for {@link WebPodsDataSource}.

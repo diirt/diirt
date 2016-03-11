@@ -8,8 +8,6 @@ import org.diirt.datasource.test.CountDownPVReaderListener;
 import org.diirt.datasource.test.MockDataSource;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PVReader;
 import org.diirt.datasource.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;

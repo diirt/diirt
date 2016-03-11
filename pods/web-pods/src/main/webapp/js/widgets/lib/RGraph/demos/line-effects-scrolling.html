@@ -5,9 +5,9 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>Line chart with scrolling effect</title>
-    
+
     <meta name="keywords" content="demo line scrolling" />
     <meta name="description" content="A chart which updates itself every 250ms producing a scrolling effect" />
     <meta name="robots" content="noindex,nofollow" />
@@ -17,7 +17,7 @@
     <h1>Line chart with scrolling effect</h1>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
-    
+
     <script>
         data = RGraph.array_pad([], 500);
 
@@ -40,10 +40,10 @@
             data = [r].concat(data);
             data.pop();
 
-            
+
             setTimeout(DrawGraph, 250);
         }
-        
+
         window.onload = function ()
         {
             DrawGraph();

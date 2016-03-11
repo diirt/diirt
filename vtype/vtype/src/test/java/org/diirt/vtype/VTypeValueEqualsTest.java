@@ -4,14 +4,9 @@
  */
 package org.diirt.vtype;
 
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VTypeValueEquals;
-import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ArrayInt;
 import org.diirt.util.time.Timestamp;
 import static org.hamcrest.Matchers.*;
 

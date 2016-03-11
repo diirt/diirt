@@ -4,8 +4,6 @@
  */
 package org.diirt.vtype;
 
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VTypeToString;
 import java.util.Arrays;
 import org.diirt.util.array.ArrayBoolean;
 import org.junit.Test;

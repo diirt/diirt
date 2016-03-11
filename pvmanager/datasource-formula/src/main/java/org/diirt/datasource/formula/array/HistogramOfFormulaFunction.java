@@ -9,7 +9,6 @@ import static org.diirt.vtype.ValueFactory.*;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.StatefulFormulaFunction;
-import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.IteratorNumber;
 import org.diirt.util.array.ListNumber;

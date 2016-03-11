@@ -69,7 +69,7 @@
             <artifactId>javafx</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>datasource-sample</artifactId>
@@ -84,7 +84,7 @@
             <groupId>org.diirt</groupId>
             <artifactId>service-jdbc</artifactId>
             <version>${project.version}</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>service</artifactId>

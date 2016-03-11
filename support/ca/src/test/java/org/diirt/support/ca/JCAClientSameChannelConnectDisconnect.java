@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

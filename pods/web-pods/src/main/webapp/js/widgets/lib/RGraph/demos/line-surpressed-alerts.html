@@ -2,11 +2,11 @@
 <head>
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    
+
     <title>A Line chart with warnings prevented</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="demo line alerts console" />
     <meta name="description" content="A Line chart where the alert function has been updated so that error messages are sent to the console" />
     <meta name="robots" content="noindex,nofollow" />
@@ -14,12 +14,12 @@
 <body>
 
     <h1>A line chart with alert() warnings prevented</h1>
-    
+
     <p>
         This is a standard line chart and the page also redefines the alert() function so that there are no warnings displayed. You
         simply need to redefine the alert function <b>before</b> you create the chart.
     </p>
-    
+
     <pre class="code">
 alert = function (str)
 {

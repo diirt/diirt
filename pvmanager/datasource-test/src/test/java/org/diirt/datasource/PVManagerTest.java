@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.PV;
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PVReader;
 import org.diirt.datasource.test.MockExecutor;
 import org.diirt.datasource.test.MockDataSource;
 import org.junit.After;

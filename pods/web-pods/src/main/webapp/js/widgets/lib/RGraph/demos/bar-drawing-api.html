@@ -2,24 +2,24 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.drawing.marker1.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Bar chart that also uses the drawing API</title>
-    
+
     <meta name="keywords" content="bar marker drawing api label" />
     <meta name="description" content="A Bar chart that uses a marker drawing API object to add a label to the chart" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A Bar chart that also uses the drawing API</h1>
-    
+
     <p>
         This Bar chart shows a regular bar chart that also makes use of the drawing API to draw a label on the chart.
     </p>
@@ -32,7 +32,7 @@
             var bar = new RGraph.Bar('cvs', [4,8,5,3,2])
                 .Set('labels', ['Fred','John','James','Louis','Pete'])
                 .Draw();
-            
+
             // Get the X/Y coordinates from the bar chart
             var idx = 2;
             var x   = bar.coords[idx][0] + (bar.coords[idx][2] / 2);

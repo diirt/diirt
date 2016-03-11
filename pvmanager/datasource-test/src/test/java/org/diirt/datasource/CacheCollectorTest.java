@@ -5,7 +5,6 @@
 package org.diirt.datasource;
 
 import java.util.Arrays;
-import org.diirt.datasource.CacheCollector;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;

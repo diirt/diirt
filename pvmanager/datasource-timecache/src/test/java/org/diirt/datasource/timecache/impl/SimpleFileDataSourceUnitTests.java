@@ -16,7 +16,6 @@ import org.diirt.datasource.timecache.Data;
 import org.diirt.datasource.timecache.DataChunk;
 import org.diirt.datasource.timecache.DataRequestListener;
 import org.diirt.datasource.timecache.DataRequestThread;
-import org.diirt.datasource.timecache.impl.SimpleFileDataSource;
 import org.diirt.datasource.timecache.source.DataSource;
 import org.diirt.datasource.timecache.util.CacheHelper;
 import org.diirt.util.time.TimeInterval;

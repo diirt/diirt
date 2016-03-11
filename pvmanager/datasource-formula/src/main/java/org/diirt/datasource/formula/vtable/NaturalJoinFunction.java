@@ -5,16 +5,10 @@
 package org.diirt.datasource.formula.vtable;
 
 import java.util.ArrayList;
-import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
-import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.table.VTableFactory;
 
 /**

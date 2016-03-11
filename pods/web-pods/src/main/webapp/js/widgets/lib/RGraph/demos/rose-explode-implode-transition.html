@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.rose.js" ></script>
@@ -18,7 +18,7 @@
     <h1>A Rose chart explode/implode transition effect</h1>
 
     <button onclick="transition()">Switch!</button>
-    
+
     <canvas id="cvs" width="450" height="400">[No canvas support]</canvas>
 
     <script>
@@ -44,7 +44,7 @@
                 .Set('strokestyle', 'rgba(0,0,0,0)')
                 .Set('margin', 3)
             RGraph.Effects.Rose.Implode(rose);
-            
+
             // A global
             visible = 1;
         }
@@ -65,7 +65,7 @@
                 .Set('strokestyle', 'rgba(0,0,0,0)')
                 .Set('margin', 3)
             RGraph.Effects.Rose.Implode(rose);
-            
+
             // A global
             visible = 2;
         }

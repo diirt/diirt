@@ -2,22 +2,22 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.drawing.xaxis.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>An example of the drawing API X axis</title>
-    
+
     <meta name="keywords" content="demo drawing api xaxis x axis" />
     <meta name="description" content="An example of the drawing API X axis object" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>An example of the drawing API X axis</h1>
 
 
@@ -33,16 +33,16 @@
                 .Set('colors.sequential', true)
                 .Set('colors', ['blue','blue','blue','blue','blue','red','red','red','red','red'])
                 .Draw();
-            
+
             var xaxes = new RGraph.Drawing.XAxis('cvs', bar.canvas.height - 25)
                 .Set('labels', ['Team A','Team B'])
                 .Draw();
-                
+
             xaxes.onclick = function (e, obj)
             {
                 alert('The X axis has been clicked!');
             }
-                
+
             xaxes.onmousemove = function (e, obj)
             {
                 e.target.style.cursor = 'pointer';

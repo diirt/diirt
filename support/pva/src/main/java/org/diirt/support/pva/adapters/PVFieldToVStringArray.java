@@ -11,7 +11,6 @@ import java.util.List;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStringArray;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.StringArrayData;
 import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTypeToString;
