@@ -14,7 +14,7 @@
             <id>uploadRepo</id>
             <properties>
                 <upload.root>s3://diirt.download.controlsystemstudio.org</upload.root>
-                <ftp.url>${upload.root}/diirt/${DIIRTVERSION}</ftp.url>
+                <ftp.url>${upload.root}/diirt/${project.version}</ftp.url>
             </properties>
             <build>
               <plugins>
