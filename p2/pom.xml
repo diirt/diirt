@@ -47,6 +47,17 @@
     <build>
         <plugins>
             <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-release-plugin</artifactId>
+              <version>2.5.3</version>
+              <configuration>
+                <!--
+                  During release:perform, enable the "release" profile
+                 -->
+                <releaseProfiles>uploadRepo</releaseProfiles>
+              </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.reficio</groupId>
                 <artifactId>p2-maven-plugin</artifactId>
                 <version>1.1.1</version>
