@@ -14,7 +14,7 @@ import org.diirt.vtype.VType;
  */
 public interface Data extends Comparable<Data> {
 
-	public Instant getTimestamp();
+    public Instant getTimestamp();
 
         public VType getValue();
 

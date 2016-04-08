@@ -12,11 +12,11 @@ import org.diirt.datasource.timecache.util.TimestampsSet;
  */
 public interface DataStorageListener {
 
-	/**
-	 * Informs that the specified set of {@link Instant} have been removed
-	 * from storage.
-	 * @param lostSet {@link TimestampsSet} of lost {@link Instant}.
-	 */
-	public void dataLoss(final TimestampsSet lostSet);
+    /**
+     * Informs that the specified set of {@link Instant} have been removed
+     * from storage.
+     * @param lostSet {@link TimestampsSet} of lost {@link Instant}.
+     */
+    public void dataLoss(final TimestampsSet lostSet);
 
 }

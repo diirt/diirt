@@ -19,36 +19,36 @@ import org.diirt.vtype.VType;
  */
 public class QueryDataComplete implements QueryData {
 
-	private final TimeInterval timeInterval;
-	private final SortedMap<Instant, VType> dataMap;
+    private final TimeInterval timeInterval;
+    private final SortedMap<Instant, VType> dataMap;
 
-	QueryDataComplete(TimeInterval timeInterval, SortedMap<Instant, VType> dataMap) {
-		this.dataMap = Collections.unmodifiableSortedMap(dataMap);
-		this.timeInterval = timeInterval;
-	}
+    QueryDataComplete(TimeInterval timeInterval, SortedMap<Instant, VType> dataMap) {
+        this.dataMap = Collections.unmodifiableSortedMap(dataMap);
+        this.timeInterval = timeInterval;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public TimeInterval getTimeInterval() {
-		return timeInterval;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public TimeInterval getTimeInterval() {
+        return timeInterval;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public int getCount() {
-		return dataMap.size();
-	}
+    /** {@inheritDoc} */
+    @Override
+    public int getCount() {
+        return dataMap.size();
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public List<VType> getData() {
-		return new ArrayList<VType>(dataMap.values());
-	}
+    /** {@inheritDoc} */
+    @Override
+    public List<VType> getData() {
+        return new ArrayList<VType>(dataMap.values());
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public List<Instant> getTimestamps() {
-		return new ArrayList<Instant>(dataMap.keySet());
-	}
+    /** {@inheritDoc} */
+    @Override
+    public List<Instant> getTimestamps() {
+        return new ArrayList<Instant>(dataMap.keySet());
+    }
 
 }

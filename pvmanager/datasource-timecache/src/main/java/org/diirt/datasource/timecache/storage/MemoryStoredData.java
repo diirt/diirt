@@ -17,18 +17,18 @@ import org.diirt.vtype.VType;
  */
 public class MemoryStoredData extends SoftReference<VType> implements Data {
 
-	private final Instant timestamp;
+    private final Instant timestamp;
 
-	public MemoryStoredData(Instant timestamp, VType value, ReferenceQueue<VType> q) {
-		super(value, q);
-		this.timestamp = timestamp;
-	}
+    public MemoryStoredData(Instant timestamp, VType value, ReferenceQueue<VType> q) {
+        super(value, q);
+        this.timestamp = timestamp;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public Instant getTimestamp() {
-		return timestamp;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public Instant getTimestamp() {
+        return timestamp;
+    }
 
         /** {@inheritDoc} */
         @Override

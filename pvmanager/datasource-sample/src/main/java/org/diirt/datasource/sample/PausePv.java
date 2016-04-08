@@ -42,8 +42,8 @@ public class PausePv {
                     }
                 })
                 .maxRate(Duration.ofMillis(50));
-	
-	Thread.sleep(2000);
+    
+    Thread.sleep(2000);
         System.out.println("Pausing for 3 seconds");
         reader.setPaused(true);
         Thread.sleep(3000);

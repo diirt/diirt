@@ -34,8 +34,8 @@ public class VerifyCloseChannelPVManager {
                     }
                 })
                 .maxRate(Duration.ofMillis(10));
-	
-	Thread.sleep(10000);
+    
+    Thread.sleep(10000);
         reader.close();
         System.out.println("After five seconds");
 

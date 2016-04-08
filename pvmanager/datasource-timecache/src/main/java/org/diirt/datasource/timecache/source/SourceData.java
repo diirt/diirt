@@ -15,19 +15,19 @@ import org.diirt.vtype.VType;
  */
 public class SourceData implements Data {
 
-	private final Instant timestamp;
-	private final VType value;
+    private final Instant timestamp;
+    private final VType value;
 
-	public SourceData(Instant timestamp, VType value) {
-		this.timestamp = timestamp;
-		this.value = value;
-	}
+    public SourceData(Instant timestamp, VType value) {
+        this.timestamp = timestamp;
+        this.value = value;
+    }
 
-	/** {@inheritDoc} */
-	@Override
-	public Instant getTimestamp() {
-		return timestamp;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public Instant getTimestamp() {
+        return timestamp;
+    }
 
         /** {@inheritDoc} */
         @Override

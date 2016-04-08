@@ -18,43 +18,43 @@ import org.diirt.util.time.TimeInterval;
  */
 public class DataRequestStatistics {
 
-	private final DataSource source;
-	private final Instant start;
-	private TimeInterval interval;
-	private Duration duration;
+    private final DataSource source;
+    private final Instant start;
+    private TimeInterval interval;
+    private Duration duration;
 
-	public DataRequestStatistics(final DataSource source) {
-		this.start = Instant.now();
-		this.source = source;
-	}
+    public DataRequestStatistics(final DataSource source) {
+        this.start = Instant.now();
+        this.source = source;
+    }
 
-	public void intervalCompleted() {
-		this.duration = Duration.between(start, Instant.now()).abs();
-	}
+    public void intervalCompleted() {
+        this.duration = Duration.between(start, Instant.now()).abs();
+    }
 
-	public Instant getStart() {
-		return start;
-	}
+    public Instant getStart() {
+        return start;
+    }
 
-	public Duration getDuration() {
-		return duration;
-	}
+    public Duration getDuration() {
+        return duration;
+    }
 
-	public DataSource getSource() {
-		return source;
-	}
+    public DataSource getSource() {
+        return source;
+    }
 
-	public TimeInterval getInterval() {
-		return interval;
-	}
+    public TimeInterval getInterval() {
+        return interval;
+    }
 
-	public void setInterval(TimeInterval interval) {
-		this.interval = interval;
-	}
+    public void setInterval(TimeInterval interval) {
+        this.interval = interval;
+    }
 
-	public String toConsoleString() {
-		return CacheHelper.format(start) + " => "
-				+ CacheHelper.format(interval) + ": " + duration;
-	}
+    public String toConsoleString() {
+        return CacheHelper.format(start) + " => "
+                + CacheHelper.format(interval) + ": " + duration;
+    }
 
 }

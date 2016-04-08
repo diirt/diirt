@@ -12,20 +12,20 @@ import org.epics.pvdata.pv.PVStructure;
 
 public class PVFieldToTimestamp  {
 
-	public static final Instant create(PVStructure timeStampStructure)
-	{
-		if (timeStampStructure != null)
-		{
-			PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");
-			PVInt nanosField = timeStampStructure.getIntField("nanoseconds");
-			
-			if (secsField == null || nanosField == null)
-				return null;
-			else
-				return  Instant.ofEpochSecond(secsField.get(), nanosField.get());
-		}
-		else
-			return null;
-	}
+    public static final Instant create(PVStructure timeStampStructure)
+    {
+        if (timeStampStructure != null)
+        {
+            PVLong secsField = timeStampStructure.getLongField("secondsPastEpoch");
+            PVInt nanosField = timeStampStructure.getIntField("nanoseconds");
+            
+            if (secsField == null || nanosField == null)
+                return null;
+            else
+                return  Instant.ofEpochSecond(secsField.get(), nanosField.get());
+        }
+        else
+            return null;
+    }
 
 }

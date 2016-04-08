@@ -68,15 +68,15 @@ public class ExpressionLanguage {
                 return new DesiredRateExpressionImpl<VTable>(new DesiredRateExpressionListImpl<Object>(),
                                 new ReadFunction<VTable>() {
 
-					private NavigableMap<Instant, Double> valueMap;
-					private VTable previousValue;
+                    private NavigableMap<Instant, Double> valueMap;
+                    private VTable previousValue;
 
-					{
-						valueMap = new ConcurrentSkipListMap<Instant, Double>();
-						previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
-								Arrays.asList("Time", "Value"), 
-								Arrays.asList(Arrays.asList(channelName), new ArrayDouble(0)));
-					}
+                    {
+                        valueMap = new ConcurrentSkipListMap<Instant, Double>();
+                        previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
+                                Arrays.asList("Time", "Value"), 
+                                Arrays.asList(Arrays.asList(channelName), new ArrayDouble(0)));
+                    }
 
                                         @Override
                                         public VTable readValue() {
@@ -89,22 +89,22 @@ public class ExpressionLanguage {
                                                 if (result.getData().isEmpty())
                                                         return previousValue;
 
-						int index = 0;
-						for (QueryData data : result.getData()) {
-							for (VType dataToDisplay : data.getData()) {
-								if (dataToDisplay instanceof VDouble)
-									valueMap.put(data.getTimestamps().get(index), ((VDouble) dataToDisplay).getValue());
-								index++;
-							}
-						}
-						index = 0;
-						double[] array = new double[valueMap.size()];
-						List<String> times = new ArrayList<String>();
-						for (Entry<Instant, Double> entry : valueMap.entrySet()) {
-							times.add(CacheHelper.format(entry.getKey()));
-							array[index] = entry.getValue();
-							index++;
-						}
+                        int index = 0;
+                        for (QueryData data : result.getData()) {
+                            for (VType dataToDisplay : data.getData()) {
+                                if (dataToDisplay instanceof VDouble)
+                                    valueMap.put(data.getTimestamps().get(index), ((VDouble) dataToDisplay).getValue());
+                                index++;
+                            }
+                        }
+                        index = 0;
+                        double[] array = new double[valueMap.size()];
+                        List<String> times = new ArrayList<String>();
+                        for (Entry<Instant, Double> entry : valueMap.entrySet()) {
+                            times.add(CacheHelper.format(entry.getKey()));
+                            array[index] = entry.getValue();
+                            index++;
+                        }
 
                                                 previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
                                                                 Arrays.asList("Time", "Value"),

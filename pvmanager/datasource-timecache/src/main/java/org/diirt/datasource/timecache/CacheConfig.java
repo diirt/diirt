@@ -16,41 +16,41 @@ import org.diirt.datasource.timecache.storage.DataStorage;
  */
 public class CacheConfig {
 
-	private List<DataSource> sources = new ArrayList<DataSource>();
-	private DataStorage storage;
-	private int nbOfChunksPerQuery = 100;
-	private Duration retrievalGap = Duration.ofHours(168); // 1 week
+    private List<DataSource> sources = new ArrayList<DataSource>();
+    private DataStorage storage;
+    private int nbOfChunksPerQuery = 100;
+    private Duration retrievalGap = Duration.ofHours(168); // 1 week
 
-	public void addSource(DataSource ds) {
-		sources.add(ds);
-	}
+    public void addSource(DataSource ds) {
+        sources.add(ds);
+    }
 
-	public List<DataSource> getSources() {
-		return sources;
-	}
+    public List<DataSource> getSources() {
+        return sources;
+    }
 
-	public DataStorage getStorage() {
-		return storage;
-	}
+    public DataStorage getStorage() {
+        return storage;
+    }
 
-	public void setStorage(DataStorage storage) {
-		this.storage = storage;
-	}
+    public void setStorage(DataStorage storage) {
+        this.storage = storage;
+    }
 
-	public int getNbOfChunksPerQuery() {
-		return nbOfChunksPerQuery;
-	}
+    public int getNbOfChunksPerQuery() {
+        return nbOfChunksPerQuery;
+    }
 
-	public void setNbOfChunksPerQuery(int nbOfChunksPerQuery) {
-		this.nbOfChunksPerQuery = nbOfChunksPerQuery;
-	}
+    public void setNbOfChunksPerQuery(int nbOfChunksPerQuery) {
+        this.nbOfChunksPerQuery = nbOfChunksPerQuery;
+    }
 
-	public Duration getRetrievalGap() {
-		return retrievalGap;
-	}
+    public Duration getRetrievalGap() {
+        return retrievalGap;
+    }
 
-	public void setRetrievalGap(Duration retrievalGap) {
-		this.retrievalGap = retrievalGap;
-	}
+    public void setRetrievalGap(Duration retrievalGap) {
+        this.retrievalGap = retrievalGap;
+    }
 
 }
