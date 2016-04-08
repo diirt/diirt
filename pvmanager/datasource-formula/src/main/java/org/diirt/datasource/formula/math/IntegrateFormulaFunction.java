@@ -51,7 +51,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
     public Class<?> getReturnType() {
         return VNumber.class;
     }
-    
+
     private Instant previousTime;
     private double integratedValue;
     private List<VNumber> values = new LinkedList<>();
@@ -76,7 +76,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
             }
         }
         Instant currentTime = Instant.now();
-        
+
         integratedValue += integrate(previousTime, currentTime, values);
         previousTime = currentTime;
 
@@ -86,7 +86,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
 
         return ValueFactory.newVDouble(integratedValue);
     }
-    
+
     static double integrate(Instant start, Instant end, List<VNumber> values) {
         if (values.isEmpty()) {
             return 0;
@@ -104,7 +104,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
 
         return integratedValue;
     }
-    
+
     static double integrate(Instant start, Instant end, VNumber value, VNumber nextValue) {
         Instant actualStart = Collections.max(Arrays.asList(start, value.getTimestamp()));
         Instant actualEnd = end;

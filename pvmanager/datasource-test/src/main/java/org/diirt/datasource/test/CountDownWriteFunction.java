@@ -55,7 +55,7 @@ public class CountDownWriteFunction extends ExceptionHandler {
      * @return false if count didn't go to zero
      * @throws InterruptedException if interrupted
      */
-    public boolean await(Duration duration) 
+    public boolean await(Duration duration)
     throws InterruptedException {
         return latch.await(duration.toNanos(), TimeUnit.NANOSECONDS);
     }

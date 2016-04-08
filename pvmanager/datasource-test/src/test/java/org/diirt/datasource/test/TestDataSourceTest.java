@@ -107,9 +107,9 @@ public class TestDataSourceTest {
         pvReader = PVManager.read(channel("nothing"))
                 .readListener(listener)
                 .from(dataSource).maxRate(ofMillis(10));
-        
+
         listener.await(Duration.ofMillis(100));
-        
+
         RuntimeException ex = (RuntimeException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
     }
@@ -124,7 +124,7 @@ public class TestDataSourceTest {
                 .from(dataSource).async();
 
         listener.await(Duration.ofMillis(100));
-        
+
         RuntimeException ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
     }
@@ -139,7 +139,7 @@ public class TestDataSourceTest {
                 .from(dataSource).maxRate(ofMillis(10));
 
         exceptionHandler.await(Duration.ofMillis(100));
-        
+
         RuntimeException ex = (RuntimeException) exceptionHandler.getException();
         assertThat(ex, not(nullValue()));
     }
@@ -154,7 +154,7 @@ public class TestDataSourceTest {
                 .from(dataSource).async();
 
         exceptionHandler.await(Duration.ofMillis(100));
-        
+
         RuntimeException ex = (RuntimeException) exceptionHandler.getException();
         assertThat(ex, not(nullValue()));
     }
@@ -172,7 +172,7 @@ public class TestDataSourceTest {
 
         RuntimeException ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        
+
         listener.await(Duration.ofMillis(1100));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
@@ -195,7 +195,7 @@ public class TestDataSourceTest {
         Exception ex = pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
         assertThat(ex, instanceOf(TimeoutException.class));
-        
+
         writerListener.await(Duration.ofMillis(2000));
         assertThat(writerListener.getCount(), equalTo(0));
         ex = pvWriter.lastWriteException();
@@ -238,14 +238,14 @@ public class TestDataSourceTest {
         assertThat(writerListener.getCount(), equalTo(1));
         ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        
+
         writerListener.await(Duration.ofMillis(250));
         assertThat(writerListener.getCount(), equalTo(0));
         writerListener.resetCount(1);
         ex = pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
         assertThat(ex, instanceOf(TimeoutException.class));
-        
+
         writerListener.await(Duration.ofMillis(2000));
         assertThat(writerListener.getCount(), equalTo(0));
         ex = pvWriter.lastWriteException();
@@ -258,20 +258,20 @@ public class TestDataSourceTest {
         pvReader = PVManager.read(channel("delayedConnection")).timeout(ofMillis(500))
                 .readListener(readListener)
                 .from(dataSource).maxRate(ofMillis(50));
-        
+
         readListener.await(Duration.ofMillis(50));
         assertThat(readListener.getCount(), equalTo(1));
 
         TimeoutException ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
-        
+
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
         readListener.resetCount(1);
 
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
-        
+
         readListener.await(Duration.ofMillis(1000));
         assertThat(readListener.getCount(), equalTo(0));
 
@@ -294,14 +294,14 @@ public class TestDataSourceTest {
 
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        
+
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
         readListener.resetCount(1);
 
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
-        
+
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
 
@@ -319,13 +319,13 @@ public class TestDataSourceTest {
                 .timeout(ofMillis(500), message)
                 .from(dataSource)
                 .asynchWriteAndMaxReadRate(ofMillis(50));
-        
+
         readListener.await(Duration.ofMillis(50));
         assertThat(readListener.getCount(), equalTo(1));
 
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
-        
+
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
         readListener.resetCount(2);
@@ -333,7 +333,7 @@ public class TestDataSourceTest {
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
         assertThat(ex.getMessage(), equalTo(message));
-        
+
         readListener.await(Duration.ofMillis(1000));
         // It may get CONNECTION and VALUE event separate
         assertThat(readListener.getCount(), lessThanOrEqualTo(1));
@@ -362,7 +362,7 @@ public class TestDataSourceTest {
         ex = (RuntimeException) pvReader2.lastException();
         assertThat(ex, nullValue());
         assertThat(readListener2.getCount(), equalTo(1));
-        
+
         readListener1.await(Duration.ofMillis(1500));
         readListener1.resetCount(1);
         readListener2.await(Duration.ofMillis(1500));

@@ -268,7 +268,7 @@ public class FunctionTester {
         Object[] args;
         Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
         Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
-        
+
         compareReturnTime(time1, createValue(function.getArgumentTypes().get(0), alarmNone(), time1, display));
         compareReturnTime(time2, createValue(function.getArgumentTypes().get(0), alarmNone(), time2, display));
     }
@@ -283,7 +283,7 @@ public class FunctionTester {
         }
         Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
         Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
-        
+
         // Prepare arguments with all time1
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             args[i] = createValue(function.getArgumentTypes().get(i), alarmNone(), time1, display);

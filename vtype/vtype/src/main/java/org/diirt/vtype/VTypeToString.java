@@ -60,9 +60,9 @@ public class VTypeToString {
 
         return timeFormat.format(LocalDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())) + "(" + time.getTimeUserTag()+ ")";
     }
-    
+
     private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
-    
+
     private static void appendTime(StringBuilder builder, Time time) {
         builder.append(", ").append(timeFormat.format(LocalDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())));
     }

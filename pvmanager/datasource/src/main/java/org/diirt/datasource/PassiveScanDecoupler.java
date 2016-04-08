@@ -149,7 +149,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     private void newEvent(DesiredRateEvent.Type type) {
         boolean submit;
         Duration delay = null;
-        
+
         synchronized (lock) {
             // Add event to the queue
             if (queuedEvent == null) {
@@ -190,7 +190,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             scheduleNext(delay);
         }
     }
-    
+
     private void scheduleNext(Duration delay) {
         if (delay == null || delay.isNegative()) {
             getScannerExecutor().submit(notificationTask);

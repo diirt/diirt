@@ -71,7 +71,7 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
             redrawAll = true;
         }
         Instant plotStart = plotEnd.minus(parameters.pixelDuration.multipliedBy(parameters.height));
-        
+
         List<DoubleArrayTimeCache.Data> dataToPlot;
         if (redrawAll) {
             DoubleArrayTimeCache.Data data = doubleArrayTimeCache.getData(plotStart, plotEnd);
@@ -168,7 +168,7 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
             Instant pixelStart, Duration pixelDuration, int y) {
         int usedArrays = 0;
         Instant pixelEnd = pixelStart.plus(pixelDuration);
-        
+
         // Loop until the pixel starts before the range end
         while (pixelStart.compareTo(data.getEnd()) < 0) {
             // Get all the values in the pixel
@@ -218,7 +218,7 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
 
         return values.get(values.size() - 1);
     }
-    
+
     private static List<ListNumber> valuesInPixel(Instant pixelStart, Instant pixelEnd, DoubleArrayTimeCache.Data data, int usedArrays) {
         List<ListNumber> pixelValues = new ArrayList<ListNumber>();
         int currentArray = usedArrays;

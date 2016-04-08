@@ -64,12 +64,12 @@ public class PVAImageMonitor {
         System.arraycopy(vImage.getData(), 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0, vImage.getData().length);
         return image;
     }
-    
+
     private final JFrame frame;
     private static final BufferedImage DEFAULT_IMAGE = new BufferedImage(320, 200, BufferedImage.TYPE_3BYTE_BGR);
     private volatile BufferedImage bufferedImage = DEFAULT_IMAGE;
     private final ImagePanel imagePanel;
-    
+
     public PVAImageMonitor()
     {
         imagePanel = new ImagePanel();
@@ -79,15 +79,15 @@ public class PVAImageMonitor {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(BorderLayout.CENTER, imagePanel);
         frame.pack();
-        frame.setVisible(true);    
+        frame.setVisible(true);
     }
-    
+
     public void showImage(VImage vImage)
     {
         final BufferedImage lastBufferedImage = bufferedImage;
         final BufferedImage newBufferedImage = updateBufferedImage(lastBufferedImage, vImage, BufferedImage.TYPE_3BYTE_BGR);
         bufferedImage = newBufferedImage;
-        
+
         SwingUtilities.invokeLater(new Runnable()
         {
             @Override
@@ -102,7 +102,7 @@ public class PVAImageMonitor {
             }
         });
     }
-    
+
     public void execute(String[] args) throws InterruptedException
     {
         // max 100Hz monitor
@@ -122,7 +122,7 @@ public class PVAImageMonitor {
         // forever
         while (System.currentTimeMillis() != 0)
             Thread.sleep(Long.MAX_VALUE);
-        
+
         reader.close();
     }
 

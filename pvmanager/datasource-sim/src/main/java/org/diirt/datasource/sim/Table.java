@@ -33,9 +33,9 @@ public class Table extends SimFunction<VTable> {
             throw new IllegalArgumentException("Interval must be greater than zero (was " + interval + ")");
         }
     }
-    
+
     private final List<Class<?>> types = Arrays.asList((Class<?>) String.class, Double.TYPE, Integer.TYPE, Instant.class);
-    
+
 
     @Override
     VTable nextValue() {
@@ -69,7 +69,7 @@ public class Table extends SimFunction<VTable> {
         }
         return Arrays.asList(column);
     }
-    
+
     List<Instant> generateTimestampColumn(int size) {
         List<Instant> timestamps = new ArrayList<>();
         for (int i = 0; i < size; i++) {

@@ -61,7 +61,7 @@ public class JCAClientExample {
             }
         })
                 .maxRate(Duration.ofMillis(100));
-        
+
         Thread.sleep(5000);
         pvReader.close();
 

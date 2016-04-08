@@ -29,15 +29,15 @@ import static org.epics.util.time.Timestamp.*;
  * @author carcassi
  */
 public class TimeSeriesMultiTest {
-    
+
     public TimeSeriesMultiTest() {
     }
 
     @Test
     public void synchronizeSeries1() {
-        TimeSeries series1 = new TimeSeries(Arrays.asList(of(0,0), of(1,0), of(2,0), of(3,0), of(4,0), of(5,0), of(6,0), of(7,0), of(8,0), of(9,0), of(10,0)), 
+        TimeSeries series1 = new TimeSeries(Arrays.asList(of(0,0), of(1,0), of(2,0), of(3,0), of(4,0), of(5,0), of(6,0), of(7,0), of(8,0), of(9,0), of(10,0)),
                 new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-        TimeSeries series2 = new TimeSeries(Arrays.asList(of(0,0), of(2,0), of(4,0), of(6,0), of(8,0), of(10,0)), 
+        TimeSeries series2 = new TimeSeries(Arrays.asList(of(0,0), of(2,0), of(4,0), of(6,0), of(8,0), of(10,0)),
                 new ArrayDouble(0, 1, 2, 3, 4, 5));
         Map<String, TimeSeries> map = new HashMap<>();
         map.put("series1", series1);

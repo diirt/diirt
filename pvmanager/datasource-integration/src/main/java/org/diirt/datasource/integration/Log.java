@@ -308,10 +308,10 @@ public class Log {
             }
         }
         return values;
-    } 
-    
+    }
+
     private DateTimeFormatter format = DateTimeFormatter.ofPattern("ss.NNNNNNNNN");
-    
+
     public void print(PrintStream out) {
         for (Event event : events) {
             if (event instanceof ReadEvent) {

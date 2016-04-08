@@ -64,7 +64,7 @@ public class MessageTestConstants {
                 + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"
             + "}";
     public static MessageWrite write3Message = new MessageWrite(1, newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Instant.ofEpochSecond(0, 0)), displayNone()));
-    
+
     public static String write4Json = "{"
             + "\"message\":\"write\","
             + "\"id\":1,"

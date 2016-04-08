@@ -23,7 +23,7 @@ import org.diirt.util.array.ListNumber;
  * @author carcassi
  */
 public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCache {
-    
+
     private NavigableMap<Instant, VNumberArray> cache = new TreeMap<Instant, VNumberArray>();
     private ReadFunction<? extends List<? extends VNumberArray>> function;
     private Display display;
@@ -33,7 +33,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
     }
 
     public class Data implements DoubleArrayTimeCache.Data {
-        
+
         private List<Instant> times = new ArrayList<Instant>();
         private List<ListNumber> arrays = new ArrayList<ListNumber>();
         private Instant begin;
@@ -74,7 +74,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         }
 
     }
-    
+
     private void deleteBefore(Instant Instant) {
         if (cache.isEmpty())
             return;
@@ -89,7 +89,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         Instant lastToDelete = cache.lowerKey(firstEntryBeforeInstant);
         if (lastToDelete == null)
             return;
-        
+
         Instant firstKey = cache.firstKey();
         while (firstKey.compareTo(lastToDelete) <= 0) {
             cache.remove(firstKey);
@@ -105,7 +105,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         }
         if (cache.isEmpty())
             return null;
-        
+
         Instant newBegin = cache.lowerKey(begin);
         if (newBegin == null)
             newBegin = cache.firstKey();
@@ -113,7 +113,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         deleteBefore(begin);
         return data(newBegin, end);
     }
-    
+
     private DoubleArrayTimeCache.Data data(Instant begin, Instant end) {
         return new Data(cache.subMap(begin, end), begin, end);
     }
@@ -126,7 +126,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         if (newValues.isEmpty()) {
             return Collections.singletonList(data(cache.lowerKey(endNew), endNew));
         }
-        
+
         List<Instant> newInstants = new ArrayList<Instant>();
         for (VNumberArray value : newValues) {
             cache.put(value.getTimestamp(), value);
@@ -134,10 +134,10 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         }
         if (cache.isEmpty())
             return Collections.emptyList();
-        
+
         Collections.sort(newInstants);
         Instant firstNewValue = newInstants.get(0);
-        
+
         // We have just one section that start from the oldest update.
         // If the oldest update is too far, we use the start of the update region.
         // If the oldest update is too recent, we start from the being period

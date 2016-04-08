@@ -88,7 +88,7 @@ class RPCServiceMethod extends ServiceMethod {
     private final String operationName;
 
     private final Map<String, Class> strictArguments;
-    
+
     /**
      * Creates a new rpcservice method.
      *
@@ -107,7 +107,7 @@ class RPCServiceMethod extends ServiceMethod {
         this.operationName = serviceMethodDescription.operationName;
 
         this.requestStructure = createRequestStructure(serviceMethodDescription.structureId);
-        
+
         this.strictArguments = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.strictArguments));
     }
 
@@ -168,7 +168,7 @@ class RPCServiceMethod extends ServiceMethod {
         if (methodFieldName != null) {
             fieldList.add(fieldCreate.createScalar(ScalarType.pvString));
         }
-        
+
         // non-relaxed argument types
         for (String parameterName : this.parameterNames.keySet()) {
             fieldList.add(convertToPvType(strictArguments.get(parameterName)));
@@ -352,7 +352,7 @@ class RPCServiceMethod extends ServiceMethod {
             throw new IllegalArgumentException("Standalone result type " + resultType.getSimpleName() + " not supported in pvAccess RPC rpcservice");
         }
 
-        // TODO unsigned types, complex types 
+        // TODO unsigned types, complex types
         String resultName = getResults().get(0).getName();
         String fieldName = fieldNames.get(resultName);
 
@@ -406,11 +406,11 @@ class RPCServiceMethod extends ServiceMethod {
         throw new IllegalArgumentException("Result type " + resultType.getSimpleName() + " not supported in pvAccess RPC rpcservice");
 
     }
-    
+
     public String getStructureID(){
         return requestStructure.getID();
     }
-    
+
     public String getOperationName(){
         return operationName;
     }

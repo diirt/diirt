@@ -81,7 +81,7 @@ public class QueryUnitTests {
     }
 
     /**
-     * Test that the right numbers of chunks is created per query. 
+     * Test that the right numbers of chunks is created per query.
      * Test that each created chunk is filled properly by samples from a simulated storage.
      */
     @Test
@@ -138,7 +138,7 @@ public class QueryUnitTests {
     }
 
     /**
-     * Test that the right numbers of chunks is created per query. 
+     * Test that the right numbers of chunks is created per query.
      * Test that each created chunk is filled properly by samples from a simulated source.
      */
     @Test

@@ -23,11 +23,11 @@ import java.util.regex.Pattern;
  * "last 5 mins", "last 5 hours", "last 5 days", "last 5 weeks"
  *
  * "5 mins ago", "5 hours ago", "5 days ago", "5 weeks ago"
- * 
+ *
  * The following returns a Instant "now"
- * 
+ *
  * The following returns a Duration - relative
- * 
+ *
  * "last min", "last hour", "last day", "last week"
  *
  * "last 5 mins", "last 5 hours", "last 5 days", "last 5 weeks"
@@ -96,7 +96,7 @@ public class TimeParser {
     /**
      * A Helper function to help you convert various string represented time
      * definition to an absolute Instant.
-     * 
+     *
      * @param time
      *            a string represent the time
      * @return the parsed Instant or null

@@ -94,7 +94,7 @@ abstract class SimFunction<T> extends Simulation<T> {
     VDouble newValue(double value, VDouble oldValue) {
         if (lastTime == null)
             lastTime = Instant.now();
-        
+
         return newVDouble(value, timeNow(), oldValue);
     }
 

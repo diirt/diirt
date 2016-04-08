@@ -35,7 +35,7 @@ public class UnclosedPvs {
                     }
                 })
                 .maxRate(Duration.ofMillis(500));
-    
+
     Thread.sleep(2000);
         System.out.println("Voiding reference");
         reader = null;

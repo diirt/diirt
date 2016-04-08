@@ -8,11 +8,11 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 
 /**
- * 
+ *
  * @author carcassi
  */
 public class TimeDuration {
-    
+
     private static final int NANOSEC_IN_SEC = 1000000000;
 
     private TimeDuration() {
@@ -67,7 +67,7 @@ public class TimeDuration {
 
     /**
      * Returns the number of times the given duration is present in this duration.
-     * 
+     *
      * @param dividendDuration the duration to be devided
      * @param divisorDuration the divisor
      * @return the result of the division
@@ -82,7 +82,7 @@ public class TimeDuration {
 
     /**
      *  Convert the entire duration to seconds represented in a double
-     * 
+     *
      * @param duration the duration to be converted
      * @return the duration in seconds
      */

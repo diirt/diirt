@@ -19,18 +19,18 @@ public interface DoubleArrayTimeCache {
 
     public interface Data {
         public Instant getBegin();
-        
+
         public Instant getEnd();
-        
+
         public int getNArrays();
 
         public ListNumber getArray(int index);
-        
+
         public Instant getTimestamp(int index);
     }
-    
+
     public Data getData(Instant begin, Instant end);
-    
+
     /**
      * Each segment of the new data ends with an array of old data.
      * Two regions can be requested: an update region, where only updates
@@ -40,6 +40,6 @@ public interface DoubleArrayTimeCache {
      * @return the new data chunks
      */
     public List<Data> newData(Instant beginUpdate, Instant endUpdate, Instant beginNew, Instant endNew);
-    
+
     public Display getDisplay();
 }

@@ -379,7 +379,7 @@ public class ValueUtil {
 
         return false;
     }
-    
+
     private static volatile DateTimeFormatter defaultTimestampFormat = DateTimeFormatter.ISO_DATE_TIME;
     private static volatile NumberFormat defaultNumberFormat = NumberFormats.toStringFormat();
     private static volatile ValueFormat defaultValueFormat = new SimpleValueFormat(3);

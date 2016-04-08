@@ -131,7 +131,7 @@ public class NameParserTest {
         Replay replay = (Replay) NameParser.createFunction("replay(\"./src/test/resources/org/diirt/datasource/replay/parse1.xml\")");
         List<VDouble> values = replay.createValues(TimeInterval.after(ofMillis(1000), start));
         assertThat(values.size(), equalTo(4));
-        
+
         // TODO Cannot recreate this test reliably on all machines
 //        start = Instant.now();
 //        values = replay.createValues(TimeInterval.after(ofMillis(105), start));

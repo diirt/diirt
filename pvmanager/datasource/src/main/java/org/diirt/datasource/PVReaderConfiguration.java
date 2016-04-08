@@ -132,7 +132,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
 
         return pv;
     }
-    
+
     void maxRateAndValidate(Duration rate) {
         this.maxRate = rate;
         validateReaderConfiguration();

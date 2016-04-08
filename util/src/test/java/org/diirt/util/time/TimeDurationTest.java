@@ -338,13 +338,13 @@ public class TimeDurationTest {
         Duration duration = TimeDuration.ofSeconds(1.5);
         assertThat(duration.toNanos(), equalTo(1500000000L));
     }
-    
+
 //    @Test(expected=ArithmeticException.class)
 //    public void toNanosLong2() {
 //        Duration duration = TimeDuration.ofSeconds(9223372036.9);
 //        assertThat(duration.toNanos(), equalTo(1500000000L));
 //    }
-    
+
     @Test
     public void toSeconds1() {
         Duration duration = TimeDuration.ofSeconds(1.5);

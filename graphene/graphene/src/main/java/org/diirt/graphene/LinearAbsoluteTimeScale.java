@@ -46,7 +46,7 @@ final class LinearAbsoluteTimeScale implements TimeScale {
 
         // First guess at the time between references.
         // Get the smallest required period, and then round down
-        
+
         double minPeriodInSec;
         if( maxRefs == 0){
             minPeriodInSec = 0.0;

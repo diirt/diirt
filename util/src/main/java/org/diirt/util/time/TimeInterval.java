@@ -57,7 +57,7 @@ public class TimeInterval {
     /**
      * Returns a time interval that lasts this duration and is centered
      * around the given instant reference.
-     * 
+     *
      * @param duration the duration
      * @param reference a instant
      * @return a new time interval
@@ -82,7 +82,7 @@ public class TimeInterval {
     /**
      * Returns a time interval that lasts this duration and ends at the
      * given instant.
-     * 
+     *
      * @param duration the duration
      * @param reference a instant
      * @return a new time interval
@@ -90,7 +90,7 @@ public class TimeInterval {
     public static TimeInterval before(Duration duration, Instant reference) {
         return TimeInterval.between(reference.minus(duration), reference);
     }
-    
+
     /**
      * Initial value of the interval.
      *

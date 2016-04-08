@@ -35,7 +35,7 @@ public class DataSourceConfigurationLog {
                     }
                 })
                 .maxRate(Duration.ofMillis(500));
-    
+
     Thread.sleep(2000);
         System.out.println("Close channel");
         reader.close();

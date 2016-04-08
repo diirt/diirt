@@ -47,14 +47,14 @@ class CommonConfiguration {
         }
         return this;
     }
-    
+
     public CommonConfiguration timeout(Duration timeout) {
         if (this.timeout != null)
             throw new IllegalStateException("Timeout already set");
         this.timeout = timeout;
         return this;
     }
-    
+
     public CommonConfiguration timeout(Duration timeout, String timeoutMessage) {
         timeout(timeout);
         this.timeoutMessage = timeoutMessage;

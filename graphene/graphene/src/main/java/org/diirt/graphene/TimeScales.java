@@ -402,19 +402,19 @@ public class TimeScales {
         }
         return new TimePeriod(GregorianCalendar.MILLISECOND, 1000*seconds);
     }
-    
+
     static double normalize(Instant time, TimeInterval timeInterval) {
         // XXX: if interval is more than 292 years, this will not work
         double range = timeInterval.getStart().until(timeInterval.getEnd(), ChronoUnit.NANOS);
         double value = timeInterval.getStart().until(time, ChronoUnit.NANOS);
         return value / range;
     }
-    
+
     private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.nnnnnnnnn");
     private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25,28);
     private static ArrayInt possibleStopFromStart = new ArrayInt(0,11,19,28);
     private static String zeroFormat = "0000/01/01 00:00:00.000000000";
-    
+
     static List<String> createLabels(List<Instant> timestamps) {
         if (timestamps.isEmpty()) {
             return Collections.emptyList();

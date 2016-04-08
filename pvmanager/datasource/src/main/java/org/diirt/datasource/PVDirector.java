@@ -385,7 +385,7 @@ public class PVDirector<T> {
             readExceptionCollector.writeValue(new TimeoutException(timeoutMessage));
         }
     }
-    
+
     void readTimeout(Duration timeout, final String timeoutMessage) {
         scannerExecutor.schedule(new Runnable() {
             @Override

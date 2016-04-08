@@ -44,8 +44,8 @@ public abstract class Profiler {
 
         //System Time
         Instant start = Instant.now();
-        Instant end = start.plus(Duration.ofSeconds(profileSettings.getTestTime()));   
-                
+        Instant end = start.plus(Duration.ofSeconds(profileSettings.getTestTime()));
+
         //Trials
         while (end.compareTo(Instant.now()) >= 0 &&           //not over max time
                !Thread.currentThread().isInterrupted() &&       //not interrupted

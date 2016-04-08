@@ -61,19 +61,19 @@ public class TimeRelativeInterval {
     public Instant getAbsoluteStart() {
         return (Instant) start;
     }
-    
+
     public Instant getAbsoluteEnd() {
         return (Instant) end;
     }
-    
+
     public Duration getRelativeStart() {
         return (Duration) start;
     }
-    
+
     public Duration getRelativeEnd() {
         return (Duration) end;
     }
-    
+
     public TimeInterval toAbsoluteInterval(Instant reference) {
         Instant absoluteStart;
         if (isStartAbsolute()) {

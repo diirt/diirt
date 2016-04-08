@@ -82,7 +82,7 @@ public class VTypeToJsonTest {
             return reader.readObject();
         }
     }
-    
+
     public VDouble vDouble = newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Instant.ofEpochSecond(0, 0)), displayNone());
     public String vDoubleJson = "{\"type\":{\"name\":\"VDouble\",\"version\":1},"
             + "\"value\":3.14,"

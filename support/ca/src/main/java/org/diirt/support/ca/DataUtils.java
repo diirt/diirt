@@ -40,7 +40,7 @@ class DataUtils {
     static java.time.Instant timestampOf(gov.aps.jca.dbr.TimeStamp epicsTimeStamp) {
         if (epicsTimeStamp == null)
             return null;
-        
+
         return java.time.Instant.ofEpochSecond(epicsTimeStamp.secPastEpoch() + TS_EPOCH_SEC_PAST_1970, 0)
                 .plus(Duration.ofNanos(epicsTimeStamp.nsec()));
     }

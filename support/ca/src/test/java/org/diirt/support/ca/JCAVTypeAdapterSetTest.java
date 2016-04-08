@@ -66,11 +66,11 @@ import gov.aps.jca.event.MonitorEvent;
  * @author carcassi
  */
 public class JCAVTypeAdapterSetTest {
-    
+
     // Create a Zone specific string representation of epoc 0
     private final String testTimeString = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS")
             .format(LocalDateTime.ofInstant(Instant.ofEpochSecond(1234567,1234), ZoneId.systemDefault()));
-    
+
     public JCAVTypeAdapterSetTest() {
     }
 

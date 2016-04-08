@@ -21,7 +21,7 @@ class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
     private final ReadFunction<T> function;
     private final Duration cachedPeriod;
     private Runnable notification;
-    
+
     public TimedCacheCollector(ReadFunction<T> function, Duration cachedPeriod) {
         this.function = function;
         this.cachedPeriod = cachedPeriod;

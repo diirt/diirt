@@ -20,7 +20,7 @@ abstract class SourceDesiredRateDecoupler {
     private final DesiredRateEventListener listener;
     private final ScheduledExecutorService scannerExecutor;
     private final Duration maxDuration;
-    
+
     protected final Object lock = new Object();
     private boolean eventProcessing = false;
     private boolean paused = false;

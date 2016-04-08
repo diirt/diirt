@@ -27,7 +27,7 @@ public class ThreadTestingUtil {
      * @return the value from the task or null
      * @throws Exception an exception from the task
      */
-    public static <T> T waitFor(Callable<T> task, Duration timeout) 
+    public static <T> T waitFor(Callable<T> task, Duration timeout)
     throws Exception {
         TimeInterval runInterval = TimeInterval.after(timeout, Instant.now());
         while (runInterval.contains(Instant.now())) {
@@ -43,7 +43,7 @@ public class ThreadTestingUtil {
         }
         return null;
     }
-    
+
     public static Duration waitForValue(PVReader<?> pvReader, Duration timeout)  {
         TimeInterval runInterval = TimeInterval.after(timeout, Instant.now());
         while (runInterval.contains(Instant.now())) {

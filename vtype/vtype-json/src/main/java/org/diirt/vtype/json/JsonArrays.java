@@ -175,7 +175,7 @@ public class JsonArrays {
 
     /**
      * Converts the given JSON array to a List of Instant.
-     * 
+     *
      * @param array an array
      * @return a new List of Instant
      */
@@ -207,7 +207,7 @@ public class JsonArrays {
 
     /**
      * Converts the given List of Instant to a JSON array.
-     * 
+     *
      * @param list a List of Instant
      * @return an array
      */

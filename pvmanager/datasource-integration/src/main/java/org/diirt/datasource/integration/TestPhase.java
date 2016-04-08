@@ -29,7 +29,7 @@ public abstract class TestPhase {
     public String getName() {
         return getClass().getSimpleName();
     }
-    
+
     protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, Duration maxRate) {
         PVReader<T> pvReader = reader.readListener(phaseLog.createReadListener()).maxRate(maxRate);
         pvReaders.put(pvReader.getName(), pvReader);

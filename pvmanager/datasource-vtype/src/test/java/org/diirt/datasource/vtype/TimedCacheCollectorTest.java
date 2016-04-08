@@ -37,7 +37,7 @@ public class TimedCacheCollectorTest {
     @Test
     public void correctNumberOfValuesInCache() throws InterruptedException {
         ReadExpressionTester exp = new ReadExpressionTester(timedCacheOf(vDouble("x"), Duration.ofMillis(100)));
-        
+
         Instant reference = Instant.now();
         exp.writeValue("x", newVDouble(0.0, newTime(reference.plus(Duration.ofMillis(0)))));
         assertThat(((List) exp.getValue()).size(), equalTo(1));

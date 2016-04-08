@@ -74,7 +74,7 @@ public class ExpressionLanguage {
                     {
                         valueMap = new ConcurrentSkipListMap<Instant, Double>();
                         previousValue = ValueFactory.newVTable(Arrays.<Class<?>> asList(String.class, double.class),
-                                Arrays.asList("Time", "Value"), 
+                                Arrays.asList("Time", "Value"),
                                 Arrays.asList(Arrays.asList(channelName), new ArrayDouble(0)));
                     }
 

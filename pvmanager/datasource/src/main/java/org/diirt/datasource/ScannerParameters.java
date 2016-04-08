@@ -58,7 +58,7 @@ class ScannerParameters {
     public ScheduledExecutorService getScannerExecutor() {
         return scannerExecutor;
     }
-    
+
     public ScannerParameters timeout(Duration timeout, String timeoutMessage) {
         this.timeout = timeout;
         this.timeoutMessage = timeoutMessage;

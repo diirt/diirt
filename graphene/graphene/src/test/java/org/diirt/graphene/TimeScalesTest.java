@@ -170,7 +170,7 @@ public class TimeScalesTest {
 
     @Test
     public void createReferencesLowerBoundary1() {
-    
+
     //test lower boundary case: 2 references 1 millisecond apart
     GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
     cal.set( GregorianCalendar.MILLISECOND , 0 );
@@ -180,9 +180,9 @@ public class TimeScalesTest {
     assertThat( references.size() , equalTo(2) );
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 0 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 1 ) ) );
-    
+
     }
-    
+
     @Test
     public void createReferencesLowerBoundary2() {
     //test lower boundary case: 2 references, milliseconds roll over to next second
@@ -195,8 +195,8 @@ public class TimeScalesTest {
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 999 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
-    
-    
+
+
     @Test
     public void createReferencesLowerBoundary3() {
     //test lower boundary case: 2 references, milliseconds roll over to next second
@@ -245,7 +245,7 @@ public class TimeScalesTest {
 
     @Test
     public void createReferencesLowerBoundary7() {
-    
+
     //test two references, doesn't fit perfectly into time periods
     GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
     cal.set( GregorianCalendar.MILLISECOND , 998 );
@@ -256,10 +256,10 @@ public class TimeScalesTest {
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
     }
-    
+
     @Test
     public void createReferencesLowerBoundary8() {
-    
+
     //test two references, doesn't fit perfectly, but start happens
     //to be a perfect multiple of the time period
     GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
@@ -271,7 +271,7 @@ public class TimeScalesTest {
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 0 , 996 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesBoundary9() {
     //test two references, doesn't fit perfectly, but start happens
@@ -286,7 +286,7 @@ public class TimeScalesTest {
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     assertThat( references.get( 2 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
     }
-    
+
     @Test
     public void createReferencesBoundary10() {
     //test two references, that don't fit perfectly so that we have
@@ -300,7 +300,7 @@ public class TimeScalesTest {
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
     }
-    
+
     @Test
     public void createReferencesBoundary11() {
     //test two references, that don't fit perfectly so that we have
@@ -314,7 +314,7 @@ public class TimeScalesTest {
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
     }
-    
+
     @Test
     public void createReferencesBoundary12() {
     //test two references, that don't fit perfectly so that we have
@@ -328,7 +328,7 @@ public class TimeScalesTest {
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 4 ) ) );
     }
-    
+
     @Test
     public void createReferenceBad1() {
     //test end before start
@@ -387,7 +387,7 @@ public class TimeScalesTest {
     assertThat( references.size() , equalTo(1) );
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesEmpty1() {
     //test time period too big
@@ -433,10 +433,10 @@ public class TimeScalesTest {
     assertThat( references.size() , equalTo(1) );
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 3 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesOverflowMilliseconds2() {
-    //test units do not get mixed up and they can overflow into 
+    //test units do not get mixed up and they can overflow into
     //a larger unit
     GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
     cal.set( GregorianCalendar.MILLISECOND , 999 );
@@ -448,10 +448,10 @@ public class TimeScalesTest {
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 666 ) ) );
     assertThat( references.get( 2 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 3 , 999 ) ) );
     }
-    
+
     @Test
     public void createReferencesOverflowMilliseconds3() {
-    //test units do not get mixed up and they can overflow into 
+    //test units do not get mixed up and they can overflow into
     //a larger unit. also test when we are 1 millisecond off from next
     //reference line
     GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 0 );
@@ -463,10 +463,10 @@ public class TimeScalesTest {
     assertThat( references.get( 0 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 1 , 333 ) ) );
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 666 ) ) );
     }
-    
+
     @Test
     public void createReferencesOverflowMilliseconds4() {
-    //test units do not get mixed up and they can overflow into 
+    //test units do not get mixed up and they can overflow into
     //a larger unit. also test when we are 1 millisecond after next
     //reference line
     GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 22 , 11 , 30 , 1 );
@@ -479,7 +479,7 @@ public class TimeScalesTest {
     assertThat( references.get( 1 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 2 , 333 ) ) );
     assertThat( references.get( 2 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 3 , 666 ) ) );
     }
-    
+
     @Test
     public void createReferencesSeconds1() {
     //test seconds: straightforward, 5 seconds interval over 1 second periods
@@ -496,7 +496,7 @@ public class TimeScalesTest {
     assertThat( references.get( 4 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 4 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 5 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesSeconds2() {
     //test seconds: straightforward, 10 second interval over 2 second periods
@@ -513,7 +513,7 @@ public class TimeScalesTest {
     assertThat( references.get( 4 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 8 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 10 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesSeconds3() {
     //test seconds: straightforward, 30 second interval over 5 second periods,
@@ -531,7 +531,7 @@ public class TimeScalesTest {
     assertThat( references.get( 4 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 25 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 30 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesSeconds4() {
     //test seconds: straightforward, 50 second interval over 10 second periods,
@@ -548,7 +548,7 @@ public class TimeScalesTest {
     assertThat( references.get( 3 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 40 , 0 ) ) );
     assertThat( references.get( 4 ) , equalTo( create(2014 , 11 , 22 , 11 , 30 , 50 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesMinutes1() {
     //test minutes: straightforward, 10 minutes interval over 1 minute periods,
@@ -571,7 +571,7 @@ public class TimeScalesTest {
     assertThat( references.get( 8 ) , equalTo( create( 2014 , 11 , 22 , 11 , 39 , 0 , 0 ) ) );
     assertThat( references.get( 9 ) , equalTo( create( 2014 , 11 , 22 , 11 , 40 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesMinutes2() {
     //test minutes: straightforward, 50 minutes interval over 10 minute periods,
@@ -590,7 +590,7 @@ public class TimeScalesTest {
     assertThat( references.get( 4 ) , equalTo( create( 2014 , 11 , 22 , 12 , 10 , 0 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create( 2014 , 11 , 22 , 12 , 20 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesHours1() {
     //test hours: straightforward, 3 hours interval over 1 hour periods,
@@ -605,7 +605,7 @@ public class TimeScalesTest {
     assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 22 , 13 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 2 ) , equalTo( create( 2014 , 11 , 22 , 14 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     //Note: this only works if hour type is set to HOUR_OF_DAY
     //This failes if hour type is set to HOUR
@@ -626,30 +626,30 @@ public class TimeScalesTest {
     assertThat( references.get( 5 ) , equalTo( create( 2014 , 11 , 23 , 1 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 6 ) , equalTo( create( 2014 , 11 , 23 , 6 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
-    @Ignore 
+    @Ignore
     public void createReferencesHoursDST1() {
     //Test spring forward daylight savings time (DST)
     //Start: Sat Mar 07 23:00:00 EST 2015
     //End: Sun Mar 08 3:00:00 EST 2015 (right after spring forward DST)
 //    TimeZone oldZoneId = TimeZone.getDefault();
 //    TimeZone.setDefault(TimeZone.getTimeZone("EST"));
-        
+
     Instant start = create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 );
     Instant end = start.plus( Duration.ofHours( 3 ) );
-    
+
     TimeInterval timeInterval = TimeInterval.between( start , end );
     List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
     assertThat( references.size() , equalTo( 4 ) );
     assertThat( references.get( 0 ) , equalTo( create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 ) ) );
-    assertThat( references.get( 1 ) , equalTo( create( 2015 , 3 , 8 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 2 ) , equalTo( create( 2015 , 3 , 8 , 1 , 0 , 0 , 0 ) ) );    
-    
+    assertThat( references.get( 1 ) , equalTo( create( 2015 , 3 , 8 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 2 ) , equalTo( create( 2015 , 3 , 8 , 1 , 0 , 0 , 0 ) ) );
+
     //DST makes us skip hour 2
-    assertThat( references.get( 3 ) , equalTo( create( 2015 , 3 , 8 , 3 , 0 , 0 , 0 ) ) );    
+    assertThat( references.get( 3 ) , equalTo( create( 2015 , 3 , 8 , 3 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     @Ignore //create() does not use EDT/EST correctly
     public void createReferencesHoursDST2() {
@@ -662,7 +662,7 @@ public class TimeScalesTest {
     List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.HOUR_FIELD_ID , 1 ) );
     assertThat( references.size() , equalTo( 5 ) );
     assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 ) ) );
-    
+
     //TODO resolve GregorianCalendar functioning improperly
     //I do not know why when changing time zone, GregorianCalendar's hours
     //remain in GMT time. For example, if you set time zone to GMT-5, setting the hours
@@ -672,12 +672,12 @@ public class TimeScalesTest {
     //we have to manually change the time zone to EDT
     assertThat( references.get( 1 ) , equalTo( create( 2014 , 11 , 2 , 5 , 0 , 0 , 0 , "EDT" ) ) );
     assertThat( references.get( 2 ) , equalTo( create( 2014 , 11 , 2 , 6 , 0 , 0 , 0 , "EDT" ) ) );
-    
+
     //hour 1 is repeated due to DST
     assertThat( references.get( 3 ) , equalTo( create( 2014 , 11 , 2 , 2 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 4 ) , equalTo( create( 2014 , 11 , 2 , 3 , 0 , 0 , 0 ) ) );
     }
-     
+
     @Test
     public void createReferencesDays1() {
     //test days: straightforward, 7 day interval over 1 hour periods,
@@ -696,7 +696,7 @@ public class TimeScalesTest {
     assertThat( references.get( 5 ) , equalTo( create( 2014 , 12 , 3 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 6 ) , equalTo( create( 2014 , 12 , 4 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesDays2() {
     //test days: straightforward, 30 day interval over 5 day periods,
@@ -715,7 +715,7 @@ public class TimeScalesTest {
     assertThat( references.get( 5 ) , equalTo( create( 2014 , 12 , 15 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 6 ) , equalTo( create( 2014 , 12 , 20 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesDays3() {
     //test days wrapping over to next year
@@ -733,7 +733,7 @@ public class TimeScalesTest {
     assertThat( references.get( 5 ) , equalTo( create( 2015 , 1 , 2 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 6 ) , equalTo( create( 2015 , 1 , 3 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesLeapDay() {
     //test days wrapping over to March when Feburary is of a leap year
@@ -749,7 +749,7 @@ public class TimeScalesTest {
     assertThat( references.get( 5 ) , equalTo( create( 2012 , 3 , 4 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 6 ) , equalTo( create( 2012 , 3 , 5 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesWeeks1() {
     //test weeks: straightforward, 3 weeks interval over 1 week periods
@@ -764,11 +764,11 @@ public class TimeScalesTest {
     assertThat( references.get( 1 ) , equalTo( create( 2014 , 12 , 7 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 2 ) , equalTo( create( 2014 , 12 , 14 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesWeeks2() {
     //test weeks: month has a last week that fully spans Sunday to Saturday
-    
+
     //Start: Thu Jan 01 00:00:00 EST 2015
     //End: Thu Feb 12 00:00:00 EST 2015
     Instant start = create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 );
@@ -777,19 +777,19 @@ public class TimeScalesTest {
     List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
     assertThat( references.size() , equalTo( 6 ) );
     assertThat( references.get( 0 ) , equalTo( create( 2015 , 1 , 4 , 0 , 0 , 0 , 0 ) ) );
-    assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 11 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 2 ) , equalTo( create( 2015 , 1 , 18 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 3 ) , equalTo( create( 2015 , 1 , 25 , 0 , 0 , 0 , 0 ) ) );    
+    assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 11 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 2 ) , equalTo( create( 2015 , 1 , 18 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 3 ) , equalTo( create( 2015 , 1 , 25 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 4 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create( 2015 , 2 , 8 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     @Ignore //until daylight savings is figured out
     public void createReferencesWeeks3() {
     //test weeks: month has a first week that fully spans Sunday to Saturday
     //and does not need to be rounded down to a week in previous month
-    
+
     //Start: Sun Feb 01 00:00:00 EST 2015
     //End: Sun Mar 08 00:00:00 EST 2015
     Instant start = create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 );
@@ -798,18 +798,18 @@ public class TimeScalesTest {
     List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( TimeScales.WEEK_FIELD_ID , 1 ) );
     assertThat( references.size() , equalTo( 6 ) );
     assertThat( references.get( 0 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );
-    assertThat( references.get( 1 ) , equalTo( create( 2015 , 2 , 8 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 2 ) , equalTo( create( 2015 , 2 , 15 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 3 ) , equalTo( create( 2015 , 2 , 22 , 0 , 0 , 0 , 0 ) ) );    
+    assertThat( references.get( 1 ) , equalTo( create( 2015 , 2 , 8 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 2 ) , equalTo( create( 2015 , 2 , 15 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 3 ) , equalTo( create( 2015 , 2 , 22 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 4 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create( 2015 , 3 , 8 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesMonths1() {
     //test months: straightforward, 5 months interval over 1 month periods
     //not starting on perfect multiple of period
-    
+
     //Start: Thu Nov 27 04:12:24 EST 2014
     //End: Thu May 21 05:12:24 EDT 2015
     GregorianCalendar cal = new GregorianCalendar( 2014 , 10 , 27 , 4 , 12 , 24 );
@@ -819,18 +819,18 @@ public class TimeScalesTest {
     List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 1 ) );
     assertThat( references.size() , equalTo( 6 ) );
     assertThat( references.get( 0 ) , equalTo( create( 2014 , 12 , 1 , 0 , 0 , 0 , 0 ) ) );
-    assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 2 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 3 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );    
+    assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 2 ) , equalTo( create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 3 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 4 ) , equalTo( create( 2015 , 4 , 1 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create( 2015 , 5 , 1 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesMonths2() {
     //test months: 13 months over 2 month periods
     //starting on perfect multiple of period
-    
+
     //Start: Sat Nov 01 00:00:00 EDT 2014
     //End: Fri Dec 25 23:00:00 EST 2015
     Instant start = create( 2014 , 11 , 1 , 0 , 0 , 0 , 0 );
@@ -838,19 +838,19 @@ public class TimeScalesTest {
     List<Instant> references = TimeScales.createReferences( timeInterval , new TimePeriod( MONTH , 2 ) );
     assertThat( references.size() , equalTo( 7 ) );
     assertThat( references.get( 0 ) , equalTo( create( 2014 , 11 , 1 , 0 , 0 , 0 , 0 ) ) );
-    assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 2 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );    
-    assertThat( references.get( 3 ) , equalTo( create( 2015 , 5 , 1 , 0 , 0 , 0 , 0 ) ) );    
+    assertThat( references.get( 1 ) , equalTo( create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 2 ) , equalTo( create( 2015 , 3 , 1 , 0 , 0 , 0 , 0 ) ) );
+    assertThat( references.get( 3 ) , equalTo( create( 2015 , 5 , 1 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 4 ) , equalTo( create( 2015 , 7 , 1 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 5 ) , equalTo( create( 2015 , 9 , 1 , 0 , 0 , 0 , 0 ) ) );
     assertThat( references.get( 6 ) , equalTo( create( 2015 , 11 , 1 , 0 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesYears1() {
     //test years: straightforward, 50 years interval over 10 year period,
     //but does not start on perfect multiple of time period
-    
+
     //Start: Sat Nov 22 11:30:00 EST 2014
     //End: Mon Dec 29 11:30:00 EST 2064
     Instant start = create( 2014 , 11 , 22 , 11 , 30 , 0 , 500 );
@@ -863,7 +863,7 @@ public class TimeScalesTest {
     assertThat( references.get( 3 ) , equalTo( create(2050 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
     assertThat( references.get( 4 ) , equalTo( create(2060 , 1 , TimeScales.FIRST_DAY , TimeScales.FIRST_HOUR , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     @Ignore //What's the maximum bound on years?
     public void createReferencesOverflow() {
@@ -881,7 +881,7 @@ public class TimeScalesTest {
     assertThat( references.size() , equalTo(1) );
     assertThat( references.get( 0 ) , equalTo( create( 2014+999999999 , 11 , 22 , 11 , 0 , 0 , 0 ) ) );
     }
-    
+
     @Test
     public void createReferencesStructureTest1() {
         //test the structure of the createReferences() method
@@ -1465,12 +1465,12 @@ public class TimeScalesTest {
     public void trimLabelsYears2() {
     //Test when just the years are changing, but
     //the days and hours are not 1 and 0, respectively
-    List< String > input = Arrays.asList( 
-        "2014/01/05 20:00:00.000000000" , 
+    List< String > input = Arrays.asList(
+        "2014/01/05 20:00:00.000000000" ,
         "2015/01/05 20:00:00.000000000" ,
         "2016/01/05 20:00:00.000000000" ,
         "2017/01/05 20:00:00.000000000" ,
-        "2018/01/05 20:00:00.000000000" , 
+        "2018/01/05 20:00:00.000000000" ,
         "2019/01/05 20:00:00.000000000"
     );
     List< String > expected = Arrays.asList(
@@ -1482,9 +1482,9 @@ public class TimeScalesTest {
         "2019/01/05 20:00"
     );
     List< String > found = TimeScales.trimLabels( input );
-    assertThat( found , equalTo( expected ) );    
+    assertThat( found , equalTo( expected ) );
     }
-    
+
     static Instant create(int year, int month, int day, int hour, int minute, int second, int millisecond) {
         GregorianCalendar cal = new GregorianCalendar(year, month - 1, day, hour, minute, second);
         cal.set(GregorianCalendar.MILLISECOND, millisecond);
@@ -1519,6 +1519,6 @@ public class TimeScalesTest {
     cal.set( MILLISECOND , millisecond );
     return cal.getTime().toInstant();
     }
-    
+
     //*MC: Trim labels
 }

@@ -98,7 +98,7 @@ public class CSVIOTest {
 //    @Test
     public void exportVTable2() {
         VTable value = ValueFactory.newVTable(Arrays.<Class<?>>asList(String.class, Double.TYPE, Integer.TYPE, Instant.class),
-                                   Arrays.asList("Name", "Value", "Index", "Time"), 
+                                   Arrays.asList("Name", "Value", "Index", "Time"),
                                    Arrays.<Object>asList(Arrays.asList("A", "B", "C", "D", "E"),
                                           new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123),
                                           new ArrayInt(1,2,3,4,5),

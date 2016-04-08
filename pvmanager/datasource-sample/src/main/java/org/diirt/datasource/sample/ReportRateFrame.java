@@ -158,7 +158,7 @@ public class ReportRateFrame extends javax.swing.JFrame {
         if (pv != null) {
             pv.close();
         }
-        
+
         overallTimestamp = Instant.now();
         overallCounter = 0;
         lastPeriodTimestamp = overallTimestamp;

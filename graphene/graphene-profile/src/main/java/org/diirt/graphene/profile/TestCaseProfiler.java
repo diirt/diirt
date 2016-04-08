@@ -809,7 +809,7 @@ public final class TestCaseProfiler {
         private void profile(){
             //Timing
             Instant start = Instant.now();
-            Instant end = start.plus(Duration.ofSeconds(testTimeSec));        
+            Instant end = start.plus(Duration.ofSeconds(testTimeSec));
             stopWatch = new StopWatch(maxTries);
 
             nTries = 0;

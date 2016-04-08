@@ -322,7 +322,7 @@ public class TimeParserTest {
                         .getSeconds(), 0);
         TimeInterval twoWeeksAgo = TimeParser.getTimeInterval("2weeks ago");
         Assert.assertEquals("Failed to get TimeInterval for 2weeks ago",
-                (60 * 60 * 24 * 7 * 2), 
+                (60 * 60 * 24 * 7 * 2),
                 between(twoWeeksAgo.getStart(), twoWeeksAgo.getEnd()).getSeconds(), 0);
     }
 
@@ -342,7 +342,7 @@ public class TimeParserTest {
         String endTime = "1976-01-02T00:00:00";
         TimeInterval oneDay = TimeParser.getTimeInterval(startTime, endTime);
         Assert.assertEquals("Failed to get time Interval for String: from:"
-                + startTime + " to:" + endTime, 60 * 60 * 24, 
+                + startTime + " to:" + endTime, 60 * 60 * 24,
                 between(oneDay.getStart(), oneDay.getEnd()).getSeconds(), 0);
 
     }

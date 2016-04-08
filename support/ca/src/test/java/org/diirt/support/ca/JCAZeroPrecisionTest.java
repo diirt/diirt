@@ -35,7 +35,7 @@ public class JCAZeroPrecisionTest {
 
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(true);
-        
+
         Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
@@ -54,7 +54,7 @@ public class JCAZeroPrecisionTest {
 
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(false);
-        
+
         Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
