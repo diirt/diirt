@@ -67,7 +67,6 @@ public class ValueFactoryTest {
     public void setUp() {
         testTime = newTime(Instant.ofEpochSecond(1354719441, 521786982));
         testTimeString = timeFormat.format(LocalDateTime.ofInstant(testTime.getTimestamp(), ZoneId.systemDefault()));
-        System.out.println(testTimeString);
     }
 
     @Test
