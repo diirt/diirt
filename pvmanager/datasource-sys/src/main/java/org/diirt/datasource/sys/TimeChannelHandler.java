@@ -29,5 +29,5 @@ class TimeChannelHandler extends SystemChannelHandler {
         String formatted = timeFormat.format(ZonedDateTime.ofInstant(time, ZoneId.systemDefault()));
         return newVString(formatted, alarmNone(), newTime(time));
     }
-    
+
 }

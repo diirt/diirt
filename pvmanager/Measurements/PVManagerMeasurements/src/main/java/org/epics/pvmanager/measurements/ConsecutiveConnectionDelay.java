@@ -11,7 +11,7 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  * Hello world!
  *
  */
-public class ConsecutiveConnectionDelay 
+public class ConsecutiveConnectionDelay
 {
     public static void main( String[] args ) {
         final StopWatch watch = new StopWatch();

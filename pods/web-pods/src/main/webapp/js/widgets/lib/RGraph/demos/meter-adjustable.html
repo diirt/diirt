@@ -2,12 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.meter.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <meta name="keywords" content="demo meter adjustable" />
     <meta name="description" content="An adjustable Meter chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -32,7 +32,7 @@
                 .Set('tickmarks.big.num', 0)
                 .Set('adjustable', true)
                 .Draw();
-            
+
             meter.onbeforedraw = function (obj)
             {
                 RGraph.Clear(obj.canvas, 'white');

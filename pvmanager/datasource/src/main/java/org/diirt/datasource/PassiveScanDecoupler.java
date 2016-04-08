@@ -16,12 +16,12 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
-    
+
     private static final Logger log = Logger.getLogger(PassiveScanDecoupler.class.getName());
     // TODO: this could be made configurable between FINEST and OFF, and the if
     // modified so that code elimination would remove the logging completely
     private static final Level logLevel = Level.FINEST;
-    
+
     private DesiredRateEvent queuedEvent;
     private Instant lastSubmission;
     private boolean scanActive;
@@ -33,7 +33,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             lastSubmission = Instant.now().minus(getMaxDuration());
         }
     }
-    
+
     private final Runnable notificationTask = new Runnable() {
 
         @Override
@@ -46,7 +46,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                     log.log(logLevel, "Submitted {0}", Instant.now());
                 }
             }
-            
+
             // If stopped, the event may be null. Skip the event.
             if (nextEvent != null) {
                 sendDesiredRateEvent(nextEvent);
@@ -140,12 +140,12 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                 }
             }
         }
-        
+
         if (delay != null) {
             scheduleNext(delay);
         }
     }
-    
+
     private void newEvent(DesiredRateEvent.Type type) {
         boolean submit;
         Duration delay = null;
@@ -184,7 +184,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                     log.log(logLevel, "Do not submit {0}", Instant.now());
                 }
             }
-            
+
         }
         if (submit) {
             scheduleNext(delay);
@@ -198,9 +198,9 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             getScannerExecutor().schedule(notificationTask, delay.toNanos(), TimeUnit.NANOSECONDS);
         }
     }
-    
-    
-    
+
+
+
     /**
      * If possible, submit the event right away, otherwise try again later.
      * @param event the event to submit
@@ -218,5 +218,5 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             });
         }
     }
-    
+
 }

@@ -10,11 +10,11 @@ package org.diirt.datasource;
  * @author carcassi
  */
 public interface ChannelWriteCallback {
-    
+
     /**
      * Called when a write is completed. If completed without error,
      * the argument is null.
-     * 
+     *
      * @param ex the exception if the write failed, null otherwise
      */
     public void channelWritten(Exception ex);

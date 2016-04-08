@@ -64,8 +64,8 @@ class TableUnionFunction implements FormulaFunction {
             Object object = args.get(i);
             tables.add((VTable) object);
         }
-        
+
         return VTableFactory.union(columnName, columnValues, tables.toArray(new VTable[tables.size()]));
     }
-    
+
 }

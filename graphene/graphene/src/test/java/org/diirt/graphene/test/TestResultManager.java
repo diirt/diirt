@@ -19,8 +19,8 @@ public class TestResultManager {
     public TestResultManager() {
         refresh();
     }
-    
-    
+
+
     public class Result {
         private File failedImage;
         private File referenceImage;
@@ -29,7 +29,7 @@ public class TestResultManager {
             this.failedImage = failedImage;
             this.referenceImage = referenceImage;
         }
-        
+
         public void accept() {
             TestResultManager.this.accept(this);
         }
@@ -46,14 +46,14 @@ public class TestResultManager {
         public String toString() {
             return referenceImage.getName();
         }
-        
+
     }
-    
+
     private List<Result> currentResults;
-    
+
     public void refresh() {
         File[] failedFiles = outputDirectory.listFiles(new FilenameFilter() {
-            
+
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith("failed.png");
@@ -70,16 +70,16 @@ public class TestResultManager {
     public List<Result> getCurrentResults() {
         return currentResults;
     }
-    
+
     public void accept(Result result) {
         if (result.referenceImage.exists()) {
             result.referenceImage.delete();
         }
-        
+
         result.failedImage.renameTo(result.referenceImage);
         currentResults.remove(result);
     }
-    
+
     public static void main(String[] args) {
         TestResultManager manager = new TestResultManager();
         manager.refresh();

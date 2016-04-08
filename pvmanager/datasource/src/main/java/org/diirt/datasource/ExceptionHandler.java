@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource;
 
-import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,13 +21,13 @@ public class ExceptionHandler {
 
     /**
      * Notifies of an exception being thrown.
-     * 
+     *
      * @param ex the exception
      */
     public void handleException(Exception ex) {
         log.log(Level.INFO, "Exception for PV", ex);
     }
-    
+
     static ExceptionHandler safeHandler(final ExceptionHandler exceptionHandler) {
         return new ExceptionHandler() {
 
@@ -40,7 +39,7 @@ public class ExceptionHandler {
                     log.log(Level.INFO, "Exception handler throw an exception", e);
                 }
             }
-            
+
         };
     }
 }

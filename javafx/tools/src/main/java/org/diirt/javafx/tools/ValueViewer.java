@@ -4,14 +4,11 @@
  */
 package org.diirt.javafx.tools;
 
-import com.sun.javafx.collections.ElementObservableListDecorator;
 import com.sun.javafx.collections.ImmutableObservableList;
-import com.sun.javafx.collections.ObservableListWrapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +27,7 @@ import org.diirt.vtype.VTypeToString;
 import org.diirt.vtype.ValueUtil;
 
 public final class ValueViewer extends ScrollPane {
-    
+
     @FXML
     private TitledPane commonMetadata;
     @FXML
@@ -74,7 +71,7 @@ public final class ValueViewer extends ScrollPane {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
@@ -84,12 +81,12 @@ public final class ValueViewer extends ScrollPane {
         columnNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnTypeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         columnSizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
-        
+
         setValue(null, false);
     }
-    
+
     private Object value;
-    
+
     public void setValue(Object value, boolean connection) {
         commonMetadata(value, connection);
         numberDisplay(ValueUtil.displayOf(value));
@@ -97,7 +94,7 @@ public final class ValueViewer extends ScrollPane {
         tableMetadata(value);
         this.value = value;
     }
-    
+
     private void commonMetadata(Object value, boolean connection) {
         if (value == null) {
             typeField.setText(null);
@@ -114,7 +111,7 @@ public final class ValueViewer extends ScrollPane {
             timeField.setText(VTypeToString.timeToString(ValueUtil.timeOf(value)));
         }
     }
-    
+
     private void numberDisplay(Display display) {
         if (display == null) {
             numberMetadata.setVisible(false);
@@ -129,7 +126,7 @@ public final class ValueViewer extends ScrollPane {
             unitField.setText(display.getUnits());
         }
     }
-    
+
     private void enumMetadata(Object value) {
         if (value instanceof org.diirt.vtype.Enum) {
             enumMetadata.setVisible(true);
@@ -140,7 +137,7 @@ public final class ValueViewer extends ScrollPane {
             enumMetadata.setManaged(false);
         }
     }
-    
+
     public static class VTableColumn {
         private final VTable vTable;
         private final int columnIndex;
@@ -149,15 +146,15 @@ public final class ValueViewer extends ScrollPane {
             this.vTable = vTable;
             this.columnIndex = columnIndex;
         }
-        
+
         public String getName() {
             return vTable.getColumnName(columnIndex);
         }
-        
+
         public String getType() {
             return vTable.getColumnType(columnIndex).getSimpleName();
         }
-        
+
         public int getSize() {
             Object data = vTable.getColumnData(columnIndex);
             if (data instanceof ListNumber) {
@@ -168,10 +165,10 @@ public final class ValueViewer extends ScrollPane {
                 return 0;
             }
         }
-        
-        
+
+
     }
-    
+
     private void tableMetadata(Object value) {
         if (value instanceof org.diirt.vtype.VTable) {
             tableMetadata.setVisible(true);

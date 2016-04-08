@@ -16,10 +16,10 @@ import static org.diirt.util.array.ListTest.testList;
  * @author carcassi
  */
 public class ListFloatTest {
-    
+
     public ListFloatTest() {
     }
-    
+
     @Test
     public void list1() {
         ListFloat coll = new ListFloat() {
@@ -37,7 +37,7 @@ public class ListFloatTest {
         testCollection(coll);
         testList(coll);
     }
-    
+
     @Test
     public void equals1() {
         ListFloat coll = new ListFloat() {
@@ -56,7 +56,7 @@ public class ListFloatTest {
         assertThat(coll, equalTo(other));
         assertThat(other, equalTo(coll));
     }
-    
+
     @Test
     public void hashcode1() {
         ListFloat coll = new ListFloat() {
@@ -75,5 +75,5 @@ public class ListFloatTest {
         assertThat(coll.hashCode(), equalTo(other.hashCode()));
         assertThat(coll.hashCode(), equalTo(Arrays.hashCode(new float[] {0,1,2,3,4,5,6,7,8,9})));
     }
-    
+
 }

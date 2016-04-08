@@ -12,16 +12,16 @@ import java.util.List;
  */
 public class QueryResultImpl implements QueryResult {
 
-	private List<QueryData> dataList = new ArrayList<QueryData>();
+        private List<QueryData> dataList = new ArrayList<QueryData>();
 
-	public void addData(QueryData data) {
-		if (data != null)
-			dataList.add(data);
-	}
+        public void addData(QueryData data) {
+                if (data != null)
+                        dataList.add(data);
+        }
 
-	@Override
-	public List<QueryData> getData() {
-		return dataList;
-	}
+        @Override
+        public List<QueryData> getData() {
+                return dataList;
+        }
 
 }

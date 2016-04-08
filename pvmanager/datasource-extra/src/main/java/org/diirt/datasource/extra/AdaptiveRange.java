@@ -7,7 +7,6 @@ package org.diirt.datasource.extra;
 import java.text.NumberFormat;
 import java.util.List;
 import org.diirt.vtype.Display;
-import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.util.array.ListNumber;
 
@@ -25,7 +24,7 @@ class AdaptiveRange implements Display {
     private Double upperAlarmLimit = 0.0;
     private Double upperCtrlLimit = 0.0;
     private Double upperDisplayLimit = 0.0;
-    
+
     private boolean firstValue = true;
     private boolean limitsChanged = false;
 

@@ -38,13 +38,13 @@ import static org.diirt.vtype.json.JsonArrays.*;
  * @author carcassi
  */
 class VTypeJsonMapper implements JsonObject {
-    
+
     private final JsonObject json;
 
     public VTypeJsonMapper(JsonObject json) {
         this.json = json;
     }
-    
+
     public String getTypeName() {
         JsonObject type = json.getJsonObject("type");
         if (type == null) {
@@ -52,7 +52,7 @@ class VTypeJsonMapper implements JsonObject {
         }
         return type.getString("name");
     }
-    
+
     public Alarm getAlarm() {
         JsonObject alarm = json.getJsonObject("alarm");
         if (alarm == null) {
@@ -60,7 +60,7 @@ class VTypeJsonMapper implements JsonObject {
         }
         return ValueFactory.newAlarm(AlarmSeverity.valueOf(alarm.getString("severity")), alarm.getString("status"));
     }
-    
+
     public Time getTime() {
         VTypeJsonMapper time = getJsonObject("time");
         if (time == null) {
@@ -68,7 +68,7 @@ class VTypeJsonMapper implements JsonObject {
         }
         return ValueFactory.newTime(Instant.ofEpochSecond(time.getInt("unixSec"), time.getInt("nanoSec")), time.getInteger("userTag"), true);
     }
-    
+
     public Display getDisplay() {
         VTypeJsonMapper display = getJsonObject("display");
         if (display == null) {
@@ -84,42 +84,42 @@ class VTypeJsonMapper implements JsonObject {
                 Double.NaN,
                 Double.NaN);
     }
-    
+
     public ListDouble getListDouble(String string) {
         JsonArray array = getJsonArray(string);
         return toListDouble(array);
     }
-    
-    
+
+
     public ListFloat getListFloat(String string) {
         JsonArray array = getJsonArray(string);
         return toListFloat(array);
     }
-    
-    
+
+
     public ListLong getListLong(String string) {
         JsonArray array = getJsonArray(string);
         return toListLong(array);
     }
-    
-    
+
+
     public ListInt getListInt(String string) {
         JsonArray array = getJsonArray(string);
         return toListInt(array);
     }
-    
-    
+
+
     public ListShort getListShort(String string) {
         JsonArray array = getJsonArray(string);
         return toListShort(array);
     }
-    
-    
+
+
     public ListByte getListByte(String string) {
         JsonArray array = getJsonArray(string);
         return toListByte(array);
     }
-    
+
 
     public ListBoolean getListBoolean(String string) {
         JsonArray array = getJsonArray(string);
@@ -129,12 +129,12 @@ class VTypeJsonMapper implements JsonObject {
         }
         return new ArrayBoolean(values);
     }
-    
+
     public List<String> getListString(String string) {
         JsonArray array = getJsonArray(string);
         return toListString(array);
     }
-    
+
 
     public List<Class<?>> getColumnTypes(String string) {
         JsonArray array = getJsonArray(string);
@@ -191,14 +191,14 @@ class VTypeJsonMapper implements JsonObject {
         }
         return result;
     }
-    
+
     public Integer getInteger(String string) {
         if (isNull(string)) {
             return null;
         }
         return getInt(string);
     }
-    
+
     public Double getNotNullDouble(String string) {
         if (isNull(string)) {
             return Double.NaN;

@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>diirt-all</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.3-SNAPSHOT</version>
     </parent>
     <artifactId>pods-all</artifactId>
     <name>pods</name>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>diirt-util</artifactId>
-            <version>3.0.1-SNAPSHOT</version>
+            <version>3.0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <modules>

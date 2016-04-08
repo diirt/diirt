@@ -11,7 +11,7 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  * Hello world!
  *
  */
-public class ConnectionDelay 
+public class ConnectionDelay
 {
     public static void main( String[] args ) {
         final StopWatch watch = new StopWatch();
@@ -30,7 +30,7 @@ public class ConnectionDelay
             try {
                 latch.await();
             } catch (InterruptedException ex) {
-                
+
             }
         }
         watch.printStatisticsMS(System.out);

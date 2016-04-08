@@ -10,7 +10,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 class IVLong extends IVNumeric implements VLong {
-    
+
     private final Long value;
 
     IVLong(Long value, Alarm alarm, Time time, Display display) {

@@ -16,15 +16,15 @@ public class JCAConfiguration {
         Context context = conf.createContext();
         context.printInfo();
         context.dispose();
-        
+
         System.out.println("---------------------------------");
-        
+
         conf = new JCADataSourceConfiguration()
                 .addContextProperty("auto_addr_list", "false")
                 .addContextProperty("addr_list", "192.168.0.0");
         context = conf.createContext();
         context.printInfo();
         context.dispose();
-        
+
     }
 }

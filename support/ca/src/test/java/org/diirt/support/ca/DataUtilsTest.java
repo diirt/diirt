@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.DataUtils;
 import gov.aps.jca.dbr.TimeStamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -34,5 +33,5 @@ public class DataUtilsTest {
         TimeStamp timeStamp = new TimeStamp(123456789, 123456789);
         assertThat(DataUtils.isTimeValid(timeStamp), equalTo(true));
     }
-    
+
 }

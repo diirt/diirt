@@ -2,20 +2,20 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/RGraph.drawing.image.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A basic example of the drawing API rect object</title>
-    
+
     <meta name="keywords" content="demo drawing api rect" />
     <meta name="description" content="A basic example of the drawing API rect object" />
     <meta name="robots" content="noindex,nofollow" />
-    
+
 
     <style>
         .RGraph_tooltip {
@@ -24,7 +24,7 @@
     </style>
 </head>
 <body>
-        
+
     <h1>A basic example of the drawing API image object</h1>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -39,9 +39,9 @@
                 .Set('background.grid.border', false)
                 .Set('tickmarks', 'circle')
                 .Draw();
-            
+
             var coords = line.coords[2];
-            
+
             var img = new RGraph.Drawing.Image('cvs', coords[0], coords[1], '/images/logo.png')
                 .Set('halign', 'center')
                 .Set('valign', 'center')

@@ -10,7 +10,7 @@ package org.diirt.datasource;
  * @author carcassi
  */
 interface DesiredRateEventListener {
-    
+
     /**
      * New event to be processed.
      */

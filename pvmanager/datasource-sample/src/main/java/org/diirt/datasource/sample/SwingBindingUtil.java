@@ -16,7 +16,7 @@ import javax.swing.event.DocumentListener;
  * @author carcassi
  */
 public class SwingBindingUtil {
-        
+
     public static void onTextFieldChange(JTextField field, final Runnable task) {
         field.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -36,7 +36,7 @@ public class SwingBindingUtil {
             }
         });
     }
-    
+
     public static void onCheckBoxChange(JCheckBox field, final Runnable task) {
         field.addActionListener(new ActionListener() {
 

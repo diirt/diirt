@@ -34,10 +34,10 @@ public abstract class AbstractVNumberVNumberToVNumberFormulaFunction implements 
     private final String description;
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
-    
+
     /**
      * Creates a new function.
-     * 
+     *
      * @param name function name; can't be null
      * @param description function description; can't be null
      * @param arg1Name first argument name; can't be null
@@ -57,7 +57,7 @@ public abstract class AbstractVNumberVNumberToVNumberFormulaFunction implements 
         if (arg2Name == null) {
             throw new NullPointerException("Second argument name can't be null");
         }
-        
+
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VNumber.class, VNumber.class);
@@ -116,15 +116,15 @@ public abstract class AbstractVNumberVNumberToVNumberFormulaFunction implements 
                 ((VNumber) args.get(1)).getValue().doubleValue())
                 , alarm, time, ValueFactory.displayNone());
     }
-    
+
     /**
      * Calculates the result based on the two arguments. This is the only
      * method one has to implement.
-     * 
+     *
      * @param arg1 the first argument
      * @param arg2 the second argument
      * @return the result
      */
     public abstract double calculate(double arg1, double arg2);
-    
+
 }

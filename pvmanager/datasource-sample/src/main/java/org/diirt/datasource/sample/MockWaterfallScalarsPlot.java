@@ -51,7 +51,7 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
                     plot.with(height(plotView.getHeight()));
                 }
             }
-            
+
         });
     }
 
@@ -209,7 +209,7 @@ public class MockWaterfallScalarsPlot extends javax.swing.JFrame {
     private void goButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goButtonActionPerformed
         if (pv != null)
             pv.close();
-        
+
         String[] tokens = pvNamesField.getText().split("\n");
         List<String> names = new ArrayList<String>();
         for (String token : tokens) {

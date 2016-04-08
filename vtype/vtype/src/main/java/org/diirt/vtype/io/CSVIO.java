@@ -134,7 +134,7 @@ public class CSVIO {
             throw new RuntimeException("Write failed", e);
         }
     }
-    
+
     public VTable importVTable(Reader reader) {
         CsvParser parser = CsvParser.AUTOMATIC;
         CsvParserResult result = parser.parse(reader);
@@ -147,7 +147,7 @@ public class CSVIO {
 
         return ValueFactory.newVTable(result.getColumnTypes(), result.getColumnNames(), result.getColumnValues());
     }
-    
+
     private String toString(VTable table, int row, int column) {
         Class<?> clazz = table.getColumnType(column);
         if (clazz.equals(String.class)) {

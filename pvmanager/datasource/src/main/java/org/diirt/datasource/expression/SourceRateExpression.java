@@ -15,10 +15,10 @@ import org.diirt.datasource.ReadFunction;
  * @author carcassi
  */
 public interface SourceRateExpression<R> extends SourceRateExpressionList<R> {
-    
+
     /**
      * Changes the name for this expression
-     * 
+     *
      * @param name new name
      * @return this
      */
@@ -37,10 +37,10 @@ public interface SourceRateExpression<R> extends SourceRateExpressionList<R> {
      * @return the expression function
      */
     public ReadFunction<R> getFunction();
-    
+
     /**
      * The implementation of this expression.
-     * 
+     *
      * @return the implementation
      */
     public SourceRateExpressionImpl<R> getSourceRateExpressionImpl();

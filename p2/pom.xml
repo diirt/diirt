@@ -3,12 +3,46 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>diirt-all</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.0.3-SNAPSHOT</version>
     </parent>
     <artifactId>p2-repository</artifactId>
     <name>org.diirt.p2</name>
     <description>P2 repository for the diirt bundles and their dependencies.</description>
     <packaging>pom</packaging>
+    <profiles>
+        <profile>
+            <id>uploadRepo</id>
+            <properties>
+                <upload.root>s3://diirt.download.controlsystemstudio.org</upload.root>
+                <ftp.url>${upload.root}/diirt/${project.version}</ftp.url>
+            </properties>
+            <build>
+              <plugins>
+                  <!-- Upload the repo to the server -->
+                  <plugin>
+                      <groupId>org.codehaus.mojo</groupId>
+                      <artifactId>wagon-maven-plugin</artifactId>
+                      <version>1.0-beta-4</version>
+                      <executions>
+                          <execution>
+                              <id>upload-repo</id>
+                              <phase>verify</phase>
+                              <goals>
+                                  <goal>upload</goal>
+                              </goals>
+                              <configuration>
+                                  <fromDir>target/repository</fromDir>
+                                  <includes>**</includes>
+                                  <url>${ftp.url}</url>
+                                  <serverId>s3.site</serverId>
+                              </configuration>
+                          </execution>
+                      </executions>
+                  </plugin>
+              </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>

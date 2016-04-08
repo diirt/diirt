@@ -20,7 +20,7 @@ import org.diirt.datasource.WriteFunction;
  * @author carcassi
  */
 class VStringOfFunction implements ReadFunction<VString> {
-    
+
     private final ReadFunction<? extends VType> argument;
     private final ValueFormat format;
     private final WriteFunction<VType> forward;
@@ -55,5 +55,5 @@ class VStringOfFunction implements ReadFunction<VString> {
         }
         return ValueFactory.newVString(string, alarm, time);
     }
-    
+
 }

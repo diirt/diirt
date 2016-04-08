@@ -6,9 +6,9 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    
+
     <title>A Line chart demonstrating the crosshairs snap option</title>
-    
+
     <meta name="keywords" content="demo line crosshairs snap" />
     <meta name="description" content="The crosshairs has a snap option to 'lock' it to points - this demonstrates it" />
     <meta name="robots" content="noindex,nofollow" />
@@ -16,14 +16,14 @@
 <body>
 
     <h1>A Line chart demonstrating  the crosshairs snap option</h1>
-    
+
     <p>
         This line chart demonstrates how you can extract the Line charts dataset and index from the variables set on the canvas tag
         by RGraph.
     </p>
 
     <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -39,7 +39,7 @@
                 .Set('crosshairs', true)
                 .Set('crosshairs.snap', true)
                 .Draw();
-            
+
             line.oncrosshairs = function (obj)
             {
                 document.getElementById("dataset").value =  obj.canvas.__crosshairs_snap_dataset__;
@@ -47,16 +47,16 @@
             }
         }
     </script>
-    
+
     <p />
-    
+
     Dataset:<br />
     <input id="dataset" type="text" /><br /><br />
 
     Point:<br />
     <input id="point" type="text" />
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

@@ -24,7 +24,7 @@ import org.junit.Test;
  * @author carcassi
  */
 public class VTypeValueEqualsTest {
-    
+
     public VTypeValueEqualsTest() {
     }
 

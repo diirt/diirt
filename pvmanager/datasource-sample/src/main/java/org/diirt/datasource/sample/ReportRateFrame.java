@@ -166,7 +166,7 @@ public class ReportRateFrame extends javax.swing.JFrame {
         valueLabel.setText("");
         avgRateLabel.setText("");
         currentRateLabel.setText("");
-        
+
         double timeIntervalSec = (1.0 / (Integer) updateRateSpinner.getModel().getValue());
         String pvName = "gaussianNoise(0.0, 1.0, " + timeIntervalSec + ")";
         int scanRate = (Integer) scanRateSpinner.getModel().getValue();

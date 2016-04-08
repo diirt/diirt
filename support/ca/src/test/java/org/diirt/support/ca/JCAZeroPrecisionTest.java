@@ -4,10 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCATypeAdapter;
-import org.diirt.support.ca.JCAMessagePayload;
-import org.diirt.support.ca.JCAVTypeAdapterSet;
-import org.diirt.support.ca.JCAConnectionPayload;
 import gov.aps.jca.CAStatus;
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
@@ -36,7 +32,7 @@ public class JCAZeroPrecisionTest {
     public void honorZeroPrecision1() {
         ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(true);
         
@@ -45,9 +41,9 @@ public class JCAZeroPrecisionTest {
         DBR_CTRL_Double meta = createNumericMetadata();
         meta.setPrecision((short) 0);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3"));
     }
 
@@ -55,7 +51,7 @@ public class JCAZeroPrecisionTest {
     public void honorZeroPrecision2() {
         ValueCache<VDouble> cache = new ValueCacheImpl<VDouble>(VDouble.class);
         JCATypeAdapter adapter = JCAVTypeAdapterSet.DBRDoubleToVDouble;
-        
+
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(false);
         
@@ -64,9 +60,9 @@ public class JCAZeroPrecisionTest {
         DBR_CTRL_Double meta = createNumericMetadata();
         meta.setPrecision((short) 0);
         MonitorEvent event = new MonitorEvent(connPayload.getChannel(), value, CAStatus.NORMAL);
-        
+
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
-        
+
         assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3.25"));
     }
 }

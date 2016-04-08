@@ -15,10 +15,10 @@ import java.util.List;
  * @author carcassi
  */
 public interface WriteExpressionList<W> {
-    
+
     /**
      * Adds the given expressions to this list.
-     * 
+     *
      * @param expressions a list of expressions
      * @return this
      */
@@ -26,7 +26,7 @@ public interface WriteExpressionList<W> {
 
     /**
      * The expressions of this list.
-     * 
+     *
      * @return a list of expressions
      */
     public List<WriteExpression<W>> getWriteExpressions();

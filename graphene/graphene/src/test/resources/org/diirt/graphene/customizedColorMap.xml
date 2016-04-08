@@ -1,9 +1,9 @@
 <colormap position = "relative" colorNaN="#000000">
 
-		<color position="0.0" value="rgb(95,0,0)"> </color>
-		<color position="0.25" value="rgb(195,9,9)"> </color>
-		<color position="0.5" value="rgb(201,201,242)"> </color>
-		<color position="0.75" value="rgb(13,13,198)"> </color>
-		<color position="1.0" value="rgb(0,0,95)"> </color>
+    <color position="0.0" value="rgb(95,0,0)"> </color>
+    <color position="0.25" value="rgb(195,9,9)"> </color>
+    <color position="0.5" value="rgb(201,201,242)"> </color>
+    <color position="0.75" value="rgb(13,13,198)"> </color>
+    <color position="1.0" value="rgb(0,0,95)"> </color>
 
 </colormap>

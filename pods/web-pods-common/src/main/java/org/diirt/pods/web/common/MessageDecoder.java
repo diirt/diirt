@@ -62,5 +62,5 @@ public class MessageDecoder implements Decoder.TextStream<Message> {
     @Override
     public void destroy() {
     }
-    
+
 }

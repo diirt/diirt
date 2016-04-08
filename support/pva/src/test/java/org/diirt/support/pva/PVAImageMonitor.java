@@ -4,8 +4,6 @@
  */
 package org.diirt.support.pva;
 
-
-import org.diirt.support.pva.PVADataSource;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -27,42 +25,42 @@ import org.diirt.vtype.VImage;
 
 public class PVAImageMonitor {
 
-	@SuppressWarnings("serial")
-	static class ImagePanel extends JComponent {
+        @SuppressWarnings("serial")
+        static class ImagePanel extends JComponent {
 
-		private Image image;
-		
-		// must be called from GUI thread
-		public void setImage(BufferedImage image)
-		{
-			this.image = image;
-			Dimension dim = new Dimension(image.getWidth(), image.getHeight());
-			this.setSize(dim);
-			this.setPreferredSize(dim);
-			revalidate();
-		}
-		
-	    @Override
-	    public void paintComponent(Graphics g) {
-	        g.drawImage(image, 0, 0, null);
-	    }
+                private Image image;
 
-	}
-	
-	// popular: BufferedImage.TYPE_3BYTE_BGR or BufferedImage.TYPE_BYTE_GRAY
-	public static BufferedImage updateBufferedImage(BufferedImage image, VImage vImage, int imageType)
-	{
-		if (vImage == null)
-			return image;
-		
-		if (image == null ||
-			image.getHeight() != vImage.getHeight() ||
-			image.getWidth() != vImage.getWidth() ||
-			image.getType() != imageType)
-		{
-	        image = new BufferedImage(vImage.getWidth(), vImage.getHeight(), imageType);
-		}
-		
+                // must be called from GUI thread
+                public void setImage(BufferedImage image)
+                {
+                        this.image = image;
+                        Dimension dim = new Dimension(image.getWidth(), image.getHeight());
+                        this.setSize(dim);
+                        this.setPreferredSize(dim);
+                        revalidate();
+                }
+
+            @Override
+            public void paintComponent(Graphics g) {
+                g.drawImage(image, 0, 0, null);
+            }
+
+        }
+
+        // popular: BufferedImage.TYPE_3BYTE_BGR or BufferedImage.TYPE_BYTE_GRAY
+        public static BufferedImage updateBufferedImage(BufferedImage image, VImage vImage, int imageType)
+        {
+                if (vImage == null)
+                        return image;
+
+                if (image == null ||
+                        image.getHeight() != vImage.getHeight() ||
+                        image.getWidth() != vImage.getWidth() ||
+                        image.getType() != imageType)
+                {
+                image = new BufferedImage(vImage.getWidth(), vImage.getHeight(), imageType);
+                }
+
         System.arraycopy(vImage.getData(), 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0, vImage.getData().length);
         return image;
 	}

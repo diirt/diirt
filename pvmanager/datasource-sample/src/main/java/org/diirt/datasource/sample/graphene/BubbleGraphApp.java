@@ -6,9 +6,6 @@ package org.diirt.datasource.sample.graphene;
 
 import java.awt.event.MouseEvent;
 import org.diirt.graphene.BubbleGraph2DRendererUpdate;
-import org.diirt.graphene.InterpolationScheme;
-import org.diirt.graphene.ScatterGraph2DRendererUpdate;
-import org.diirt.datasource.graphene.ScatterGraph2DExpression;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
 import org.diirt.datasource.graphene.BubbleGraph2DExpression;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
@@ -24,7 +21,7 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
     private String sizeColumn = null;
     private String colorColumn = null;
     private boolean highlightFocusValue;
-    
+
     public BubbleGraphApp() {
         dataFormulaField.setModel(new javax.swing.DefaultComboBoxModel<String>(
                 new String[] { "=tableOf(column(\"X\", range(-10,10)), column(\"Y\", 'sim://noiseWaveform'), column(\"SIZE\", 'sim://gaussianWaveform'), column(\"COLOR\", 'sim://sineWaveform'))",
@@ -100,9 +97,9 @@ public class BubbleGraphApp extends BaseGraphApp<BubbleGraph2DRendererUpdate> {
         this.colorColumn = colorColumn;
         reconnect();
     }
-    
+
     public static void main(String[] args) {
         main(BubbleGraphApp.class);
     }
-    
+
 }

@@ -9,11 +9,8 @@ import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
 import org.diirt.vtype.ArrayDimensionDisplay;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.table.VTableFactory;
 
 /**
  *
@@ -61,14 +58,14 @@ class NdArrayFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray data = (VNumberArray) args.get(0);
         ArrayDimensionDisplay[] displays = new ArrayDimensionDisplay[args.size() - 1];
         for (int i = 0; i < displays.length; i++) {
             displays[i] = (ArrayDimensionDisplay) args.get(i + 1);
         }
-        
+
         return ValueFactory.ndArray(data, displays);
     }
-    
+
 }

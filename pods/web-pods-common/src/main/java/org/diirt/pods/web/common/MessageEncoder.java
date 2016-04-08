@@ -37,5 +37,5 @@ public class MessageEncoder implements Encoder.TextStream<Message> {
     @Override
     public void destroy() {
     }
-    
+
 }

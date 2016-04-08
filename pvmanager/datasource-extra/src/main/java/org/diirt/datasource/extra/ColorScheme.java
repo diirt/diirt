@@ -14,7 +14,7 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 public abstract class ColorScheme {
-    
+
     /**
      * Calculate the color for the value according to the ranges and puts it
      * into the colors buffer.
@@ -45,7 +45,7 @@ public abstract class ColorScheme {
             public int color(double value, Display ranges) {
                 if (Double.isNaN(value))
                     return nanColor.getRGB();
-                
+
                 double normalValue = ValueUtil.normalize(value, ranges);
                 normalValue = Math.min(normalValue, 1.0);
                 normalValue = Math.max(normalValue, 0.0);
@@ -69,7 +69,7 @@ public abstract class ColorScheme {
             public int color(double value, Display ranges) {
                 if (Double.isNaN(value))
                     return 0;
-                
+
                 double normalValue = 0.0;
                 Color minValueColor = null;
                 Color maxValueColor = null;

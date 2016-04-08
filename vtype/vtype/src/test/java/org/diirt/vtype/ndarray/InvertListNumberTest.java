@@ -4,14 +4,8 @@
  */
 package org.diirt.vtype.ndarray;
 
-import org.diirt.vtype.ndarray.InvertListNumber;
-import java.util.Arrays;
-import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -23,7 +17,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class InvertListNumberTest {
-    
+
     @Test
     public void fillCoords1() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -33,7 +27,7 @@ public class InvertListNumberTest {
         InvertListNumber.fillCoords(coords, index, sizes);
         assertThat(coords, equalTo(actualCoords));
     }
-    
+
     @Test
     public void fillCoords2() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -43,7 +37,7 @@ public class InvertListNumberTest {
         InvertListNumber.fillCoords(coords, index, sizes);
         assertThat(coords, equalTo(actualCoords));
     }
-    
+
     @Test
     public void index1() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -52,7 +46,7 @@ public class InvertListNumberTest {
         int index = (10 * 3 + 0) * 2 + 1;
         assertThat(InvertListNumber.index(actualCoords, sizes, invert), equalTo(index));
     }
-    
+
     @Test
     public void index2() {
         ListInt sizes = new ArrayInt(15,3,2);
@@ -61,7 +55,7 @@ public class InvertListNumberTest {
         int index = (10 * 3 + 2) * 2 + 1;
         assertThat(InvertListNumber.index(actualCoords, sizes, invert), equalTo(index));
     }
-    
+
     @Test
     public void index3() {
         ListInt sizes = new ArrayInt(15,3,2);

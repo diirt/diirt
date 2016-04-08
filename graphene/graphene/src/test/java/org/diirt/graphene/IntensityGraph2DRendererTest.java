@@ -6,15 +6,12 @@ package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.Random;
 import org.junit.Test;
 import org.diirt.util.array.*;
 import org.diirt.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import org.diirt.graphene.NumberColorMaps; 
-import org.diirt.graphene.NumberColorMapGradient; 
 
 /**
  *
@@ -188,7 +185,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         }, new ArrayDouble(boundaries), new ArrayDouble(boundaries));
         return data;
     }
-    
+
     private Cell2DDataset ellipticParaboloid(int xPoints, Range xRange, int yPoints, Range yRange) {
         return Cell2DDatasets.linearRange(new Cell2DDatasets.Function2D() {
 
@@ -347,27 +344,27 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
         ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.1", graphBuffer.getImage());
-        
+
         renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.fixed(20, 80))
                 .yAxisRange(AxisRanges.fixed(20, 80)));
         renderer.draw(graphBuffer, data);
         ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.2", graphBuffer.getImage());
-        
+
         renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.fixed(0, 100))
                 .yAxisRange(AxisRanges.fixed(0, 100)));
         renderer.draw(graphBuffer, data);
         ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.1", graphBuffer.getImage());
-        
+
         renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.fixed(-20, 120))
                 .yAxisRange(AxisRanges.fixed(-20, 120)));
         renderer.draw(graphBuffer, data);
         ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.3", graphBuffer.getImage());
-        
+
         renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.fixed(-20, 120))
                 .yAxisRange(AxisRanges.fixed(40, 60)));
         renderer.draw(graphBuffer, data);
         ImageAssert.compareImages("intensityGraph2D.smallCellsZoomInAndOut.4", graphBuffer.getImage());
-        
+
         renderer.update(renderer.newUpdate().xAxisRange(AxisRanges.fixed(20, 40))
                 .yAxisRange(AxisRanges.fixed(-40, 120)));
         renderer.draw(graphBuffer, data);

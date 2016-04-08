@@ -4,7 +4,6 @@
  */
 package org.diirt.pods.web;
 
-import javax.servlet.http.HttpSession;
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpointConfig;
@@ -15,10 +14,10 @@ import javax.websocket.server.ServerEndpointConfig;
  */
 public class WSEndpointConfigurator extends ServerEndpointConfig.Configurator {
     @Override
-    public void modifyHandshake(ServerEndpointConfig config, 
-                                HandshakeRequest request, 
+    public void modifyHandshake(ServerEndpointConfig config,
+                                HandshakeRequest request,
                                 HandshakeResponse response) {
         config.getUserProperties().put("session",request.getHttpSession());
     }
-    
+
 }

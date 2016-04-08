@@ -188,7 +188,7 @@ public class Cell2DDatasets {
             }
         };
     }
-    
+
     public static Cell2DDataset datasetFrom(final Function2D function, final ListNumber xBoundaries, final ListNumber yBoundaries) {
         int yCount = yBoundaries.size() - 1;
         int xCount = xBoundaries.size() - 1;

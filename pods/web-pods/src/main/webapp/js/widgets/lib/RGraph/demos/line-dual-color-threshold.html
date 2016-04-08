@@ -2,11 +2,11 @@
 <head>
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    
+
     <title>A Line chart with different colors above a certain point</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="demo line range threshold dual colors" />
     <meta name="description" content="A Line chart with different colors above a certain point. It uses a filled range chart to achieve this effect." />
     <meta name="robots" content="noindex,nofollow" />
@@ -14,7 +14,7 @@
 <body>
 
     <h1>A Line chart with different colors above a certain point</h1>
-    
+
     <p>
         A Line chart with different colors above a certain point. It uses a filled range chart to achieve this effect.
     </p>
@@ -26,14 +26,14 @@
         {
             var d1  = [1,4,8,5,2,3,6,5,15,16,12,13,18,19,15,16];
             var d2  = [];
-            
+
             // Create the data
             for (var i=0; i<d1.length; i+=1) {
                  d1[i] = d1[i] - 0.2; // The +/- 0.2 determines the width of the line
                  d2[i] = d1[i] + 0.2;
             }
 
-        
+
             var line = new RGraph.Line('cvs', d1, d2)
                 .Set('background.grid.autofit.numhlines', 5)
                 .Set('background.grid.autofit.numvlines', 15)

@@ -4,7 +4,6 @@
  */
 package org.diirt.vtype;
 
-import java.util.List;
 import org.diirt.util.array.ListBoolean;
 import org.diirt.util.array.ListInt;
 
@@ -13,7 +12,7 @@ import org.diirt.util.array.ListInt;
  * @author carcassi
  */
 class IVBooleanArray extends IVMetadata implements VBooleanArray {
-    
+
     private final ListInt sizes;
     private final ListBoolean data;
 
@@ -37,5 +36,5 @@ class IVBooleanArray extends IVMetadata implements VBooleanArray {
     public String toString() {
         return VTypeToString.toString(this);
     }
-    
+
 }

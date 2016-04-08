@@ -40,10 +40,10 @@ final class LinearAbsoluteTimeScale implements TimeScale {
     @Override
     public TimeAxis references(TimeInterval range, int minRefs, int maxRefs) {
         // Validate input. Make sure requested references range makes sense.
-	if ( (maxRefs < minRefs) || (minRefs < 0 ) || (maxRefs < 0) ) {
-	    throw new IllegalArgumentException( "Invalid references range: " + minRefs + " < # references < " + maxRefs );
-	}
-        
+        if ( (maxRefs < minRefs) || (minRefs < 0 ) || (maxRefs < 0) ) {
+            throw new IllegalArgumentException( "Invalid references range: " + minRefs + " < # references < " + maxRefs );
+        }
+
         // First guess at the time between references.
         // Get the smallest required period, and then round down
         
@@ -55,7 +55,7 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         }
         TimeScales.TimePeriod timePeriod = TimeScales.toTimePeriod(minPeriodInSec);
         timePeriod = TimeScales.nextDown(timePeriod);
-        
+
         // Keep increasing the time until you have the right amount of references
         List<Instant> references = TimeScales.createReferences(range, timePeriod);
         while(references.size() > maxRefs) {
@@ -72,8 +72,8 @@ final class LinearAbsoluteTimeScale implements TimeScale {
             normalized[i] = TimeScales.normalize(references.get(i), range);
         }
         ArrayDouble normalizedValues = new ArrayDouble(normalized);
-        
+
         return new TimeAxis(range, references, normalizedValues, TimeScales.trimLabels(TimeScales.createLabels(references)));
     }
-    
+
 }

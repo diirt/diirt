@@ -7,7 +7,6 @@ package org.diirt.datasource.integration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -28,7 +27,7 @@ public class Validators {
             }
         };
     }
-    
+
     static boolean matchCycle(VTypeMatchMask mask, int start, List<Object> expected, List<Object> actual) {
         int currentExpected = start;
         for (int currentActual = 0; currentActual < actual.size(); currentActual++) {

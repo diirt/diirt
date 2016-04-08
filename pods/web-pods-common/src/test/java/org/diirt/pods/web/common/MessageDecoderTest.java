@@ -47,13 +47,13 @@ public class MessageDecoderTest {
             + "    \"id\" : 3.14"
             + "}"));
     }
-    
+
     public static void testDecoding(Message message, String json) throws Exception {
         MessageDecoder decoder = new MessageDecoder();
         Message result = (Message) decoder.decode(new StringReader(json));
         compareMessage(message, result);
     }
-    
+
     public static void compareMessage(Message expected, Message result) {
         if (expected instanceof MessageSubscribe && result instanceof MessageSubscribe) {
             compareMessage((MessageSubscribe) expected, (MessageSubscribe) result);
@@ -77,7 +77,7 @@ public class MessageDecoderTest {
             throw new UnsupportedOperationException("Can't compare " + expected.getClass() + " with " + result.getClass());
         }
     }
-    
+
     public static void compareMessage(MessageSubscribe expected, MessageSubscribe result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
@@ -86,12 +86,12 @@ public class MessageDecoderTest {
         assertThat(result.getType(), equalTo(expected.getType()));
         assertThat(result.isReadOnly(), equalTo(expected.isReadOnly()));
     }
-    
+
     public static void compareBaseMessage(Message expected, Message result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
     }
-    
+
     public static void compareMessage(MessageWrite expected, MessageWrite result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
@@ -101,14 +101,14 @@ public class MessageDecoderTest {
             assertThat(result.getValue(), equalTo(expected.getValue()));
         }
     }
-    
+
     public static void compareMessage(MessageConnectionEvent expected, MessageConnectionEvent result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
         assertThat(result.isConnected(), equalTo(expected.isConnected()));
         assertThat(result.isWriteConnected(), equalTo(expected.isWriteConnected()));
     }
-    
+
     public static void compareMessage(MessageValueEvent expected, MessageValueEvent result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
@@ -118,14 +118,14 @@ public class MessageDecoderTest {
             assertThat(result.getValue(), equalTo(expected.getValue()));
         }
     }
-    
+
     public static void compareMessage(MessageWriteCompletedEvent expected, MessageWriteCompletedEvent result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
         assertThat(result.isSuccessful(), equalTo(expected.isSuccessful()));
         assertThat(result.getError(), equalTo(expected.getError()));
     }
-    
+
     public static void compareMessage(MessageErrorEvent expected, MessageErrorEvent result) {
         assertThat(result.getMessage(), equalTo(expected.getMessage()));
         assertThat(result.getId(), equalTo(expected.getId()));
@@ -217,5 +217,5 @@ public class MessageDecoderTest {
     public void writeEvent2Decode() throws Exception {
         testDecoding(writeEvent2Message, writeEvent2Json);
     }
-    
+
 }

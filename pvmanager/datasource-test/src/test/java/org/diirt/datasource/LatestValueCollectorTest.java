@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.LatestValueCollector;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;

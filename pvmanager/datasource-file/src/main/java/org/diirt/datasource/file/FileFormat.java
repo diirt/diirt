@@ -14,35 +14,35 @@ import java.util.Collection;
  * @author carcassi
  */
 public interface FileFormat {
-    
+
     /**
      * Reads the value from the given stream.
-     * 
+     *
      * @param in a stream; not null
      * @return the value de-serialized
      * @throws java.lang.Exception any error
      */
     public Object readValue(InputStream in) throws Exception;
-    
+
     /**
      * Write the value to the given stream.
-     * 
+     *
      * @param value the value to write; not null
      * @param out the output stream; not null
      * @throws java.lang.Exception any error
      */
     public void writeValue(Object value, OutputStream out) throws Exception;
-    
+
     /**
      * Whether writes are supported.
-     * 
+     *
      * @return true if can serialize objects
      */
     public boolean isWriteSupported();
-    
+
     /**
      * The file extensions supported by this file format.
-     * 
+     *
      * @return a non-empty set of file extensions
      */
     public Collection<String> getFileExtensions();

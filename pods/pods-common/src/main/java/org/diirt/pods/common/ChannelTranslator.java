@@ -31,29 +31,29 @@ import org.xml.sax.SAXException;
  * @author carcassi
  */
 public abstract class ChannelTranslator {
-    
+
     /**
      * Translates the channel name to the actual channel or formula to connect.
-     * 
+     *
      * @param channel the incoming channel name
      * @return the translation; null if the translator can't provide one
      */
     public ChannelTranslation translate(String channel) {
         return translate(new ChannelRequest(channel));
     }
-    
+
     /**
      * Translates the channel request to the actual channel or formula to connect.
-     * 
+     *
      * @param request the incoming channel request
      * @return the translation; null if the translator can't provide one
      */
     public abstract ChannelTranslation translate(ChannelRequest request);
-    
+
     /**
      * Creates a channel translator that uses the regex to match the channel and
      * the optional substitution string to perform the translation.
-     * 
+     *
      * @param regex a regular expression
      * @param substitution the substitution string; can be null
      * @param permission the permission to enforce on the channel
@@ -62,11 +62,11 @@ public abstract class ChannelTranslator {
     public static ChannelTranslator regexTranslator(String regex, String substitution, ChannelTranslation.Permission permission) {
         return new RegexChannelTranslator(regex, substitution, permission);
     }
-    
+
     /**
      * Creates a channel translator that uses the regex to match the channel and
      * the optional substitution string to perform the translation.
-     * 
+     *
      * @param regex a regular expression
      * @param substitution the substitution string; can be null
      * @param permission the permission to enforce on the channel
@@ -76,32 +76,32 @@ public abstract class ChannelTranslator {
     public static ChannelTranslator regexTranslator(String regex, String substitution, ChannelTranslation.Permission permission, Collection<String> allowedUsers) {
         return new RegexChannelTranslator(regex, substitution, permission, allowedUsers);
     }
-    
+
     /**
      * Creates a channel translator that returns the first successful match
      * from the list of give translators.
-     * 
+     *
      * @param translators a list of translators
      * @return the combined translator
      */
     public static ChannelTranslator compositeTranslator(List<ChannelTranslator> translators) {
         return new CompositeChannelTranslator(translators);
     }
-    
+
     public static ChannelTranslator loadTranslator(InputStream input) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/mappings/@version", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             List<ChannelTranslator> translators = new ArrayList<>();
 
             NodeList mappings = (NodeList) xPath.evaluate("/mappings/mapping", document, XPathConstants.NODESET);
@@ -113,7 +113,7 @@ public abstract class ChannelTranslator {
                 if (substitutionNode != null) {
                     substitution = substitutionNode.getNodeValue();
                 }
-                
+
                 Node userNode = method.getAttributes().getNamedItem("user");
                 List<String> allowedUsers = null;
                 if (userNode != null) {
@@ -122,13 +122,13 @@ public abstract class ChannelTranslator {
                         allowedUsers.add(token.trim());
                     }
                 }
-                
+
                 String permissionName = xPath.evaluate("@permission", method);
                 ChannelTranslation.Permission permission = ChannelTranslation.Permission.valueOf(permissionName);
-                
+
                 translators.add(regexTranslator(regex, substitution, permission, allowedUsers));
             }
-            
+
             return compositeTranslator(translators);
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
             Logger.getLogger(ChannelTranslator.class.getName()).log(Level.FINEST, "Couldn't load mapping", ex);

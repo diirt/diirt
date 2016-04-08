@@ -12,7 +12,7 @@ import static org.epics.pvmanager.util.TimeDuration.*;
  * Hello world!
  *
  */
-public class ListConnectionDelay 
+public class ListConnectionDelay
 {
     public static void main( String[] args ) {
         final StopWatch watch = new StopWatch();

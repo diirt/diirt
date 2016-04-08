@@ -15,26 +15,26 @@ import org.diirt.vtype.VTypeToString;
  * @author dkumar
  */
 public class PVFieldToVBoolean extends AlarmTimeDisplayExtractor implements VBoolean {
- 
+
   protected final Boolean value;
 
-	public PVFieldToVBoolean(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        public PVFieldToVBoolean(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVBoolean(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVBoolean(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	public PVFieldToVBoolean(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
+        public PVFieldToVBoolean(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
 
-		if (field instanceof PVBoolean)
-			value = ((PVBoolean)field).get();
-		else if (field instanceof PVScalar)
-			value = convert.toInt((PVScalar)field) != 0;
-		else
-			value = null;
+                if (field instanceof PVBoolean)
+                        value = ((PVBoolean)field).get();
+                else if (field instanceof PVScalar)
+                        value = convert.toInt((PVScalar)field) != 0;
+                else
+                        value = null;
   }
 
 

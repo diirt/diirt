@@ -14,7 +14,7 @@ public abstract class ListByte implements ListNumber, CollectionByte {
     @Override
     public IteratorByte iterator() {
         return new IteratorByte() {
-            
+
             private int index;
 
             @Override
@@ -28,7 +28,7 @@ public abstract class ListByte implements ListNumber, CollectionByte {
             }
         };
     }
-    
+
     @Override
     public double getDouble(int index) {
         return (float) getByte(index);
@@ -88,14 +88,14 @@ public abstract class ListByte implements ListNumber, CollectionByte {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        
+
         // Should compare to the higher precision if needed
         if (obj instanceof ListDouble || obj instanceof ListFloat ||
                 obj instanceof ListLong || obj instanceof ListInt ||
                 obj instanceof ListShort) {
             return obj.equals(this);
         }
-        
+
         if (obj instanceof ListNumber) {
             ListNumber other = (ListNumber) obj;
 
@@ -109,7 +109,7 @@ public abstract class ListByte implements ListNumber, CollectionByte {
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -121,5 +121,5 @@ public abstract class ListByte implements ListNumber, CollectionByte {
         }
         return result;
     }
-    
+
 }

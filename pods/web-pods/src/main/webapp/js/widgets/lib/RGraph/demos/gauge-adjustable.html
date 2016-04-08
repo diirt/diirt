@@ -2,15 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.gauge.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A customised and adjustable Gauge chart</title>
-    
+
     <meta name="keywords" content="demo adjustable gauge customised" />
     <meta name="description" content="A customised Gauge chart which can be adjusted" />
     <meta name="robots" content="noindex,nofollow" />
@@ -20,7 +20,7 @@
     <h1>A customised and adjustable Gauge chart</h1>
 
     <canvas id="cvs" width="250" height="250" style="background-color: black; border-radius: 125px; box-shadow: 0 0 25px gray; border: 5px solid #ddd">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -46,7 +46,7 @@
                 .Set('title.top.color', 'white')
                 .Set('labels.centered', true)
                 .Set('labels.offset', 7)
-    
+
             /**
             * This draws a simple gray circle over the centerpin
             */
@@ -59,9 +59,9 @@
                 obj.context.fill();
             }
             RGraph.AddCustomEventListener(gauge, 'ondraw', myCenterpin);
-            
+
             gauge.Draw();
-        
+
             /**
             * This event listener facilitates you being able to click and adjust the gauge
             */
@@ -69,9 +69,9 @@
             {
                 var obj   = e.target.__object__;
                 var value = obj.getValue(e);
-                
+
                 obj.value = value;
-                
+
                 RGraph.Effects.Gauge.Grow(obj);
             }
         }

@@ -16,14 +16,14 @@ import org.diirt.util.array.ListNumber;
  * @author carcassi
  */
 public interface DoubleArrayTimeCache {
-    
+
     public interface Data {
         public Instant getBegin();
         
         public Instant getEnd();
         
         public int getNArrays();
-        
+
         public ListNumber getArray(int index);
         
         public Instant getTimestamp(int index);
@@ -36,7 +36,7 @@ public interface DoubleArrayTimeCache {
      * Two regions can be requested: an update region, where only updates
      * are going to be returned, and a new region, where all data is going to
      * be returned.
-     * 
+     *
      * @return the new data chunks
      */
     public List<Data> newData(Instant beginUpdate, Instant endUpdate, Instant beginNew, Instant endNew);

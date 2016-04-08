@@ -5,18 +5,17 @@
 package org.diirt.datasource.loc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.ChannelReadRecipe;
 import org.diirt.datasource.ChannelWriteRecipe;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.ReadRecipe;
 import org.diirt.datasource.WriteRecipe;
-import org.diirt.datasource.vtype.DataTypeSupport;
 import org.diirt.datasource.util.FunctionParser;
-import org.diirt.util.array.ArrayDouble;
+import org.diirt.datasource.vtype.DataTypeSupport;
 
 /**
  * Data source for locally written data. Each instance of this
@@ -39,10 +38,10 @@ public class LocalDataSource extends DataSource {
     public LocalDataSource() {
         this(false);
     }
-    
+
     /**
      * Zero initialization is deprecated. Will be removed in a future release.
-     * 
+     *
      * @param zeroInitialization whether to initialize variable to 0
      * @deprecated do not use zero initialization of local variable: does not work for non numeric variables
      */
@@ -52,20 +51,17 @@ public class LocalDataSource extends DataSource {
         this.zeroInitialization = zeroInitialization;
     }
 
-    private final String CHANNEL_SYNTAX_ERROR_MESSAGE = 
-            "Syntax for local channel must be either name, name(Double) or name(String) (e.g \"foo\", \"foo(2.0)\" or \"foo(\"bar\")";
-    
     @Override
     protected ChannelHandler createChannel(String channelName) {
         // Parse the channel name
         List<Object> parsedTokens = parseName(channelName);
-        
+
         LocalChannelHandler channel = new LocalChannelHandler(parsedTokens.get(0).toString());
         return channel;
     }
-    
+
     private List<Object> parseName(String channelName) {
-        List<Object> tokens = FunctionParser.parseFunctionWithScalarOrArrayArguments(".+", channelName, CHANNEL_SYNTAX_ERROR_MESSAGE);
+        List<Object> tokens = FunctionParser.parseFunctionAnyParameter(".+", channelName);
         String nameAndType = tokens.get(0).toString();
         String name = nameAndType;
         String type = null;
@@ -77,8 +73,21 @@ public class LocalDataSource extends DataSource {
         List<Object> newTokens = new ArrayList<>();
         newTokens.add(name);
         newTokens.add(type);
+        Object initialValue;
+        if ("VEnum".equals(type)) {
+            List<Object> initialValueList = new ArrayList<>();
+            initialValueList.add(tokens.remove(1));
+            Object labels = FunctionParser.asScalarOrList(tokens.subList(1, tokens.size()));
+            if (!(labels instanceof List<?>)) {
+                throw new RuntimeException("Invalid format for VEnum channel.");
+            }
+            initialValueList.add(labels);
+            initialValue = initialValueList;
+        } else {
+            initialValue = FunctionParser.asScalarOrList(tokens.subList(1, tokens.size()));
+        }
         if (tokens.size() > 1) {
-            newTokens.addAll(tokens.subList(1, tokens.size()));
+            newTokens.add(initialValue);
         }
         return newTokens;
     }
@@ -88,7 +97,7 @@ public class LocalDataSource extends DataSource {
         List<Object> parsedTokens = parseName(channelName);
         return parsedTokens.get(0).toString();
     }
-    
+
     private void initialize(String channelName) {
         List<Object> parsedTokens = parseName(channelName);
 
@@ -107,7 +116,7 @@ public class LocalDataSource extends DataSource {
     @Override
     public void connectRead(ReadRecipe readRecipe) {
         super.connectRead(readRecipe);
-        
+
         // Initialize all values
         for (ChannelReadRecipe channelReadRecipe : readRecipe.getChannelReadRecipes()) {
             initialize(channelReadRecipe.getChannelName());
@@ -117,7 +126,7 @@ public class LocalDataSource extends DataSource {
     @Override
     public void connectWrite(WriteRecipe writeRecipe) {
         super.connectWrite(writeRecipe);
-        
+
         // Initialize all values
         for (ChannelWriteRecipe channelWriteRecipe : writeRecipe.getChannelWriteRecipes()) {
             initialize(channelWriteRecipe.getChannelName());

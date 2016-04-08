@@ -14,33 +14,33 @@ import org.diirt.vtype.VTypeToString;
  * @author dkumar
  */
 public class PVFieldToVShort extends AlarmTimeDisplayExtractor implements VShort {
- 
-	protected final Short value;
 
-	public PVFieldToVShort(PVStructure pvField, boolean disconnected) {
-		this("value", pvField, disconnected);
-	}
+        protected final Short value;
 
-	public PVFieldToVShort(String fieldName, PVStructure pvField, boolean disconnected) {
-		this(pvField.getSubField(fieldName), pvField, disconnected);
-	}
+        public PVFieldToVShort(PVStructure pvField, boolean disconnected) {
+                this("value", pvField, disconnected);
+        }
 
-	public PVFieldToVShort(PVField field, PVStructure pvParent, boolean disconnected) {
-		super(pvParent, disconnected);
-		
-		if (field instanceof PVScalar)
-			value = convert.toShort((PVScalar)field);
-		else
-			value = null;
-	}
+        public PVFieldToVShort(String fieldName, PVStructure pvField, boolean disconnected) {
+                this(pvField.getSubField(fieldName), pvField, disconnected);
+        }
 
-	@Override
-	public Short getValue() {
-		return value;
-	}
+        public PVFieldToVShort(PVField field, PVStructure pvParent, boolean disconnected) {
+                super(pvParent, disconnected);
 
-	@Override
-	public String toString() {
-		return VTypeToString.toString(this);
-	}
+                if (field instanceof PVScalar)
+                        value = convert.toShort((PVScalar)field);
+                else
+                        value = null;
+        }
+
+        @Override
+        public Short getValue() {
+                return value;
+        }
+
+        @Override
+        public String toString() {
+                return VTypeToString.toString(this);
+        }
 }

@@ -9,31 +9,24 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.ValueUtil;
 
 public final class EventLogViewer extends HBox {
-    
+
     @FXML
     private ListView<Event> eventList;
     @FXML
     private ValueViewer valueViewer;
     @FXML
     private EventViewer eventViewer;
-    
+
     private Log eventLog = new Log(new Runnable() {
         @Override
         public void run() {
             onNewEvent();
         }
-        
+
     });
 
     public EventLogViewer() {
@@ -42,13 +35,13 @@ public final class EventLogViewer extends HBox {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        
+
         eventList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Event>() {
 
             @Override
@@ -59,19 +52,19 @@ public final class EventLogViewer extends HBox {
                     valueViewer.setValue(readEvent.getValue(), readEvent.isConnected());
                 } else {
                     WriteEvent writeEvent = (WriteEvent) newValue;
-                    
+
                     valueViewer.setValue(null, false);
                 }
-                
-                
+
+
             }
         });
     }
-    
+
     public Log eventLog() {
         return eventLog;
     }
-    
+
     private void onNewEvent() {
         eventList.getItems().add(0, eventLog.getEvents().get(eventLog.getEvents().size() - 1));
     }

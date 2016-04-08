@@ -12,7 +12,7 @@ import org.diirt.util.array.ListShort;
  * @author carcassi
  */
 public interface VShortArray extends VNumberArray, VType {
-    
+
     @Override
     ListShort getData();
 }

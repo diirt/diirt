@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.rscatter.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A basic Rscatter chart</title>
 
     <meta name="keywords" content="demo radial scatter rscatter" />
@@ -18,18 +18,18 @@
 <body>
 
     <h1>A Radial Scatter chart using a single argument for datasets</h1>
-    
+
     <p>
         This RScatter chart has all of the datasets (of which there are 5) specified as one big multi-dimensional array. You can
         also give datasets as seperate arguments as shown <a href="rscatter-multiple-datasets-multiple-arguments.html">here</a>.
     </p>
 
     <canvas id="cvs" width="500" height="500">[No canvas support]</canvas>
-    
+
     <p>
         An example of multiple datasets as one big array.
     </p>
-    
+
     <script>
         window.onload = function ()
         {
@@ -41,7 +41,7 @@
                 data[i] = [];
 
                 for (var j=0; j<10; j+=1) {
-                    
+
                     var x = ((i+1) * 72) + 5;
                     var y = j * 5;
 
@@ -54,7 +54,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

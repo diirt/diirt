@@ -13,15 +13,15 @@ import java.util.Arrays;
  * @author Gabriele Carcassi
  */
 public final class ArrayFloat extends ListFloat implements Serializable {
-    
+
     private static final long serialVersionUID = 7493025761455302918L;
-    
+
     private final float[] array;
     private final boolean readOnly;
 
     /**
      * A new read-only {@code ArrayFloat} that wraps around the given array.
-     * 
+     *
      * @param array an array
      */
 
@@ -31,7 +31,7 @@ public final class ArrayFloat extends ListFloat implements Serializable {
 
     /**
      * A new {@code ArrayFloat} that wraps around the given array.
-     * 
+     *
      * @param array an array
      * @param readOnly if false the wrapper allows writes to the array
      */
@@ -43,7 +43,7 @@ public final class ArrayFloat extends ListFloat implements Serializable {
     @Override
     public final IteratorFloat iterator() {
         return new IteratorFloat() {
-            
+
             private int index;
 
             @Override
@@ -62,7 +62,7 @@ public final class ArrayFloat extends ListFloat implements Serializable {
     public final int size() {
         return array.length;
     }
-    
+
     @Override
     public float getFloat(int index) {
         return array[index];
@@ -79,13 +79,13 @@ public final class ArrayFloat extends ListFloat implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        
+
         if (obj instanceof ArrayFloat) {
             return Arrays.equals(array, ((ArrayFloat) obj).array);
         }
-        
+
         return super.equals(obj);
-    }    
+    }
 
     float[] wrappedArray() {
         return array;

@@ -10,17 +10,17 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 public abstract class VString extends Scalar {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract String getValue();
-    
-    
+
+
     /**
      * Creates a new VString.
-     * 
+     *
      * @param value the string value
      * @param alarm the alarm
      * @param time the time
@@ -29,5 +29,5 @@ public abstract class VString extends Scalar {
     public static VString create(final String value, final Alarm alarm, final Time time) {
         return new IVString(value, alarm, time);
     }
-    
+
 }

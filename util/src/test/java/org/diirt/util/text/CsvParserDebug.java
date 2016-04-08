@@ -39,7 +39,7 @@ public class CsvParserDebug {
             }
         }
     }
-    
+
     public static List<String> nonNumberMatching(List<String> strings) {
         Matcher matcher = Pattern.compile(DOUBLE_REGEX_WITH_NAN).matcher("");
         List<String> nonMatching = new ArrayList<>();

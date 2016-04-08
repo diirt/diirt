@@ -64,7 +64,7 @@ class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
             return new ArrayList<T>(buffer);
         }
     }
-    
+
     private void prune() {
         // Remove all values that are too old
         TimeInterval periodAllowed = TimeInterval.before(cachedPeriod, buffer.getLast().getTimestamp());

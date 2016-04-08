@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.key.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
@@ -10,7 +10,7 @@
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
 
     <title>A "rectangular" Pie chart</title>
-    
+
     <meta name="keywords" content="demo pie rectangular rectangle" />
     <meta name="description" content="A rectangular Pie chart" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,13 +18,13 @@
 <body>
 
     <h1>A "rectangular" Pie chart</h1>
-    
+
     <p>
         By using a large chart.radius setting the Pie will be too large for the canvas and you'll get a rectangular Pie chart effect.
     </p>
 
     <canvas id="cvs" width="350" height="250" style="border: 1px solid #aaa">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -33,7 +33,7 @@
                 .Set('key', ['Alvin','Pete','Hoolio','Jack','Kev','Luis','Lou','Jesse'])
                 .Set('strokestyle', 'white')
                 .Set('linewidth', 3)
-            
+
             if (ISIE9UP || ISCHROME) {
                 RGraph.Effects.Pie.RoundRobin(pie,null,addCenterPin);
                 RGraph.Effects.Pie.Implode(pie);
@@ -41,7 +41,7 @@
                 addCenterPin();
                 RGraph.Effects.Pie.Grow(pie);
             }
-            
+
             function addCenterPin ()
             {
                 pie.Set('centerpin', 7);
@@ -51,7 +51,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

@@ -15,6 +15,6 @@ public interface Event {
     public Instant getTimestamp();
     
     public String getPvName();
-    
+
     public abstract Object getEvent();
 }

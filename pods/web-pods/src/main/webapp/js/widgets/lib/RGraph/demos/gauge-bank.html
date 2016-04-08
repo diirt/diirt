@@ -5,11 +5,11 @@
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.effects.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.gauge.js" ></script>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <title>A bank of adjustable Gauge charts</title>
-    
+
     <meta name="keywords" content="demo bank adjustable gauge" />
     <meta name="description" content="A bank of adjustable Gauge charts" />
     <meta name="robots" content="noindex,nofollow" />
@@ -17,11 +17,11 @@
 <body>
 
     <h1>A bank of adjustable Gauge charts</h1>
-    
+
     <p>
         These Gauge charts are adjustable and are brought to the "front" of the stacking order when mouseover'ed
     </p>
-    
+
     <button onclick="gauge2.value = 100; RGraph.Effects.Gauge.Grow(gauge2);">Click me to animate centerGauge</button><br /><br />
 
     <canvas id="cvs" width="500" height="250" style="border: 1px solid gray">[No canvas support]</canvas>
@@ -56,22 +56,22 @@
                 .Set('title.bottom', 'm³/s')
                 .Set('title.bottom.color', '#aaa')
                 .Draw();
-            
+
             gauge3.canvas.onmousemove = function (e)
             {
                 var mouseXY = RGraph.getMouseXY(e);
                 var obj     = RGraph.ObjectRegistry.getObjectByXY(e);
-                
+
                 if (obj) {
                     RGraph.ObjectRegistry.bringToFront (obj);
                 }
             }
-            
+
 
         }
     </script>
-    
-    
+
+
 
 </body>
 </html>

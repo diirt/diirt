@@ -4,21 +4,16 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.NumberColorMapInstance;
-import org.diirt.graphene.NumberColorMaps;
 import org.diirt.util.stats.Range;
 import  javafx.scene.paint.Color;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import javax.management.RuntimeErrorException;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.junit.Ignore;
 
 /**
  *
@@ -29,9 +24,9 @@ public class NumberColorMapTest {
     public NumberColorMapTest() {
     }
     private int getRGB(Color c){
-            int red = (int)(255*c.getRed()); 
-            int green = (int)(255*c.getGreen()); 
-            int blue = (int)(255*c.getBlue()); 
+            int red = (int)(255*c.getRed());
+            int green = (int)(255*c.getGreen());
+            int blue = (int)(255*c.getBlue());
             return (255 << 24) | (red<< 16) | (green<< 8) | blue;
     }
     @Test
@@ -46,7 +41,7 @@ public class NumberColorMapTest {
         assertThat(colorScheme.colorFor(1.1), equalTo(getRGB(Color.rgb(138,0,0))));
     }
 
-    @Test 
+    @Test
     public void jetSchemeOptimized(){
         Range range = Ranges.range(0.0, 1.0);
         NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
@@ -58,7 +53,7 @@ public class NumberColorMapTest {
         assertThat(colorScheme.colorFor(1.0), equalTo(getRGB(Color.rgb(138,0,0))));
         assertThat(colorScheme.colorFor(1.1), equalTo(getRGB(Color.rgb(138,0,0))));
     }
-    
+
     @Test
     public void optimizedScheme() {
         Range range = Ranges.range(0.0, 1.0);
@@ -220,12 +215,12 @@ public class NumberColorMapTest {
         assertThat(instance.colorFor(0.0), equalTo(getRGB(Color.YELLOW)));
         assertThat(instance.colorFor(1.0), equalTo(getRGB(Color.GREEN)));
     }
-    
+
     @Test
 
     public void getRegisteredColorSchemeJET() throws Exception{
-         
-       NumberColorMap jet = NumberColorMaps.getRegisteredColorSchemes().get("JET"); 
+
+       NumberColorMap jet = NumberColorMaps.getRegisteredColorSchemes().get("JET");
         Range range = Ranges.range(0.0, 1.0);
         NumberColorMapInstance colorScheme = jet.createInstance(range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.rgb(0,0,138))));
@@ -235,17 +230,17 @@ public class NumberColorMapTest {
         assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.BLACK)));
     }
     @Test
-    
+
     public void getRegisterColorSchemeBONE() throws Exception{
-        NumberColorMap bone = NumberColorMaps.getRegisteredColorSchemes().get("BONE"); 
-        Range range = Ranges.range(0.0,1.0); 
-        NumberColorMapInstance colorScheme = bone.createInstance(range); 
+        NumberColorMap bone = NumberColorMaps.getRegisteredColorSchemes().get("BONE");
+        Range range = Ranges.range(0.0,1.0);
+        NumberColorMapInstance colorScheme = bone.createInstance(range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.BLACK)));
         assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.BLACK)));
         assertThat(colorScheme.colorFor(0.25), equalTo(getRGB(Color.rgb(57,57,86))));
         assertThat(colorScheme.colorFor(0.5), equalTo(getRGB(Color.rgb(107,115,140))));
         assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.RED)));
     }
-    
-    
+
+
 }

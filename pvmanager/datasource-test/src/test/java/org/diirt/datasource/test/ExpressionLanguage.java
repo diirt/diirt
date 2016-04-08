@@ -14,7 +14,7 @@ import org.diirt.datasource.expression.DesiredRateExpressionList;
  * @author carcassi
  */
 public class ExpressionLanguage {
-    
+
     public static DesiredRateExpression<Integer> counter() {
         return new DesiredRateExpressionImpl<Integer>((DesiredRateExpressionList<?>) null, new ReadFunction<Integer>() {
             private int counter = 0;

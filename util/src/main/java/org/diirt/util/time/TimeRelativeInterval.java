@@ -25,10 +25,10 @@ import java.time.Instant;
  * @author carcassi
  */
 public class TimeRelativeInterval {
-    
+
     private final Object start;
     private final Object end;
-    
+
     private TimeRelativeInterval(Object start, Object end) {
         this.start = start;
         this.end = end;
@@ -37,15 +37,15 @@ public class TimeRelativeInterval {
     public static TimeRelativeInterval of(Instant start, Instant end) {
         return new TimeRelativeInterval(start, end);
     }
-    
+
     public boolean isIntervalAbsolute() {
         return isStartAbsolute() && isEndAbsolute();
     }
-    
+
     public boolean isStartAbsolute() {
         return start instanceof Instant || start == null;
     }
-    
+
     public boolean isEndAbsolute() {
         return end instanceof Instant || end == null;
     }
@@ -89,6 +89,6 @@ public class TimeRelativeInterval {
         }
         return TimeInterval.between(absoluteStart, absoluteEnd);
     }
-    
-    
+
+
 }

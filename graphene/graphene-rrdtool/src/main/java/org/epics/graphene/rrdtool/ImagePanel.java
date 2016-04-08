@@ -25,7 +25,7 @@ public class ImagePanel extends JComponent {
             //setMaximumSize(new Dimension(image.getHeight(this), image.getWidth(this)));
             //setMinimumSize(new Dimension(image.getHeight(this), image.getWidth(this)));
         } else {
-            
+
         }
         revalidate();
         repaint();

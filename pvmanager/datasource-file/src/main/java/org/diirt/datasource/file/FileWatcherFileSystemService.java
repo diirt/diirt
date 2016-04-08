@@ -24,9 +24,9 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 class FileWatcherFileSystemService implements FileWatcherService {
-    
+
     private static final Logger log = Logger.getLogger(FileWatcherService.class.getName());
-    
+
     private final ScheduledExecutorService exec;
     private final Runnable scanTask = new Runnable() {
 
@@ -59,7 +59,7 @@ class FileWatcherFileSystemService implements FileWatcherService {
                 toClose = registration;
             }
         }
-        
+
         if (toClose != null) {
             try {
                 toClose.close();
@@ -69,13 +69,13 @@ class FileWatcherFileSystemService implements FileWatcherService {
             registrations.remove(toClose);
         }
     }
-    
+
     private void scan() {
         for (Registration registration : registrations) {
             registration.notifyChanges();
         }
     }
-    
+
     private class Registration {
         final File file;
         final Runnable callback;
@@ -89,11 +89,11 @@ class FileWatcherFileSystemService implements FileWatcherService {
             this.watchService = path.getFileSystem().newWatchService();
             this.path.getParent().register(watchService, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
         }
-        
+
         void close() throws IOException {
             watchService.close();
         }
-        
+
         void notifyChanges() {
             WatchKey key = watchService.poll();
             if (key != null) {
@@ -113,7 +113,7 @@ class FileWatcherFileSystemService implements FileWatcherService {
                 }
             }
         }
-        
+
     }
-    
+
 }

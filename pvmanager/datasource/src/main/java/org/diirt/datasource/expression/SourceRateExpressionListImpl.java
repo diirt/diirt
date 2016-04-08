@@ -15,9 +15,9 @@ import java.util.List;
  * @author carcassi
  */
 public class SourceRateExpressionListImpl<R> implements SourceRateExpressionList<R> {
-    
+
     private List<SourceRateExpression<R>> sourceRateExpressions;
-    
+
     final void addThis() {
         sourceRateExpressions.add((SourceRateExpression<R>) this);
     }
@@ -32,7 +32,7 @@ public class SourceRateExpressionListImpl<R> implements SourceRateExpressionList
     SourceRateExpressionListImpl(Collection<? extends SourceRateExpression<R>> sourceRateExpressions) {
         this.sourceRateExpressions = new ArrayList<SourceRateExpression<R>>(sourceRateExpressions);
     }
-    
+
     @Override
     public final SourceRateExpressionListImpl<R> and(SourceRateExpressionList<? extends R> expressions) {
         @SuppressWarnings("unchecked")
@@ -45,5 +45,5 @@ public class SourceRateExpressionListImpl<R> implements SourceRateExpressionList
     public final List<SourceRateExpression<R>> getSourceRateExpressions() {
         return sourceRateExpressions;
     }
-    
+
 }

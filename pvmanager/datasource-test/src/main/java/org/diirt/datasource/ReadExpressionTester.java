@@ -4,11 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.ValueCache;
-import org.diirt.datasource.PVDirector;
-import org.diirt.datasource.ReadFunction;
-import org.diirt.datasource.ReadRecipe;
-import org.diirt.datasource.ChannelReadRecipe;
 import org.diirt.datasource.expression.DesiredRateExpression;
 
 /**
@@ -25,7 +20,7 @@ public class ReadExpressionTester {
         this.expression = expression;
         pvReaderDirector.connectReadExpression(expression);
     }
-    
+
     public ReadRecipe getCurrentReadRecipe() {
         return pvReaderDirector.getCurrentReadRecipe();
     }
@@ -44,7 +39,7 @@ public class ReadExpressionTester {
             throw new IllegalStateException("Can't find recipe for channel '" + name + "'");
         }
     }
-    
+
     public ChannelReadRecipe recipeFor(String channelName) {
         for (ChannelReadRecipe channelRecipe : getCurrentReadRecipe().getChannelReadRecipes()) {
             if (channelRecipe.getChannelName().equals(channelName)) {
@@ -53,19 +48,19 @@ public class ReadExpressionTester {
         }
         return null;
     }
-    
+
     public ReadRecipe getReadRecipe() {
         return getCurrentReadRecipe();
     }
-    
+
     public ReadFunction<?> getFunction() {
         return expression.getFunction();
     }
-    
+
     public DesiredRateExpression<?> getExpression() {
         return expression;
     }
-    
+
     public Object getValue() {
         return expression.getFunction().readValue();
     }

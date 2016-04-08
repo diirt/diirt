@@ -14,7 +14,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 public interface VEnum extends Scalar, Enum, Alarm, Time, VType {
-    
+
     /**
      * {@inheritDoc }
      */

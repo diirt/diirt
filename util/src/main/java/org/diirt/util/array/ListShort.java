@@ -14,7 +14,7 @@ public abstract class ListShort implements ListNumber, CollectionShort {
     @Override
     public IteratorShort iterator() {
         return new IteratorShort() {
-            
+
             private int index;
 
             @Override
@@ -53,7 +53,7 @@ public abstract class ListShort implements ListNumber, CollectionShort {
     public byte getByte(int index) {
         return (byte) getShort(index);
     }
-    
+
     @Override
     public void setDouble(int index, double value) {
         setShort(index, (short) value);
@@ -88,7 +88,7 @@ public abstract class ListShort implements ListNumber, CollectionShort {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        
+
         if (obj instanceof ListShort) {
             ListShort other = (ListShort) obj;
 
@@ -102,7 +102,7 @@ public abstract class ListShort implements ListNumber, CollectionShort {
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -114,5 +114,5 @@ public abstract class ListShort implements ListNumber, CollectionShort {
         }
         return result;
     }
-    
+
 }

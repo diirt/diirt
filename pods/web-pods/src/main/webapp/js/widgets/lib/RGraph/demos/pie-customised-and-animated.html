@@ -2,16 +2,16 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>An animated customised Pie chart</title>
-    
+
     <meta name="keywords" content="demo pie animated roundrobin effects" />
     <meta name="description" content="A Pie chart that has been animated using the RoundRobin effect" />
     <meta name="robots" content="noindex,nofollow" />
@@ -21,7 +21,7 @@
     <h1>An animated and customised Pie chart</h1>
 
     <canvas id="cvs" width="480" height="250" !style="border:1px solid #ccc">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -37,12 +37,12 @@
                 .Set('labels', ['Jerry'])
                 .Set('labels.sticks', [true])
                 .Set('labels.sticks.length', 20)
-            
+
             RGraph.Effects.Pie.RoundRobin(pie)
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

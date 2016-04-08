@@ -14,7 +14,7 @@ import static org.diirt.vtype.ValueFactory.*;
 
 /**
  * Aggregates the values by taking the average.
- * 
+ *
  * @author carcassi
  */
 class AverageAggregator extends Aggregator<VDouble, VDouble> {

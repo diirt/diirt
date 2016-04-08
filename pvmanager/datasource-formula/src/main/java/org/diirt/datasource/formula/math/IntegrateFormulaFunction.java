@@ -62,11 +62,11 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         if (value != null && value.getValue() != null) {
             values.add(value);
         }
-        
+
         if (values.isEmpty()) {
             return null;
         }
-        
+
         if (previousTime == null) {
             Instant now = Instant.now();
             if (now.compareTo(values.get(0).getTimestamp()) <= 0) {
@@ -79,11 +79,11 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         
         integratedValue += integrate(previousTime, currentTime, values);
         previousTime = currentTime;
-        
+
         while (values.size() > 1 && values.get(1).getTimestamp().compareTo(currentTime) <= 0) {
             values.remove(0);
         }
-        
+
         return ValueFactory.newVDouble(integratedValue);
     }
     
@@ -91,17 +91,17 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         if (values.isEmpty()) {
             return 0;
         }
-        
+
         if (values.get(0).getTimestamp().compareTo(end) >= 0) {
             return 0;
         }
-        
+
         double integratedValue = 0;
         for (int i = 0; i < values.size() - 1; i++) {
             integratedValue += integrate(start, end, values.get(i), values.get(i+1));
         }
         integratedValue += integrate(start, end, values.get(values.size() - 1), null);
-        
+
         return integratedValue;
     }
     
@@ -118,5 +118,5 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
             return 0;
         }
     }
-    
+
 }

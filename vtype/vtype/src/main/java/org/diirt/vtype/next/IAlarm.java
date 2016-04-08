@@ -13,7 +13,7 @@ class IAlarm extends Alarm {
 
     private final AlarmSeverity severity;
     private final String name;
-    
+
     IAlarm(AlarmSeverity severity, String name) {
         this.severity = severity;
         this.name = name;

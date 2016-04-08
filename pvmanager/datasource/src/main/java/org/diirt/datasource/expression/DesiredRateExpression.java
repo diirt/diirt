@@ -17,22 +17,22 @@ import org.diirt.datasource.ReadRecipeBuilder;
  * @author carcassi
  */
 public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R> {
-    
+
     /**
      * Changes the name for this expression
-     * 
+     *
      * @param name new name
      * @return this
      */
     public DesiredRateExpression<R> as(String name);
-    
+
     /**
      * Name of this expression.
      *
      * @return the expression name
      */
     public String getName();
-    
+
     /**
      * Prepares the recipe to connect the channels needed by this expression.
      * <p>
@@ -44,17 +44,17 @@ public interface DesiredRateExpression<R> extends DesiredRateExpressionList<R> {
      * @param builder the recipe to fill
      */
     public void fillReadRecipe(PVDirector director, ReadRecipeBuilder builder);
-    
+
     /**
      * The function that calculates this expression.
      *
      * @return the expression function
      */
     public ReadFunction<R> getFunction();
-    
+
     /**
      * The implementation of this expression.
-     * 
+     *
      * @return the implementation
      */
     public DesiredRateExpressionImpl<R> getDesiredRateExpressionImpl();

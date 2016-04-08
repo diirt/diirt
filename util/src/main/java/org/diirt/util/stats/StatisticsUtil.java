@@ -17,7 +17,7 @@ import org.diirt.util.array.IteratorNumber;
 public class StatisticsUtil {
 
     private static class StatisticsImpl extends Statistics {
-        
+
         private final int count;
         private final Range range;
         private final double average;
@@ -49,12 +49,12 @@ public class StatisticsUtil {
         public double getStdDev() {
             return stdDev;
         }
-        
+
     }
 
     /**
      * Calculates data statistics, excluding NaN values.
-     * 
+     *
      * @param data the data
      * @return the calculated statistics
      */
@@ -76,7 +76,7 @@ public class StatisticsUtil {
         double total = min;
         double totalSquare = min*min;
         count++;
-        
+
         while (iterator.hasNext()) {
             double value = iterator.nextDouble();
             if (!Double.isNaN(value)) {
@@ -89,23 +89,23 @@ public class StatisticsUtil {
                 count++;
             }
         }
-        
+
         double average = total/count;
         double stdDev = Math.sqrt(totalSquare / count - average * average);
-        
+
         return new StatisticsImpl(Ranges.range(min, max), count, average, stdDev);
     }
 
     /**
      * Aggregates statistical information.
-     * 
+     *
      * @param data a list of statistical information
      * @return the aggregate of all
      */
     public static Statistics statisticsOf(List<Statistics> data) {
         if (data.isEmpty())
             return null;
-        
+
         Iterator<Statistics> iterator = data.iterator();
         if (!iterator.hasNext()) {
             return null;
@@ -116,12 +116,12 @@ public class StatisticsUtil {
         }
         if (first == null)
             return null;
-        
+
         int count = first.getCount();
         Range range = first.getRange();
         double total = first.getAverage() * first.getCount();
         double totalSquare = (first.getStdDev() * first.getStdDev() + first.getAverage() * first.getAverage()) * first.getCount();
-        
+
         while (iterator.hasNext()) {
             Statistics stats = iterator.next();
             range = range.combine(stats.getRange());
@@ -129,33 +129,33 @@ public class StatisticsUtil {
             totalSquare += ( stats.getStdDev() * stats.getStdDev() + stats.getAverage() * stats.getAverage() ) * stats.getCount();
             count += stats.getCount();
         }
-        
+
         double average = total/count;
         double stdDev = Math.sqrt(totalSquare / count - average * average);
-        
+
         return new StatisticsImpl(range, count, average, stdDev);
     }
-    
+
     /**
      * Creates the statistics, excluding NaN values, but the values
      * are actually calculated when requested.
-     * 
+     *
      * @param data the data
      * @return the calculated statistics
      */
     public static Statistics lazyStatisticsOf(CollectionNumber data) {
         return new LazyStatistics(data);
     }
-    
+
     private static class LazyStatistics extends Statistics {
-        
+
         private Statistics stats;
         private CollectionNumber data;
 
         public LazyStatistics(CollectionNumber data) {
             this.data = data;
         }
-        
+
         private void calculateStats() {
             if (stats == null) {
                 stats = statisticsOf(data);
@@ -186,6 +186,6 @@ public class StatisticsUtil {
             calculateStats();
             return stats.getRange();
         }
-        
+
     }
 }

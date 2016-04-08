@@ -4,11 +4,8 @@
  */
 package org.diirt.datasource.integration;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.datasource.PVReader;
@@ -26,9 +23,9 @@ public abstract class TestPhase {
     private final Map<String, PVWriter<?>> pvWriters = new ConcurrentHashMap<>();
     private final Map<String, PVReader<?>> pvReaders = new ConcurrentHashMap<>();
     private final Log phaseLog = new Log();
-    
+
     private int debugLevel;
-    
+
     public String getName() {
         return getClass().getSimpleName();
     }
@@ -41,7 +38,7 @@ public abstract class TestPhase {
         }
         return this;
     }
-    
+
     protected <T> TestPhase addWriter(String name, PVWriterConfiguration<T> writer) {
         PVWriter<T> pvWriter = writer.writeListener(phaseLog.<T>createWriteListener(name)).async();
         if (pvWriters.containsKey(name)) {
@@ -53,7 +50,7 @@ public abstract class TestPhase {
         }
         return this;
     }
-    
+
     protected void write(String name, Object obj) {
         if (getDebugLevel() >= 2) {
             System.out.println("Writing '" + obj + "' to '" + name + "'");
@@ -62,7 +59,7 @@ public abstract class TestPhase {
         PVWriter<Object> pvWriter = (PVWriter<Object>) pvWriters.get(name);
         pvWriter.write(obj);
     }
-    
+
     protected void waitFor(String name, String value, int msTimeout) {
         if (getDebugLevel() >= 2) {
             System.out.println("Waiting for '" + value + "' on '" + name + "'");
@@ -75,13 +72,13 @@ public abstract class TestPhase {
             throw new RuntimeException("Waiting failed on " + name + " value " + value);
         }
     }
-    
+
     protected Object valueFor(String name) {
         @SuppressWarnings("unchecked")
         PVReader<Object> pvReader = (PVReader<Object>) pvReaders.get(name);
         return pvReader.getValue();
     }
-    
+
     protected void pause(long ms) {
         if (getDebugLevel() >= 3) {
             System.out.println("Pause " + ms + " ms");
@@ -93,17 +90,17 @@ public abstract class TestPhase {
             Thread.currentThread().interrupt();
         }
     }
-    
+
     private void closeAll() {
         for (PVReader<?> pvReader : pvReaders.values()) {
             pvReader.close();
         }
     }
-    
+
     public abstract void run() throws Exception;
-    
+
     public abstract void verify(Log log);
-    
+
     public void execute() {
         try {
             System.out.println("Starting " + getName());

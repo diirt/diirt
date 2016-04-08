@@ -20,5 +20,5 @@ class UsedMemoryChannelHandler extends SystemChannelHandler {
     protected Object createValue() {
         return newVDouble(bytesToMebiByte(Runtime.getRuntime().totalMemory()), alarmNone(), timeNow(), memoryDisplay);
     }
-    
+
 }

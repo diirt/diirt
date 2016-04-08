@@ -5,7 +5,7 @@
 package org.diirt.datasource.formula.channel;
 
 /**
- * Formula function that accepts a list of strings and returns a table where 
+ * Formula function that accepts a list of strings and returns a table where
  * each row is the value of the channel matching the name.
  *
  * @author carcassi
@@ -16,5 +16,5 @@ public class PvsFormulaFunction extends ChannelsFormulaFunction {
     public String getName() {
         return "pvs";
     }
-    
+
 }

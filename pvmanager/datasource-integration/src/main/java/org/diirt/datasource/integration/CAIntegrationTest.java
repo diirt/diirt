@@ -7,7 +7,6 @@ package org.diirt.datasource.integration;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.PVManager;
-import org.diirt.support.ca.JCADataSource;
 import org.diirt.support.ca.JCADataSourceConfiguration;
 
 /**
@@ -23,16 +22,16 @@ public class CAIntegrationTest {
                 new TypeChangeTestPhase(),
                 new RepeatedDisconnectTestPhase());
         int debugLevel = 1;
-        
+
         PVManager.setDefaultDataSource(new JCADataSourceConfiguration().create());
-        
+
         for (TestPhase phase : phases) {
             phase.setDebugLevel(debugLevel);
             phase.execute();
         }
-        
+
         PVManager.getDefaultDataSource().close();
-        
+
         PVManager.setDefaultDataSource(new JCADataSourceConfiguration().dbePropertySupported(true).create());
 
         phases = Arrays.<TestPhase>asList(new UpdateTestPhase(),
@@ -40,12 +39,12 @@ public class CAIntegrationTest {
                 new OutageTestPhase(),
                 new TypeChangeTestPhase(),
                 new RepeatedDisconnectTestPhase());
-        
+
         for (TestPhase phase : phases) {
             phase.setDebugLevel(debugLevel);
             phase.execute();
         }
-        
+
         PVManager.getDefaultDataSource().close();
     }
 }

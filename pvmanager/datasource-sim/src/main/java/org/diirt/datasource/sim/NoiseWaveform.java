@@ -35,7 +35,7 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
     public NoiseWaveform() {
         this(-5.0, 5.0, 1.0);
     }
-    
+
     /**
      * Creates a gaussian waveform signal with a gaussian distribution, updating at the rate
      * specified.

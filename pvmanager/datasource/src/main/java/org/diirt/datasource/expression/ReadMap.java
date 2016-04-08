@@ -45,7 +45,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
 
     /**
      * Removes all the expressions currently in the map.
-     * 
+     *
      * @return this expression
      */
     public ReadMap<T> clear() {
@@ -63,7 +63,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
 
     /**
      * Returns the number of expressions in the group.
-     * 
+     *
      * @return number of expressions in the group
      */
     public int size() {
@@ -74,7 +74,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
 
     /**
      * Adds the expression to the map.
-     * 
+     *
      * @param expression the expression to be added
      * @return this expression
      */
@@ -86,7 +86,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
             if (expressions.containsKey(expression.getName())) {
                 throw new IllegalArgumentException("MapExpression already contain an expression named '" + expression.getName() + "'");
             }
-            
+
             getMapOfFunction().getMapUpdateCollector().writeValue(MapUpdate.addReadFunction(expression.getName(), expression.getFunction()));
             expressions.put(expression.getName(), expression);
             if (director != null) {
@@ -95,7 +95,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
             return this;
         }
     }
-    
+
     /**
      * Adds the expressions to the map.
      *
@@ -113,7 +113,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
 
     /**
      * Removes the expression with the given name.
-     * 
+     *
      * @param name the name of the expression to remove
      * @return this expression
      */
@@ -122,7 +122,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
             if (!expressions.containsKey(name)) {
                 throw new IllegalArgumentException("MapExpression does not contain an expression named '" + name + "'");
             }
-            
+
             getMapOfFunction().getMapUpdateCollector().writeValue(MapUpdate.<T>removeFunction(name));
             DesiredRateExpression<T> expression = expressions.remove(name);
             if (director != null) {
@@ -131,7 +131,7 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
             return this;
         }
     }
-    
+
     /**
      * Removes the expressions from the map.
      *
@@ -158,5 +158,5 @@ public class ReadMap<T> extends DesiredRateExpressionImpl<Map<String, T>> {
             }
         }
     }
-    
+
 }

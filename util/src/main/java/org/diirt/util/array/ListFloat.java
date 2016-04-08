@@ -14,7 +14,7 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
     @Override
     public IteratorFloat iterator() {
         return new IteratorFloat() {
-            
+
             private int index;
 
             @Override
@@ -53,7 +53,7 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
     public byte getByte(int index) {
         return (byte) getFloat(index);
     }
-    
+
     @Override
     public void setDouble(int index, double value) {
         setFloat(index, (float) value);
@@ -88,7 +88,7 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        
+
         if (obj instanceof ListFloat) {
             ListFloat other = (ListFloat) obj;
 
@@ -102,7 +102,7 @@ public abstract class ListFloat implements ListNumber, CollectionFloat {
 
             return true;
         }
-        
+
         return false;
     }
 

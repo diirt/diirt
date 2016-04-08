@@ -40,10 +40,10 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
     /**
      *Draws the area to be put behind a graph on the given Graphics2D context, given the Cell1DDataset.
      * @param graphics Graphics2D: can not be null.
-     * @param dataset Cell1DDataset 
+     * @param dataset Cell1DDataset
      */
     public void draw(Graphics2D graphics, Cell1DDataset dataset) {
-        
+
         Color dividerColor = new Color(196, 196, 196);
         Color lineColor = new Color(140, 140, 140);
         Color histogramColor = new Color(175, 175, 175);
@@ -59,7 +59,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
         // Compute bin limits
         int[] binLimitsPx = new int[dataset.getXCount() + 1];
         int[] binHeightsPx = new int[dataset.getXCount()];
-        
+
         focusValueIndex = null;
         for (int i = 0; i < dataset.getXCount(); i++) {
             binLimitsPx[i] = (int) scaledX(dataset.getXBoundaries().getDouble(i));
@@ -69,7 +69,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
             }
         }
         binLimitsPx[dataset.getXCount()] = (int) scaledX(dataset.getXBoundaries().getDouble(dataset.getXCount()));
-        
+
         // Draw histogram area
         int plotStart = (int) scaledY(getYPlotRange().getMinimum());
         for (int i = 0; i < binHeightsPx.length; i++) {
@@ -84,11 +84,11 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
                 graphics.drawLine(binLimitsPx[i], binHeightsPx[i], binLimitsPx[i], plotStart);
             }
         }
-        
+
         // Draw horizontal reference lines
         graphics.setColor(backgroundColor);
         drawHorizontalReferenceLines();
-        
+
         // Draw histogram contour
         int previousHeight = plotStart;
         for (int i = 0; i < binHeightsPx.length; i++) {
@@ -99,7 +99,7 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
         }
         if (previousHeight > 0)
             graphics.drawLine(binLimitsPx[binLimitsPx.length - 1], previousHeight, binLimitsPx[binLimitsPx.length - 1], plotStart);
-        
+
     }
 
     public Integer getFocusPixelX() {
@@ -109,5 +109,5 @@ public class AreaGraph2DRenderer extends Graph2DRenderer<AreaGraph2DRendererUpda
     public Integer getFocusValueIndex() {
         return focusValueIndex;
     }
-    
+
 }

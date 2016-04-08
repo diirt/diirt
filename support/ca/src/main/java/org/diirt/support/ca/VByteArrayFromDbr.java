@@ -35,7 +35,7 @@ class VByteArrayFromDbr extends VNumberMetadata<DBR_TIME_Byte, DBR_CTRL_Double> 
     public ListByte getData() {
         return new ArrayByte(dbrValue.getByteValue());
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

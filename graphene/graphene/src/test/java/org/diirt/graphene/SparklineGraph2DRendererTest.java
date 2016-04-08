@@ -4,11 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
-import org.diirt.graphene.SparklineGraph2DRenderer;
-import org.diirt.graphene.SparklineGraph2DRendererUpdate;
-import org.diirt.graphene.InterpolationScheme;
-import org.diirt.graphene.Point2DDatasets;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import org.diirt.util.array.ArrayDouble;

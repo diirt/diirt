@@ -4,11 +4,8 @@
  */
 package org.diirt.datasource.integration;
 
-import org.diirt.datasource.integration.VTypeMatchMask;
-import org.diirt.datasource.integration.Validators;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -19,7 +16,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class ValidatorsTest {
-    
+
     public ValidatorsTest() {
     }
 
@@ -37,5 +34,5 @@ public class ValidatorsTest {
         assertThat(Validators.matchCycle(VTypeMatchMask.VALUE, 1, matchValues, values), equalTo(false));
         assertThat(Validators.matchCycle(VTypeMatchMask.VALUE, 2, matchValues, values), equalTo(true));
     }
-    
+
 }

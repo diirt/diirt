@@ -8,7 +8,7 @@ package org.diirt.vtype;
  * Scalar double with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public interface VDouble extends VNumber, VType {

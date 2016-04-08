@@ -4,6 +4,6 @@
  */
 /**
  * Contains basic for text manipulation and value formatting.
- * 
+ *
  */
 package org.diirt.util.text;

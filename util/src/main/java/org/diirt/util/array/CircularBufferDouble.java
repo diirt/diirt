@@ -13,7 +13,7 @@ package org.diirt.util.array;
  * @author carcassi
  */
 public class CircularBufferDouble extends ListDouble {
-    
+
     private double[] data;
     private int startOffset;
     private int endOffset;
@@ -22,7 +22,7 @@ public class CircularBufferDouble extends ListDouble {
 
     /**
      * Creates a new circular buffer with the given maximum capacity.
-     * 
+     *
      * @param maxCapacity maximum capacity
      */
     public CircularBufferDouble(int maxCapacity) {
@@ -32,7 +32,7 @@ public class CircularBufferDouble extends ListDouble {
     /**
      * Creates a new circular buffer with the given initial and maximum
      * capacity.
-     * 
+     *
      * @param initialCapacity initial capacity
      * @param maxCapacity  maximum capacity
      */
@@ -40,7 +40,7 @@ public class CircularBufferDouble extends ListDouble {
         data = new double[initialCapacity];
         this.maxCapacity = maxCapacity;
     }
-    
+
     private void resize() {
         int oldSize = data.length;
         int newSize = oldSize * 2;
@@ -79,17 +79,17 @@ public class CircularBufferDouble extends ListDouble {
 
     /**
      * Adds a new value.
-     * 
+     *
      * @param value new value
      */
     public void addDouble(double value) {
         data[endOffset] = value;
         endOffset++;
-        
+
         // Grow the buffer if needed
         if (endOffset == data.length && !reachedMax)
             resize();
-        
+
         // Loop over and advance the start point if needed
         if (endOffset == data.length) {
             endOffset = 0;
@@ -99,7 +99,7 @@ public class CircularBufferDouble extends ListDouble {
         if (startOffset == data.length)
             startOffset = 0;
     }
-    
+
     /**
      * Removes all values from the buffer.
      */
@@ -110,7 +110,7 @@ public class CircularBufferDouble extends ListDouble {
 
     /**
      * The maximum capacity for this circular buffer.
-     * 
+     *
      * @return maximum capacity
      */
     public int getCurrentCapacity() {

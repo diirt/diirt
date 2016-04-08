@@ -20,14 +20,14 @@ import java.util.regex.Pattern;
  */
 public abstract class FormulaFunctionSet {
     static Pattern namePattern = Pattern.compile("[a-zA-Z_]\\w*");
-    
+
     private final String name;
     private final String description;
     private final Collection<FormulaFunction> formulaFunctions;
 
     /**
      * Creates a new ser of functions to be registered in the formula language.
-     * 
+     *
      * @param functionSetDescription the description of the function set
      */
     public FormulaFunctionSet(FormulaFunctionSetDescription functionSetDescription) {
@@ -38,7 +38,7 @@ public abstract class FormulaFunctionSet {
 
     /**
      * Returns the name of the function set.
-     * 
+     *
      * @return the function set name
      */
     public final String getName() {
@@ -47,7 +47,7 @@ public abstract class FormulaFunctionSet {
 
     /**
      * Returns the description of the function set.
-     * 
+     *
      * @return the function set description
      */
     public final String getDescription() {
@@ -56,7 +56,7 @@ public abstract class FormulaFunctionSet {
 
     /**
      * The names of all functions in this set.
-     * 
+     *
      * @return the function names
      */
     public final Collection<String> getFunctionNames() {
@@ -69,7 +69,7 @@ public abstract class FormulaFunctionSet {
 
     /**
      * Returns all the functions in the set with the given name.
-     * 
+     *
      * @param name the name of the function
      * @return the matched functions; never null
      */
@@ -77,7 +77,7 @@ public abstract class FormulaFunctionSet {
         if (name == null) {
             return Collections.emptyList();
         }
-        
+
         Set<FormulaFunction> formulas = new HashSet<>();
         for (FormulaFunction formulaFunction : formulaFunctions) {
             if (name.equals(formulaFunction.getName())) {
@@ -89,7 +89,7 @@ public abstract class FormulaFunctionSet {
 
     /**
      * Returns all functions in the set.
-     * 
+     *
      * @return the functions in the set
      */
     public final Collection<FormulaFunction> getFunctions() {

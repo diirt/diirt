@@ -4,14 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.ChannelReadRecipe;
-import org.diirt.datasource.ReadRecipe;
-import org.diirt.datasource.WriteFunction;
-import org.diirt.datasource.ConnectionCollector;
-import org.diirt.datasource.ValueCacheImpl;
-import org.diirt.datasource.ValueCache;
-import org.diirt.datasource.ReadRecipeBuilder;
-import org.diirt.datasource.WriteCache;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

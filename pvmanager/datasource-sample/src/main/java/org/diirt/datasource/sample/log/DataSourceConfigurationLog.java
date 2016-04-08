@@ -6,8 +6,6 @@ package org.diirt.datasource.sample.log;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.diirt.datasource.CompositeDataSource;
-import org.diirt.datasource.DataSourceProvider;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
@@ -25,7 +23,7 @@ public class DataSourceConfigurationLog {
         // Increasing logging at CONFIG level
         Logger.getLogger("").getHandlers()[0].setLevel(Level.CONFIG);
         Logger.getLogger("").setLevel(Level.CONFIG);
-        
+
         System.out.println("Open channel");
         PVReader<VNumber> reader = PVManager.read(vNumber("sim://noise"))
                 .readListener(new PVReaderListener<VNumber>() {
@@ -41,8 +39,8 @@ public class DataSourceConfigurationLog {
 	Thread.sleep(2000);
         System.out.println("Close channel");
         reader.close();
-	Thread.sleep(1000);
-	
+        Thread.sleep(1000);
+
         System.out.println("Close data source");
         PVManager.getDefaultDataSource().close();
         System.out.println("Done");

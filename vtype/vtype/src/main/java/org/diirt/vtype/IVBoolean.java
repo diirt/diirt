@@ -6,7 +6,7 @@ package org.diirt.vtype;
 
 /**
  * Simple implementation for VBoolean.
- * 
+ *
  * @author carcassi
  */
 class IVBoolean extends IVMetadata implements VBoolean {

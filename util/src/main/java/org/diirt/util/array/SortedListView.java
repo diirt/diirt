@@ -48,7 +48,7 @@ public class SortedListView extends ListDouble {
 
     /**
      * Returns the index map of the sorted view.
-     * 
+     *
      * @return a list of integers
      */
     public ListInt getIndexes() {
@@ -58,7 +58,7 @@ public class SortedListView extends ListDouble {
     /**
      * Quick-sort the view. The original list is left alone,
      * and the internal list is modified.
-     * 
+     *
      * @param list the view to sort
      */
     static void quicksort(SortedListView list) {

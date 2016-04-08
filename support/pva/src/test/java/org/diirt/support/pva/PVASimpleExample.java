@@ -4,7 +4,6 @@
  */
 package org.diirt.support.pva;
 
-import org.diirt.support.pva.PVADataSource;
 import static org.diirt.datasource.ExpressionLanguage.channel;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;

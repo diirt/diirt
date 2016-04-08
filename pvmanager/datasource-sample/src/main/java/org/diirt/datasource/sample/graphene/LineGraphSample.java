@@ -188,18 +188,18 @@ public class LineGraphSample extends javax.swing.JFrame {
             plotView.setImage(null);
             plot = null;
         }
-        
+
         if (dataFormulaField.getText() == null || dataFormulaField.getText().trim().isEmpty()) {
             return;
         }
-        
+
         if (plot == null) {
             plot = lineGraphOf(formula(dataFormulaField.getText()),
                     formulaArg(xColumnField.getText()),
                     formulaArg(yColumnField.getText()),
                     formulaArg(tooltipColumnField.getText()));
         }
-        
+
         plot.update(new LineGraph2DRendererUpdate().imageHeight(plotView.getHeight()).imageWidth(plotView.getWidth()).interpolation(InterpolationScheme.LINEAR));
         pv = PVManager.read(plot)
                 .notifyOn(swingEDT())

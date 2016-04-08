@@ -12,7 +12,7 @@ import org.diirt.datasource.DataSourceTypeAdapterSet;
  * @author carcassi
  */
 public interface PVATypeAdapterSet extends DataSourceTypeAdapterSet {
-    
+
     @Override
     Collection<PVATypeAdapter> getAdapters();
 }

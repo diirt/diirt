@@ -2,14 +2,14 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>An animated customised Pie chart</title>
 
     <meta name="keywords" content="demo pie explod exploding onclick events" />
@@ -25,7 +25,7 @@
     </p>
 
     <canvas id="cvs" width="480" height="250" !style="border:1px solid #ccc">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -38,7 +38,7 @@
                 .Set('labels.sticks', [true,,,true])
                 .Set('labels.sticks.length', 25)
                 .Draw();
-            
+
             /**
             * Add the event listener fnctions using the new dollar syntax. This handles the click
             * for the first and fourh segments
@@ -49,7 +49,7 @@
                 var obj = shape['object'];
                 obj.Set('exploded', []);
                 obj.Explode(shape['index'], 15);
-                
+
                 setTimeout(function ()
                 {
                 }, 500);
@@ -79,7 +79,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

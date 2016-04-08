@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.vtype.VDoubleArray;
@@ -38,7 +37,7 @@ public class Square2DWaveform extends SimFunction<VDoubleArray> {
     public Square2DWaveform() {
         this(1.0, 100.0, 0.1);
     }
-    
+
     /**
      * Creates sine wave of 100 samples, with given period and given wavelength of
      * 100 samples along the x axis, updating at given rate.

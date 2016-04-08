@@ -12,7 +12,6 @@ import org.diirt.datasource.SourceDesiredRateDecoupler;
 import org.diirt.datasource.DesiredRateEventListener;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,9 +20,9 @@ import java.util.logging.Logger;
  * @author carcassi
  */
  class DesiredRateEventLog implements DesiredRateEventListener {
-     
+
     private final Object lock = new Object();
-    
+
     private final List<DesiredRateEvent> events = new ArrayList<>();
     private final List<Instant> timestamps = new ArrayList<>();
     private SourceDesiredRateDecoupler decoupler;
@@ -68,7 +67,7 @@ import java.util.logging.Logger;
         }
         decoupler.readyForNextEvent();
     }
-    
+
     public List<DesiredRateEvent.Type> getEventTypes(int n) {
         synchronized(lock) {
             return events.get(n).getTypes();
@@ -80,7 +79,7 @@ import java.util.logging.Logger;
             return events;
         }
     }
-    
+
     public void printLog() {
         synchronized(lock) {
             for (int i = 0; i < events.size(); i++) {
@@ -88,5 +87,5 @@ import java.util.logging.Logger;
             }
         }
     }
-    
+
 }

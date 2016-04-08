@@ -4,13 +4,9 @@
  */
 package org.diirt.datasource.formula.vtable;
 
-import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
@@ -64,14 +60,14 @@ class TableRangeFilterFunction implements FormulaFunction {
         VString columnName = (VString) args.get(1);
         VType min = (VType) args.get(2);
         VType max = (VType) args.get(3);
-        
+
         if (columnName == null || columnName.getValue() == null || table == null || min == null || max == null) {
             return null;
         }
-        
+
         VTable result = VTableFactory.tableRangeFilter(table, columnName.getValue(), min, max);
-        
+
         return result;
     }
-    
+
 }

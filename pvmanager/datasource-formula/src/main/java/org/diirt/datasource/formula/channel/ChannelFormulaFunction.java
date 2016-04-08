@@ -61,7 +61,7 @@ public class ChannelFormulaFunction extends DynamicFormulaFunction {
         if (value != null) {
             newName = value.getValue();
         }
-        
+
         // If the name does not match, disconnect and connect
         if (!Objects.equals(newName, previousName)) {
             // Disconnect previous
@@ -69,7 +69,7 @@ public class ChannelFormulaFunction extends DynamicFormulaFunction {
                 getDirector().disconnectReadExpression(currentExpression);
                 currentExpression = null;
             }
-            
+
             // Connect new
             if (newName != null) {
                 currentExpression = channel(newName, Object.class);
@@ -93,5 +93,5 @@ public class ChannelFormulaFunction extends DynamicFormulaFunction {
         }
         currentExpression = null;
     }
-    
+
 }

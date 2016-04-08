@@ -18,7 +18,7 @@ import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
 
 public final class EventViewer extends ScrollPane {
-    
+
     @FXML
     private TitledPane eventReadConnection;
     @FXML
@@ -58,16 +58,16 @@ public final class EventViewer extends ScrollPane {
 
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
-        
+
         try {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        
+
         setEvent(null);
     }
-    
+
     public void setEvent(Event event) {
         ReadEvent readEvent = null;
         WriteEvent writeEvent = null;
@@ -97,7 +97,7 @@ public final class EventViewer extends ScrollPane {
             readConnectedField.setSelected(false);
         }
     }
-    
+
     private ValueFormat format = new SimpleValueFormat(3);
 
     private void updateReadValue(ReadEvent readEvent) {

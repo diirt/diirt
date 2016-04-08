@@ -15,7 +15,7 @@ import org.diirt.datasource.MultiplexedChannelHandler;
  * @author carcassi
  */
 class WebPodsChannelHandler extends MultiplexedChannelHandler<WebPodsChannelHandler.ConnectionPayload, Object> {
-    
+
     private final WebPodsDataSource dataSource;
     private final WebPodsChannelListener listener = new WebPodsChannelListener() {
 
@@ -33,7 +33,7 @@ class WebPodsChannelHandler extends MultiplexedChannelHandler<WebPodsChannelHand
         public void onDisconnect(CloseReason reason) {
             processConnection(null);
         }
-        
+
     };
     private WebPodsChannel channel;
 
@@ -41,7 +41,7 @@ class WebPodsChannelHandler extends MultiplexedChannelHandler<WebPodsChannelHand
         super(channelName);
         this.dataSource = dataSource;
     }
-    
+
     @Override
     public void connect() {
         channel = dataSource.getClient().subscribe(getChannelName(), listener);
@@ -68,7 +68,7 @@ class WebPodsChannelHandler extends MultiplexedChannelHandler<WebPodsChannelHand
     @Override
     protected void write(Object newValue, ChannelWriteCallback callback) {
     }
-    
+
     static class ConnectionPayload {
         final boolean connected;
         final boolean writeConnected;

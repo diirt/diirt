@@ -14,33 +14,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author carcassi
  */
 class PVWriterImpl<T> implements PVWriter<T> {
-    
+
     static <T> PVWriterImpl<T> implOf(PVWriter<T> pvWriter) {
         if (pvWriter instanceof PVWriterImpl) {
             return (PVWriterImpl<T>) pvWriter;
         }
-        
+
         throw new IllegalArgumentException("PVWriter must be implemented using PVWriterImpl");
     }
 
     // PVWriter state
-    
+
     // Immutable part, no need to synchronize
     private final boolean syncWrite;
 
     // Thread-safe, no need to synchronize
     private List<PVWriterListener<T>> pvWriterListeners = new CopyOnWriteArrayList<>();
-    
+
     // Atomocity in the callback is guaranteed by how the PVWriterDirector
     //     prepares the PVWriter before the notification
-    
+
     // Thread-safety is guaranteed by the following rule:
     //  - any variable declared after the locked should be read or written
     //    only while holding the lock
     // Potential deadlocks or livelocks are prevented by the following rule:
     //  - never call outside this object, except for something small and understood,
     //    while holding the lock
-    
+
     private final Object lock = new Object();
     // guarded by lock
     private boolean closed = false;
@@ -54,7 +54,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
     PVWriterImpl(boolean syncWrite, boolean notifyFirstListener) {
         this.syncWrite = syncWrite;
     }
-    
+
     void firePvWritten() {
         PVWriterEvent<T> event;
         synchronized(lock) {
@@ -77,7 +77,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
             listener.pvChanged(event);
         }
     }
-    
+
     void fireWriteSuccess() {
         PVWriterEvent<T> event;
         synchronized(lock) {
@@ -87,7 +87,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
             listener.pvChanged(event);
         }
     }
-    
+
     void fireWriteFailure(Exception ex) {
         setLastWriteException(ex);
         PVWriterEvent<T> event;
@@ -132,8 +132,8 @@ class PVWriterImpl<T> implements PVWriter<T> {
         PVWriterListener<T> convertedListener = (PVWriterListener<T>) listener;
         pvWriterListeners.remove(convertedListener);
     }
-    
-    
+
+
     @Override
     public void write(T newValue) {
         // Safely taking the write directory
@@ -184,10 +184,10 @@ class PVWriterImpl<T> implements PVWriter<T> {
             return closed;
         }
     }
-    
+
     /**
      * Changes the last exception associated with write operations.
-     * 
+     *
      * @param ex the new exception
      */
     void setLastWriteException(Exception ex) {
@@ -220,7 +220,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
             return writeConnected;
         }
     }
-    
+
     public void setWriteConnected(boolean writeConnected) {
         synchronized(lock) {
             if (this.writeConnected != writeConnected) {
@@ -229,7 +229,7 @@ class PVWriterImpl<T> implements PVWriter<T> {
             }
         }
     }
-    
+
     void setWriterForNotification(PVWriter<T> writerForNotification) {
         synchronized(lock) {
             this.writerForNotification = writerForNotification;

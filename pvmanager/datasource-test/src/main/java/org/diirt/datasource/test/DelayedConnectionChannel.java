@@ -24,7 +24,7 @@ class DelayedConnectionChannel extends MultiplexedChannelHandler<Object, Object>
             Thread.sleep(1000);
         } catch(Exception ex) {
         }
-        
+
         processConnection(new Object());
         processMessage("Initial value");
     }
@@ -43,5 +43,5 @@ class DelayedConnectionChannel extends MultiplexedChannelHandler<Object, Object>
             callback.channelWritten(ex);
         }
     }
-    
+
 }

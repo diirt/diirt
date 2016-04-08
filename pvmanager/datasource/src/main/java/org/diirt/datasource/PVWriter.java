@@ -29,11 +29,11 @@ public interface PVWriter<T> {
      * @param listener the old listener
      */
     public void removePVWriterListener(PVWriterListener<? extends T> listener);
-    
+
     /**
      * Writes a new value. This method can be synchronous or synchronous
      * depending on how the PV was created.
-     * 
+     *
      * @param newValue the new value
      */
     public void write(T newValue);
@@ -52,13 +52,13 @@ public interface PVWriter<T> {
      * @return true if closed
      */
     public boolean isClosed();
-    
+
     /**
      * True if the writer is connected and ready to write.
      * <p>
      * False if the channel is not connected, or is connected but can't be
      * written to.
-     * 
+     *
      * @return true if can write
      */
     public boolean isWriteConnected();
@@ -70,5 +70,5 @@ public interface PVWriter<T> {
      * @return the last generated exception or null
      */
     public Exception lastWriteException();
-    
+
 }

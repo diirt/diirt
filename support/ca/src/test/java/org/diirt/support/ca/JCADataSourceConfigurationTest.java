@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import com.cosylab.epics.caj.CAJConstants;
 import com.cosylab.epics.caj.CAJContext;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
@@ -29,7 +28,7 @@ public class JCADataSourceConfigurationTest {
         assertThat(conf.varArraySupported, nullValue());
         assertThat(conf.jcaContextClass, nullValue());
         assertThat(conf.jcaContextProperties.isEmpty(), equalTo(true));
-        
+
         Context context = conf.createContext();
         assertThat(context, instanceOf(CAJContext.class));
         CAJContext cajContext = (CAJContext) context;
@@ -60,7 +59,7 @@ public class JCADataSourceConfigurationTest {
         assertThat(conf.jcaContextProperties, hasEntry("repeater_port", "6065"));
         assertThat(conf.jcaContextProperties, hasEntry("server_port", "6064"));
         assertThat(conf.jcaContextProperties, hasEntry("max_array_bytes", "163840"));
-        
+
         Context context = conf.createContext();
         assertThat(context, instanceOf(CAJContext.class));
         CAJContext cajContext = (CAJContext) context;
@@ -91,7 +90,7 @@ public class JCADataSourceConfigurationTest {
         assertThat(conf.jcaContextProperties, hasEntry("repeater_port", "5065"));
         assertThat(conf.jcaContextProperties, hasEntry("server_port", "5064"));
         assertThat(conf.jcaContextProperties, hasEntry("max_array_bytes", "16384"));
-        
+
         Context context = conf.createContext();
         assertThat(context, instanceOf(CAJContext.class));
         CAJContext cajContext = (CAJContext) context;
@@ -115,7 +114,7 @@ public class JCADataSourceConfigurationTest {
         assertThat(conf.varArraySupported, nullValue());
         assertThat(conf.jcaContextClass, equalTo(JCALibrary.JNI_THREAD_SAFE));
         assertThat(conf.jcaContextProperties.size(), equalTo(0));
-        
+
         Context context = conf.createContext();
         assertThat(context, instanceOf(JNIContext.class));
         JNIContext cajContext = (JNIContext) context;
@@ -149,7 +148,7 @@ public class JCADataSourceConfigurationTest {
         assertThat(conf.jcaContextProperties, hasEntry("server_port", "6064"));
         assertThat(conf.jcaContextProperties, hasEntry("max_array_bytes", "163840"));
         assertThat(conf.jcaContextProperties, hasEntry("preemptive_callback", "false"));
-        
+
         Context context = conf.createContext();
         assertThat(context, instanceOf(JNIContext.class));
         JNIContext cajContext = (JNIContext) context;
@@ -163,5 +162,5 @@ public class JCADataSourceConfigurationTest {
         assertThat(cajContext.getPreemptiveCallback(), equalTo(false));
         context.dispose();
     }
-    
+
 }

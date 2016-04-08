@@ -45,7 +45,7 @@ public class LinearAbsoluteTimeScaleTest {
         assertThat(linearScale.scaleTimestamp(start.plus(Duration.ofSeconds(4)), timeInterval, 1.0, 100.0), equalTo(50.5));
         assertThat(linearScale.scaleTimestamp(start.plus(Duration.ofSeconds(8)), timeInterval, 1.0, 100.0), equalTo(100.0));
     }
-    
+
     @Test
     public void references1() {
         TimeScale linearScale = TimeScales.linearAbsoluteScale();
@@ -61,7 +61,7 @@ public class LinearAbsoluteTimeScaleTest {
                 13877.0/20000.0,
                 15877.0/20000.0,
                 17877.0/20000.0,
-                19877.0/20000.0), 
+                19877.0/20000.0),
                 Arrays.asList(TimeScalesTest.create(2013, 5, 10, 16, 13, 46, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 48, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 50, 0),
@@ -82,7 +82,7 @@ public class LinearAbsoluteTimeScaleTest {
                 "16:14:00",
                 "16:14:02",
                 "16:14:04"), timeAxis);
-        
+
     }
 
     @Test
@@ -101,7 +101,7 @@ public class LinearAbsoluteTimeScaleTest {
                 34.0/50.0,
                 39.0/50.0,
                 44.0/50.0,
-                49.0/50.0), 
+                49.0/50.0),
                 Arrays.asList(TimeScalesTest.create(2013, 5, 10, 16, 13, 44, 500),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 45, 0),
                 TimeScalesTest.create(2013, 5, 10, 16, 13, 45, 500),
@@ -121,9 +121,9 @@ public class LinearAbsoluteTimeScaleTest {
                 ".5",
                 "16:13:48.0",
                 ".5",
-                "16:13:49.0"), timeAxis);    
+                "16:13:49.0"), timeAxis);
     }
-    
+
     @Test
     public void createZeroReferences() {
 	//Test for requiring 0 references
@@ -142,7 +142,7 @@ public class LinearAbsoluteTimeScaleTest {
 		noLabels,
 		timeAxis);   
     }
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void createZeroReferences2() {
 	//Test for requiring negative amount of references
@@ -150,9 +150,9 @@ public class LinearAbsoluteTimeScaleTest {
         Instant start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 1 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, -100 , -10 );
-	assertTrue( false );
+        assertTrue( false );
     }
-    
+
     @Test(expected=IllegalArgumentException.class)
     public void createZeroReferences3() {
 	//Test for max refs is less than min refs
@@ -160,9 +160,9 @@ public class LinearAbsoluteTimeScaleTest {
         Instant start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 1 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 99999 , 2 );
-	assertTrue( false );
+        assertTrue( false );
     }
-     
+
     @Test
     @Ignore
     public void references1MsPeriod1() {
@@ -172,22 +172,22 @@ public class LinearAbsoluteTimeScaleTest {
         Instant start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 1 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
-        assertAxisEquals(timeInterval, 
-		new ArrayDouble(
-		    0.0/1.0,
-		    1.0/1.0
-		), 
+        assertAxisEquals(timeInterval,
+                new ArrayDouble(
+                    0.0/1.0,
+                    1.0/1.0
+                ),
                 Arrays.asList(
-		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ),
-		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 54 )
-		),
+                    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ),
+                    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 54 )
+                ),
                 Arrays.asList(
-		    "2014/11/13 10:31:23.053",
-		    ".054"
-		), 
-		timeAxis);    
+                    "2014/11/13 10:31:23.053",
+                    ".054"
+                ),
+                timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references1MsPeriod2() {
@@ -197,25 +197,25 @@ public class LinearAbsoluteTimeScaleTest {
         Instant start = TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 );
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 2 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
-        assertAxisEquals(timeInterval, 
-		new ArrayDouble(
-		    0.0/2.0,
-		    1.0/2.0,
-		    2.0/2.0
-		), 
+        assertAxisEquals(timeInterval,
+                new ArrayDouble(
+                    0.0/2.0,
+                    1.0/2.0,
+                    2.0/2.0
+                ),
                 Arrays.asList(
-		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ),
-		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 54 ),
-		    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 55 )
-		),
+                    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 53 ),
+                    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 54 ),
+                    TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 55 )
+                ),
                 Arrays.asList(
-		    "2014/11/13 10:31:23.053",
-		    ".054",
-		    ".055"
-		), 
-		timeAxis);    
+                    "2014/11/13 10:31:23.053",
+                    ".054",
+                    ".055"
+                ),
+                timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references1MsPeriod3() {
@@ -285,7 +285,7 @@ public class LinearAbsoluteTimeScaleTest {
 		labels, 
 		timeAxis);    
     }
-    
+
     @Test
     @Ignore
     public void references1MsPeriod4() {
@@ -353,7 +353,7 @@ public class LinearAbsoluteTimeScaleTest {
 		labels, 
 		timeAxis);    
     }
-    
+
     @Test
     @Ignore
     public void references5MsPeriod1() {
@@ -364,25 +364,25 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 16 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 3 , 3 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		2.0/16.0,
-		7.0/16.0,
-		12.0/16.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 55 ),
-		TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 60 ),
-		TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 65 )
-	    ),
-	    Arrays.asList(
-		"2014/11/13 10:31:23.055",
-		".060",
-		".065"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                2.0/16.0,
+                7.0/16.0,
+                12.0/16.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 55 ),
+                TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 60 ),
+                TimeScalesTest.create( 2014 , 11 , 13 , 10 , 31 , 23 , 65 )
+            ),
+            Arrays.asList(
+                "2014/11/13 10:31:23.055",
+                ".060",
+                ".065"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references5MsPeriod2() {
@@ -395,28 +395,28 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 18 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		1.0/18.0,
-		6.0/18.0,
-		11.0/18.0,
-		16.0/18.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 58 , 990 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 58 , 995 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 0 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 5 )
-	    ),
-	    Arrays.asList(
-		"2014/12/24 23:59:58.990",
-		".995",
-		"23:59:59.000",
-		".005"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                1.0/18.0,
+                6.0/18.0,
+                11.0/18.0,
+                16.0/18.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 58 , 990 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 58 , 995 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 0 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 5 )
+            ),
+            Arrays.asList(
+                "2014/12/24 23:59:58.990",
+                ".995",
+                "23:59:59.000",
+                ".005"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references5MsPeriod3() {
@@ -429,28 +429,28 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 18 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		1.0/18.0,
-		6.0/18.0,
-		11.0/18.0,
-		16.0/18.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 58 , 59 , 990 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 58 , 59 , 995 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 0 , 5 )
-	    ),
-	    Arrays.asList(
-		"2014/12/24 23:58:59.990",
-		".995",
-		"23:59:00.000",
-		".005"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                1.0/18.0,
+                6.0/18.0,
+                11.0/18.0,
+                16.0/18.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 58 , 59 , 990 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 58 , 59 , 995 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 0 , 5 )
+            ),
+            Arrays.asList(
+                "2014/12/24 23:58:59.990",
+                ".995",
+                "23:59:00.000",
+                ".005"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references5MsPeriod4() {
@@ -463,28 +463,28 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 18 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		1.0/18.0,
-		6.0/18.0,
-		11.0/18.0,
-		16.0/18.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 12 , 24 , 22 , 59 , 59 , 990 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 22 , 59 , 59 , 995 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 0 , 0 , 5 )
-	    ),
-	    Arrays.asList(
-		"2014/12/24 22:59:59.990",
-		".995",
-		"23:00:00.000",
-		".005"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                1.0/18.0,
+                6.0/18.0,
+                11.0/18.0,
+                16.0/18.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 12 , 24 , 22 , 59 , 59 , 990 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 22 , 59 , 59 , 995 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 0 , 0 , 5 )
+            ),
+            Arrays.asList(
+                "2014/12/24 22:59:59.990",
+                ".995",
+                "23:00:00.000",
+                ".005"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references5MsPeriod5() {
@@ -497,28 +497,28 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 18 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		1.0/18.0,
-		6.0/18.0,
-		11.0/18.0,
-		16.0/18.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 990 ),
-		TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 995 ),
-		TimeScalesTest.create( 2014 , 12 , 25 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 12 , 25 , 0 , 0 , 0 , 5 )
-	    ),
-	    Arrays.asList(
-		"2014/12/24 23:59:59.990",
-		".995",
-		"2014/12/25 00:00:00.000",
-		".005"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                1.0/18.0,
+                6.0/18.0,
+                11.0/18.0,
+                16.0/18.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 990 ),
+                TimeScalesTest.create( 2014 , 12 , 24 , 23 , 59 , 59 , 995 ),
+                TimeScalesTest.create( 2014 , 12 , 25 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 12 , 25 , 0 , 0 , 0 , 5 )
+            ),
+            Arrays.asList(
+                "2014/12/24 23:59:59.990",
+                ".995",
+                "2014/12/25 00:00:00.000",
+                ".005"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references5MsPeriod6() {
@@ -531,28 +531,28 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 18 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		1.0/18.0,
-		6.0/18.0,
-		11.0/18.0,
-		16.0/18.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 11 , 30 , 23 , 59 , 59 , 990 ),
-		TimeScalesTest.create( 2014 , 11 , 30 , 23 , 59 , 59 , 995 ),
-		TimeScalesTest.create( 2014 , 12 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 12 , 1 , 0 , 0 , 0 , 5 )
-	    ),
-	    Arrays.asList(
-		"2014/11/30 23:59:59.990",
-		".995",
-		"2014/12/01 00:00:00.000",
-		".005"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                1.0/18.0,
+                6.0/18.0,
+                11.0/18.0,
+                16.0/18.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 11 , 30 , 23 , 59 , 59 , 990 ),
+                TimeScalesTest.create( 2014 , 11 , 30 , 23 , 59 , 59 , 995 ),
+                TimeScalesTest.create( 2014 , 12 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 12 , 1 , 0 , 0 , 0 , 5 )
+            ),
+            Arrays.asList(
+                "2014/11/30 23:59:59.990",
+                ".995",
+                "2014/12/01 00:00:00.000",
+                ".005"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references5MsPeriod7() {
@@ -565,28 +565,28 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 18 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		1.0/18.0,
-		6.0/18.0,
-		11.0/18.0,
-		16.0/18.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 12 , 31 , 23 , 59 , 59 , 990 ),
-		TimeScalesTest.create( 2014 , 12 , 31 , 23 , 59 , 59 , 995 ),
-		TimeScalesTest.create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2015 , 1 , 1 , 0 , 0 , 0 , 5 )
-	    ),
-	    Arrays.asList(
-		"2014/12/31 23:59:59.990",
-		".995",
-		"2015/01/01 00:00:00.000",
-		".005"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                1.0/18.0,
+                6.0/18.0,
+                11.0/18.0,
+                16.0/18.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 12 , 31 , 23 , 59 , 59 , 990 ),
+                TimeScalesTest.create( 2014 , 12 , 31 , 23 , 59 , 59 , 995 ),
+                TimeScalesTest.create( 2015 , 1 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2015 , 1 , 1 , 0 , 0 , 0 , 5 )
+            ),
+            Arrays.asList(
+                "2014/12/31 23:59:59.990",
+                ".995",
+                "2015/01/01 00:00:00.000",
+                ".005"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references500MsPeriod1() {
@@ -599,28 +599,28 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 2000 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		344.0/2000.0,
-		844.0/2000.0,
-		1344.0/2000.0,
-		1844.0/2000.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 45 , 500 ),
-		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 46 , 0 ),
-		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 46 , 500 ),
-		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 47 , 0 )
-	    ),
-	    Arrays.asList(
-		"2014/03/23 18:29:45.5",
-		"18:29:46.0",
-		".5",
-		"18:29:47.0"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                344.0/2000.0,
+                844.0/2000.0,
+                1344.0/2000.0,
+                1844.0/2000.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 45 , 500 ),
+                TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 46 , 0 ),
+                TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 46 , 500 ),
+                TimeScalesTest.create( 2014 , 3 , 23 , 18 , 29 , 47 , 0 )
+            ),
+            Arrays.asList(
+                "2014/03/23 18:29:45.5",
+                "18:29:46.0",
+                ".5",
+                "18:29:47.0"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references500MsPeriod2() {
@@ -633,22 +633,22 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 1037 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 2 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		200.0/1037.0,
-		700.0/1037.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 30 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 3 , 23 , 18 , 30 , 0 , 500 )
-	    ),
-	    Arrays.asList(
-		"2014/03/23 18:30:00.0",
-		".5"
-	    ), 
-	    timeAxis); 
+            timeInterval,
+            new ArrayDouble(
+                200.0/1037.0,
+                700.0/1037.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 3 , 23 , 18 , 30 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 3 , 23 , 18 , 30 , 0 , 500 )
+            ),
+            Arrays.asList(
+                "2014/03/23 18:30:00.0",
+                ".5"
+            ),
+            timeAxis);
     }
-    
+
     @Test
     @Ignore
     public void references1MonthPeriod1() {
@@ -663,35 +663,35 @@ public class LinearAbsoluteTimeScaleTest {
 	//System.out.println( start.plus( TimeDuration.ofHours( 24*7*5*6 ) ).toDate() );
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 7 );
         assertAxisEquals(
-	    timeInterval, 
-	    new ArrayDouble(
-		    198.0/5040.0,
-		    918.0/5040.0,
-		    1662.0/5040.0,
-		    2382.0/5040.0,
-		    3126.0/5040.0,
-		    3870.0/5040.0,
-		    4590.0/5040.0
-	    ), 
-	    Arrays.asList(
-		TimeScalesTest.create( 2014 , 4 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 5 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 6 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 7 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 8 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 9 , 1 , 0 , 0 , 0 , 0 ),
-		TimeScalesTest.create( 2014 , 10 , 1 , 0 , 0 , 0 , 0 )
-	    ),
-	    Arrays.asList(
-		"2014/04",
-		"2014/05",
-		"2014/06",
-		"2014/07",
-		"2014/08",
-		"2014/09",
-		"2014/10"
-	    ), 
-	    timeAxis); 	
+            timeInterval,
+            new ArrayDouble(
+                    198.0/5040.0,
+                    918.0/5040.0,
+                    1662.0/5040.0,
+                    2382.0/5040.0,
+                    3126.0/5040.0,
+                    3870.0/5040.0,
+                    4590.0/5040.0
+            ),
+            Arrays.asList(
+                TimeScalesTest.create( 2014 , 4 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 5 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 6 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 7 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 8 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 9 , 1 , 0 , 0 , 0 , 0 ),
+                TimeScalesTest.create( 2014 , 10 , 1 , 0 , 0 , 0 , 0 )
+            ),
+            Arrays.asList(
+                "2014/04",
+                "2014/05",
+                "2014/06",
+                "2014/07",
+                "2014/08",
+                "2014/09",
+                "2014/10"
+            ),
+            timeAxis);
     }
 
     public static void assertAxisEquals(TimeInterval timeInterval, ListDouble normalizedValues, List<Instant> timestamps, List<String> labels, TimeAxis axis) {
@@ -700,23 +700,23 @@ public class LinearAbsoluteTimeScaleTest {
         assertThat(axis.getTimestamps(), equalTo(timestamps));
         assertThat(axis.getTickLabels(), equalTo(labels));
     }
-    
+
     /**
      * Formats the given string to contain the given number of digits, adding
      * leading zeros if necessary.
-     * 
+     *
      * @param number a number to format
      * @param digits the number of digits the number must contain
      * @return the formatted number that contains the given number of digits
      */
     public String formatNumericalString( int number , int digits ) {
-	String rtn = String.valueOf( number );
-	if ( rtn.length() > digits ) {
-	    throw new IllegalArgumentException( "Impossible to format " + number + " to have " + digits + " digits." );
-	}
-	while( rtn.length() < digits ) {
-	    rtn = "0" + rtn;
-	}
-	return rtn;
+        String rtn = String.valueOf( number );
+        if ( rtn.length() > digits ) {
+            throw new IllegalArgumentException( "Impossible to format " + number + " to have " + digits + " digits." );
+        }
+        while( rtn.length() < digits ) {
+            rtn = "0" + rtn;
+        }
+        return rtn;
     }
 }

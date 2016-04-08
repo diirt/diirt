@@ -12,7 +12,7 @@ import org.diirt.datasource.ConfigurableDataSourceProvider;
  * @author carcassi
  */
 public class JCADataSourceProvider extends ConfigurableDataSourceProvider<JCADataSource, JCADataSourceConfiguration> {
-    
+
     public JCADataSourceProvider() {
         super(JCADataSourceConfiguration.class);
     }
@@ -21,5 +21,5 @@ public class JCADataSourceProvider extends ConfigurableDataSourceProvider<JCADat
     public String getName() {
         return "ca";
     }
-    
+
 }

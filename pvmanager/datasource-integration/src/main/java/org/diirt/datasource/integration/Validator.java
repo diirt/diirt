@@ -11,6 +11,6 @@ import java.util.List;
  * @author carcassi
  */
 public interface Validator {
-    
+
     public List<String> validate(List<Object> values);
 }

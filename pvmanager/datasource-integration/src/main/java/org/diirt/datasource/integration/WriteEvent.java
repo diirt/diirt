@@ -69,5 +69,5 @@ public class WriteEvent implements Event {
     public void setLastException(Exception lastException) {
         this.lastException = lastException;
     }
-    
+
 }

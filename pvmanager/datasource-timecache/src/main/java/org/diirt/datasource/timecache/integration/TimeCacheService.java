@@ -12,8 +12,8 @@ import org.diirt.service.ServiceDescription;
  */
 public class TimeCacheService extends Service {
 
-	public TimeCacheService() {
-		super(new ServiceDescription("tc", "TimeCache service"));
-	}
+        public TimeCacheService() {
+                super(new ServiceDescription("tc", "TimeCache service"));
+        }
 
 }

@@ -2,15 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
-    
+
     <title>Pie chart with border</title>
-    
+
     <meta name="keywords" content="demo pie 3d" />
     <meta name="description" content="A Pie chart that has been made to look 3D-esque by transforming the canvas before drawing" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,7 +18,7 @@
 <body>
 
     <h1>3D Pie chart</h1>
-    
+
     <p>
         This is an example of a 3D Pie chart effect then can be accomplished with a few extra lines of code.
     </p>
@@ -42,20 +42,20 @@
                 .Set('labels', ['Mavis','Kevin','Luis','June','Olga','Luis','Pete','Bridget'])
                 .Set('labels.sticks', true)
                 .Set('labels.sticks.length', 15)
-            
+
             // This is the factor that the canvas is scaled by
             var factor = 1.5;
-        
+
             // Set the transformation of the canvas - a scale up by the factor (which is 1.5 and a simultaneous translate
             // so that the Pie appears in the center of the canvas
             pie.context.setTransform(factor,0,0,1,((pie.canvas.width * factor) - pie.canvas.width) * -0.5,0);
-        
+
             //pie.Draw();
             RGraph.Effects.Pie.RoundRobin(pie, {frames:30});
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

@@ -32,5 +32,5 @@ class ErrorDesiredRateExpression<T> extends DesiredRateExpressionImpl<T> {
         super.fillReadRecipe(director, builder); //To change body of generated methods, choose Tools | Templates.
         director.connectStaticRead(error, false, getName());
     }
-    
+
 }

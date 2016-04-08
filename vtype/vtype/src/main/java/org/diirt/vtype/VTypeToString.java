@@ -22,7 +22,7 @@ public class VTypeToString {
     private VTypeToString() {
         // Do not create
     }
-    
+
     private static void appendAlarm(StringBuilder builder, Alarm alarm) {
         if (!alarm.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
             builder.append(", ")
@@ -32,10 +32,10 @@ public class VTypeToString {
                     .append(")");
         }
     }
-    
+
     /**
      * Converts the given alarm to a string.
-     * 
+     *
      * @param alarm the alarm
      * @return the string representation; never null
      */
@@ -43,13 +43,13 @@ public class VTypeToString {
         if (alarm == null) {
             return "NONE";
         }
-        
+
         return alarm.getAlarmSeverity() + "(" + alarm.getAlarmName() + ")";
     }
 
     /**
      * Converts the given time to a string.
-     * 
+     *
      * @param time the time
      * @return the string representation; never null
      */
@@ -66,7 +66,7 @@ public class VTypeToString {
     private static void appendTime(StringBuilder builder, Time time) {
         builder.append(", ").append(timeFormat.format(LocalDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())));
     }
-    
+
     /**
      * Default toString implementation for VNumber.
      *
@@ -84,7 +84,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VString.
      *
@@ -102,7 +102,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VBoolean.
      *
@@ -120,7 +120,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VEnum.
      *
@@ -141,13 +141,13 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     private final static ValueFormat format = new SimpleValueFormat(3);
-    
+
     static {
         format.setNumberFormat(NumberFormats.toStringFormat());
     }
-    
+
     /**
      * Default toString implementation for VNumberArray.
      *
@@ -167,7 +167,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VStringArray.
      *
@@ -187,7 +187,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VBooleanArray.
      *
@@ -207,7 +207,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VEnumArray.
      *
@@ -227,7 +227,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VTable.
      *

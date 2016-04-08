@@ -4,10 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.ValueScales;
-import org.diirt.graphene.GraphAreaData;
-import org.diirt.graphene.FontUtil;
-import org.diirt.graphene.GraphBuffer;
 import java.awt.Color;
 import org.diirt.util.stats.Ranges;
 import org.junit.Test;
@@ -17,7 +13,7 @@ import org.junit.Test;
  * @author carcassi
  */
 public class GraphAreaDataTest {
-    
+
     @Test
     public void linearGraphRange() throws Exception {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
@@ -31,7 +27,7 @@ public class GraphAreaDataTest {
         data.prepareLabels(FontUtil.getLiberationSansRegular(), Color.BLACK);
         data.prepareGraphArea(true, Color.GRAY);
         data.drawGraphArea();
-        
+
         ImageAssert.compareImages("graphAreaData.linearGraphRange", graphBuffer.getImage());
     }
 }

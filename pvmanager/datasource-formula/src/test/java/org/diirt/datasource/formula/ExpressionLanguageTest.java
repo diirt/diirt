@@ -224,7 +224,7 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(0.0, 0.0001));
     }
-    
+
     @Test
     public void formula23() {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=1+2-3"));
@@ -582,7 +582,7 @@ public class ExpressionLanguageTest {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=1+'broken token"));
         assertThat(exp.getExpression().getDesiredRateExpressionImpl(), instanceOf(ErrorDesiredRateExpression.class));
     }
-    
+
     @Test(expected = RuntimeException.class)
     public void formulaCast1() {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=3.0", VString.class));
@@ -618,7 +618,7 @@ public class ExpressionLanguageTest {
     public void channelFromFormula6() {
         assertThat(ExpressionLanguage.channelFromFormula("2+3"), equalTo("2+3"));
     }
-    
+
     @Test
     public void readOnlyWriteExpression1() throws InterruptedException {
         DataSource sim = new MockDataSource();

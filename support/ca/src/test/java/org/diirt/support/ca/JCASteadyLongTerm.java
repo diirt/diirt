@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
@@ -22,7 +21,7 @@ public class JCASteadyLongTerm {
         JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
         final AtomicInteger count = new AtomicInteger();
-        
+
         PVReader<?> pv = PVManager.read(channel("counter1")).maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener<Object>() {
 
@@ -31,7 +30,7 @@ public class JCASteadyLongTerm {
                 count.incrementAndGet();
             }
         });
-        
+
         pv = PVManager.read(channel("counter1")).maxRate(ofHertz(50));
         pv.addPVReaderListener(new PVReaderListener<Object>() {
 
@@ -40,7 +39,7 @@ public class JCASteadyLongTerm {
                 count.incrementAndGet();
             }
         });
-        
+
         while (true) {
             Thread.sleep(1000);
         }

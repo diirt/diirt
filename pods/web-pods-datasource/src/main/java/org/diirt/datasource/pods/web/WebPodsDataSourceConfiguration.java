@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
  * @author carcassi
  */
 public final class WebPodsDataSourceConfiguration extends DataSourceConfiguration<WebPodsDataSource> {
-    
+
     // Package private so we don't need getters
     URI socketLocation;
 
@@ -40,15 +40,15 @@ public final class WebPodsDataSourceConfiguration extends DataSourceConfiguratio
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/wp/@version", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             String socketLocationString = xPath.evaluate("/wp/connection/@socketLocation", document);
             socketLocation = URI.create(socketLocationString);
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
@@ -61,7 +61,7 @@ public final class WebPodsDataSourceConfiguration extends DataSourceConfiguratio
     public URI getSocketLocation() {
         return socketLocation;
     }
-    
+
     public WebPodsDataSourceConfiguration socketLocation(URI socketLocation) {
         this.socketLocation = socketLocation;
         return this;
@@ -71,5 +71,5 @@ public final class WebPodsDataSourceConfiguration extends DataSourceConfiguratio
     public WebPodsDataSource create() {
         return new WebPodsDataSource(this);
     }
-    
+
 }

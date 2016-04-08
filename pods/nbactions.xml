@@ -5,7 +5,7 @@
             <displayName>Site</displayName>
             <goals>
                 <goal>site:site</goal>
-                
+
             </goals>
         </action>
         <action>

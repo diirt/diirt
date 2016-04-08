@@ -19,7 +19,7 @@ public class ChannelExpressionList<R, W> extends SourceRateReadWriteExpressionLi
      * An expression for a list of channels with the given names, which are expected to
      * provide a read payload of {@code readClass} and accept a write payload
      * of {@code writeClass}.
-     * 
+     *
      * @param readClass type of the read payload
      * @param writeClass type of the write payload
      * @param channelNames the names of the channels
@@ -33,11 +33,11 @@ public class ChannelExpressionList<R, W> extends SourceRateReadWriteExpressionLi
             }
         }
     }
-    
+
     /**
      * For writes only, marks that these channels should be written only after the
      * given channels.
-     * 
+     *
      * @param channelNames preceding channel names
      * @return this
      */
@@ -48,6 +48,6 @@ public class ChannelExpressionList<R, W> extends SourceRateReadWriteExpressionLi
         }
         return this;
     }
-    
-    
+
+
 }

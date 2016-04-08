@@ -35,7 +35,7 @@ class VFloatArrayFromDbr extends VNumberMetadata<DBR_TIME_Float, DBR_CTRL_Double
     public ListFloat getData() {
         return new ArrayFloat(dbrValue.getFloatValue());
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

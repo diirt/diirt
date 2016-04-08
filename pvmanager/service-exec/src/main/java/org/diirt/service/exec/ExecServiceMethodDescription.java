@@ -44,14 +44,14 @@ public class ExecServiceMethodDescription extends ServiceMethodDescription {
             throw new IllegalArgumentException("The query can only have one result");
         }
         resultAdded = true;
-        
+
         addResult(name, description, VType.class);
         return this;
     }
 
     /**
      * Add a command for the script.
-     * 
+     *
      * @param command the shell command; can't be null
      * @return this description
      */

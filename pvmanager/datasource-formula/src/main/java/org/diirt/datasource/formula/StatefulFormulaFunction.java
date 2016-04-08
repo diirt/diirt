@@ -11,7 +11,7 @@ package org.diirt.datasource.formula;
  * One object will be created for each instance of the function. The member
  * variable can be accessed with the guarantee that each object will be isolated
  * from the others. There is no need of synchronization.
- * 
+ *
  *
  * @author carcassi
  */
@@ -21,12 +21,12 @@ public abstract class StatefulFormulaFunction implements FormulaFunction {
     public final boolean isPure() {
         return false;
     }
-    
+
     /**
      * Called when this instance of the formula is not needed anymore.
      */
     public void dispose() {
         // Default implementation does nothing;
     }
-    
+
 }

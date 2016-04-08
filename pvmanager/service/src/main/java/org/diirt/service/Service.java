@@ -23,18 +23,18 @@ import java.util.regex.Pattern;
  */
 public class Service {
     static Pattern namePattern = Pattern.compile("[a-zA-Z_]\\w*");
-    
+
     private final String name;
     private final String description;
     private final Map<String, ServiceMethod> serviceMethods;
     private final ExecutorService executorService;
-    
+
     /**
      * Creates a new service given the description. All properties
      * are copied out of the description, guaranteeing the immutability
      * of objects of this class. Nonetheless, service descriptions
      * should not be reused for different services.
-     * 
+     *
      * @param serviceDescription the description of the service, can't be null
      */
     protected Service(ServiceDescription serviceDescription) {
@@ -46,13 +46,13 @@ public class Service {
             serviceDescription.executorService = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool(this.name + " services"));
         }
         this.executorService = serviceDescription.executorService;
-        
+
         this.serviceMethods = Collections.unmodifiableMap(new HashMap<>(serviceDescription.createServiceMethods()));
     }
 
     /**
      * A brief name for the service. Used for service registration and lookup.
-     * 
+     *
      * @return the service name, can't be null
      */
     public final String getName() {
@@ -61,7 +61,7 @@ public class Service {
 
     /**
      * A description for the service.
-     * 
+     *
      * @return the service description, can't be null
      */
     public final String getDescription() {
@@ -70,13 +70,13 @@ public class Service {
 
     /**
      * Returns all the methods associated with this service.
-     * 
+     *
      * @return the service method, can't be null
      */
     public final Map<String, ServiceMethod> getServiceMethods() {
         return serviceMethods;
     }
-    
+
     /**
      * Shutdown procedure for the service, closing resources (e.g. executor
      * service).

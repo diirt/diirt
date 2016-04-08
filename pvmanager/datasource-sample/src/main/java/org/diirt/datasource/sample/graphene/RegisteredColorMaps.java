@@ -19,7 +19,7 @@ public class RegisteredColorMaps {
         // Increasing logging at CONFIG level
         Logger.getLogger("").getHandlers()[0].setLevel(Level.CONFIG);
         Logger.getLogger("").setLevel(Level.CONFIG);
-        
+
         System.out.println("Listing all registered color maps");
         for (Map.Entry<String, NumberColorMap> registeredMap : NumberColorMaps.getRegisteredColorSchemes().entrySet()) {
             NumberColorMap colorMap = registeredMap.getValue();

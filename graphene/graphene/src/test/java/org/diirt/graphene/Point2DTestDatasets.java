@@ -4,11 +4,7 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
-import org.diirt.graphene.Point2DDatasets;
 import org.diirt.util.stats.Range;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import org.diirt.util.array.ArrayDouble;
 

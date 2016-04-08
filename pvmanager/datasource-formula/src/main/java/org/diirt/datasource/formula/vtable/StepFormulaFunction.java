@@ -56,12 +56,12 @@ class StepFormulaFunction implements FormulaFunction {
     public Object calculate(final List<Object> args) {
         VNumber initialValue = (VNumber) args.get(0);
         VNumber increment = (VNumber) args.get(1);
-        
+
         if (initialValue == null || increment == null) {
             return null;
         }
-        
+
         return VTableFactory.step(initialValue.getValue().doubleValue(), increment.getValue().doubleValue());
     }
-    
+
 }

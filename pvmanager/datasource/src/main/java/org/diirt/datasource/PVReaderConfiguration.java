@@ -16,7 +16,7 @@ import static org.diirt.util.concurrent.Executors.*;
 /**
  * An expression used to set the final parameters on how the pv expression
  * should be read.
- * 
+ *
  * @param <T> the type of the expression
  * @author carcassi
  */
@@ -68,7 +68,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         super.timeout(timeout, timeoutMessage);
         return this;
     }
-    
+
     private final DesiredRateExpression<T> aggregatedPVExpression;
     private final List<PVReaderListener<T>> readListeners = new ArrayList<>();
     private ExceptionHandler exceptionHandler;
@@ -79,12 +79,12 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     PVReaderConfiguration(DesiredRateExpression<T> aggregatedPVExpression) {
         this.aggregatedPVExpression = aggregatedPVExpression;
     }
-    
+
     /**
      * Adds a listener notified for any reader event (values, connection and errors).
      * <p>
      * Registering a listener here guarantees that no event is ever missed.
-     * 
+     *
      * @param listener the listener to register
      * @return this expression
      */
@@ -114,19 +114,19 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         this.exceptionHandler = ExceptionHandler.safeHandler(exceptionHandler);
         return this;
     }
-    
+
     /**
      * Sets the rate of scan of the expression and creates the actual {@link PVReader}
      * object that can be monitored through listeners.
-     * 
+     *
      * @param rate the minimum time distance (i.e. the maximum rate) between two different notifications
      * @return the PVReader
      */
     public PVReader<T> maxRate(Duration rate) {
         maxRateAndValidate(rate);
-        
+
         preparePvReader();
-        
+
         PVDirector<T> director = prepareDirector(this);
         prepareDecoupler(director, this);
 
@@ -137,7 +137,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         this.maxRate = rate;
         validateReaderConfiguration();
     }
-    
+
     static <T> PVDirector<T> prepareDirector(PVReaderConfiguration<T> readConfiguration) {
         PVDirector<T> director = new PVDirector<>(readConfiguration.pv, readConfiguration.aggregatedFunction, PVManager.getReadScannerExecutorService(),
                 readConfiguration.notificationExecutor, readConfiguration.dataSource, readConfiguration.exceptionHandler);
@@ -148,7 +148,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         }
         return director;
     }
-    
+
     static <T> void prepareDecoupler(PVDirector<T> director, PVReaderConfiguration<T> readConfiguration) {
         ScannerParameters scannerParameters = new ScannerParameters()
                 .readerDirector(director)
@@ -160,13 +160,13 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
             scannerParameters.type(ScannerParameters.Type.ACTIVE);
         }
         SourceDesiredRateDecoupler rateDecoupler = scannerParameters.build();
-        
+
         readConfiguration.pv.setDirector(director);
         director.setScanner(rateDecoupler);
         director.connectReadExpression(readConfiguration.aggregatedPVExpression);
         rateDecoupler.start();
     }
-    
+
     private void validateReaderConfiguration() {
         if (maxRate.getSeconds() < 0 && maxRate.getNano() < 5000000) {
             throw new IllegalArgumentException("Current implementation limits the rate to >5ms or <200Hz (requested " + maxRate + "s)");
@@ -174,7 +174,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
 
         checkDataSourceAndThreadSwitch();
     }
-    
+
     void preparePvReader() {
         pv = new PVReaderImpl<>(aggregatedPVExpression.getName(), localThread() == notificationExecutor);
         for (PVReaderListener<T> pVReaderListener : readListeners) {

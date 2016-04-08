@@ -39,14 +39,14 @@ public class NotificationTest {
                 .from(new TestDataSource()).maxRate(ofMillis(10));
         assertThat(reader.isPaused(), equalTo(false));
         Thread.sleep(100);
-        
+
         // Pause
         reader.setPaused(true);
         assertThat(reader.isPaused(), equalTo(true));
         int currentCounter = listener.getNextExpected();
         Thread.sleep(100);
         assertThat("Notifications were sent when paused.", listener.getNextExpected(), lessThanOrEqualTo(currentCounter+1));
-        
+
         // Resume
         reader.setPaused(false);
         assertThat(reader.isPaused(), equalTo(false));

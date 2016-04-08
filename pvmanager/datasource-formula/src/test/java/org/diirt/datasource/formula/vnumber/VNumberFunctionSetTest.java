@@ -27,7 +27,7 @@ import static org.diirt.vtype.ValueFactory.*;
 public class VNumberFunctionSetTest {
 
     private static FormulaFunctionSet set = new VNumberFunctionSet();
-    
+
     @Test
     public void sum() {
         FunctionTester.findByName(set, "+")
@@ -38,7 +38,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void subtract() {
         FunctionTester.findBySignature(set, "-", VNumber.class, VNumber.class)
@@ -49,7 +49,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void negate() {
         FunctionTester.findBySignature(set, "-", VNumber.class)
@@ -59,7 +59,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void multiply() {
         FunctionTester.findByName(set, "*")
@@ -70,7 +70,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void divide() {
         FunctionTester.findByName(set, "/")
@@ -81,7 +81,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void remainder() {
         FunctionTester.findByName(set, "%")
@@ -92,7 +92,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void pow() {
         FunctionTester.findByName(set, "^")
@@ -103,7 +103,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void lessThanOrEqual() {
         FunctionTester.findByName(set, "<=")
@@ -115,7 +115,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void greaterThanOrEqual() {
         FunctionTester.findByName(set, ">=")
@@ -127,7 +127,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void lessThan() {
         FunctionTester.findByName(set, "<")
@@ -139,7 +139,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void greaterThan() {
         FunctionTester.findByName(set, ">")
@@ -151,7 +151,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void equal() {
         FunctionTester.findByName(set, "==")
@@ -163,7 +163,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void notEqual() {
         FunctionTester.findByName(set, "!=")
@@ -175,7 +175,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void conditionalOr() {
         FunctionTester.findByName(set, "||")
@@ -188,7 +188,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void conditionalAnd() {
         FunctionTester.findByName(set, "&&")
@@ -201,7 +201,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void bitwiseXOR() {
         Alarm none = alarmNone();
@@ -219,7 +219,7 @@ public class VNumberFunctionSetTest {
                 .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
                 .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
     }
-    
+
     @Test
     public void bitwiseOR() {
         Alarm none = alarmNone();
@@ -247,7 +247,7 @@ public class VNumberFunctionSetTest {
                 .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
                 .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
     }
-    
+
     @Test
     public void bitwiseAND() {
         Alarm none = alarmNone();
@@ -275,7 +275,7 @@ public class VNumberFunctionSetTest {
                 .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
                 .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
     }
-    
+
     @Test
     public void logicalNot() {
         FunctionTester.findByName(set, "!")
@@ -285,7 +285,7 @@ public class VNumberFunctionSetTest {
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
-    
+
     @Test
     public void conditionalOperator() {
         Alarm alarm1 = alarmNone();

@@ -43,17 +43,17 @@ public class BasicExamples {
                 }
             })
             .maxRate(ofMillis(100));
-        
-        // Note that "channel" returns an object. You can always substitute it for 
+
+        // Note that "channel" returns an object. You can always substitute it for
         // a more precise operator to have guarantees you can process the value
         // (e.g. vType("channelName"), vNumber("channelName"), ...)
 
         // Remember to close
         pvReader.close();
-        
+
         // The interval between updates can be specified in different units
         // (e.g. ms, sec, min, hour, hz). Check the documentation at org.epics.pvmanager.util.TimeDuration.
-        
+
         // IMPORTANT: you _must_ keep a reference to your reader so that you can
         // close it later. If you don't, pvmanager will consider that reader "lost"
         // and it will close it automatically.
@@ -78,7 +78,7 @@ public class BasicExamples {
 
         // Remember to close
         pvReader.close();
-        
+
         // newValuesOf limits the values in the queue, to protect memory
         // consumption in problematic circumstances. The default is 1000 elements,
         // which you can override. See all options in the ExpressionLanguage class.
@@ -129,7 +129,7 @@ public class BasicExamples {
         // Remember to close
         pv.close();
     }
-    
+
     public void b6_handlingErrorsOnNotification() {
         PVReader<Object> pvReader = PVManager.read(channel("channelName"))
             .readListener(new PVReaderListener<Object>() {
@@ -159,7 +159,7 @@ public class BasicExamples {
         // don't get flooded with 100 exceptions. In cases where you
         // want _all_ the exceptions, instead, you can route them to your
         // exception handling mechanism.
-        
+
         // In this example, all read exceptions will be passed to the exception handler
         // on the thread that it generates them. The handler, therefore,
         // must be thread safe.
@@ -170,7 +170,7 @@ public class BasicExamples {
                     }
                 }).maxRate(ofMillis(100));
     }
-    
+
     public void b8_readTimeout() {
         // If after 5 seconds no new value comes (i.e. pvReader.getValue() == null)
         // then a timeout is sent. PVManager will _still_ try to connect,

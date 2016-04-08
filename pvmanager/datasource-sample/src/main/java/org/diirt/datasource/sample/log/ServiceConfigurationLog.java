@@ -17,7 +17,7 @@ public class ServiceConfigurationLog {
         // Increasing logging at CONFIG level
         Logger.getLogger("").getHandlers()[0].setLevel(Level.CONFIG);
         Logger.getLogger("").setLevel(Level.CONFIG);
-        
+
         System.out.println("Listing all services");
         for (String service : ServiceRegistry.getDefault().getRegisteredServiceNames()) {
             System.out.println("- " + service);

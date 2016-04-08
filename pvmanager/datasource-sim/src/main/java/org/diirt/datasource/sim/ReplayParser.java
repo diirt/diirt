@@ -5,8 +5,6 @@
 package org.diirt.datasource.sim;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import javax.xml.bind.JAXBContext;
@@ -36,7 +34,7 @@ class ReplayParser {
             File current = new File(".");
             uri = current.toURI().resolve(uri);
         }
-        
+
         try {
             JAXBContext jaxbCtx = JAXBContext.newInstance(XmlValues.class);
             Unmarshaller reader = jaxbCtx.createUnmarshaller();

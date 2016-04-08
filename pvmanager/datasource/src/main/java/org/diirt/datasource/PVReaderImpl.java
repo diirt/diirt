@@ -27,10 +27,10 @@ class PVReaderImpl<T> implements PVReader<T> {
         if (pvReader instanceof PVReaderImpl) {
             return (PVReaderImpl<T>) pvReader;
         }
-        
+
         throw new IllegalArgumentException("PVReader must be implemented using PVReaderImpl");
     }
-    
+
     /**
      * Factory methods for PVReader objects. The class is used to initialize
      * the value of the PVReader.
@@ -46,7 +46,7 @@ class PVReaderImpl<T> implements PVReader<T> {
     }
 
     // PVReader state
-    
+
     // Immutable part, no need to syncronize
     private final String name;
     private final boolean notifyFirstListener;
@@ -54,10 +54,10 @@ class PVReaderImpl<T> implements PVReader<T> {
     // ReaderListener have their own syncronization, which allows
     // adding/removing listeners while iterating.
     private List<PVReaderListener<T>> pvReaderListeners = new CopyOnWriteArrayList<>();
-    
+
     // Atomocity in the callback is guaranteed by how the PVReaderDirector
     //     prepares the PVReader before the notification
-    
+
     // Thread-safety is guaranteed by the following rule:
     //  - any variable declared after the locked should be read or written
     //    only while holding the lock
@@ -66,7 +66,7 @@ class PVReaderImpl<T> implements PVReader<T> {
     //    while holding the lock
 
     private final Object lock = new Object();
-    
+
     // guarded by lock
     private boolean closed = false;
     private boolean paused = false;
@@ -105,7 +105,7 @@ class PVReaderImpl<T> implements PVReader<T> {
             sentFirstEvent = true;
             event = new PVReaderEvent<>(notificationMask, readerForNotification);
         }
-        
+
         for (PVReaderListener<T> listener : pvReaderListeners) {
             listener.pvChanged(event);
         }
@@ -120,12 +120,12 @@ class PVReaderImpl<T> implements PVReader<T> {
     public void addPVReaderListener(PVReaderListener<? super T> listener) {
         if (isClosed())
             throw new IllegalStateException("Can't add listeners to a closed PV");
-        
+
         @SuppressWarnings("unchecked")
         PVReaderListener<T> convertedListener = (PVReaderListener<T>) listener;
         pvReaderListeners.add(convertedListener);
     }
-    
+
     /**
      * Adds a listener to the value, which is notified only if the value is
      * of a given type. This method is thread safe.
@@ -225,8 +225,8 @@ class PVReaderImpl<T> implements PVReader<T> {
             this.director = director;
         }
     }
-    
-    
+
+
 
     /**
      * De-registers all listeners, stops all notifications and closes all
@@ -280,7 +280,7 @@ class PVReaderImpl<T> implements PVReader<T> {
     /**
      * Whether there is an exception that needs to be notified to the client.
      * This is used to throttle back exceptions.
-     * 
+     *
      * @return true if this pvReader needs to notify an exception
      */
     boolean isLastExceptionToNotify() {
@@ -288,11 +288,11 @@ class PVReaderImpl<T> implements PVReader<T> {
             return exceptionToNotify;
         }
     }
-    
+
     /**
      * Whether there is a connection state that needs to be notified.
      * This is used to throttle back connection notifications.
-     * 
+     *
      * @return true if this pvReader needs to notify a connection state
      */
     boolean isReadConnectionToNotify() {
@@ -300,10 +300,10 @@ class PVReaderImpl<T> implements PVReader<T> {
             return connectionToNotify;
         }
     }
-    
+
     /**
      * Changes the last exception associated with the PVReader.
-     * 
+     *
      * @param ex the new exception
      */
     void setLastException(Exception ex) {
@@ -327,7 +327,7 @@ class PVReaderImpl<T> implements PVReader<T> {
             return ex;
         }
     }
-    
+
     void setConnected(boolean connected) {
         synchronized(lock) {
             if (this.connected == connected) {

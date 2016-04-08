@@ -16,11 +16,11 @@ import org.diirt.util.time.TimeInterval;
  * @author carcassi
  */
 public class ThreadTestingUtil {
-    
+
     /**
      * Waits until either the task returns a value or the timeout expires.
      * The task is repeated every ms.
-     * 
+     *
      * @param <T> the return type of the task
      * @param task the task
      * @param timeout the timeout
@@ -58,6 +58,6 @@ public class ThreadTestingUtil {
         }
         return null;
     }
-    
-    
+
+
 }

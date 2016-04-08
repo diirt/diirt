@@ -68,7 +68,7 @@ public class CsvParserTest {
         List<Object> tokens = CsvParser.parseCSVLine(line, " ");
         assertThat(tokens, equalTo(Arrays.<Object>asList("One \nTwo\nThree")));
     }
-    
+
     @Test
     public void parseTable1CSV() throws Exception {
         CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table1.csv").openStream()));
@@ -204,7 +204,7 @@ public class CsvParserTest {
         assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
         assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
     }
-    
+
     @Test
     public void parseTable8CSV() throws Exception {
         CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table8.csv").openStream()));
@@ -219,7 +219,7 @@ public class CsvParserTest {
         assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(Double.NaN, 1.456, 234567891234.0, 0.000000123, 0.0)));
         assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(Double.NaN,2,3,4,5)));
     }
-    
+
     @Test
     public void parseTable9CSV() throws Exception {
         CsvParserResult result = CsvParser.AUTOMATIC.parse(new InputStreamReader(getClass().getResource("table9.csv").openStream()));

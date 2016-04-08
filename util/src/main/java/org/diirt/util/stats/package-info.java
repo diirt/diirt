@@ -4,6 +4,6 @@
  */
 /**
  * Contains classes to handle statistical information.
- * 
+ *
  */
 package org.diirt.util.stats;

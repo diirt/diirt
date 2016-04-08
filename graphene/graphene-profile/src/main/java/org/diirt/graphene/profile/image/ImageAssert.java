@@ -13,14 +13,14 @@ import javax.imageio.ImageIO;
 
 /**
  * Handles image comparisons.
- * 
+ *
  * @author asbarber
  */
 public class ImageAssert {
-    
+
     /**
      * Determines whether the images specified by the file paths are identical.
-     * 
+     *
      * @param a file path of one image
      * @param b file path of another image
      * @return true if the same, otherwise false
@@ -36,10 +36,10 @@ public class ImageAssert {
             return false;
         }
     }
-    
+
     /**
      * Determines whether the images are identical by checking every pixel.
-     * 
+     *
      * @param a one image
      * @param b another image
      * @return true if the same, otherwise false
@@ -51,25 +51,25 @@ public class ImageAssert {
             if (a.getHeight() != b.getHeight()){
                 throw new IllegalArgumentException("Images are not the same height.");
             }
-            
+
             if (a.getWidth() != b.getWidth()){
                 throw new IllegalArgumentException("Images are not the same width.");
             }
-            
+
             for (x = 0; x < b.getWidth(); x++) {
                 for (y = 0; y < b.getHeight(); y++) {
                     if (a.getRGB(x, y) != b.getRGB(x, y)){
                         throw new IllegalArgumentException("Images are not the same.");
-                    
+
                     }
                 }
             }
-            
+
             return true;
         }
         catch (Exception e){
             System.out.println(x + "," + y);
             return false;
-        }               
-    }  
+        }
+    }
 }

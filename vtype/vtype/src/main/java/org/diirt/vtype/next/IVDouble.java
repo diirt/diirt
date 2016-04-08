@@ -10,7 +10,7 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 class IVDouble extends VDouble {
-    
+
     private final Double value;
     private final Alarm alarm;
     private final Time time;

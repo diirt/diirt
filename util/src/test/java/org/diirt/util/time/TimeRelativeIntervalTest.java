@@ -30,7 +30,7 @@ public class TimeRelativeIntervalTest {
         assertThat(interval.getAbsoluteEnd(), equalTo(Instant.ofEpochSecond(3600, 0)));
         assertThat(interval.toAbsoluteInterval(Instant.now()), equalTo(TimeInterval.between(Instant.ofEpochSecond(0, 0), Instant.ofEpochSecond(3600, 0))));
     }
-    
+
     @Test
     public void interval2() {
         TimeRelativeInterval interval = TimeRelativeInterval.of(Instant.ofEpochSecond(0, 0), null);
@@ -39,7 +39,7 @@ public class TimeRelativeIntervalTest {
         assertThat(interval.getAbsoluteEnd(), nullValue());
         assertThat(interval.toAbsoluteInterval(Instant.now()), equalTo(TimeInterval.between(Instant.ofEpochSecond(0, 0), null)));
     }
-    
+
     @Test
     public void interval3() {
         TimeRelativeInterval interval = TimeRelativeInterval.of(null, Instant.ofEpochSecond(0, 0));

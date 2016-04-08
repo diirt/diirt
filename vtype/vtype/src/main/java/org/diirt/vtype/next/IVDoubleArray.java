@@ -13,7 +13,7 @@ import org.diirt.util.array.ListInt;
  * @author carcassi
  */
 class IVDoubleArray extends VDoubleArray {
-    
+
     private final ListDouble data;
     private final ListInt sizes;
     private final Alarm alarm;

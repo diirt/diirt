@@ -6,7 +6,7 @@
         <title>Diirt changes page</title>
         <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
     </properties>
-  
+
     <body>
         <release version="3.0.0" date="2015/03/02" description="First release of 3.x.x branch.">
             <action dev="carcassi"  type="add">

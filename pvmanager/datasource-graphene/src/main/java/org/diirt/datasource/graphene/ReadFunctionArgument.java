@@ -12,7 +12,7 @@ import org.diirt.datasource.ReadFunction;
  * @author carcassi
  */
 public class ReadFunctionArgument<T> {
-    
+
     private T value;
     private final ReadFunction<T> function;
     private boolean changed;
@@ -24,15 +24,15 @@ public class ReadFunctionArgument<T> {
     public ReadFunctionArgument() {
         this(null);
     }
-    
+
     public boolean isDefined() {
         return function != null;
     }
-    
+
     public boolean isMissing() {
         return isDefined() && getValue() == null;
     }
-    
+
     public void readNext() {
         if (function != null) {
             T oldValue = value;
@@ -42,13 +42,13 @@ public class ReadFunctionArgument<T> {
             changed = false;
         }
     }
-    
+
     public boolean isChanged() {
         return changed;
     }
-    
+
     public T getValue() {
         return value;
     }
-    
+
 }

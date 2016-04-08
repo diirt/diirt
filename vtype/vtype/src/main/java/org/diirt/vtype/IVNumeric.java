@@ -12,7 +12,7 @@ import java.text.NumberFormat;
  * @author carcassi
  */
 class IVNumeric extends IVMetadata implements Display {
-    
+
     private final Display display;
 
     IVNumeric(Alarm alarm, Time time, Display display) {

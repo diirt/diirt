@@ -7,15 +7,11 @@ package org.diirt.datasource.formula.vtable;
 import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.table.VTableFactory;
 
 /**
@@ -65,18 +61,18 @@ class TableRangeArrayFilterFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VTable table = (VTable) args.get(0);
         VString columnName = (VString) args.get(1);
         VNumberArray range = (VNumberArray) args.get(2);
-        
+
         if (range.getData().size() != 2) {
             throw new IllegalArgumentException("Range array must be of 2 elements");
         }
-        
+
         VTable result = VTableFactory.tableRangeFilter(table, columnName.getValue(), ValueFactory.newVDouble(range.getData().getDouble(0)), ValueFactory.newVDouble(range.getData().getDouble(1)));
-        
+
         return result;
     }
-    
+
 }

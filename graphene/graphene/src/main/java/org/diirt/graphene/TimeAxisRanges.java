@@ -11,10 +11,10 @@ import org.diirt.util.time.TimeInterval;
  * @author carcassi
  */
 public class TimeAxisRanges {
-    
+
     private TimeAxisRanges() {
     }
-    
+
     public static TimeAxisRange absolute(final TimeInterval timeInterval) {
         return new TimeAxisRange() {
 
@@ -24,7 +24,7 @@ public class TimeAxisRanges {
             }
         };
     }
-    
+
     public static TimeAxisRange relative() {
         return new TimeAxisRange() {
 
@@ -34,8 +34,8 @@ public class TimeAxisRanges {
             }
         };
     }
-    
-    
+
+
     // TODO horrible name
     // TODO we may need the integrated to "jump", so that the plot
     //      gets stretched fewer times, but its unclear how to do it

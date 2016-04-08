@@ -21,7 +21,6 @@ import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.TimeoutException;
 
@@ -43,10 +42,10 @@ import org.junit.Test;
  * @author carcassi
  */
 public class TestDataSourceTest {
-    
+
     public TestDataSourceTest() {
     }
-    
+
     public static void waitForChannelToClose(DataSource source, String channelName) {
         Duration timeout = ofMillis(5000);
         TimeInterval timeoutInterval = TimeInterval.after(timeout, Instant.now());
@@ -57,14 +56,14 @@ public class TestDataSourceTest {
             try {
                 Thread.sleep(100);
             } catch(Exception ex) {
-                
+
             }
         }
         fail("Channel " + channelName + " didn't close after 5 seconds");
     }
-    
+
     private DataSource dataSource;
-    
+
     PV<Object, Object> pv;
     PVReader<Object> pvReader;
     PVReader<Object> pvReader2;
@@ -74,7 +73,7 @@ public class TestDataSourceTest {
     public void setupDataSource() throws Exception {
         dataSource = new TestDataSource();
     }
-    
+
     @After
     public void closePVsAndDataSource() {
         if (pv != null) {
@@ -99,7 +98,7 @@ public class TestDataSourceTest {
         dataSource.close();
         dataSource = null;
     }
-    
+
     @Test
     public void channelDoesNotExist1() throws Exception {
         // Requesting a channel that does not exist
@@ -114,7 +113,7 @@ public class TestDataSourceTest {
         RuntimeException ex = (RuntimeException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
     }
-    
+
     @Test
     public void channelDoesNotExist2() throws Exception {
         // Requesting a channel that does not exist
@@ -129,7 +128,7 @@ public class TestDataSourceTest {
         RuntimeException ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
     }
-    
+
     @Test
     public void channelDoesNotExist3() throws Exception {
         // Requesting a channel that does not exist
@@ -144,7 +143,7 @@ public class TestDataSourceTest {
         RuntimeException ex = (RuntimeException) exceptionHandler.getException();
         assertThat(ex, not(nullValue()));
     }
-    
+
     @Test
     public void channelDoesNotExist4() throws Exception {
         // Requesting a channel that does not exist
@@ -159,7 +158,7 @@ public class TestDataSourceTest {
         RuntimeException ex = (RuntimeException) exceptionHandler.getException();
         assertThat(ex, not(nullValue()));
     }
-    
+
     @Test
     public void delayedWrite() throws Exception {
         CountDownPVWriterListener<Object> listener = new CountDownPVWriterListener<>(1);
@@ -170,18 +169,18 @@ public class TestDataSourceTest {
 
         listener.await(Duration.ofMillis(15));
         assertThat(listener.getCount(), equalTo(1));
-        
+
         RuntimeException ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
         
         listener.await(Duration.ofMillis(1100));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
-        
+
         ex = (RuntimeException) pvWriter.lastWriteException();
         assertThat(ex, nullValue());
     }
-    
+
     @Test
     public void delayedWriteWithTimeout() throws Exception {
         CountDownPVWriterListener<Object> writerListener = new CountDownPVWriterListener<>(1);
@@ -193,16 +192,16 @@ public class TestDataSourceTest {
         writerListener.await(Duration.ofMillis(750));
         assertThat(writerListener.getCount(), equalTo(0));
         writerListener.resetCount(1);
-        Exception ex = pvWriter.lastWriteException(); 
+        Exception ex = pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
         assertThat(ex, instanceOf(TimeoutException.class));
         
         writerListener.await(Duration.ofMillis(2000));
         assertThat(writerListener.getCount(), equalTo(0));
-        ex = pvWriter.lastWriteException(); 
+        ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
     }
-    
+
     @Test
     public void delayedWriteWithTimeout2() throws Exception {
         // Test a write that happens 2 seconds late
@@ -217,8 +216,8 @@ public class TestDataSourceTest {
         writerListener.await(Duration.ofMillis(600));
         assertThat(writerListener.getCount(), equalTo(0));
         writerListener.resetCount(1);
-        
-        Exception ex = pvWriter.lastWriteException(); 
+
+        Exception ex = pvWriter.lastWriteException();
         assertThat(ex, not(nullValue()));
         assertThat(ex, instanceOf(TimeoutException.class));
 
@@ -227,13 +226,13 @@ public class TestDataSourceTest {
         writerListener.await(Duration.ofMillis(2000));
         assertThat(writerListener.getCount(), equalTo(0));
         writerListener.resetCount(1);
-        
+
         ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
-        
+
         // Write again
         pvWriter.write("test2");
-        
+
         // Wait for a notification: should not come
         writerListener.await(Duration.ofMillis(400));
         assertThat(writerListener.getCount(), equalTo(1));
@@ -252,7 +251,7 @@ public class TestDataSourceTest {
         ex = pvWriter.lastWriteException();
         assertThat(ex, nullValue());
     }
-    
+
     @Test
     public void delayedReadConnectionWithTimeout() throws Exception {
         CountDownPVReaderListener readListener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK | PVReaderEvent.EXCEPTION_MASK);
@@ -262,25 +261,25 @@ public class TestDataSourceTest {
         
         readListener.await(Duration.ofMillis(50));
         assertThat(readListener.getCount(), equalTo(1));
-        
+
         TimeoutException ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
         
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
         readListener.resetCount(1);
-        
+
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, not(nullValue()));
         
         readListener.await(Duration.ofMillis(1000));
         assertThat(readListener.getCount(), equalTo(0));
-        
+
         ex = (TimeoutException) pvReader.lastException();
         assertThat(ex, nullValue());
         assertThat((String) pvReader.getValue(), equalTo("Initial value"));
     }
-    
+
     @Test
     public void delayedReadOnPVWithTimeout() throws Exception {
         CountDownPVReaderListener readListener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK | PVReaderEvent.EXCEPTION_MASK);
@@ -292,25 +291,25 @@ public class TestDataSourceTest {
 
         readListener.await(Duration.ofMillis(50));
         assertThat(readListener.getCount(), equalTo(1));
-        
+
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
         
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
         readListener.resetCount(1);
-        
+
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
         
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
-        
+
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
         assertThat((String) pv.getValue(), equalTo("Initial value"));
     }
-    
+
     @Test
     public void delayedReadOnPVWithTimeoutAndCustomMessage() throws Exception {
         String message = "Ouch! Timeout!";
@@ -323,14 +322,14 @@ public class TestDataSourceTest {
         
         readListener.await(Duration.ofMillis(50));
         assertThat(readListener.getCount(), equalTo(1));
-        
+
         TimeoutException ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
         
         readListener.await(Duration.ofMillis(600));
         assertThat(readListener.getCount(), equalTo(0));
         readListener.resetCount(2);
-        
+
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, not(nullValue()));
         assertThat(ex.getMessage(), equalTo(message));
@@ -338,12 +337,12 @@ public class TestDataSourceTest {
         readListener.await(Duration.ofMillis(1000));
         // It may get CONNECTION and VALUE event separate
         assertThat(readListener.getCount(), lessThanOrEqualTo(1));
-        
+
         ex = (TimeoutException) pv.lastException();
         assertThat(ex, nullValue());
         assertThat((String) pv.getValue(), equalTo("Initial value"));
     }
-    
+
     @Test
     public void delayedMultipleReadWithConnectionError() throws Exception {
         CountDownPVReaderListener readListener1 = new CountDownPVReaderListener(1);
@@ -354,9 +353,9 @@ public class TestDataSourceTest {
         pvReader2 = PVManager.read(channel("delayedConnectionError"))
                 .readListener(readListener2)
                 .from(dataSource).maxRate(ofMillis(50));
-        
+
         Thread.sleep(50);
-        
+
         RuntimeException ex = (RuntimeException) pvReader.lastException();
         assertThat(ex, nullValue());
         assertThat(readListener1.getCount(), equalTo(1));
@@ -368,7 +367,7 @@ public class TestDataSourceTest {
         readListener1.resetCount(1);
         readListener2.await(Duration.ofMillis(1500));
         readListener2.resetCount(1);
-        
+
         ex = (RuntimeException) pvReader.lastException();
         assertThat(ex, instanceOf(RuntimeException.class));
         assertThat(ex.getMessage(), equalTo("Connection error"));

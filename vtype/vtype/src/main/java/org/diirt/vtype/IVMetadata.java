@@ -13,7 +13,7 @@ import java.time.Instant;
  * @author carcassi
  */
 class IVMetadata implements Alarm, Time {
-    
+
     private final Alarm alarm;
     private final Time time;
 

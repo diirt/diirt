@@ -14,7 +14,7 @@ public abstract class ListInt implements ListNumber, CollectionInt {
     @Override
     public IteratorInt iterator() {
         return new IteratorInt() {
-            
+
             private int index;
 
             @Override
@@ -87,7 +87,7 @@ public abstract class ListInt implements ListNumber, CollectionInt {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        
+
         if (obj instanceof ListInt) {
             ListInt other = (ListInt) obj;
 
@@ -101,7 +101,7 @@ public abstract class ListInt implements ListNumber, CollectionInt {
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -125,5 +125,5 @@ public abstract class ListInt implements ListNumber, CollectionInt {
         builder.append(getInt(i)).append("]");
         return builder.toString();
     }
-    
+
 }

@@ -28,22 +28,22 @@ public class FormulaAstTest {
         FormulaAst end = orig.substituteChannels(subs);
         assertThat(end, equalTo(formula("=3+4")));
     }
-    
+
     @Test
     public void equals1() {
         assertThat(formula("=3"), equalTo(integer(3)));
     }
-    
+
     @Test
     public void toString1() {
         assertThat(formula("=3").toString(), equalTo("3"));
     }
-    
+
     @Test
     public void toString2() {
         assertThat(formula("=3+4").toString(), equalTo("(3 + 4)"));
     }
-    
+
     @Test
     public void listChannelNames1() {
         assertThat(formula("=3+4").listChannelNames(), equalTo(new ArrayList<String>()));

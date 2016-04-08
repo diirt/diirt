@@ -4,8 +4,6 @@
  */
 package org.diirt.vtype.table;
 
-import org.diirt.vtype.table.RangeFilter;
-import org.diirt.vtype.table.ValueFilter;
 import java.util.Arrays;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.vtype.VTable;
@@ -21,7 +19,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class RangeFilterTest {
-    
+
     @Test
     public void filterRowNumber() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -32,7 +30,7 @@ public class RangeFilterTest {
         assertThat(valueFilter.filterRow(1), equalTo(false));
         assertThat(valueFilter.filterRow(2), equalTo(false));
     }
-    
+
     @Test
     public void filterRowString() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -43,7 +41,7 @@ public class RangeFilterTest {
         assertThat(valueFilter.filterRow(1), equalTo(true));
         assertThat(valueFilter.filterRow(2), equalTo(false));
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void filterRowTypeMismatch1() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -51,7 +49,7 @@ public class RangeFilterTest {
                                  column("CPU", newVStringArray(Arrays.asList("286", "286", "386"), alarmNone(), timeNow())));
         ValueFilter valueFilter = new ValueFilter(table1, "CPU", ValueFactory.toVType(2));
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void filterRowTypeMismatch2() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),

@@ -12,16 +12,16 @@ import java.util.concurrent.ScheduledExecutorService;
  * @author carcassi
  */
 class ScannerParameters {
-    
+
     enum Type {ACTIVE, PASSIVE}
-    
+
     private Type type = Type.ACTIVE;
     private ScheduledExecutorService scannerExecutor;
     private Duration maxDuration;
     private Duration timeout;
     private String timeoutMessage;
     private DesiredRateEventListener listener;
-    
+
     public ScannerParameters type(Type type) {
         this.type = type;
         return this;
@@ -64,7 +64,7 @@ class ScannerParameters {
         this.timeoutMessage = timeoutMessage;
         return this;
     }
-    
+
     public SourceDesiredRateDecoupler build() {
         if (type == Type.ACTIVE) {
             if (scannerExecutor == null) {
@@ -92,5 +92,5 @@ class ScannerParameters {
         }
         throw new IllegalStateException("Can't create suitable scanner");
     }
-    
+
 }

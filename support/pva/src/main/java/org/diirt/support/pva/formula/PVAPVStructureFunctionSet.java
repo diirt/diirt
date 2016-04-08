@@ -85,7 +85,7 @@ import org.diirt.vtype.ValueFactory;
  */
 public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
 
-	public PVAPVStructureFunctionSet() {
+        public PVAPVStructureFunctionSet() {
         super(
                 new FormulaFunctionSetDescription("pvData",
                         "pvData related functions")

@@ -19,7 +19,7 @@ import org.diirt.vtype.VNumber;
  * @author asbarber
  */
 public class MathServiceProvider implements ServiceProvider {
-    
+
     /**
      * Creates the service method description for the addition service method.
      *
@@ -43,7 +43,7 @@ public class MathServiceProvider implements ServiceProvider {
      * method.
      *
      * @return multiplication service method description
-     */    
+     */
     public static ServiceMethodDescription multiplyMethod() {
         return new ServiceMethodDescription("multiply", "Multiplies two numbers.") {
 

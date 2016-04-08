@@ -9,9 +9,9 @@
     <script src="../libraries/RGraph.drawing.circle.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Scatter chart with the ability to add markers</title>
-    
+
     <meta name="keywords" content="demo scatter markers" />
     <meta name="description" content="A Scatter chart with the ability to add markers" />
     <meta name="robots" content="noindex,nofollow" />
@@ -19,13 +19,13 @@
 <body>
 
     <h1>A Scatter chart with the ability to add markers</h1>
-    
+
     <p>
         You can click on the Scatter chart to add a red circle. When the circles are then clicked on nothing happens.
     </p>
 
     <canvas id="cvs" width="600" height="200">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -37,11 +37,11 @@
                 .Set('labels', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'])
                 .Draw();
 
-        
+
             scatter.canvas.onmousemove = function (e)
             {
                 var obj = RGraph.ObjectRegistry.getObjectByXY(e);
-                
+
                 if (obj && obj.type == 'drawing.circle') {
                     over_circle = obj;
                     e.target.style.cursor = 'pointer';
@@ -70,7 +70,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

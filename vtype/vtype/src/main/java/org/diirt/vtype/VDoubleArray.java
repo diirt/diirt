@@ -12,12 +12,12 @@ import org.diirt.util.array.ListDouble;
  * @author carcassi
  */
 public interface VDoubleArray extends VNumberArray, VType {
-    
+
     /**
      * {@inheritDoc }
      * @return the data
      */
     @Override
     ListDouble getData();
-    
+
 }

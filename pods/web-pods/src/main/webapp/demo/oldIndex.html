@@ -72,13 +72,13 @@
                 case "connection": //connection state changed
                     break;
                 case "value": //value changed
-                   var valueCell = document.getElementById("channelvalue" + channel.id);
-						valueCell.innerHTML = channel.getValue().value;
+                    var valueCell = document.getElementById("channelvalue" + channel.id);
+                    valueCell.innerHTML = channel.getValue().value;
 
                     break;
                 case "error": //error happened
                     break;
-                case "writePermission":	// write permission changed.
+                case "writePermission": // write permission changed.
                     break;
                 case "writeFinished": // write finished.
                     break;
@@ -93,7 +93,7 @@
             } else {
                 channel = wp.subscribeChannel(channelName, callback, readOnly);
             }
-    		updateTable();
+            updateTable();
             document.getElementById("outMessage").value = wp.getSentMessages();
             return false;
         }
@@ -151,7 +151,7 @@
                 wp.getChannel(id).pause();
             }
             document.getElementById("outMessage").value = wp.getSentMessages();
-	    }
+        }
 
         function unsubscribe(id) {
             wp.getChannel(id).unsubscribe();

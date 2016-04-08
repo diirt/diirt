@@ -40,7 +40,7 @@ public class BasicTypeSupport {
         // Add support for lists
         addList();
         addMap();
-        
+
         // Add support for numbers and strings
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Number.class));
         TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(String.class));
@@ -58,15 +58,15 @@ public class BasicTypeSupport {
                 // to understand whether any needs notification.
                 // Notification is done only if at least one element needs notification.
                 boolean notificationNeeded = false;
-                
+
                 if (oldValue == null || (oldValue.size() != newValue.size())) {
                     notificationNeeded = true;
                 }
-                
+
                 if (newValue.isEmpty()) {
                     notificationNeeded = false;
                 }
-                
+
                 int index = 0;
                 while (notificationNeeded == false && index < newValue.size()) {
                     if (newValue.get(index) != null) {
@@ -77,7 +77,7 @@ public class BasicTypeSupport {
                     }
                     index++;
                 }
-                
+
                 if (notificationNeeded) {
                     return new Notification<>(true, (List) Collections.unmodifiableList(new ArrayList<Object>(newValue)));
                 } else {
@@ -97,11 +97,11 @@ public class BasicTypeSupport {
                 // to understand whether any needs notification.
                 // Notification is done only if at least one element needs notification.
                 boolean notificationNeeded = false;
-                
+
                 if (oldValue == null || (oldValue.size() != newValue.size())) {
                     notificationNeeded = true;
                 }
-                
+
                 int index = 0;
                 Iterator<Map.Entry> iterator = newValue.entrySet().iterator();
                 while (notificationNeeded == false && iterator.hasNext()) {
@@ -114,7 +114,7 @@ public class BasicTypeSupport {
                         }
                     }
                 }
-                
+
                 if (notificationNeeded) {
                     return new Notification<>(true, (Map) Collections.unmodifiableMap(new HashMap<>(newValue)));
                 } else {

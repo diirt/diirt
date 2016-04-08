@@ -76,30 +76,30 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
                 return args.size();
             }
         };
-        
+
         VNumber firstNonNull = null;
         for (Object object : args) {
             if (object != null) {
                 firstNonNull = (VNumber) object;
             }
         }
-        
+
         Display display = displayNone();
         if (firstNonNull != null) {
             if (ValueUtil.displayHasValidDisplayLimits(firstNonNull)) {
                 display = firstNonNull;
             } else {
                 Statistics stats = StatisticsUtil.statisticsOf(data);
-                display = newDisplay(stats.getRange().getMinimum(), stats.getRange().getMinimum(), stats.getRange().getMinimum(), 
+                display = newDisplay(stats.getRange().getMinimum(), stats.getRange().getMinimum(), stats.getRange().getMinimum(),
                         "", NumberFormats.toStringFormat(), stats.getRange().getMaximum(), stats.getRange().getMaximum(), stats.getRange().getMaximum(),
                         stats.getRange().getMinimum(), stats.getRange().getMaximum());
             }
-            
+
         }
 
         return ValueFactory.newVNumberArray(data,
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args),
+                ValueUtil.latestValidTimeOrNowOf(args),
                 display);
     }
 

@@ -8,7 +8,6 @@ package org.diirt.pods.common;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,7 +45,7 @@ class RegexChannelTranslator extends ChannelTranslator {
         if (allowedUsers != null && !allowedUsers.contains(request.getUser())) {
             return null;
         }
-        
+
         Matcher matcher = p.matcher(request.getChannel());
         if (matcher.matches()) {
             String translation;
@@ -60,5 +59,5 @@ class RegexChannelTranslator extends ChannelTranslator {
             return null;
         }
     }
-    
+
 }

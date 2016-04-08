@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.*;
  * @author carcassi
  */
 public class NumberFormatsTest {
-    
+
     public NumberFormatsTest() {
     }
 
@@ -28,7 +28,7 @@ public class NumberFormatsTest {
         assertThat(format.format(Double.NEGATIVE_INFINITY), equalTo("-Infinity"));
         assertThat(NumberFormats.format(2), sameInstance(format));
     }
-    
+
     @Test
     public void format2() {
         NumberFormat f = NumberFormats.format(3);

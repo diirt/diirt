@@ -40,7 +40,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 
     /**
      * Returns the last exception for each expression in the group (if present).
-     * 
+     *
      * @return a list of exceptions (never null)
      */
     public List<Exception> lastExceptions() {
@@ -51,7 +51,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 
     /**
      * Removes all the expressions currently in the group.
-     * 
+     *
      * @return this
      */
     public synchronized DynamicGroup clear() {
@@ -69,7 +69,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 
     /**
      * Returns the number of expressions in the group.
-     * 
+     *
      * @return number of expressions in the group
      */
     public synchronized int size() {
@@ -78,7 +78,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 
     /**
      * Adds the expression at the end.
-     * 
+     *
      * @param expression the expression to be added
      * @return this
      */
@@ -97,7 +97,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 
     /**
      * Removes the expression at the given location.
-     * 
+     *
      * @param index the position to remove
      * @return this
      */
@@ -114,7 +114,7 @@ public class DynamicGroup extends DesiredRateExpressionImpl<List<Object>> {
 
     /**
      * Changes the expression to the given location.
-     * 
+     *
      * @param index the position to remove
      * @param expression the new expression
      * @return this

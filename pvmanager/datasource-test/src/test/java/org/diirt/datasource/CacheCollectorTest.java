@@ -5,7 +5,6 @@
 package org.diirt.datasource;
 
 import java.util.Arrays;
-import org.diirt.datasource.CacheCollector;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -35,7 +34,7 @@ public class CacheCollectorTest {
         assertThat(collector.readValue(), equalTo(Arrays.asList(2,3,4,5,6)));
         assertThat(collector.readValue(), equalTo(Arrays.asList(2,3,4,5,6)));
     }
-    
+
     @Test
     public void setMaxSize() {
         CacheCollector<Integer> collector = new CacheCollector<>(5);

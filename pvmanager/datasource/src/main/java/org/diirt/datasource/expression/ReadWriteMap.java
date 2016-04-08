@@ -30,18 +30,18 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
     public ReadWriteMap() {
         super(new ReadMap<R>(), new WriteMap<W>());
     }
-    
+
     private ReadMap<R> getReadMap() {
         return (ReadMap<R>) getDesiredRateExpressionImpl();
     }
-    
+
     private WriteMap<W> getWriteMap() {
         return (WriteMap<W>) getWriteExpressionImpl();
     }
 
     /**
      * Removes all the expressions currently in the map.
-     * 
+     *
      * @return this expression
      */
     public ReadWriteMap<R, W> clear() {
@@ -52,7 +52,7 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
 
     /**
      * Returns the number of expressions in the group.
-     * 
+     *
      * @return number of expressions in the group
      */
     public int size() {
@@ -61,7 +61,7 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
 
     /**
      * Adds the expression to the map.
-     * 
+     *
      * @param expression the expression to be added
      * @return this expression
      */
@@ -70,7 +70,7 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
         getWriteMap().add(expression);
         return this;
     }
-    
+
     /**
      * Adds the expressions to the map.
      *
@@ -85,7 +85,7 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
 
     /**
      * Removes the expression with the given name.
-     * 
+     *
      * @param name the name of the expression to remove
      * @return this expression
      */
@@ -94,7 +94,7 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
         getWriteMap().remove(name);
         return this;
     }
-    
+
     /**
      * Removes the expressions from the map.
      *
@@ -106,5 +106,5 @@ public class ReadWriteMap<R, W> extends DesiredRateReadWriteExpressionImpl<Map<S
         getWriteMap().remove(names);
         return this;
     }
-    
+
 }

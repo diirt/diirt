@@ -14,9 +14,9 @@ import org.diirt.graphene.profile.utils.DatasetFactory;
 
 /**
  * Handles profiling for <code>BubbleGraph2DRenderer</code>.
- * Takes a <code>Point3DWithLabelDataset</code> dataset and repeatedly renders 
+ * Takes a <code>Point3DWithLabelDataset</code> dataset and repeatedly renders
  * through a <code>Point3DWithLabelDataset</code>.
- * 
+ *
  * @author asbarber
  */
 public class ProfileBubbleGraph2D extends ProfileGraph2D<BubbleGraph2DRenderer, Point3DWithLabelDataset>{
@@ -35,11 +35,11 @@ public class ProfileBubbleGraph2D extends ProfileGraph2D<BubbleGraph2DRenderer, 
     protected void render(Graphics2D graphics, BubbleGraph2DRenderer renderer, Point3DWithLabelDataset data) {
         renderer.draw(graphics, data);
     }
-   
+
     @Override
     public LinkedHashMap<String, Graph2DRendererUpdate> getVariations() {
         LinkedHashMap<String, Graph2DRendererUpdate> map = new LinkedHashMap<>();
-        
+
         map.put("None", null);
 
         return map;
@@ -49,5 +49,5 @@ public class ProfileBubbleGraph2D extends ProfileGraph2D<BubbleGraph2DRenderer, 
     public String getGraphTitle() {
         return "BubbleGraph2D";
     }
-    
+
 }

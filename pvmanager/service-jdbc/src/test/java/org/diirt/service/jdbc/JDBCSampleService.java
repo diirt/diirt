@@ -30,5 +30,5 @@ public class JDBCSampleService {
                     .addArgument("value", "The value", VNumber.class)
                 ).createService();
     }
-    
+
 }

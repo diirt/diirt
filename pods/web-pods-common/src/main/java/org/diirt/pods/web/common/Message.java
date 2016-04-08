@@ -28,28 +28,28 @@ import org.diirt.vtype.json.VTypeToJson;
  * @author carcassi
  */
 public abstract class Message {
-    
+
     /**
      * The type of message.
      */
     public static enum MessageType {SUBSCRIBE, CONNECTION, EVENT, WRITE, PAUSE, RESUME, UNSUBSCRIBE};
-    
+
     private final MessageType message;
     private final int id;
 
     /**
      * Constructor for JSON parsing. Retrieves message and id from payload.
-     * 
+     *
      * @param obj the JSON message
      * @throws MessageDecodeException if json format is incorrect
      */
     Message(JsonObject obj) throws MessageDecodeException {
         this(Message.MessageType.valueOf(obj.getString("message").toUpperCase()), intMandatory(obj, "id"));
     }
-    
+
     /**
      * Constructor for direct message creation.
-     * 
+     *
      * @param message the type of the message
      * @param id the id for the channel
      */
@@ -62,7 +62,7 @@ public abstract class Message {
 
     /**
      * The message type. Can't be null.
-     * 
+     *
      * @return the message type
      */
     public MessageType getMessage() {
@@ -71,7 +71,7 @@ public abstract class Message {
 
     /**
      * The id of the channel this message refers to.
-     * 
+     *
      * @return the channel id
      */
     public int getId() {
@@ -80,7 +80,7 @@ public abstract class Message {
 
     /**
      * Serializes this message as JSON onto the given writer.
-     * 
+     *
      * @param writer the destination where to serialize the message
      */
     public void toJson(Writer writer) {
@@ -92,7 +92,7 @@ public abstract class Message {
     /**
      * Utility to serialize just the message and id. More then one message
      * only serialize those two parameters, so it is useful to make it common.
-     * 
+     *
      * @param writer the destination where to serialize the message
      */
     void basicToJson(Writer writer) {
@@ -105,7 +105,7 @@ public abstract class Message {
 
     /**
      * Un-marshals the message type, or throws an exception if it's not able to.
-     * 
+     *
      * @param jObject the JSON object
      * @param name the attribute name where the type is stored
      * @return the message type
@@ -122,7 +122,7 @@ public abstract class Message {
 
     /**
      * Un-marshals a string, or throws an exception if it's not able to.
-     * 
+     *
      * @param jObject the JSON object
      * @param name the attribute name where the string is stored
      * @return the message string
@@ -143,7 +143,7 @@ public abstract class Message {
 
     /**
      * Un-marshals a string, or returns the default value if it's not able to.
-     * 
+     *
      * @param jObject the JSON object
      * @param name the attribute name where the string is stored
      * @param defaultValue the value to use if no attribute is found
@@ -162,10 +162,10 @@ public abstract class Message {
             throw MessageDecodeException.wrongAttributeType(jObject, name, "string");
         }
     }
-    
+
     /**
      * Un-marshals an integer, or throws an exception if it's not able to.
-     * 
+     *
      * @param jObject the JSON object
      * @param name the attribute name where the integer is stored
      * @return the message integer
@@ -183,10 +183,10 @@ public abstract class Message {
             throw MessageDecodeException.wrongAttributeType(jObject, name, "integer");
         }
     }
-    
+
     /**
      * Un-marshals an integer, or returns the default value if it's not able to.
-     * 
+     *
      * @param jObject the JSON object
      * @param name the attribute name where the integer is stored
      * @param defaultValue the value to use if no attribute is found
@@ -205,10 +205,10 @@ public abstract class Message {
             throw MessageDecodeException.wrongAttributeType(jObject, name, "integer");
         }
     }
-    
+
     /**
      * Un-marshals a boolean, or throws an exception if it's not able to.
-     * 
+     *
      * @param jObject the JSON object
      * @param name the attribute name where the boolean is stored
      * @return the message boolean
@@ -223,10 +223,10 @@ public abstract class Message {
             throw MessageDecodeException.wrongAttributeType(jObject, name, "boolean");
         }
     }
-    
+
     /**
      * Un-marshals an boolean, or returns the default value if it's not able to.
-     * 
+     *
      * @param jObject the JSON object
      * @param name the attribute name where the boolean is stored
      * @param defaultValue the value to use if no attribute is found
@@ -240,11 +240,11 @@ public abstract class Message {
             throw MessageDecodeException.wrongAttributeType(jObject, name, "boolean");
         }
     }
-    
+
     /**
      * Converts the given JSON value to either a vtype, a Java time or a
      * ListNumber.
-     * 
+     *
      * @param msgValue the JSON value
      * @return the converted type
      */
@@ -271,7 +271,7 @@ public abstract class Message {
 
     /**
      * Converts the given value to a JSON representation.
-     * 
+     *
      * @param gen the object to create/store the JSON representation
      * @param name the JSON name to store the value as
      * @param value the value to store
@@ -293,5 +293,5 @@ public abstract class Message {
             throw new UnsupportedOperationException("Value " + value.getClass().getSimpleName() + " is not supported");
         }
     }
-    
+
 }

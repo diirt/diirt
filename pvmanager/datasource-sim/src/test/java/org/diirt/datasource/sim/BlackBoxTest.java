@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
@@ -44,5 +43,5 @@ public class BlackBoxTest {
         pv1.close();
         pv2.close();
     }
-    
+
 }

@@ -19,5 +19,5 @@ public interface WriteFunction<A> {
      * @param newValue a value
      */
     public void writeValue(A newValue);
-    
+
 }

@@ -11,8 +11,8 @@ import java.util.NoSuchElementException;
  * the value casted in the type you prefer. This class allows to implement
  * a single binding for iterating over a collection instead of six different
  * binding. If the original type is required, instanceof can be used to
- * differentiate between {@link IteratorByte}, {@link IteratorShort}, 
- * {@link IteratorInt}, {@link IteratorLong}, {@link IteratorFloat} and 
+ * differentiate between {@link IteratorByte}, {@link IteratorShort},
+ * {@link IteratorInt}, {@link IteratorLong}, {@link IteratorFloat} and
  * {@link IteratorDouble}.
  * <p>
  * We looked into making this class implement Iterator, but unfortunately,
@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
  * @author Gabriele Carcassi
  */
 public interface IteratorNumber {
-    
+
     /**
      * Returns {@code true} if the iteration has more elements.
      * (In other words, returns {@code true} if {@code nextXxx} would
@@ -39,7 +39,7 @@ public interface IteratorNumber {
      * @return {@code true} if the iteration has more elements
      */
     boolean hasNext();
-    
+
     /**
      * Returns the next element in the iteration casted to a float.
      *
@@ -47,7 +47,7 @@ public interface IteratorNumber {
      * @throws NoSuchElementException if the iteration has no more elements
      */
     float nextFloat();
-    
+
     /**
      * Returns the next element in the iteration casted to a double.
      *
@@ -55,7 +55,7 @@ public interface IteratorNumber {
      * @throws NoSuchElementException if the iteration has no more elements
      */
     double nextDouble();
-    
+
     /**
      * Returns the next element in the iteration casted to a byte.
      *
@@ -63,7 +63,7 @@ public interface IteratorNumber {
      * @throws NoSuchElementException if the iteration has no more elements
      */
     byte nextByte();
-    
+
     /**
      * Returns the next element in the iteration casted to a short.
      *
@@ -71,7 +71,7 @@ public interface IteratorNumber {
      * @throws NoSuchElementException if the iteration has no more elements
      */
     short nextShort();
-    
+
     /**
      * Returns the next element in the iteration casted to an int.
      *

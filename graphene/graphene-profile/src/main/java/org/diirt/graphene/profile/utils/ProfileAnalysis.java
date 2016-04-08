@@ -30,16 +30,16 @@ import org.diirt.graphene.profile.io.DateUtils;
  * <b>WARNING</b>: the analysis operations assume the preconditions
  * are satisfied with only minor checks.  Therefore it essential
  * that the appropriate file types are selected.
- * 
+ *
  * @author asbarber
  */
 public class ProfileAnalysis {
-    
+
     /**
      * Private constructor; cannot be instantiated.
      */
     private ProfileAnalysis(){};
-    
+
     /**
      * Percent level in which difference in values are considered statistically
      * significant and thus take appropriate (warning) action.
@@ -61,28 +61,28 @@ public class ProfileAnalysis {
                        + " the timing differences of.";
         String hint    = "Note that the differences are calculated by:"
                        + " first file cell minus second file cell.";
-        
+
         JOptionPane.showMessageDialog(null, message);
         JOptionPane.showMessageDialog(null, hint);
-        
+
         File fileA, fileB;
-        
+
         fileA = CSVFinder.browseCSV();
         if (fileA == null){ return; }
-        
+
         fileB = CSVFinder.browseCSV();
         if (fileB == null){ return; }
-        
+
         compareTables2D(fileA, fileB);
     }
-    
+
     /**
      * Computes the difference of each cell between the first file selected
      * and the second file (first - second).
      * <p>
      * Precondition: both files selected are <code>MultiLevelProfiler</code>
      * table files of the same graph type.
-     * 
+     *
      * @param fileA .CSV <code>MultiLevelProfiler</code> formatted file,
      *              considered initial file (compares fileA - fileB)
      * @param fileB .CSV <code>MultiLevelProfiler</code> formatted file,
@@ -90,16 +90,16 @@ public class ProfileAnalysis {
      */
     public static void compareTables2D(File fileA, File fileB){
         CSVReader.validate2DTablesNames(fileA, fileB);
-        
+
         List<List<String>> dataA = CSVReader.parseCSV(fileA);
         List<List<String>> dataB = CSVReader.parseCSV(fileB);
-        
+
         CSVReader.validate2DTables(dataA, dataB);
         if (dataA.isEmpty() || dataB.isEmpty()){ return; }
-        
+
         String badCell = "*Error in reading this cell*";
         List<List> output = new ArrayList<>();
-        
+
         //Header
         List<String> outputHeader = new ArrayList<>();
         for (int c = 0; c < dataA.get(0).size(); ++c){
@@ -113,11 +113,11 @@ public class ProfileAnalysis {
             }
         }
         output.add(outputHeader);
-        
+
         //Rows
         for (int r = 1; r < dataA.size(); ++r){
             List<String> outputRow = new ArrayList<>();
-            
+
             for (int c = 0; c < dataA.get(r).size(); ++c){
                 try{
                     double numA = Double.parseDouble(dataA.get(r).get(c));
@@ -127,35 +127,35 @@ public class ProfileAnalysis {
                 }
                 catch (NumberFormatException ex){
                     outputRow.add(badCell);
-                }                
+                }
             }
-            
+
             output.add(outputRow);
         }
-        
+
         //Saving
         String[] compA = fileA.getName().split("-");
         String[] compB = fileB.getName().split("-");
-        
+
         String date = DateUtils.getDate(DateUtils.DateFormat.NONDELIMITED),
                dateA = compA[0],
                dateB = compB[0],
                graphType = compA[1];
 
 
-        File outputFile = CSVWriter.createNewFile(  ProfileGraph2D.LOG_FILEPATH + 
+        File outputFile = CSVWriter.createNewFile(  ProfileGraph2D.LOG_FILEPATH +
                                                     date +
                                                     "-" +
                                                     graphType +
-                                                    "-Table2D Difference-" + 
+                                                    "-Table2D Difference-" +
                                                     dateA +
                                                     "vs" +
                                                     dateB +
                                                     ".csv");
-        
-        CSVWriter.writeData(outputFile, output);    
-    }      
-    
+
+        CSVWriter.writeData(outputFile, output);
+    }
+
     /**
      * Computes the difference between the last two records
      * in each 1D table and analyzes whether the change was significant.
@@ -166,7 +166,7 @@ public class ProfileAnalysis {
      *      <li>The 1D tables are in the right .CSV format</li>
      *      <li>The file has two rows of data to compare</li>
      * </ul>
-     * 
+     *
      * @return a list of:
      *         for each 1D table analyzed,
      *         a generated analysis message
@@ -176,7 +176,7 @@ public class ProfileAnalysis {
     public static List<String> analyzeTables1D(){
         List<File>              files = CSVFinder.findTables1D();
         List<String>            results = new ArrayList<>();
-        
+
         //All files that are supported and found
         for (File tableFile: files){
             if (tableFile != null){
@@ -190,13 +190,13 @@ public class ProfileAnalysis {
 
                     //Graph Type
                     String graphType = previous.get(0);
-                    
+
                     //Average Time
                     double percentChange = percentChange(
                             Double.parseDouble(previous.get(2)),
                             Double.parseDouble(recent.get(2))
-                    );         
-                    
+                    );
+
                     //Performance Change
                     String performance = performanceChange(
                             Double.parseDouble(previous.get(2)),
@@ -207,18 +207,18 @@ public class ProfileAnalysis {
                     results.add(graphType +
                                 ": " +
                                 performance +
-                                ": " + 
+                                ": " +
                                 String.format("%.3f", percentChange) +
                                 "% changed"
-                   );   
-                } 
+                   );
+                }
             }
         }
-        
+
         results.add("\n" + results.size() + " files analyzed.");
         return results;
     }
-    
+
     /**
      * Calculates the percent change from initial to final.
      * @param valInit initial value
@@ -226,9 +226,9 @@ public class ProfileAnalysis {
      * @return percent change (as decimal)
      */
     public static double percentChange(double valInit, double valFinal){
-        return (valFinal - valInit) / valInit * 100;        
+        return (valFinal - valInit) / valInit * 100;
     }
-    
+
     /**
      * Determines the significance of the change from the initial value to
      * the final value.
@@ -238,19 +238,19 @@ public class ProfileAnalysis {
      */
     public static String performanceChange(double valInit, double valFinal){
         double percentChange = percentChange(valInit, valFinal);
-        
+
         //Signficant performance decrease
         if (percentChange > ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
             return "Performance Decrease";
         }
         //Significant performance increase
         else if (percentChange < ProfileAnalysis.STATISTICALLY_SIGNIFICANT*100){
-            return "Performance Increase";                    
+            return "Performance Increase";
         }
         //No Significant performance change
         else{
-            return "Performance Stable";                    
-        }        
+            return "Performance Stable";
+        }
     }
 
 }

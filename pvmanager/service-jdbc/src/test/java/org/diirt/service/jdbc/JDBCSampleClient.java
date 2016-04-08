@@ -20,25 +20,25 @@ import static org.diirt.vtype.ValueFactory.*;
 public class JDBCSampleClient {
 
     public static void main(String[] args) throws Exception {
-        
+
         ServiceRegistry.getDefault().registerService(JDBCSampleService.create());
-        
+
         ServiceMethod method;
         VTable table;
-        
+
         method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/insert");
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("name", newVString("George", alarmNone(), timeNow()));
         arguments.put("index", newVDouble(4.1, alarmNone(), timeNow(), displayNone()));
         arguments.put("value", newVDouble(2.11, alarmNone(), timeNow(), displayNone()));
         method.executeSync(arguments);
-        
+
         method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/query");
         table = (VTable) method.executeSync(new HashMap<String, Object>()).get("result");
-        
+
         CSVIO io = new CSVIO();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(System.out);
         io.export(table, outputStreamWriter);
-        outputStreamWriter.flush();        
+        outputStreamWriter.flush();
     }
 }

@@ -16,5 +16,5 @@ public class PvFormulaFunction extends ChannelFormulaFunction {
     public String getName() {
         return "pv";
     }
-    
+
 }

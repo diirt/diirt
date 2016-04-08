@@ -4,9 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PV;
-import org.diirt.datasource.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import static org.diirt.datasource.ExpressionLanguage.*;
@@ -28,13 +25,13 @@ public class BlackBoxTest {
     public void readAndWriteBlackBox1() throws Exception {
         String channelName = "test(0)";
         DataSource dataSource = new LocalDataSource();
-        
+
         PV<Object, Object> pv = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
         Thread.sleep(50);
         assertThat(pv.getValue(), not(nullValue()));
         assertThat(pv.isConnected(), equalTo(true));
         assertThat(((VDouble) pv.getValue()).getValue(), equalTo(0.0));
-        
+
         pv.write(10.0);
         Thread.sleep(50);
         assertThat(pv.getValue(), not(nullValue()));
@@ -46,7 +43,7 @@ public class BlackBoxTest {
     public void readAndWriteBlackBox2() throws Exception {
         String channelName = "test(0)";
         DataSource dataSource = new LocalDataSource();
-        
+
         PV<Object, Object> pv1 = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
         PV<Object, Object> pv2 = PVManager.readAndWrite(channel(channelName)).from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
         Thread.sleep(50);
@@ -56,7 +53,7 @@ public class BlackBoxTest {
         assertThat(pv2.isConnected(), equalTo(true));
         assertThat(((VDouble) pv1.getValue()).getValue(), equalTo(0.0));
         assertThat(((VDouble) pv2.getValue()).getValue(), equalTo(0.0));
-        
+
         pv1.write(10.0);
         Thread.sleep(50);
         assertThat(pv1.getValue(), not(nullValue()));
@@ -72,7 +69,7 @@ public class BlackBoxTest {
         String channel1 = "channel1";
         String channel2 = "channel2";
         DataSource dataSource = new LocalDataSource();
-        
+
         final PV<Map<String, Object>, Map<String, Object>> pv =
                 PVManager.readAndWrite(mapOf(latestValueOf(channel("channel1")).and(latestValueOf(channel("channel2")))))
                 .from(dataSource).synchWriteAndMaxReadRate(ofHertz(50));
@@ -87,5 +84,5 @@ public class BlackBoxTest {
         assertThat(((VDouble) pv.getValue().get(channel2)).getValue(), equalTo(10.0));
         pv.close();
     }
-    
+
 }

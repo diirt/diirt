@@ -6,7 +6,6 @@ package org.diirt.datasource.sample.graphene;
 
 import org.diirt.graphene.InterpolationScheme;
 import org.diirt.graphene.LineGraph2DRendererUpdate;
-import org.diirt.datasource.graphene.ScatterGraph2DExpression;
 import static org.diirt.datasource.formula.ExpressionLanguage.formula;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 import org.diirt.datasource.graphene.LineGraph2DExpression;
@@ -26,7 +25,7 @@ public class LineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
                     "sim://triangleWaveform",
                     "=tableOf(column(\"X\", range(-5, 5)), column(\"Y\", 'sim://gaussianWaveform'))"}));
     }
-    
+
     public InterpolationScheme getInterpolationScheme() {
         return interpolationScheme;
     }
@@ -55,9 +54,9 @@ public class LineGraphApp extends BaseGraphApp<LineGraph2DRendererUpdate> {
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-    
+
     public static void main(String[] args) {
         main(LineGraphApp.class);
     }
-    
+
 }

@@ -48,7 +48,7 @@ public class JCAClientExample {
     public static void main(String[] args) throws Exception {
         System.out.println(Double.NEGATIVE_INFINITY);
         System.out.println(System.getProperty("java.library.path"));
-        
+
         System.loadLibrary("jca");
         PVManager.setDefaultDataSource(new JCADataSourceConfiguration()
                 .jcaContextClass(JCALibrary.JNI_THREAD_SAFE).create());
@@ -64,7 +64,7 @@ public class JCAClientExample {
         
         Thread.sleep(5000);
         pvReader.close();
-        
+
         //        testNativeTypeSupport();
         //        testVDoubleSupport();
         //        testVIntSupport();
@@ -137,7 +137,7 @@ public class JCAClientExample {
                     }
                 })
                 .maxRate(ofHertz(10));
-        
+
         Thread.sleep(10000);
 
         pv.close();
@@ -188,7 +188,7 @@ public class JCAClientExample {
                     }
                 })
                 .maxRate(ofHertz(10));
-        
+
         Thread.sleep(10000);
 
         pv.close();
@@ -205,7 +205,7 @@ public class JCAClientExample {
                     }
                 })
                 .maxRate(ofHertz(10));
-        
+
         Thread.sleep(10000);
 
         pv.close();

@@ -15,19 +15,19 @@ import java.util.Collection;
  * @author carcassi
  */
 public interface ServiceProvider {
-    
+
     /**
      * Returns the name of the service provider.
-     * 
+     *
      * @return a short name
      */
     public String getName();
-    
+
     /**
      * Returns a collection of services to be registered.
-     * 
+     *
      * @return an immutable collection of services; never null
      */
     public Collection<Service> createServices();
-    
+
 }

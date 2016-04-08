@@ -11,14 +11,14 @@ import org.epics.pvdata.pv.PVStructure;
  *
  */
 public class PVAPVStructure extends PVAPVField {
-	
-	public PVAPVStructure(PVStructure pvStructure, boolean disconnected)
-	{
-		super(pvStructure, disconnected);
-	}
-	
-	public PVStructure getPVStructure() {
-		return (PVStructure)pvField;
-	}
-	
+
+        public PVAPVStructure(PVStructure pvStructure, boolean disconnected)
+        {
+                super(pvStructure, disconnected);
+        }
+
+        public PVStructure getPVStructure() {
+                return (PVStructure)pvField;
+        }
+
 }

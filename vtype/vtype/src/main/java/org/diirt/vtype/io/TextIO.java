@@ -34,7 +34,7 @@ public class TextIO {
      * Reads a file where each line represents a value in an array.
      * If all lines are numbers the result is a VNumberArray, otherwise
      * is a VStringArray.
-     * 
+     *
      * @param reader the stream to read
      * @return a type
      * @throws IOException all exceptions go through
@@ -59,12 +59,12 @@ public class TextIO {
             return ValueFactory.toVType(lines);
         }
     }
-    
+
     /**
      * Writes a file where each line represents a value in an array.
      * <p>
      * No buffering, flushing or closing is performed by this function.
-     * 
+     *
      * @param vType the type to be written
      * @param writer the writer
      * @throws IOException all exceptions go through
@@ -86,7 +86,7 @@ public class TextIO {
         }
         out.flush();
     }
-    
+
     // TODO: copied from CsvParser
     private static ListDouble convertToListDouble(List<String> tokens) {
         double[] values = new double[tokens.size()];

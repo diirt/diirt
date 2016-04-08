@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
 import org.diirt.util.stats.StatisticsUtil;
 import org.diirt.util.stats.Statistics;
 import org.diirt.util.array.ArrayDouble;
@@ -16,7 +15,7 @@ import org.diirt.util.stats.Range;
  * @author carcassi
  */
 public class MockOrderedDataset2D implements Point2DDataset {
-    
+
     private ListNumber xValues;
     private ListNumber yValues;
     private Statistics xStatistics;
@@ -63,5 +62,5 @@ public class MockOrderedDataset2D implements Point2DDataset {
     public int getCount() {
         return xValues.size();
     }
-    
+
 }

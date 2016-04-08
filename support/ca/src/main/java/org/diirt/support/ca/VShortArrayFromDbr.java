@@ -35,7 +35,7 @@ class VShortArrayFromDbr extends VNumberMetadata<DBR_TIME_Short, DBR_CTRL_Double
     public ListShort getData() {
         return new ArrayShort(dbrValue.getShortValue());
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

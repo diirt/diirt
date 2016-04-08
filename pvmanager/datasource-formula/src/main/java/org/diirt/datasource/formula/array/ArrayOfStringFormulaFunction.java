@@ -57,7 +57,7 @@ class ArrayOfStringFormulaFunction implements FormulaFunction {
 
     @Override
     public Object calculate(List<Object> args) {
-        
+
         List<String> data = new ArrayList<>();
         for (Object arg : args) {
             VString str = (VString) arg;
@@ -69,7 +69,7 @@ class ArrayOfStringFormulaFunction implements FormulaFunction {
 
         return ValueFactory.newVStringArray(data,
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args));
+                ValueUtil.latestValidTimeOrNowOf(args));
     }
 
 }

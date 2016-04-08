@@ -4,14 +4,10 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point1DDataset;
 import org.diirt.util.stats.StatisticsUtil;
 import org.diirt.util.stats.Statistics;
 import java.util.Random;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.CollectionDouble;
-import org.diirt.util.array.CollectionNumber;
-import org.diirt.util.array.IteratorDouble;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.stats.Range;
 
@@ -20,7 +16,7 @@ import org.diirt.util.stats.Range;
  * @author carcassi
  */
 public class MockDataset1D implements Point1DDataset {
-    
+
     private ListNumber values;
     private double minValue = Double.POSITIVE_INFINITY;
     private double maxValue = Double.NEGATIVE_INFINITY;
@@ -50,7 +46,7 @@ public class MockDataset1D implements Point1DDataset {
     public ListNumber getValues() {
         return values;
     }
-    
+
     public static Point1DDataset gaussian(int nSamples) {
         Random rand = new Random();
         double[] values = new double[nSamples];

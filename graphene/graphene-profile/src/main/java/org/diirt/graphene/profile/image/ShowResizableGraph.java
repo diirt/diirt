@@ -19,13 +19,13 @@ import org.diirt.graphene.Point2DDataset;
  * @author carcassi
  */
 public class ShowResizableGraph extends javax.swing.JFrame {
-    
+
     public abstract static class Renderer {
         public abstract void redrawHistogram(BufferedImage image);
     }
 
     private final Renderer renderer;
-    
+
     /**
      * Creates new form ShowImage
      */
@@ -39,12 +39,12 @@ public class ShowResizableGraph extends javax.swing.JFrame {
             public void componentResized(ComponentEvent e) {
                 redrawGraph();
             }
-            
+
         });
         redrawGraph();
     }
-    
-    
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,7 +81,7 @@ public class ShowResizableGraph extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public static void showHistogram(final Cell1DDataset hist) {
         final AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(200, 300);
         showGraph(new Renderer() {
@@ -95,7 +95,7 @@ public class ShowResizableGraph extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public static void showLineGraph(final Point2DDataset dataset) {
         final LineGraph2DRenderer renderer = new LineGraph2DRenderer(200, 300);
         showGraph(new Renderer() {

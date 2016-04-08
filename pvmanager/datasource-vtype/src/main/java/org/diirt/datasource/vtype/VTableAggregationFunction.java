@@ -25,18 +25,18 @@ import org.diirt.vtype.ValueFactory;
  * @author carcassi
  */
 class VTableAggregationFunction implements ReadFunction<VTable> {
-    
+
     private final List<List<ReadFunction<?>>> functions;
     private final List<String> names;
     private static final Map<Class<?>, Class<?>> typeConversion;
     private static final Map<Class<?>, ArrayAdder> arrayAdders;
-    
+
     static {
         typeConversion = new HashMap<Class<?>, Class<?>>();
         typeConversion.put(VString.class, String.class);
         typeConversion.put(VDouble.class, Double.TYPE);
         typeConversion.put(VInt.class, Integer.TYPE);
-        
+
         arrayAdders = new HashMap<Class<?>, ArrayAdder>();
         arrayAdders.put(String.class, new ArrayAdder() {
 
@@ -82,7 +82,7 @@ class VTableAggregationFunction implements ReadFunction<VTable> {
             public Object finalizeData(Object data) {
                 return new ArrayInt((int[]) data);
             }
-            
+
         });
     }
 
@@ -95,52 +95,52 @@ class VTableAggregationFunction implements ReadFunction<VTable> {
     public VTable readValue() {
         List<Class<?>> types = new ArrayList<Class<?>>();
         List<Object> values = new ArrayList<Object>();
-        
+
         for (List<ReadFunction<?>> columnFunctions : functions) {
             List<Object> columnValues = new ArrayList<Object>();
             Class<?> columnType = null;
-            
+
             // Extract all values and determine column type
             for (ReadFunction<?> function : columnFunctions) {
                 Object value = function.readValue();
                 columnType = validateType(value, columnType, names.get(types.size()));
-                
+
                 columnValues.add(value);
             }
-            
+
             // If no type is found, the column will be empty.
             // Default to an array of Strings
             if (columnType == null)
                 columnType = String.class;
-            
+
             // Prepare column array
             Object data = java.lang.reflect.Array.newInstance(columnType, columnValues.size());
             for (int i = 0; i < columnValues.size(); i++) {
                 arrayAdders.get(columnType).addValue(data, i, columnValues.get(i));
             }
-            
+
             // Done with this column
             types.add(columnType);
             values.add(arrayAdders.get(columnType).finalizeData(data));
         }
-        
+
         return ValueFactory.newVTable(types, names, values);
     }
-    
+
     private static interface ArrayAdder {
         void addValue(Object data, int pos, Object value);
         Object finalizeData(Object data);
     }
-    
+
     private Class<?> validateType(Object value, Class<?> oldType, String columnName) {
         if (value == null)
             return oldType;
-        
+
         // Type of the final array
         Class<?> newType = typeConversion.get(ValueUtil.typeOf(value));
         if (oldType == null)
             return newType;
-        
+
         if (newType != null) {
             if (newType.equals(oldType))
                 return oldType;
@@ -151,11 +151,11 @@ class VTableAggregationFunction implements ReadFunction<VTable> {
             if (newType.equals(Integer.TYPE) && oldType.equals(Double.TYPE))
                 return oldType;
         }
-        
-                
+
+
         // Types don't match
         throw new RuntimeException("Values for column " + columnName + " are not all of the same valid column type: can't convert "
                 + value.getClass().getSimpleName() + " to " + oldType.getSimpleName() + " - currently only VString, VDouble and VInt).");
     }
-    
+
 }

@@ -9,7 +9,7 @@ package org.diirt.vtype.table;
  * @author carcassi
  */
 public abstract class Column {
-    
+
     private final String name;
     private final Class<?> type;
     private final boolean generated;
@@ -19,7 +19,7 @@ public abstract class Column {
         this.type = type;
         this.generated = generated;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -27,11 +27,11 @@ public abstract class Column {
     public Class<?> getType() {
         return type;
     }
-    
+
     public boolean isGenerated() {
         return generated;
     }
-    
+
     public abstract Object getData(int size);
-    
+
 }

@@ -14,13 +14,13 @@ package org.diirt.graphene;
  * @author carcassi
  */
 public interface AxisRange {
-    
+
     /**
      * Creates an instance of the AxisRange to calculate the range for
      * a particular graph. The instance will contain all the state
      * relative to the particular graph. It is not immutable, threadsafe
      * and should not be shared across graphs.
-     * 
+     *
      * @return a new instance
      */
     public AxisRangeInstance createInstance();

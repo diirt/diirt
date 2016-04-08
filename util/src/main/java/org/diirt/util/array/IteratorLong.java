@@ -35,5 +35,5 @@ public abstract class IteratorLong implements IteratorNumber {
     public int nextInt() {
         return (int) nextLong();
     }
-    
+
 }

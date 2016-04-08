@@ -42,13 +42,13 @@ import org.diirt.datasource.expression.WriteExpression;
  * @author carcassi
  */
 public class PVWriterDirector<T> {
-    
+
     private static final Logger log = Logger.getLogger(PVWriterDirector.class.getName());
-    
+
     private volatile boolean notificationInFlight = false;
-    
+
     // Required for connection and exception notification
-    
+
     /** Executor used to scan the connection/exception queues */
     private final ScheduledExecutorService scannerExecutor;
     private volatile ScheduledFuture<?> scanTaskHandle;
@@ -56,22 +56,22 @@ public class PVWriterDirector<T> {
     private final ConnectionCollector writeConnCollector =
             new ConnectionCollector();
     private final QueueCollector<Exception> writeExceptionCollector;
-    
+
     // Required to process the write
-    
+
     private final WriteFunction<T> writeFunction;
     /** Executor to use to process the write */
     private final ScheduledExecutorService writeExecutor;
     private final Duration timeout;
     private final String timeoutMessage;
-    
+
     // Required to connect/disconnect expressions
-    
+
     private final Map<WriteExpression<?>, WriteRecipe> recipes =
             new HashMap<>();
-    
+
     // Required for multiple operations
-    
+
     private final Object lock = new Object();
     /** Executor to use for notification from the scanner (connection/exceptions) or from the write (success/fail) */
     private final Executor notificationExecutor;
@@ -97,7 +97,7 @@ public class PVWriterDirector<T> {
             writeExceptionCollector = new LastExceptionCollector(1, exceptionHandler);
         }
     }
-    
+
     /**
      * Simulate a static connection in which the channel name has one exception
      * and the connection will never change.
@@ -110,7 +110,7 @@ public class PVWriterDirector<T> {
      * <p>
      * In the future, this should be generalized to allow fully fledged expressions
      * that connect/disconnect and can report errors.
-     * 
+     *
      * @param ex the exception to queue
      * @param connection the connection flag
      * @param channelName the channel name
@@ -119,14 +119,14 @@ public class PVWriterDirector<T> {
         writeExceptionCollector.writeValue(ex);
         writeConnCollector.addChannel(channelName).writeValue(connection);
     }
-    
+
     /**
      * Connects the given expression.
      * <p>
      * This can be used for dynamic expression to add and connect child expressions.
      * The added expression will be automatically closed when the associated
      * reader is closed, if it's not disconnected first.
-     * 
+     *
      * @param expression the expression to connect
      */
     public void connectExpression(WriteExpression<?> expression) {
@@ -145,7 +145,7 @@ public class PVWriterDirector<T> {
             updateWriteRecipe();
         }
     }
-    
+
     /**
      * Disconnects the given expression.
      * <p>
@@ -162,7 +162,7 @@ public class PVWriterDirector<T> {
         if (recipe == null) {
             log.log(Level.SEVERE, "Director was asked to disconnect expression '" + expression + "' which was not found.");
         }
-        
+
         if (!recipe.getChannelWriteRecipes().isEmpty()) {
             try {
                 dataSource.disconnectWrite(recipe);
@@ -172,7 +172,7 @@ public class PVWriterDirector<T> {
             updateWriteRecipe();
         }
     }
-    
+
     private void updateWriteRecipe() {
         synchronized(lock) {
             Set<ChannelWriteRecipe> channelRecipe = new HashSet<>();
@@ -182,7 +182,7 @@ public class PVWriterDirector<T> {
             currentWriteRecipe = new WriteRecipe(channelRecipe);
         }
     }
-    
+
     /**
      *
      */
@@ -195,7 +195,7 @@ public class PVWriterDirector<T> {
             }
         }
     }
-    
+
     void write(final T newValue, final PVWriterImpl<T> pvWriter) {
         WriteTask newTask = new WriteTask(pvWriter, newValue);
         writeExecutor.execute(newTask);
@@ -203,7 +203,7 @@ public class PVWriterDirector<T> {
             writeExecutor.schedule(newTask.timeout(), timeout.toNanos(), TimeUnit.NANOSECONDS);
         }
     }
-    
+
     private class WriteTask implements Runnable {
         final PVWriterImpl<T> pvWriter;
         final T newValue;
@@ -213,7 +213,7 @@ public class PVWriterDirector<T> {
             this.pvWriter = pvWriter;
             this.newValue = newValue;
         }
-        
+
         private Runnable timeout() {
             return new Runnable() {
 
@@ -260,13 +260,13 @@ public class PVWriterDirector<T> {
                             pvWriter.setLastWriteException(ex);
                         }
                     }
-                    
+
                 });
             }
         }
-    
+
     };
-    
+
     void syncWrite(final T newValue, final PVWriterImpl<T> pvWriter) {
         log.finest("Sync write: creating latch");
         final CountDownLatch latch = new CountDownLatch(1);
@@ -317,7 +317,7 @@ public class PVWriterDirector<T> {
             }
         });
         log.finest("Write request submitted. Waiting.");
-        
+
         boolean done;
         try {
             if (timeout != null) {
@@ -339,7 +339,7 @@ public class PVWriterDirector<T> {
         }
         log.finest("Waiting done. No exceptions.");
     }
-    
+
     /**
      * Determines whether the notifier is active or not.
      * <p>
@@ -359,7 +359,7 @@ public class PVWriterDirector<T> {
             return false;
         }
     }
-    
+
     /**
      * Notifies the PVReader of a new value.
      */
@@ -369,7 +369,7 @@ public class PVWriterDirector<T> {
         // is slower than the producer.
         if (notificationInFlight)
             return;
-        
+
         // Calculate new connection
         final boolean connected = writeConnCollector.readValue();
         List<Exception> exceptions = writeExceptionCollector.readValue();
@@ -387,7 +387,7 @@ public class PVWriterDirector<T> {
             return;
         }
 
-        
+
         notificationInFlight = true;
         notificationExecutor.execute(new Runnable() {
 
@@ -408,7 +408,7 @@ public class PVWriterDirector<T> {
     WriteRecipe getCurrentWriteRecipe() {
         return currentWriteRecipe;
     }
-    
+
     private final DesiredRateEventListener desiredRateEventListener = new DesiredRateEventListener() {
 
         @Override
@@ -425,9 +425,9 @@ public class PVWriterDirector<T> {
     DesiredRateEventListener getDesiredRateEventListener() {
         return desiredRateEventListener;
     }
-    
+
     private SourceDesiredRateDecoupler scanStrategy;
-    
+
     void setScanner(final SourceDesiredRateDecoupler scanStrategy) {
         synchronized(lock) {
             this.scanStrategy = scanStrategy;
@@ -447,5 +447,5 @@ public class PVWriterDirector<T> {
             }
         });
     }
-    
+
 }

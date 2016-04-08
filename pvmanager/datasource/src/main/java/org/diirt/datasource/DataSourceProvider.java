@@ -5,7 +5,6 @@
 package org.diirt.datasource;
 
 import java.io.InputStream;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.config.Configuration;
@@ -25,28 +24,28 @@ import org.diirt.util.config.ServiceLoaderOSGiWrapper;
  * @author carcassi
  */
 public abstract class DataSourceProvider {
-    
+
     private static final Logger log = Logger.getLogger(DataSourceProvider.class.getName());
-    
+
     /**
      * The name to be used when registering the DataSource with the
      * CompositeDataSource.
-     * 
+     *
      * @return a short String
      */
     public abstract String getName();
-    
+
     /**
      * Creates a new instance of the DataSource.
-     * 
+     *
      * @return a new DataSource
      */
     public abstract DataSource createInstance();
-    
+
     /**
      * Looks up the registered factories and creates a CompositeDataSource
      * using them.
-     * 
+     *
      * @return a new DataSource
      */
     public static CompositeDataSource createDataSource() {
@@ -55,7 +54,7 @@ public abstract class DataSourceProvider {
         ServiceLoaderOSGiWrapper.load(DataSourceProvider.class, log, composite::putDataSource);
         return composite;
     }
-    
+
     private static CompositeDataSourceConfiguration readConfiguration(CompositeDataSource dataSource, String confPath) {
         try (InputStream input = Configuration.getFileAsStream(confPath + "/datasources.xml", dataSource, "datasources.default.xml")) {
             CompositeDataSourceConfiguration conf = new CompositeDataSourceConfiguration(input);

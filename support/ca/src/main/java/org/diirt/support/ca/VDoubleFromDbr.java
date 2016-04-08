@@ -37,7 +37,7 @@ class VDoubleFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Double> i
     public Double getValue() {
         return dbrValue.getDoubleValue()[0];
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

@@ -24,27 +24,27 @@ public class TimeDuration {
 
     /**
      * A new duration in hours.
-     * 
+     *
      * @param hour hours
      * @return a new duration
      */
     public static Duration ofHours(double hour) {
         return Duration.ofNanos((long) (hour * 60 * 60 * NANOSEC_IN_SEC));
     }
-    
+
     /**
      * A new duration in minutes.
-     * 
+     *
      * @param min minutes
      * @return a new duration
      */
     public static Duration ofMinutes(double min) {
         return Duration.ofNanos((long) (min * 60 * NANOSEC_IN_SEC));
     }
-    
+
     /**
      * A new duration in seconds.
-     * 
+     *
      * @param sec seconds
      * @return a new duration
      */
@@ -54,7 +54,7 @@ public class TimeDuration {
 
     /**
      * A new duration in hertz, will convert to the length of the period.
-     * 
+     *
      * @param hz frequency to be converted to a duration
      * @return a new duration
      */
@@ -95,7 +95,7 @@ public class TimeDuration {
     /**
      * The number of seconds concatenated with the number of nanoseconds (12.500000000
      * for 12.5 seconds).
-     * 
+     *
      * @return the string representation
      */
     public static String toSecondString(Duration duration){

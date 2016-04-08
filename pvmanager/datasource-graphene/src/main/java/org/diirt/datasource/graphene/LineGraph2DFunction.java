@@ -21,21 +21,21 @@ import org.diirt.vtype.VType;
  * @author carcassi
  */
 class LineGraph2DFunction implements ReadFunction<Graph2DResult> {
-    
+
     private ReadFunction<VType> tableData;
     private ReadFunctionArgument<String> xColumnName;
     private ReadFunctionArgument<String> yColumnName;
     private ReadFunctionArgument<String> tooltipColumnName;
-    
+
     private LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);
-    
+
     private VImage previousImage;
     private final QueueCollector<LineGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
     LineGraph2DFunction(ReadFunction<?> tableData,
-	    ReadFunction<?> xColumnName,
-	    ReadFunction<?> yColumnName,
-	    ReadFunction<?> tooltipColumnName) {
+            ReadFunction<?> xColumnName,
+            ReadFunction<?> yColumnName,
+            ReadFunction<?> tooltipColumnName) {
         this.tableData = new CheckedReadFunction<VType>(tableData, "Data", VTable.class, VNumberArray.class);
         this.xColumnName = stringArgument(xColumnName, "X Column");
         this.yColumnName = stringArgument(yColumnName, "Y Column");
@@ -52,7 +52,7 @@ class LineGraph2DFunction implements ReadFunction<Graph2DResult> {
         xColumnName.readNext();
         yColumnName.readNext();
         tooltipColumnName.readNext();
-        
+
         // Table and columns must be available
         if (vType == null || xColumnName.isMissing() || yColumnName.isMissing()) {
             return null;
@@ -65,25 +65,25 @@ class LineGraph2DFunction implements ReadFunction<Graph2DResult> {
         } else {
             dataset = DatasetConversions.point2DDatasetFromVTable((VTable) vType, xColumnName.getValue(), yColumnName.getValue());
         }
-        
+
         // Process all renderer updates
         List<LineGraph2DRendererUpdate> updates = rendererUpdateQueue.readValue();
         for (LineGraph2DRendererUpdate rendererUpdate : updates) {
             renderer.update(rendererUpdate);
         }
-        
+
         // If no size is set, don't calculate anything
         if (renderer.getImageHeight() == 0 && renderer.getImageWidth() == 0)
             return null;
-        
+
         BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         renderer.draw(image.createGraphics(), dataset);
-        
+
         previousImage = ValueUtil.toVImage(image);
         return new Graph2DResult(vType, previousImage,
                 new GraphDataRange(renderer.getXPlotRange(), dataset.getXStatistics().getRange(), renderer.getXAggregatedRange()),
                 new GraphDataRange(renderer.getYPlotRange(), dataset.getYStatistics().getRange(), renderer.getYAggregatedRange()),
                 renderer.getFocusValueIndex());
     }
-    
+
 }

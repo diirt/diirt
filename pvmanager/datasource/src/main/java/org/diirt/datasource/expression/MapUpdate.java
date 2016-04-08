@@ -15,7 +15,7 @@ import org.diirt.datasource.WriteFunction;
  * @author carcassi
  */
 class MapUpdate<T> {
-    
+
     private final Collection<String> expressionsToDelete;
     private final Map<String, ReadFunction<T>> readFunctionsToAdd;
     private final Map<String, WriteFunction<T>> writeFunctionsToAdd;
@@ -44,25 +44,25 @@ class MapUpdate<T> {
     public boolean isToClear() {
         return toClear;
     }
-    
+
     public static <T> MapUpdate<T> clear() {
         return new MapUpdate<>(Collections.<String>emptyList(), Collections.<String, ReadFunction<T>>emptyMap(),
                 Collections.<String, WriteFunction<T>>emptyMap(), true);
     }
-    
+
     public static <T> MapUpdate<T> addReadFunction(String name, ReadFunction<T> function) {
         return new MapUpdate<>(Collections.<String>emptyList(), Collections.singletonMap(name, function),
                 null, false);
     }
-    
+
     public static <T> MapUpdate<T> addWriteFunction(String name, WriteFunction<T> function) {
         return new MapUpdate<>(Collections.<String>emptyList(), null,
                 Collections.singletonMap(name, function), false);
     }
-    
+
     public static <T> MapUpdate<T> removeFunction(String name) {
         return new MapUpdate<>(Collections.singleton(name), Collections.<String, ReadFunction<T>>emptyMap(),
                 Collections.<String, WriteFunction<T>>emptyMap(), true);
     }
-    
+
 }

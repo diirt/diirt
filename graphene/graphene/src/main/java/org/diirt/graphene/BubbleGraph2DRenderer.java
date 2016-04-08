@@ -16,14 +16,14 @@ import org.diirt.util.stats.Ranges;
  * @author carcassi
  */
 public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRendererUpdate> {
-    
+
     private Range zAggregatedRange;
     private AxisRangeInstance zAxisRange = AxisRanges.display().createInstance();
     private Range zPlotRange;
     private Integer focusPixelX;
     private Integer focusPixelY;
     private boolean highlightFocusValue = false;
-    
+
     private Integer focusValueIndex;
 
     public BubbleGraph2DRenderer(int width, int height) {
@@ -52,39 +52,39 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
     /**
      *Draws a bubble graph on the given Graphics2D context using the given data.
      * @param g Graphics2D context, can not be null.
-     * @param data consists of x, y, and z coordinates, as well as labels. x and y correspond to position on the graph. 
+     * @param data consists of x, y, and z coordinates, as well as labels. x and y correspond to position on the graph.
      * z corresponds to the diameter of the circle, and the label corresponds to the color.
      */
     public void draw(Graphics2D g, Point3DWithLabelDataset data) {
         if(g == null)
             throw new NullPointerException("g is null");
         this.g = g;
-        
+
         calculateRanges(data.getXStatistics().getRange(), data.getXDisplayRange(),
                 data.getYStatistics().getRange(), data.getYDisplayRange(),
                 data.getZStatistics().getRange(), data.getZDisplayRange());
-        
+
         drawBackground();
         calculateLabels();
-        calculateGraphArea();        
+        calculateGraphArea();
         drawGraphArea();
-        
+
 
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         LabelColorScheme labelColor = LabelColorSchemes.orderedHueColor(data.getLabels());
-        
-        // Order values by 
+
+        // Order values by
         ListInt indexes = org.diirt.util.array.ListNumbers.sortedView(data.getZValues()).getIndexes();
-        
+
         // Reset current focused value
         focusValueIndex = null;
         final boolean isFocusValuePresent = focusPixelX != null && focusPixelY != null;
         Shape focusShape = null;
-        
+
         // Make sure that the line does not go ouside the chart
         setClip(g);
-        
+
         Range absZPlotRange = Ranges.absRange(zPlotRange);
         for (int j = indexes.size() - 1; j >= 0; j--) {
             int i = indexes.getInt(j);
@@ -108,7 +108,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
                 }
             }
         }
-        
+
         if (highlightFocusValue && focusShape != null) {
             g.setColor(Color.WHITE);
             g.fill(focusShape);
@@ -121,16 +121,16 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
         }
 
     }
-    
+
     private double radiusScale(double minValue, double value, double maxValue, double minRadius, double maxRadius) {
         if (minValue < 0) {
             throw new UnsupportedOperationException("No negative value should be reaching here");
         }
-        
+
         if (minValue == maxValue) {
             return minRadius + (maxRadius - minRadius) / 2;
         }
-        
+
         if (value <= minValue) {
             return minRadius;
         }
@@ -139,10 +139,10 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
         }
         return minRadius + MathUtil.scale(Math.sqrt(value), Math.sqrt(minValue), Math.sqrt(maxValue), (maxRadius - minRadius));
     }
-    
+
     /**
      *Does nothing.
-     * 
+     *
      * @param x the x value
      * @param y the y value
      * @param size the size
@@ -151,7 +151,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
     protected void newValue(double x, double y, double size, int index) {
         // Do nothing
     }
-    
+
     private Shape createShape(double x, double y, double size, boolean positive) {
         double halfSize = size / 2;
         if (positive) {
@@ -170,11 +170,11 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
 
     /**
      * Return the index of the focused value.
-     * 
+     *
      * @return the index or null
      */
     public Integer getFocusValueIndex() {
         return focusValueIndex;
     }
-    
+
 }

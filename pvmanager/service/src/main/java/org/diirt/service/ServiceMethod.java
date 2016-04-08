@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * or both. The framework will route or wrap the call appropriately (i.e if a
  * synchronous call is requested but only an asynchronous implementation is provided,
  * the call will wait until the asynchronous implementation returns).
- * Implementations are provided by overriding  
+ * Implementations are provided by overriding
  * {@link org.diirt.service.ServiceMethod#asyncExecImpl(java.util.Map, java.util.function.Consumer, java.util.function.Consumer) }
  * and/or {@link org.diirt.service.ServiceMethod#syncExecImpl(java.util.Map) }.
  * <p>
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  * @author carcassi
  */
 public abstract class ServiceMethod {
-    
+
     /**
      * The full description of an argument of a result of the service.
      */
@@ -60,7 +60,7 @@ public abstract class ServiceMethod {
 
         /**
          * The name of the argument/result.
-         * 
+         *
          * @return a short name; not null
          */
         public String getName() {
@@ -69,7 +69,7 @@ public abstract class ServiceMethod {
 
         /**
          * The description of the argument/result.
-         * 
+         *
          * @return a meaningful description; not null
          */
         public String getDescription() {
@@ -78,13 +78,13 @@ public abstract class ServiceMethod {
 
         /**
          * The type of the argument/result.
-         * 
+         *
          * @return the type; not null
          */
         public Class<?> getType() {
             return type;
         }
-        
+
     }
     private final String name;
     private final String description;
@@ -95,7 +95,7 @@ public abstract class ServiceMethod {
     private final Map<String, DataDescription> resultMap;
     private final boolean asyncExecute;
     private final boolean syncExecute;
-            
+
     /**
      * Creates a new service method with the given description. All properties
      * are copied out of the description, guaranteeing the immutability
@@ -109,19 +109,19 @@ public abstract class ServiceMethod {
             throw new IllegalArgumentException("Service method description should not be null.");
         }
         if (serviceDescription == null){
-            throw new IllegalArgumentException("Service description should not be null.");            
-        }    
-        
+            throw new IllegalArgumentException("Service description should not be null.");
+        }
+
         this.name = serviceMethodDescription.name;
         this.description = serviceMethodDescription.description;
         this.executor = serviceDescription.executorService;
         this.arguments = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.arguments));
         this.results = Collections.unmodifiableList(new ArrayList<>(serviceMethodDescription.results));
-        
+
         // Create a map of the names to argument/result
         this.argumentMap = Collections.unmodifiableMap(arguments.stream().collect(Collectors.toMap(DataDescription::getName, Function.identity())));
         this.resultMap = Collections.unmodifiableMap(results.stream().collect(Collectors.toMap(DataDescription::getName, Function.identity())));
-        
+
         // Checks if the subclass overrides the synchronous implementation
         Method method = null;
         try {
@@ -129,7 +129,7 @@ public abstract class ServiceMethod {
         } catch (NoSuchMethodException | SecurityException ex) {
         }
         syncExecute = method != null;
-        
+
         // Checks if the subclass overrides the asynchronous implementation
         method = null;
         try {
@@ -146,7 +146,7 @@ public abstract class ServiceMethod {
 
     /**
      * A brief name for the service method. Used for service registration and lookup.
-     * 
+     *
      * @return the service method name; not null
      */
     public final String getName() {
@@ -155,7 +155,7 @@ public abstract class ServiceMethod {
 
     /**
      * A description for the service method.
-     * 
+     *
      * @return the service method description; not null
      */
     public final String getDescription() {
@@ -164,7 +164,7 @@ public abstract class ServiceMethod {
 
     /**
      * The list of arguments, with their name, description and type.
-     * 
+     *
      * @return the arguments for this method; not null
      */
     public List<DataDescription> getArguments() {
@@ -173,7 +173,7 @@ public abstract class ServiceMethod {
 
     /**
      * The arguments, indexed by name.
-     * 
+     *
      * @return the arguments for this method; not null
      */
     public Map<String, DataDescription> getArgumentMap() {
@@ -182,7 +182,7 @@ public abstract class ServiceMethod {
 
     /**
      * The list of results, with their name, description and type.
-     * 
+     *
      * @return the results for this method; not null
      */
     public List<DataDescription> getResults() {
@@ -191,13 +191,13 @@ public abstract class ServiceMethod {
 
     /**
      * The results, indexed by name.
-     * 
+     *
      * @return the results for this method; not null
      */
     public Map<String, DataDescription> getResultMap() {
         return resultMap;
     }
-    
+
     void validateParameters(Map<String, Object> parameters) {
         for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
             String parameterName = parameter.getKey();
@@ -214,14 +214,14 @@ public abstract class ServiceMethod {
 
     /**
      * Provides a text representation for the method (i.e. <code>name(Type arg1, Type arg2): Type res1</code> ).
-     * 
+     *
      * @return the string representation; not null
      */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getName()).append("(");
-        
+
         boolean first = true;
         for (DataDescription argument : getArguments()) {
             if (!first) {
@@ -234,7 +234,7 @@ public abstract class ServiceMethod {
                     .append(argument.getName());
         }
         sb.append(")");
-        
+
         if (!getResults().isEmpty()) {
             sb.append(": ");
         }
@@ -252,13 +252,13 @@ public abstract class ServiceMethod {
 
         return sb.toString();
     }
-    
+
     /**
      * Synchronous implementation of the service method.
      * <p>
      * The implementation should return the value in case of success, or
-     * throw an exception in case of failure. 
-     * 
+     * throw an exception in case of failure.
+     *
      * @param parameters the parameters for the method; not null
      * @return the result callback, for success; not null
      * @throws Exception the result callback, for failure
@@ -270,7 +270,7 @@ public abstract class ServiceMethod {
     /**
      * Asynchronous implementation of the service method.
      * <p>
-     * The implementation should call only one callback, the callback or the 
+     * The implementation should call only one callback, the callback or the
      * errorCallback. If the method throws an exception
      * it will be sent to the errorCallbak (i.e. you can let exceptions go through)
      * in which case no callback must be used.
@@ -348,7 +348,7 @@ public abstract class ServiceMethod {
         if (arguments == null){
             throw new IllegalArgumentException("Parameters should not be null.");
         }
-        
+
         validateParameters(arguments);
 
         if (syncExecute) {
@@ -374,7 +374,7 @@ public abstract class ServiceMethod {
      * @param arguments the parameters for the service; can't be null
      * @param callback the result callback, for success; can't be null
      * @param errorCallback the error callback, for failures; can't be null
-     */    
+     */
     public void executeAsync(Map<String, Object> arguments, Consumer<Map<String, Object>> callback, Consumer<Exception> errorCallback) {
         if (arguments == null){
             throw new IllegalArgumentException("Parameters should not be null.");
@@ -385,7 +385,7 @@ public abstract class ServiceMethod {
         if (errorCallback == null){
             throw new IllegalArgumentException("Error callback should not be null.");
         }
-        
+
         validateParameters(arguments);
 
         if (asyncExecute) {

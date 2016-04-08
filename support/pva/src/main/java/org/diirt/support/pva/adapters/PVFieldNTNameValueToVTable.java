@@ -52,119 +52,119 @@ public class PVFieldNTNameValueToVTable implements VTable {
    * @param pvField
    * @param disconnected
    */
-	public PVFieldNTNameValueToVTable(PVStructure pvField, boolean disconnected) {
+        public PVFieldNTNameValueToVTable(PVStructure pvField, boolean disconnected) {
 
-		PVStringArray namesField = (PVStringArray) pvField.getScalarArrayField("name", ScalarType.pvString);
+                PVStringArray namesField = (PVStringArray) pvField.getScalarArrayField("name", ScalarType.pvString);
 
-		PVScalarArray scalarArray = (PVScalarArray) pvField.getSubField("value");
+                PVScalarArray scalarArray = (PVScalarArray) pvField.getSubField("value");
 
-		if ((namesField == null) || (scalarArray == null)) {
-			this.names = null;
-			valueType = null;
-			values = null;
-			return;
-		}
+                if ((namesField == null) || (scalarArray == null)) {
+                        this.names = null;
+                        valueType = null;
+                        values = null;
+                        return;
+                }
 
-		StringArrayData namesData = new StringArrayData();
-		namesField.get(0, namesField.getLength(), namesData);
-		this.names = Arrays.asList(namesData.data);
+                StringArrayData namesData = new StringArrayData();
+                namesField.get(0, namesField.getLength(), namesData);
+                this.names = Arrays.asList(namesData.data);
 
-		int numCols = this.names.size();
+                int numCols = this.names.size();
 
-		this.values = new ArrayList<Object>(numCols);
+                this.values = new ArrayList<Object>(numCols);
 
-		if (scalarArray instanceof PVDoubleArray) {
-			
-			valueType = double.class;
-			DoubleArrayData data = new DoubleArrayData();
-			((PVDoubleArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayDouble(data.data[i]));
+                if (scalarArray instanceof PVDoubleArray) {
 
-		} else if (scalarArray instanceof PVFloatArray) {
+                        valueType = double.class;
+                        DoubleArrayData data = new DoubleArrayData();
+                        ((PVDoubleArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayDouble(data.data[i]));
 
-			valueType = float.class;
-			FloatArrayData data = new FloatArrayData();
-			((PVFloatArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayFloat(data.data[i]));
+                } else if (scalarArray instanceof PVFloatArray) {
 
-		} else if (scalarArray instanceof PVStringArray) {
+                        valueType = float.class;
+                        FloatArrayData data = new FloatArrayData();
+                        ((PVFloatArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayFloat(data.data[i]));
 
-			valueType = String.class;
-			StringArrayData data = new StringArrayData();
-			((PVStringArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(Arrays.asList(data.data[i]));
+                } else if (scalarArray instanceof PVStringArray) {
 
-		} else if (scalarArray instanceof PVIntArray) {
+                        valueType = String.class;
+                        StringArrayData data = new StringArrayData();
+                        ((PVStringArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(Arrays.asList(data.data[i]));
 
-			valueType = int.class;
-			IntArrayData data = new IntArrayData();
-			((PVIntArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayInt(data.data[i]));
+                } else if (scalarArray instanceof PVIntArray) {
 
-		} else if (scalarArray instanceof PVUIntArray) {
+                        valueType = int.class;
+                        IntArrayData data = new IntArrayData();
+                        ((PVIntArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayInt(data.data[i]));
 
-			valueType = int.class;
-			IntArrayData data = new IntArrayData();
-			((PVUIntArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayInt(data.data[i]));
+                } else if (scalarArray instanceof PVUIntArray) {
 
-		} else if (scalarArray instanceof PVLongArray) {
+                        valueType = int.class;
+                        IntArrayData data = new IntArrayData();
+                        ((PVUIntArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayInt(data.data[i]));
 
-			valueType = long.class;
-			LongArrayData data = new LongArrayData();
-			((PVLongArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayLong(data.data[i]));
+                } else if (scalarArray instanceof PVLongArray) {
 
-		} else if (scalarArray instanceof PVULongArray) {
+                        valueType = long.class;
+                        LongArrayData data = new LongArrayData();
+                        ((PVLongArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayLong(data.data[i]));
 
-			valueType = long.class;
-			LongArrayData data = new LongArrayData();
-			((PVULongArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayLong(data.data[i]));
+                } else if (scalarArray instanceof PVULongArray) {
 
-		} else if (scalarArray instanceof PVByteArray) {
+                        valueType = long.class;
+                        LongArrayData data = new LongArrayData();
+                        ((PVULongArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayLong(data.data[i]));
 
-			valueType = byte.class;
-			ByteArrayData data = new ByteArrayData();
-			((PVByteArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayByte(data.data[i]));
+                } else if (scalarArray instanceof PVByteArray) {
 
-		} else if (scalarArray instanceof PVUByteArray) {
+                        valueType = byte.class;
+                        ByteArrayData data = new ByteArrayData();
+                        ((PVByteArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayByte(data.data[i]));
 
-			valueType = byte.class;
-			ByteArrayData data = new ByteArrayData();
-			((PVUByteArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayByte(data.data[i]));
+                } else if (scalarArray instanceof PVUByteArray) {
 
-		} else if (scalarArray instanceof PVShortArray) {
+                        valueType = byte.class;
+                        ByteArrayData data = new ByteArrayData();
+                        ((PVUByteArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayByte(data.data[i]));
 
-			valueType = short.class;
-			ShortArrayData data = new ShortArrayData();
-			((PVShortArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayShort(data.data[i]));
+                } else if (scalarArray instanceof PVShortArray) {
 
-		} else if (scalarArray instanceof PVUShortArray) {
+                        valueType = short.class;
+                        ShortArrayData data = new ShortArrayData();
+                        ((PVShortArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayShort(data.data[i]));
 
-			valueType = short.class;
-			ShortArrayData data = new ShortArrayData();
-			((PVUShortArray) scalarArray).get(0, numCols, data);
-			for (int i = 0; i < numCols; i++)
-				values.add(new ArrayShort(data.data[i]));
+                } else if (scalarArray instanceof PVUShortArray) {
 
-		} else {
-			throw new IllegalArgumentException("Unsupported type for NTNameValue.value array field");
-		}
-	}
+                        valueType = short.class;
+                        ShortArrayData data = new ShortArrayData();
+                        ((PVUShortArray) scalarArray).get(0, numCols, data);
+                        for (int i = 0; i < numCols; i++)
+                                values.add(new ArrayShort(data.data[i]));
+
+                } else {
+                        throw new IllegalArgumentException("Unsupported type for NTNameValue.value array field");
+                }
+        }
 
   @Override
   public int getColumnCount() {

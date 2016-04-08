@@ -38,8 +38,8 @@ public class VerifyCloseChannelPVManager {
 	Thread.sleep(10000);
         reader.close();
         System.out.println("After five seconds");
-	
-	Thread.sleep(10000);
+
+        Thread.sleep(10000);
         System.out.println("After another five seconds");
         PVManager.getDefaultDataSource().close();
         System.out.println("Done");

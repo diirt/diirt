@@ -12,7 +12,7 @@ import java.time.Instant;
  * @author carcassi
  */
 public interface Time {
-    
+
     /**
      * The time instant of the value, typically indicating when it was
      * generated. If never connected, it returns the

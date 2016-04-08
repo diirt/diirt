@@ -10,7 +10,7 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 class IVLong extends VLong {
-    
+
     private final Long value;
     private final Alarm alarm;
     private final Time time;

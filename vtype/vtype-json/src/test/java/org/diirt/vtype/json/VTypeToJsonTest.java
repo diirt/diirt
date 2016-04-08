@@ -29,7 +29,6 @@ import org.diirt.vtype.Time;
 import org.diirt.vtype.VBoolean;
 import org.diirt.vtype.VBooleanArray;
 import org.diirt.vtype.VByte;
-import org.diirt.vtype.VByteArray;
 import org.diirt.vtype.VDouble;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.VEnum;
@@ -40,7 +39,6 @@ import org.diirt.vtype.VInt;
 import org.diirt.vtype.VIntArray;
 import org.diirt.vtype.VLong;
 import org.diirt.vtype.VLongArray;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VShort;
 import org.diirt.vtype.VShortArray;
@@ -67,7 +65,7 @@ public class VTypeToJsonTest {
         jsonWriter.writeObject(json);
         assertThat(writer.toString(), equalTo(text));
     }
-    
+
     public void compareVType(VType expected, VType actual) {
         assertThat("Type mismatch", VTypeValueEquals.typeEquals(actual, expected), equalTo(true));
         assertThat("Value mismatch", VTypeValueEquals.valueEquals(actual, expected), equalTo(true));
@@ -78,7 +76,7 @@ public class VTypeToJsonTest {
             assertThat("Time mismatch", VTypeValueEquals.timeEquals((Time) actual, (Time) expected), equalTo(true));
         }
     }
-    
+
     public JsonObject parseJson(String json) {
         try (JsonReader reader = Json.createReader(new StringReader(json))) {
             return reader.readObject();
@@ -203,12 +201,12 @@ public class VTypeToJsonTest {
             + "\"columnNames\":[\"Name\",\"Index\",\"Value\",\"Timestamp\"],"
             + "\"columnTypes\":[\"String\",\"int\",\"double\",\"Timestamp\"],"
             + "\"columnValues\":[[\"\",\"B\",\"C\"],[1,2,3],[null,1.25,-0.1],[1234,2345,3456]]}";
-    
+
     @Test
     public void serializeVDouble() {
         compareJson(VTypeToJson.toJson(vDouble), vDoubleJson);
     }
-    
+
     @Test
     public void serializeVFloat() {
         compareJson(VTypeToJson.toJson(vFloat), vFloatJson);
@@ -243,7 +241,7 @@ public class VTypeToJsonTest {
     public void serializeVString() {
         compareJson(VTypeToJson.toJson(vString), vStringJson);
     }
-        
+
     @Test
     public void serializeVEnum() {
         compareJson(VTypeToJson.toJson(vEnum), vEnumJson);
@@ -408,5 +406,5 @@ public class VTypeToJsonTest {
     public void parseVTable2() {
         compareVType(vTable2, VTypeToJson.toVType(parseJson(vTable2Json)));
     }
-    
+
 }

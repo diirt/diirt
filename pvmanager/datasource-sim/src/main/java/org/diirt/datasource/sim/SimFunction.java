@@ -100,11 +100,11 @@ abstract class SimFunction<T> extends Simulation<T> {
 
     /**
      * Returns the time between each sample.
-     * 
+     *
      * @return a time duration
      */
     public Duration getTimeBetweenSamples() {
         return timeBetweenSamples;
     }
-    
+
 }

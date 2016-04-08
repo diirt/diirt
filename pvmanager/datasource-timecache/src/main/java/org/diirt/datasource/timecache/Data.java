@@ -16,6 +16,6 @@ public interface Data extends Comparable<Data> {
 
 	public Instant getTimestamp();
 
-	public VType getValue();
+        public VType getValue();
 
 }

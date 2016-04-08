@@ -11,7 +11,7 @@ import static java.lang.Math.*;
  * @author carcassi
  */
 public class Interpolations {
-    
+
     private static Interpolation noInterpolation = new Interpolation() {
 
             @Override

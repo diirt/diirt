@@ -24,5 +24,5 @@ class FormulaFunctionReadExpression extends DesiredRateExpressionImpl<Object> {
         super.fillReadRecipe(director, builder);
         ((FormulaReadFunction) getFunction()).setDirector(director);
     }
-    
+
 }

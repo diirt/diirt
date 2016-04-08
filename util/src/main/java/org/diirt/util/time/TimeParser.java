@@ -15,13 +15,13 @@ import java.util.regex.Pattern;
 /**
  * A helper class to parse user defined time strings to absolute or relative
  * time durations.
- * 
+ *
  * The following return a TimeInterval - absolute
- * 
+ *
  * "last min", "last hour", "last day", "last week"
- * 
+ *
  * "last 5 mins", "last 5 hours", "last 5 days", "last 5 weeks"
- * 
+ *
  * "5 mins ago", "5 hours ago", "5 days ago", "5 weeks ago"
  * 
  * The following returns a Instant "now"
@@ -29,12 +29,12 @@ import java.util.regex.Pattern;
  * The following returns a Duration - relative
  * 
  * "last min", "last hour", "last day", "last week"
- * 
+ *
  * "last 5 mins", "last 5 hours", "last 5 days", "last 5 weeks"
- * 
+ *
  * "5 mins ago", "5 hours ago", "5 days ago", "5 weeks ago"
- * 
- * 
+ *
+ *
  * @author shroffk
  */
 public class TimeParser {

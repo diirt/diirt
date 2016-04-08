@@ -9,8 +9,6 @@ import org.diirt.datasource.expression.SourceRateExpressionImpl;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.SourceRateExpression;
 import java.util.List;
-import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.datasource.ReadFunction;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.diirt.datasource.ExpressionLanguage.*;
