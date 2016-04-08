@@ -4,10 +4,10 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
@@ -18,7 +18,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
     private volatile ScheduledFuture<?> scanTaskHandle;
 
     public ActiveScanDecoupler(ScheduledExecutorService scannerExecutor,
-            TimeDuration maxDuration, DesiredRateEventListener listener) {
+            Duration maxDuration, DesiredRateEventListener listener) {
         super(scannerExecutor, maxDuration, listener);
     }
 
@@ -38,7 +38,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
                     sendDesiredRateEvent(event);
                 }
             }
-        }, 0, getMaxDuration().toNanosLong(), TimeUnit.NANOSECONDS);
+        }, 0, getMaxDuration().toNanos(), TimeUnit.NANOSECONDS);
     }
 
     @Override

@@ -4,9 +4,9 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Represent a strategy to decouple desired rate events from source rate
@@ -19,7 +19,7 @@ abstract class SourceDesiredRateDecoupler {
     private static final Logger log = Logger.getLogger(SourceDesiredRateDecoupler.class.getName());
     private final DesiredRateEventListener listener;
     private final ScheduledExecutorService scannerExecutor;
-    private final TimeDuration maxDuration;
+    private final Duration maxDuration;
 
     protected final Object lock = new Object();
     private boolean eventProcessing = false;
@@ -34,7 +34,7 @@ abstract class SourceDesiredRateDecoupler {
      * @param maxDuration max interval between notifications
      * @param listener the event callback
      */
-    public SourceDesiredRateDecoupler(ScheduledExecutorService scannerExecutor, TimeDuration maxDuration,
+    public SourceDesiredRateDecoupler(ScheduledExecutorService scannerExecutor, Duration maxDuration,
             DesiredRateEventListener listener) {
         this.listener = listener;
         this.scannerExecutor = scannerExecutor;
@@ -45,7 +45,7 @@ abstract class SourceDesiredRateDecoupler {
         return scannerExecutor;
     }
 
-    public TimeDuration getMaxDuration() {
+    public Duration getMaxDuration() {
         return maxDuration;
     }
 

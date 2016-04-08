@@ -26,14 +26,20 @@ import org.diirt.vtype.VIntArray;
 import org.diirt.vtype.VShortArray;
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.VType;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import static org.diirt.datasource.ExpressionLanguage.*;
+
 import org.diirt.datasource.LatestValueCollector;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.WriteFunction;
+
 import static org.diirt.vtype.ValueFactory.*;
+
 import org.diirt.datasource.expression.ChannelExpression;
 import org.diirt.datasource.expression.ChannelExpressionList;
 import org.diirt.datasource.expression.DesiredRateExpression;
@@ -507,7 +513,7 @@ public class ExpressionLanguage {
      * @return an expression for the array
      */
     public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, SourceRateExpressionList<VDouble> expressions) {
+            synchronizedArrayOf(Duration tolerance, SourceRateExpressionList<VDouble> expressions) {
         return synchronizedArrayOf(tolerance, tolerance.multipliedBy(10), expressions);
     }
 
@@ -522,8 +528,8 @@ public class ExpressionLanguage {
      * @return an expression for the array
      */
     public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(TimeDuration tolerance, TimeDuration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
-        if (cacheDepth.equals(TimeDuration.ofMillis(0)) && cacheDepth.getSec() > 0)
+            synchronizedArrayOf(Duration tolerance, Duration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
+        if (cacheDepth.equals(Duration.ofMillis(0)) && TimeDuration.toSecondsDouble(cacheDepth) > 0)
             throw new IllegalArgumentException("Distance between samples must be non-zero and positive");
         List<String> names = new ArrayList<String>();
         List<ReadFunction<List<VDouble>>> collectors = new ArrayList<ReadFunction<List<VDouble>>>();
@@ -550,7 +556,7 @@ public class ExpressionLanguage {
      * @return a new expression
      */
     public static <T extends Time> DesiredRateExpression<List<T>>
-            timedCacheOf(SourceRateExpression<T> expression, TimeDuration maxIntervalBetweenSamples) {
+            timedCacheOf(SourceRateExpression<T> expression, Duration maxIntervalBetweenSamples) {
         return new DesiredRateExpressionImpl<List<T>>(expression,
                 new TimedCacheCollector<T>(expression.getFunction(), maxIntervalBetweenSamples),
                 expression.getName());

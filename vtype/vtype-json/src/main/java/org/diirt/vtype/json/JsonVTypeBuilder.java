@@ -6,21 +6,24 @@ package org.diirt.vtype.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Instant;
 import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+
 import org.diirt.util.array.ListBoolean;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.Time;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueUtil;
+
 import static org.diirt.vtype.json.JsonArrays.*;
 
 /**
@@ -114,8 +117,8 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
 
     public JsonVTypeBuilder addTime(Time time) {
         return add("time", new JsonVTypeBuilder()
-                .add("unixSec", time.getTimestamp().getSec())
-                .add("nanoSec", time.getTimestamp().getNanoSec())
+                .add("unixSec", time.getTimestamp().getEpochSecond())
+                .add("nanoSec", time.getTimestamp().getNano())
                 .addNullableObject("userTag", time.getTimeUserTag()));
     }
 
@@ -157,7 +160,7 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
                 b.add("short");
             } else if (element.equals(byte.class)) {
                 b.add("byte");
-            } else if (element.equals(Timestamp.class)) {
+            } else if (element.equals(Instant.class)) {
                 b.add("Timestamp");
             } else {
                 throw new IllegalArgumentException("Column type " + element + " not supported");
@@ -178,9 +181,9 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
             } else if (type.equals(double.class) || type.equals(float.class) || type.equals(long.class) ||
                     type.equals(int.class) || type.equals(short.class) || type.equals(byte.class)) {
                 b.add(fromListNumber((ListNumber) vTable.getColumnData(column)));
-            } else if (type.equals(Timestamp.class)) {
+            } else if (type.equals(Instant.class)) {
                 @SuppressWarnings("unchecked")
-                List<Timestamp> listTimestamp = (List<Timestamp>) vTable.getColumnData(column);
+                List<Instant> listTimestamp = (List<Instant>) vTable.getColumnData(column);
                 b.add(fromListTimestamp(listTimestamp));
             } else {
                 throw new IllegalArgumentException("Column type " + type.getSimpleName() + " not supported");

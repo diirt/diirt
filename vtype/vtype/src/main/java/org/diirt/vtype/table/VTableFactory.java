@@ -4,6 +4,13 @@
  */
 package org.diirt.vtype.table;
 
+import static org.diirt.vtype.ValueFactory.alarmNone;
+import static org.diirt.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.newVDoubleArray;
+import static org.diirt.vtype.ValueFactory.newVStringArray;
+import static org.diirt.vtype.ValueFactory.timeNow;
+
+import java.time.Instant;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.BufferInt;
@@ -18,7 +26,6 @@ import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListNumbers;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
@@ -27,7 +34,6 @@ import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;
-import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *
@@ -634,7 +640,7 @@ public class VTableFactory {
                 if (!(data instanceof ListNumber)) {
                     throw new IllegalArgumentException("Data for column " + i + " (" + name + ") is not a ListNumber (" + data + ")");
                 }
-            } else if (type.equals(Timestamp.class)) {
+            } else if (type.equals(Instant.class)) {
                 if (!(data instanceof List)) {
                     throw new IllegalArgumentException("Data for column " + i + " (" + name + ") is not a List<Timestamp> (" + data + ")");
                 }

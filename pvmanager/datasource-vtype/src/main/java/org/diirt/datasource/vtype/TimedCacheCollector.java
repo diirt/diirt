@@ -8,7 +8,7 @@ import org.diirt.vtype.Time;
 import java.util.*;
 import org.diirt.datasource.Collector;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 import org.diirt.util.time.TimeInterval;
 
 /**
@@ -19,10 +19,10 @@ class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final ReadFunction<T> function;
-    private final TimeDuration cachedPeriod;
+    private final Duration cachedPeriod;
     private Runnable notification;
 
-    public TimedCacheCollector(ReadFunction<T> function, TimeDuration cachedPeriod) {
+    public TimedCacheCollector(ReadFunction<T> function, Duration cachedPeriod) {
         this.function = function;
         this.cachedPeriod = cachedPeriod;
     }
@@ -67,7 +67,7 @@ class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
 
     private void prune() {
         // Remove all values that are too old
-        TimeInterval periodAllowed = cachedPeriod.before(buffer.getLast().getTimestamp());
+        TimeInterval periodAllowed = TimeInterval.before(cachedPeriod, buffer.getLast().getTimestamp());
         while (!buffer.isEmpty() && !periodAllowed.contains(buffer.getFirst().getTimestamp())) {
             // Discard value
             buffer.removeFirst();

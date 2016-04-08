@@ -10,16 +10,18 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.sql.DataSource;
+
 import org.diirt.service.ServiceMethod;
 import org.diirt.util.array.CircularBufferDouble;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
@@ -143,7 +145,7 @@ class JDBCServiceMethod extends ServiceMethod {
                     break;
 
                 case Types.TIMESTAMP:
-                    types.add(Timestamp.class);
+                    types.add(Instant.class);
                     data.add(new ArrayList<>());
                     break;
 
@@ -165,14 +167,14 @@ class JDBCServiceMethod extends ServiceMethod {
                     @SuppressWarnings("unchecked")
                     List<String> strings = (List<String>) data.get(i);
                     strings.add(resultSet.getString(i+1));
-                } else if (type.equals(Timestamp.class)) {
+                } else if (type.equals(Instant.class)) {
                     @SuppressWarnings("unchecked")
-                    List<Timestamp> timestamps = (List<Timestamp>) data.get(i);
+                    List<Instant> timestamps = (List<Instant>) data.get(i);
                     java.sql.Timestamp sqlTimestamp = resultSet.getTimestamp(i+1);
                     if (sqlTimestamp == null) {
                         timestamps.add(null);
                     } else {
-                        timestamps.add(Timestamp.of(new Date(sqlTimestamp.getTime())));
+                        timestamps.add((new Date(sqlTimestamp.getTime())).toInstant());
                     }
                 } else if (type.equals(double.class)) {
                     ((CircularBufferDouble) data.get(i)).addDouble(resultSet.getDouble(i+1));

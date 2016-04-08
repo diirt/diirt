@@ -16,7 +16,8 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
 import org.diirt.datasource.TimeoutException;
-import static org.diirt.util.time.TimeDuration.*;
+import org.diirt.datasource.WriteFunction;
+import static java.time.Duration.*;
 
 /**
  * This is the code from the examples in the docs, to make sure it
@@ -29,7 +30,7 @@ public class BasicExamples {
     public void b1_readLatestValue() {
         // Let's statically import so the code looks cleaner
         // import static org.epics.pvmanager.ExpressionLanguage.*;
-        // import static org.diirt.util.time.TimeDuration.*;
+        // import static java.time.TimeDuration.*;
 
         // Get updates from channel "channelName" up to every 100 ms
         PVReader<Object> pvReader = PVManager.read(channel("channelName"))

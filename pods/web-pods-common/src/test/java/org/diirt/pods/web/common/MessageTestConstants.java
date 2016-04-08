@@ -4,10 +4,12 @@
  */
 package org.diirt.pods.web.common;
 
+import java.time.Instant;
 import java.util.Arrays;
+
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
+
 import static org.diirt.vtype.ValueFactory.*;
 
 /**
@@ -61,7 +63,7 @@ public class MessageTestConstants {
                 + "\"time\":{\"unixSec\":0,\"nanoSec\":0,\"userTag\":null},"
                 + "\"display\":{\"lowAlarm\":null,\"highAlarm\":null,\"lowDisplay\":null,\"highDisplay\":null,\"lowWarning\":null,\"highWarning\":null,\"units\":\"\"}}"
             + "}";
-    public static MessageWrite write3Message = new MessageWrite(1, newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(0, 0)), displayNone()));
+    public static MessageWrite write3Message = new MessageWrite(1, newVDouble(3.14, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Instant.ofEpochSecond(0, 0)), displayNone()));
 
     public static String write4Json = "{"
             + "\"message\":\"write\","

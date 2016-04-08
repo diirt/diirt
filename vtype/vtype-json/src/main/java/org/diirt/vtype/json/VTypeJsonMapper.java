@@ -4,16 +4,19 @@
  */
 package org.diirt.vtype.json;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+
 import org.diirt.util.array.ArrayBoolean;
 import org.diirt.util.array.ListBoolean;
 import org.diirt.util.array.ListByte;
@@ -22,12 +25,12 @@ import org.diirt.util.array.ListFloat;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListLong;
 import org.diirt.util.array.ListShort;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.Time;
 import org.diirt.vtype.ValueFactory;
+
 import static org.diirt.vtype.json.JsonArrays.*;
 
 /**
@@ -63,7 +66,7 @@ class VTypeJsonMapper implements JsonObject {
         if (time == null) {
             return null;
         }
-        return ValueFactory.newTime(Timestamp.of(time.getInt("unixSec"), time.getInt("nanoSec")), time.getInteger("userTag"), true);
+        return ValueFactory.newTime(Instant.ofEpochSecond(time.getInt("unixSec"), time.getInt("nanoSec")), time.getInteger("userTag"), true);
     }
 
     public Display getDisplay() {
@@ -153,7 +156,7 @@ class VTypeJsonMapper implements JsonObject {
             } else if ("byte".equals(type)) {
                 types.add(byte.class);
             } else if ("Timestamp".equals(type)) {
-                types.add(Timestamp.class);
+                types.add(Instant.class);
             } else {
                 throw new IllegalArgumentException("Column type " + type + " not supported");
             }
@@ -180,7 +183,7 @@ class VTypeJsonMapper implements JsonObject {
                 result.add(toListShort(array.getJsonArray(i)));
             } else if (byte.class.equals(type)) {
                 result.add(toListByte(array.getJsonArray(i)));
-            } else if (Timestamp.class.equals(type)) {
+            } else if (Instant.class.equals(type)) {
                 result.add(toListTimestamp(array.getJsonArray(i)));
             } else {
                 throw new IllegalArgumentException("Column type " + type + " not supported");

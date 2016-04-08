@@ -10,12 +10,12 @@ package org.diirt.datasource.timecache;
  */
 public class CacheFactory {
 
-        public static Cache cache = null;
+    public static Cache cache = null;
 
-        public static Cache getCache(CacheConfig defaultConfig) {
-                if (cache == null)
-                        cache = new CacheImpl(defaultConfig);
-                return cache;
-        }
+    public static Cache getCache(CacheConfig defaultConfig) {
+        if (cache == null)
+            cache = new CacheImpl(defaultConfig);
+        return cache;
+    }
 
 }

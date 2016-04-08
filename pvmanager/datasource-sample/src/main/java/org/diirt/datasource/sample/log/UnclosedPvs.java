@@ -10,7 +10,7 @@ import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 import org.diirt.vtype.VNumber;
 
 /**
@@ -34,9 +34,9 @@ public class UnclosedPvs {
                         }
                     }
                 })
-                .maxRate(TimeDuration.ofMillis(500));
+                .maxRate(Duration.ofMillis(500));
 
-        Thread.sleep(2000);
+    Thread.sleep(2000);
         System.out.println("Voiding reference");
         reader = null;
         Thread.sleep(100);

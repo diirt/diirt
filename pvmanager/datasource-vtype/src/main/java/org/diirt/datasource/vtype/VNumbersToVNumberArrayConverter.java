@@ -4,15 +4,19 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFactory;
+import static org.diirt.vtype.ValueFactory.alarmNone;
+import static org.diirt.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.timeNow;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.diirt.datasource.ReadFunction;
-import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.util.array.ListDouble;
+import org.diirt.vtype.Display;
+import org.diirt.vtype.VNumber;
+import org.diirt.vtype.VNumberArray;
+import org.diirt.vtype.ValueFactory;
 
 /**
  * Converts numeric types to VDouble.

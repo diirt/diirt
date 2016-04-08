@@ -21,61 +21,61 @@ import org.diirt.util.time.TimeInterval;
  */
 public interface PVCache {
 
-        /**
-         * Start processing live data samples. NOT IMPLEMENTED IN FIRST VERSION.
-         */
-        public void startLiveDataProcessing();
+    /**
+     * Start processing live data samples. NOT IMPLEMENTED IN FIRST VERSION.
+     */
+    public void startLiveDataProcessing();
 
-        /**
-         * Stop processing live data samples. NOT IMPLEMENTED IN FIRST VERSION.
-         */
-        public void stopLiveDataProcessing();
+    /**
+     * Stop processing live data samples. NOT IMPLEMENTED IN FIRST VERSION.
+     */
+    public void stopLiveDataProcessing();
 
-        /**
-         * Add a {@link PVCacheListener} to be notified when new samples are
-         * available.
-         * @param listener to be added
-         */
-        public void addListener(PVCacheListener listener);
+    /**
+     * Add a {@link PVCacheListener} to be notified when new samples are
+     * available.
+     * @param listener to be added
+     */
+    public void addListener(PVCacheListener listener);
 
-        /**
-         * Remove a {@link PVCacheListener}.
-         * @param listener to be removed
-         */
-        public void removeListener(PVCacheListener listener);
+    /**
+     * Remove a {@link PVCacheListener}.
+     * @param listener to be removed
+     */
+    public void removeListener(PVCacheListener listener);
 
-        /**
-         * Asynchronously retrieves samples from sources for the requested
-         * {@link TimeInterval} and asynchronously requests {@link DataStorage} for
-         * immediately available samples.
-         * @param interval {@link TimeInterval} to be retrieved.
-         */
-        public DataRequestThread retrieveDataAsync(TimeInterval interval);
+    /**
+     * Asynchronously retrieves samples from sources for the requested
+     * {@link TimeInterval} and asynchronously requests {@link DataStorage} for
+     * immediately available samples.
+     * @param interval {@link TimeInterval} to be retrieved.
+     */
+    public DataRequestThread retrieveDataAsync(TimeInterval interval);
 
-        /**
-         * Synchronously requests {@link DataStorage} for immediately available
-         * samples.
-         * @param interval {@link TimeInterval} to be retrieved.
-         */
-        public SortedSet<Data> retrieveDataSync(TimeInterval interval);
+    /**
+     * Synchronously requests {@link DataStorage} for immediately available
+     * samples.
+     * @param interval {@link TimeInterval} to be retrieved.
+     */
+    public SortedSet<Data> retrieveDataSync(TimeInterval interval);
 
-        /**
-         * Get the completed intervals list. An {@link TimeInterval} is completed
-         * when all {@link DataSource} have finished responding.
-         * @return {@link IntervalsList} the list of completed intervals.
-         */
-        public IntervalsList getCompletedIntervalsList();
+    /**
+     * Get the completed intervals list. An {@link TimeInterval} is completed
+     * when all {@link DataSource} have finished responding.
+     * @return {@link IntervalsList} the list of completed intervals.
+     */
+    public IntervalsList getCompletedIntervalsList();
 
-        public void setStatisticsEnabled(boolean enabled);
+    public void setStatisticsEnabled(boolean enabled);
 
-        public boolean isStatisticsEnabled();
+    public boolean isStatisticsEnabled();
 
-        public PVCacheStatistics getStatistics();
+    public PVCacheStatistics getStatistics();
 
-        public boolean isProcessingSources();
+    public boolean isProcessingSources();
 
-        public String getChannelName();
+    public String getChannelName();
 
-        public void flush();
+    public void flush();
 
 }

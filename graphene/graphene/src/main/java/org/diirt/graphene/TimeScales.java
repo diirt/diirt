@@ -9,10 +9,17 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
+
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
-import org.diirt.util.time.TimestampFormat;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 
 /**
  *
@@ -195,18 +202,18 @@ public class TimeScales {
      * @return a list of times evenly spaced by the duration of <code>period</code>
      * and encompassing the duration of <code>timeInterval</code>
      */
-    static List<Timestamp> createReferences(TimeInterval timeInterval, TimePeriod period) {
-        Date start = timeInterval.getStart().toDate();
-        Date end = timeInterval.getEnd().toDate();
+    static List<Instant> createReferences(TimeInterval timeInterval, TimePeriod period) {
+        Date start = Date.from(timeInterval.getStart());
+        Date end = Date.from(timeInterval.getEnd());
         GregorianCalendar endCal = new GregorianCalendar();
         endCal.setTime(end);
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(start);
         round(cal, period.fieldId);
         cal.set(period.fieldId, (cal.get(period.fieldId) / (int) period.amount) * (int) period.amount);
-        List<Timestamp> references = new ArrayList<>();
+        List<Instant> references = new ArrayList<>();
         while (endCal.compareTo(cal) >= 0) {
-            Timestamp newTime = Timestamp.of(cal.getTime());
+            Instant newTime = cal.getTime().toInstant();
             if (timeInterval.contains(newTime)) {
                 references.add(newTime);
             }
@@ -396,26 +403,29 @@ public class TimeScales {
         return new TimePeriod(GregorianCalendar.MILLISECOND, 1000*seconds);
     }
 
-    static double normalize(Timestamp time, TimeInterval timeInterval) {
+    static double normalize(Instant time, TimeInterval timeInterval) {
         // XXX: if interval is more than 292 years, this will not work
-        double range = timeInterval.getEnd().durationFrom(timeInterval.getStart()).toNanosLong();
-        double value = time.durationBetween(timeInterval.getStart()).toNanosLong();
+        double range = timeInterval.getStart().until(timeInterval.getEnd(), ChronoUnit.NANOS);
+        double value = timeInterval.getStart().until(time, ChronoUnit.NANOS);
         return value / range;
     }
 
-    private static TimestampFormat format = new TimestampFormat("yyyy/MM/dd HH:mm:ss.NNNNNNNNN");
+    private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.nnnnnnnnn");
     private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25,28);
     private static ArrayInt possibleStopFromStart = new ArrayInt(0,11,19,28);
     private static String zeroFormat = "0000/01/01 00:00:00.000000000";
 
-    static List<String> createLabels(List<Timestamp> timestamps) {
+    static List<String> createLabels(List<Instant> timestamps) {
         if (timestamps.isEmpty()) {
             return Collections.emptyList();
         }
 
         List<String> result = new ArrayList<>(timestamps.size());
-        for (Timestamp timestamp : timestamps) {
-            result.add(format.format(timestamp));
+        for (Instant timestamp : timestamps) {
+            ZonedDateTime z = ZonedDateTime.ofInstant(timestamp, ZoneId.systemDefault());
+            System.out.println(z.toInstant());
+            System.out.println(z.format(format));
+            result.add(format.format(ZonedDateTime.ofInstant(timestamp, ZoneId.systemDefault())));
         }
 
         return result;

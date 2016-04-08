@@ -9,7 +9,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVWriter;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 
 /**
  * Indirect channel use through name passed as String.
@@ -29,7 +29,7 @@ public class PvFunction {
                 .readListener((PVReaderEvent<Object> event) -> {
                     System.out.println(event + " - connected(" + event.getPvReader().isConnected() + ")");
                 })
-                .maxRate(TimeDuration.ofMillis(50));
+                .maxRate(Duration.ofMillis(50));
 
         Thread.sleep(3000);
 

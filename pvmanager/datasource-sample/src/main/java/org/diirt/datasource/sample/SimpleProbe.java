@@ -9,6 +9,7 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVManager;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.ValueFormat;
 import org.diirt.vtype.ValueUtil;
@@ -16,15 +17,19 @@ import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.Time;
 import org.diirt.vtype.Display;
+
 import java.awt.Color;
 import java.util.EnumMap;
 import java.util.Map;
+
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
-import static org.diirt.util.time.TimeDuration.*;
-import org.diirt.util.time.TimeDuration;
+import static java.time.Duration.*;
+
+import java.time.Duration;
 
 /**
  *
@@ -231,7 +236,7 @@ public class SimpleProbe extends javax.swing.JFrame {
         try {
             startTime = System.currentTimeMillis();
             pv = PVManager.read(formula(pvName.getText()))
-                    .timeout(TimeDuration.ofSeconds(5))
+                    .timeout(ofSeconds(5))
                     .readListener(new PVReaderListener<Object>() {
                             @Override
                             public void pvChanged(PVReaderEvent<Object> event) {
@@ -246,7 +251,7 @@ public class SimpleProbe extends javax.swing.JFrame {
                                 setConnected(pv.isConnected());
                             }
                         })
-                    .maxRate(ofHertz(10));
+                    .maxRate(TimeDuration.ofHertz(10));
             total = System.currentTimeMillis() - startTime;
             if (total > 1) {
                 System.out.println("Reconnect took " + total + " ms");
@@ -306,7 +311,7 @@ public class SimpleProbe extends javax.swing.JFrame {
         if (time == null) {
             pvTime.setText("");
         } else {
-            pvTime.setText(time.getTimestamp().toDate().toString());
+            pvTime.setText(time.getTimestamp().toString());
         }
     }
 

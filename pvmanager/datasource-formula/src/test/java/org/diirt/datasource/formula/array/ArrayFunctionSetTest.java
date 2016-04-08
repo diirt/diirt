@@ -4,17 +4,19 @@
  */
 package org.diirt.datasource.formula.array;
 
+import org.diirt.datasource.formula.array.ArrayFunctionSet;
+
 import static org.diirt.vtype.ValueFactory.*;
 
+import java.time.Instant;
 import java.util.Arrays;
+
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FunctionTester;
-
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.ArrayDimensionDisplay;
@@ -263,7 +265,7 @@ public class ArrayFunctionSetTest {
     public void elementAtNumber() {
         VNumberArray array = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarmNone(), timeNow(), displayNone());
         Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
-        Time time = newTime(Timestamp.of(16548379, 0));
+        Time time = newTime(Instant.ofEpochSecond(16548379, 0));
         VNumberArray array2 = newVDoubleArray(new ArrayDouble(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), alarm, time, displayNone());
         VNumber index = newVNumber(5, alarmNone(), timeNow(), displayNone());
         VNumber expected = newVNumber(5.0, alarmNone(),timeNow(), displayNone());
@@ -281,7 +283,7 @@ public class ArrayFunctionSetTest {
     public void elementAtString() {
         VStringArray array = newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow());
         Alarm alarm = newAlarm(AlarmSeverity.MINOR, "HIGH");
-        Time time = newTime(Timestamp.of(16548379, 0));
+        Time time = newTime(Instant.ofEpochSecond(16548379, 0));
         VStringArray array2 = newVStringArray(Arrays.asList("A", "B", "C", "D", "E"), alarm, time);
         VNumber index = newVNumber(2, alarmNone(), timeNow(), displayNone());
         VString expected = newVString("C", alarmNone(),timeNow());

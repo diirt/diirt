@@ -10,20 +10,23 @@ import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.VImage;
 import org.diirt.datasource.extra.ColorScheme;
 import org.diirt.datasource.extra.WaterfallPlot;
 import org.diirt.datasource.extra.WaterfallPlotParameters;
+
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.datasource.extra.ExpressionLanguage.*;
 import static org.diirt.datasource.extra.WaterfallPlotParameters.*;
 import static org.diirt.util.concurrent.Executors.swingEDT;
-import static org.diirt.util.time.TimeDuration.*;
+import static java.time.Duration.*;
 
 /**
  *
@@ -37,7 +40,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
         WaterfallPlotParameters defaults = WaterfallPlotParameters.defaults();
         adaptiveRangeField.setSelected(defaults.isAdaptiveRange());
         scrollDownField.setSelected(defaults.isScrollDown());
-        pixelDurationField.setValue(defaults.getPixelDuration().getNanoSec() / 1000000);
+        pixelDurationField.setValue(defaults.getPixelDuration().getNano() / 1000000);
         plotView.addComponentListener(new ComponentAdapter() {
 
             @Override
@@ -195,7 +198,7 @@ public class MockWaterfallPlot extends javax.swing.JFrame {
                         }
                     }
                 })
-                .maxRate(ofHertz(50));
+                .maxRate(TimeDuration.ofHertz(50));
     }//GEN-LAST:event_pvNameActionPerformed
 
     private void pixelDurationFieldStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pixelDurationFieldStateChanged

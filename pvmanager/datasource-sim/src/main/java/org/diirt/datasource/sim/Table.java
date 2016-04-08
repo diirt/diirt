@@ -12,7 +12,7 @@ import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 import org.diirt.vtype.VTable;
 import static org.diirt.vtype.ValueFactory.*;
 
@@ -34,7 +34,7 @@ public class Table extends SimFunction<VTable> {
         }
     }
 
-    private final List<Class<?>> types = Arrays.asList((Class<?>) String.class, Double.TYPE, Integer.TYPE, Timestamp.class);
+    private final List<Class<?>> types = Arrays.asList((Class<?>) String.class, Double.TYPE, Integer.TYPE, Instant.class);
 
 
     @Override
@@ -70,10 +70,10 @@ public class Table extends SimFunction<VTable> {
         return Arrays.asList(column);
     }
 
-    List<Timestamp> generateTimestampColumn(int size) {
-        List<Timestamp> timestamps = new ArrayList<>();
+    List<Instant> generateTimestampColumn(int size) {
+        List<Instant> timestamps = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            timestamps.add(Timestamp.now());
+            timestamps.add(Instant.now());
         }
         return timestamps;
     }

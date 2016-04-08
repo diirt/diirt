@@ -4,18 +4,27 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.test.WriteRecipeUtil;
-import org.diirt.datasource.test.MockDataSource;
+import static java.time.Duration.ofMillis;
+import static org.diirt.datasource.ExpressionLanguage.channel;
+import static org.diirt.datasource.ExpressionLanguage.latestValueOf;
+import static org.diirt.datasource.ExpressionLanguage.readMapOf;
+import static org.diirt.datasource.ExpressionLanguage.writeMapOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import static org.junit.Assert.*;
-import org.junit.*;
-import static org.diirt.datasource.ExpressionLanguage.*;
+
 import org.diirt.datasource.expression.ReadMap;
 import org.diirt.datasource.expression.WriteMap;
-import static org.diirt.util.time.TimeDuration.*;
-import static org.hamcrest.Matchers.*;
+import org.diirt.datasource.test.MockDataSource;
+import org.diirt.datasource.test.WriteRecipeUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests map expression with a full pipeline.

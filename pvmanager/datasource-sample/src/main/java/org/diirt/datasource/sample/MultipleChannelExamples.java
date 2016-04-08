@@ -13,7 +13,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
-import static org.diirt.util.time.TimeDuration.*;
+import static java.time.Duration.*;
 
 /**
  * This is the code from the examples in the docs, to make sure it

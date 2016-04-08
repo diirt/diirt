@@ -4,10 +4,11 @@
  */
 package org.diirt.datasource.extra;
 
+import java.time.Instant;
 import java.util.List;
+
 import org.diirt.vtype.Display;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.time.Timestamp;
 
 
 /**
@@ -17,18 +18,18 @@ import org.diirt.util.time.Timestamp;
 public interface DoubleArrayTimeCache {
 
     public interface Data {
-        public Timestamp getBegin();
+        public Instant getBegin();
 
-        public Timestamp getEnd();
+        public Instant getEnd();
 
         public int getNArrays();
 
         public ListNumber getArray(int index);
 
-        public Timestamp getTimestamp(int index);
+        public Instant getTimestamp(int index);
     }
 
-    public Data getData(Timestamp begin, Timestamp end);
+    public Data getData(Instant begin, Instant end);
 
     /**
      * Each segment of the new data ends with an array of old data.
@@ -38,7 +39,7 @@ public interface DoubleArrayTimeCache {
      *
      * @return the new data chunks
      */
-    public List<Data> newData(Timestamp beginUpdate, Timestamp endUpdate, Timestamp beginNew, Timestamp endNew);
+    public List<Data> newData(Instant beginUpdate, Instant endUpdate, Instant beginNew, Instant endNew);
 
     public Display getDisplay();
 }

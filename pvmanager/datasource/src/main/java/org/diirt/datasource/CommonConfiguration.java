@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.Executor;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Includes parameters that are common for both reader and write configuration.
@@ -16,7 +16,7 @@ class CommonConfiguration {
 
     Executor notificationExecutor;
     DataSource dataSource;
-    TimeDuration timeout;
+    Duration timeout;
     String timeoutMessage;
 
     /**
@@ -48,14 +48,14 @@ class CommonConfiguration {
         return this;
     }
 
-    public CommonConfiguration timeout(TimeDuration timeout) {
+    public CommonConfiguration timeout(Duration timeout) {
         if (this.timeout != null)
             throw new IllegalStateException("Timeout already set");
         this.timeout = timeout;
         return this;
     }
 
-    public CommonConfiguration timeout(TimeDuration timeout, String timeoutMessage) {
+    public CommonConfiguration timeout(Duration timeout, String timeoutMessage) {
         timeout(timeout);
         this.timeoutMessage = timeoutMessage;
         return this;

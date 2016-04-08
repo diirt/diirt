@@ -4,7 +4,8 @@
  */
 package org.diirt.datasource.test;
 
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
+
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -14,13 +15,13 @@ import org.hamcrest.Matcher;
  * @author carcassi
  */
 public class TimeMatchers {
-    public static Matcher<Timestamp> within(final org.diirt.util.time.TimeInterval operand) {
-        return new BaseMatcher<Timestamp>() {
+    public static Matcher<Instant> within(final org.diirt.util.time.TimeInterval operand) {
+        return new BaseMatcher<Instant>() {
 
             @Override
             public boolean matches(Object o) {
-                if (o instanceof Timestamp) {
-                    return operand.contains((Timestamp) o);
+                if (o instanceof Instant) {
+                    return operand.contains((Instant) o);
                 }
                 return false;
             }

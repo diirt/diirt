@@ -4,6 +4,8 @@
  */
 package org.diirt.datasource.formula;
 
+import java.time.Duration;
+
 import org.antlr.runtime.RecognitionException;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.PVManager;
@@ -11,16 +13,18 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.ReadExpressionTester;
 import org.diirt.vtype.VDouble;
 import org.junit.Test;
+
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+
 import org.diirt.datasource.test.CountDownPVWriterListener;
 import org.diirt.datasource.test.MockDataSource;
 import org.diirt.util.array.*;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.VBoolean;
 import org.diirt.vtype.VInt;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.ValueFactory;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -624,7 +628,7 @@ public class ExpressionLanguageTest {
                 .writeListener(listener)
                 .async();
         try {
-            listener.await(TimeDuration.ofMillis(200));
+            listener.await(Duration.ofMillis(200));
             Exception ex = pvWriter.lastWriteException();
             assertThat(ex, instanceOf(RuntimeException.class));
             assertThat(ex.getMessage(), equalTo("Error message"));

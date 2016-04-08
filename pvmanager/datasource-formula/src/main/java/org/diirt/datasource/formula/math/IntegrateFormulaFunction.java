@@ -4,13 +4,15 @@
  */
 package org.diirt.datasource.formula.math;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.diirt.datasource.formula.StatefulFormulaFunction;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.ValueFactory;
 
@@ -50,7 +52,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         return VNumber.class;
     }
 
-    private Timestamp previousTime;
+    private Instant previousTime;
     private double integratedValue;
     private List<VNumber> values = new LinkedList<>();
 
@@ -66,14 +68,14 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         }
 
         if (previousTime == null) {
-            Timestamp now = Timestamp.now();
+            Instant now = Instant.now();
             if (now.compareTo(values.get(0).getTimestamp()) <= 0) {
                 previousTime = now;
             } else {
                 previousTime = values.get(0).getTimestamp();
             }
         }
-        Timestamp currentTime = Timestamp.now();
+        Instant currentTime = Instant.now();
 
         integratedValue += integrate(previousTime, currentTime, values);
         previousTime = currentTime;
@@ -85,7 +87,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         return ValueFactory.newVDouble(integratedValue);
     }
 
-    static double integrate(Timestamp start, Timestamp end, List<VNumber> values) {
+    static double integrate(Instant start, Instant end, List<VNumber> values) {
         if (values.isEmpty()) {
             return 0;
         }
@@ -103,15 +105,15 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         return integratedValue;
     }
 
-    static double integrate(Timestamp start, Timestamp end, VNumber value, VNumber nextValue) {
-        Timestamp actualStart = Collections.max(Arrays.asList(start, value.getTimestamp()));
-        Timestamp actualEnd = end;
+    static double integrate(Instant start, Instant end, VNumber value, VNumber nextValue) {
+        Instant actualStart = Collections.max(Arrays.asList(start, value.getTimestamp()));
+        Instant actualEnd = end;
         if (nextValue != null) {
             actualEnd = Collections.min(Arrays.asList(end, nextValue.getTimestamp()));
         }
-        TimeDuration duration = actualEnd.durationFrom(actualStart);
-        if (duration.isPositive()) {
-            return duration.toSeconds() * value.getValue().doubleValue();
+        Duration duration = Duration.between(actualStart, actualEnd);
+        if (!duration.isNegative() && !duration.isZero()) {
+            return TimeDuration.toSecondsDouble(duration.multipliedBy(value.getValue().longValue()));
         } else {
             return 0;
         }

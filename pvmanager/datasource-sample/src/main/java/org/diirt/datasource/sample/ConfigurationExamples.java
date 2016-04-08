@@ -17,7 +17,7 @@ import org.diirt.support.ca.JCADataSourceConfiguration;
 import static org.diirt.util.concurrent.Executors.swingEDT;
 import static org.diirt.javafx.util.Executors.*;
 import org.diirt.support.ca.JCADataSourceProvider;
-import static org.diirt.util.time.TimeDuration.*;
+import static java.time.Duration.*;
 
 /**
  * Examples for basic configuration of pvmanager

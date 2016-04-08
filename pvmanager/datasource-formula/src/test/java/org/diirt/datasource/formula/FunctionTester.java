@@ -4,12 +4,13 @@
  */
 package org.diirt.datasource.formula;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.text.NumberFormats;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Display;
@@ -24,12 +25,17 @@ import org.diirt.vtype.VType;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.vtype.VTypeValueEquals;
 import org.diirt.vtype.ValueFactory;
+
 import static org.diirt.vtype.ValueFactory.*;
+
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.table.Column;
 import org.hamcrest.Matcher;
+
 import static org.hamcrest.Matchers.*;
+
 import org.junit.Assert;
+
 import static org.junit.Assert.assertThat;
 
 /**
@@ -260,8 +266,8 @@ public class FunctionTester {
     private void latestTimeReturnedSingleArg(FormulaFunction function) {
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         Object[] args;
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
+        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
 
         compareReturnTime(time1, createValue(function.getArgumentTypes().get(0), alarmNone(), time1, display));
         compareReturnTime(time2, createValue(function.getArgumentTypes().get(0), alarmNone(), time2, display));
@@ -275,8 +281,8 @@ public class FunctionTester {
         } else {
             args = new Object[function.getArgumentTypes().size()];
         }
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
+        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
 
         // Prepare arguments with all time1
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {

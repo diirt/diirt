@@ -6,6 +6,9 @@ package org.diirt.util.time;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+
+import java.time.Instant;
+
 import org.junit.Test;
 
 /**
@@ -21,28 +24,28 @@ public class TimeRelativeIntervalTest {
     // create aa/ar/ra/rr
     @Test
     public void interval1() {
-        TimeRelativeInterval interval = TimeRelativeInterval.of(Timestamp.of(0, 0), Timestamp.of(3600, 0));
+        TimeRelativeInterval interval = TimeRelativeInterval.of(Instant.ofEpochSecond(0, 0), Instant.ofEpochSecond(3600, 0));
         assertThat(interval.isIntervalAbsolute(), equalTo(true));
-        assertThat(interval.getAbsoluteStart(), equalTo(Timestamp.of(0, 0)));
-        assertThat(interval.getAbsoluteEnd(), equalTo(Timestamp.of(3600, 0)));
-        assertThat(interval.toAbsoluteInterval(Timestamp.now()), equalTo(TimeInterval.between(Timestamp.of(0, 0), Timestamp.of(3600, 0))));
+        assertThat(interval.getAbsoluteStart(), equalTo(Instant.ofEpochSecond(0, 0)));
+        assertThat(interval.getAbsoluteEnd(), equalTo(Instant.ofEpochSecond(3600, 0)));
+        assertThat(interval.toAbsoluteInterval(Instant.now()), equalTo(TimeInterval.between(Instant.ofEpochSecond(0, 0), Instant.ofEpochSecond(3600, 0))));
     }
 
     @Test
     public void interval2() {
-        TimeRelativeInterval interval = TimeRelativeInterval.of(Timestamp.of(0, 0), null);
+        TimeRelativeInterval interval = TimeRelativeInterval.of(Instant.ofEpochSecond(0, 0), null);
         assertThat(interval.isIntervalAbsolute(), equalTo(true));
-        assertThat(interval.getAbsoluteStart(), equalTo(Timestamp.of(0, 0)));
+        assertThat(interval.getAbsoluteStart(), equalTo(Instant.ofEpochSecond(0, 0)));
         assertThat(interval.getAbsoluteEnd(), nullValue());
-        assertThat(interval.toAbsoluteInterval(Timestamp.now()), equalTo(TimeInterval.between(Timestamp.of(0, 0), null)));
+        assertThat(interval.toAbsoluteInterval(Instant.now()), equalTo(TimeInterval.between(Instant.ofEpochSecond(0, 0), null)));
     }
 
     @Test
     public void interval3() {
-        TimeRelativeInterval interval = TimeRelativeInterval.of(null, Timestamp.of(0, 0));
+        TimeRelativeInterval interval = TimeRelativeInterval.of(null, Instant.ofEpochSecond(0, 0));
         assertThat(interval.isIntervalAbsolute(), equalTo(true));
         assertThat(interval.getAbsoluteStart(), nullValue());
-        assertThat(interval.getAbsoluteEnd(), equalTo(Timestamp.of(0, 0)));
-        assertThat(interval.toAbsoluteInterval(Timestamp.now()), equalTo(TimeInterval.between(null, Timestamp.of(0, 0))));
+        assertThat(interval.getAbsoluteEnd(), equalTo(Instant.ofEpochSecond(0, 0)));
+        assertThat(interval.toAbsoluteInterval(Instant.now()), equalTo(TimeInterval.between(null, Instant.ofEpochSecond(0, 0))));
     }
 }

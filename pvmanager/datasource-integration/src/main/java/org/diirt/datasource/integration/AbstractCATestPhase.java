@@ -6,7 +6,7 @@ package org.diirt.datasource.integration;
 
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
-import org.diirt.util.time.TimeDuration;
+import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.support.ca.JCADataSource;
 import org.diirt.vtype.VString;
 
@@ -23,9 +23,9 @@ public abstract class AbstractCATestPhase extends TestPhase {
         }
 
         // Open command and output
-        addReader(PVManager.read(channel("command")), TimeDuration.ofHertz(50));
+        addReader(PVManager.read(channel("command")), ofHertz(50));
         addWriter("command", PVManager.write(channel("command")));
-        addReader(PVManager.read(channel("output")), TimeDuration.ofHertz(50));
+        addReader(PVManager.read(channel("output")), ofHertz(50));
         pause(1000);
 
         // Reset ioc to known state

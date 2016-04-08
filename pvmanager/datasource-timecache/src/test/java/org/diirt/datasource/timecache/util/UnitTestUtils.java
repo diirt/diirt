@@ -14,9 +14,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Helper for unit tests.
@@ -24,38 +24,38 @@ import org.diirt.util.time.Timestamp;
  */
 public class UnitTestUtils {
 
-        private static DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+    private static DateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
-        public static File getTestResource(String name)
-                        throws FileNotFoundException {
-                return new File("src/test/resources" + name);
-        }
+    public static File getTestResource(String name)
+            throws FileNotFoundException {
+        return new File("src/test/resources" + name);
+    }
 
-        public static String readFile(File file) throws IOException {
-                StringBuilder out = new StringBuilder();
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                for (String line = br.readLine(); line != null; line = br.readLine())
-                        out.append(line + "\n");
-                br.close();
-                return out.toString();
-        }
+    public static String readFile(File file) throws IOException {
+        StringBuilder out = new StringBuilder();
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        for (String line = br.readLine(); line != null; line = br.readLine())
+            out.append(line + "\n");
+        br.close();
+        return out.toString();
+    }
 
-        public static void writeFile(String filename, String content)
-                        throws IOException {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-                writer.write(content);
-                writer.close();
-        }
+    public static void writeFile(String filename, String content)
+            throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        writer.write(content);
+        writer.close();
+    }
 
-        public static Timestamp timestampOf(String time) throws ParseException {
-                if (time == null)
-                        return null;
-                return Timestamp.of(dateFormat.parse(time));
-        }
+    public static Instant timestampOf(String time) throws ParseException {
+        if (time == null)
+            return null;
+        return dateFormat.parse(time).toInstant();
+    }
 
-        public static TimeInterval timeIntervalOf(String start, String end)
-                        throws ParseException {
-                return TimeInterval.between(timestampOf(start), timestampOf(end));
-        }
+    public static TimeInterval timeIntervalOf(String start, String end)
+            throws ParseException {
+        return TimeInterval.between(timestampOf(start), timestampOf(end));
+    }
 
 }

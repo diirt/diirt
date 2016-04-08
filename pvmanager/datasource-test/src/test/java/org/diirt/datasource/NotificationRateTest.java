@@ -12,7 +12,7 @@ import org.diirt.datasource.expression.Queue;
 import static org.junit.Assert.*;
 import org.junit.*;
 import static org.diirt.datasource.ExpressionLanguage.*;
-import static org.diirt.util.time.TimeDuration.*;
+import static java.time.Duration.*;
 import static org.hamcrest.Matchers.*;
 
 /**

@@ -4,13 +4,36 @@
  */
 package org.diirt.vtype;
 
+import static org.diirt.vtype.ValueFactory.alarmNone;
+import static org.diirt.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.newAlarm;
+import static org.diirt.vtype.ValueFactory.newDisplay;
+import static org.diirt.vtype.ValueFactory.newTime;
+import static org.diirt.vtype.ValueFactory.newVBoolean;
+import static org.diirt.vtype.ValueFactory.newVBooleanArray;
+import static org.diirt.vtype.ValueFactory.newVDouble;
+import static org.diirt.vtype.ValueFactory.newVDoubleArray;
+import static org.diirt.vtype.ValueFactory.newVEnum;
+import static org.diirt.vtype.ValueFactory.newVEnumArray;
+import static org.diirt.vtype.ValueFactory.newVFloat;
+import static org.diirt.vtype.ValueFactory.newVFloatArray;
+import static org.diirt.vtype.ValueFactory.newVIntArray;
+import static org.diirt.vtype.ValueFactory.newVNumberArray;
+import static org.diirt.vtype.ValueFactory.newVString;
+import static org.diirt.vtype.ValueFactory.newVStringArray;
+import static org.diirt.vtype.ValueFactory.timeNow;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertThat;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+
 import org.diirt.util.array.ArrayBoolean;
 import org.diirt.util.array.ArrayByte;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayFloat;
 import org.diirt.util.array.ArrayInt;
@@ -24,7 +47,8 @@ import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListLong;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListShort;
-import org.diirt.util.time.Timestamp;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
@@ -32,7 +56,17 @@ import org.diirt.util.time.Timestamp;
  */
 public class ValueFactoryTest {
 
+    private Time testTime;
+    private String testTimeString;
+    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+
     public ValueFactoryTest() {
+    }
+
+    @Before
+    public void setUp() {
+        testTime = newTime(Instant.ofEpochSecond(1354719441, 521786982));
+        testTimeString = timeFormat.format(LocalDateTime.ofInstant(testTime.getTimestamp(), ZoneId.systemDefault()));
     }
 
     @Test
@@ -66,103 +100,103 @@ public class ValueFactoryTest {
 
     @Test
     public void newVString1() {
-        VString value = newVString("Testing", alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        VString value = newVString("Testing", alarmNone(), testTime);
         assertThat(value.getValue(), equalTo("Testing"));
-        assertThat(value.toString(), equalTo("VString[Testing, 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VString[Testing, %s]", testTimeString)));
     }
 
     @Test
     public void newVBoolean1() {
-        VBoolean value = newVBoolean(true, alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        VBoolean value = newVBoolean(true, alarmNone(), testTime);
         assertThat(value.getValue(), equalTo(true));
-        assertThat(value.toString(), equalTo("VBoolean[true, 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VBoolean[true, %s]", testTimeString)));
     }
 
     @Test
     public void newVEnum1() {
-        VEnum value = newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        VEnum value = newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), testTime);
         assertThat(value.getValue(), equalTo("TWO"));
         assertThat(value.getIndex(), equalTo(1));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
-        assertThat(value.toString(), equalTo("VEnum[TWO(1), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VEnum[TWO(1), %s]", testTimeString)));
     }
 
     @Test
     public void newVDouble1() {
-        VDouble value = newVDouble(1.0, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        VDouble value = newVDouble(1.0, newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(value.getValue(), equalTo(1.0));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VDouble[1.0, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VDouble[1.0, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVDoubleArray1() {
-        VDoubleArray value = newVDoubleArray(new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        VDoubleArray value = newVDoubleArray(new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0), newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(value.getData(), equalTo((ListDouble) new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVFloat1() {
-        VFloat value = newVFloat(1.0f, newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        VFloat value = newVFloat(1.0f, newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(value.getValue(), equalTo(1.0f));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VFloat[1.0, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VFloat[1.0, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVFloatArray1() {
-        VFloatArray value = newVFloatArray(new ArrayFloat(3.125f, 6.25f, 1.375f, 0.0f, 1.0f), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        VFloatArray value = newVFloatArray(new ArrayFloat(3.125f, 6.25f, 1.375f, 0.0f, 1.0f), newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(value.getData(), equalTo((ListFloat) new ArrayFloat(3.125f, 6.25f, 1.375f, 0.0f, 1.0f)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VFloatArray[[3.125, 6.25, 1.375, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VFloatArray[[3.125, 6.25, 1.375, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVIntArray1() {
-        VIntArray value = newVIntArray(new ArrayInt(3, 6, 1, 0, 1), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+        VIntArray value = newVIntArray(new ArrayInt(3, 6, 1, 0, 1), newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(value.getData(), equalTo((ListInt) new ArrayInt(3, 6, 1, 0, 1)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VIntArray[[3, 6, 1, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VIntArray[[3, 6, 1, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVEnumArray1() {
-        VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        VEnumArray value = newVEnumArray(new ArrayInt(1, 0, 2), Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), testTime);
         assertThat(value.getData(), equalTo(Arrays.asList("TWO", "ONE", "THREE")));
         assertThat(value.getIndexes(), equalTo((ListInt) new ArrayInt(1, 0, 2)));
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
         assertThat(value.getLabels(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
-        assertThat(value.toString(), equalTo("VEnumArray[[TWO, ONE, THREE], size 3, 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VEnumArray[[TWO, ONE, THREE], size 3, %s]", testTimeString)));
     }
 
     @Test
     public void newVBooleanArray1() {
-        VBooleanArray value = newVBooleanArray(new ArrayBoolean(true, false, true, false), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        VBooleanArray value = newVBooleanArray(new ArrayBoolean(true, false, true, false), alarmNone(), testTime);
         assertThat(value.getData(), equalTo((ListBoolean) new ArrayBoolean(true, false, true, false)));
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(4)));
-        assertThat(value.toString(), equalTo("VBooleanArray[[true, false, true, ...], size 4, 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VBooleanArray[[true, false, true, ...], size 4, %s]", testTimeString)));
     }
 
     @Test
     public void newVStringArray1() {
-        VStringArray value = newVStringArray(Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), newTime(Timestamp.of(1354719441, 521786982)));
+        VStringArray value = newVStringArray(Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), testTime);
         assertThat(value.getData(), equalTo(Arrays.asList("ONE", "TWO", "THREE")));
         assertThat(value.getSizes(), equalTo((ListInt) new ArrayInt(3)));
-        assertThat(value.toString(), equalTo("VStringArray[[ONE, TWO, THREE], size 3, 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VStringArray[[ONE, TWO, THREE], size 3, %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray1() {
         VNumberArray result = newVNumberArray(new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0),
                 new ArrayInt(5), null,
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VDoubleArray.class));
         VDoubleArray value = (VDoubleArray) result;
         assertThat(value.getData(), equalTo((ListDouble) new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0)));
@@ -170,14 +204,14 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0,1,2,3,4,5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray2() {
         VNumberArray result = newVNumberArray(new ArrayInt(3,5,2,4,1),
                 new ArrayInt(5), null,
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VIntArray.class));
         VIntArray value = (VIntArray) result;
         assertThat(value.getData(), equalTo((ListInt) new ArrayInt(3,5,2,4,1)));
@@ -185,14 +219,14 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0,1,2,3,4,5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VIntArray[[3, 5, 2, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VIntArray[[3, 5, 2, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray3() {
         VNumberArray result = newVNumberArray(new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0),
                 new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VDoubleArray.class));
         VDoubleArray value = (VDoubleArray) result;
         assertThat(value.getData(), equalTo((ListDouble) new ArrayDouble(3.14, 6.28, 1.41, 0.0, 1.0)));
@@ -200,14 +234,14 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VDoubleArray[[3.14, 6.28, 1.41, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray4() {
         VNumberArray result = newVNumberArray(new ArrayInt(3,5,2,4,1),
                 new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VIntArray.class));
         VIntArray value = (VIntArray) result;
         assertThat(value.getData(), equalTo((ListInt) new ArrayInt(3,5,2,4,1)));
@@ -215,14 +249,14 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VIntArray[[3, 5, 2, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VIntArray[[3, 5, 2, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray5() {
         VNumberArray result = newVNumberArray(new ArrayByte(new byte[] {3,5,2,4,1}),
                 new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VByteArray.class));
         VByteArray value = (VByteArray) result;
         assertThat(value.getData(), equalTo((ListByte) new ArrayByte(new byte[] {3,5,2,4,1})));
@@ -230,14 +264,14 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VByteArray[[3, 5, 2, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VByteArray[[3, 5, 2, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray6() {
         VNumberArray result = newVNumberArray(new ArrayShort(new short[] {3,5,2,4,1}),
                 new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VShortArray.class));
         VShortArray value = (VShortArray) result;
         assertThat(value.getData(), equalTo((ListShort) new ArrayShort(new short[] {3,5,2,4,1})));
@@ -245,14 +279,14 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VShortArray[[3, 5, 2, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VShortArray[[3, 5, 2, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray7() {
         VNumberArray result = newVNumberArray(new ArrayFloat(new float[] {3,5,2,4,1}),
                 new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VFloatArray.class));
         VFloatArray value = (VFloatArray) result;
         assertThat(value.getData(), equalTo((ListFloat) new ArrayFloat(new float[] {3,5,2,4,1})));
@@ -260,14 +294,14 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VFloatArray[[3.0, 5.0, 2.0, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VFloatArray[[3.0, 5.0, 2.0, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test
     public void newVNumberArray8() {
         VNumberArray result = newVNumberArray(new ArrayLong(new long[] {3,5,2,4,1}),
                 new ArrayInt(5), Arrays.asList(newDisplay(new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5), "m")),
-                newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(1354719441, 521786982)), displayNone());
+                newAlarm(AlarmSeverity.MINOR, "LOW"), testTime, displayNone());
         assertThat(result, instanceOf(VLongArray.class));
         VLongArray value = (VLongArray) result;
         assertThat(value.getData(), equalTo((ListLong) new ArrayLong(new long[] {3,5,2,4,1})));
@@ -275,7 +309,7 @@ public class ValueFactoryTest {
         assertThat(value.getDimensionDisplay().get(0).getCellBoundaries(), equalTo((ListNumber) new ArrayDouble(0, 0.5, 1, 1.5, 2, 2.5)));
         assertThat(value.getAlarmName(), equalTo("LOW"));
         assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MINOR));
-        assertThat(value.toString(), equalTo("VLongArray[[3, 5, 2, ...], size 5, MINOR(LOW), 2012/12/05 09:57:21.521]"));
+        assertThat(value.toString(), equalTo(String.format("VLongArray[[3, 5, 2, ...], size 5, MINOR(LOW), %s]", testTimeString)));
     }
 
     @Test

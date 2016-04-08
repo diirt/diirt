@@ -5,10 +5,10 @@
 package org.diirt.datasource.extra;
 
 import java.awt.Color;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Parameters for the waterfall plot
@@ -22,7 +22,7 @@ public class WaterfallPlotParameters extends Parameters {
         final ColorScheme colorScheme;
         final Boolean adaptiveRange;
         final Boolean scrollDown;
-        final TimeDuration pixelDuration;
+        final Duration pixelDuration;
         final Integer backgroundColor;
 
         private InternalCopy(Map<Object, Object> params) {
@@ -30,7 +30,7 @@ public class WaterfallPlotParameters extends Parameters {
             colorScheme = (ColorScheme) params.get("colorScheme");
             adaptiveRange = (Boolean) params.get("adaptiveRange");
             scrollDown = (Boolean) params.get("scrollDown");
-            pixelDuration = (TimeDuration) params.get("pixelDuration");
+            pixelDuration = (Duration) params.get("pixelDuration");
             backgroundColor = (Integer) params.get("backgroundColor");
         }
 
@@ -59,7 +59,7 @@ public class WaterfallPlotParameters extends Parameters {
         defaults.put("colorScheme", ColorScheme.singleRangeGradient(Color.BLACK, Color.WHITE));
         defaults.put("adaptiveRange", false);
         defaults.put("scrollDown", false);
-        defaults.put("pixelDuration", TimeDuration.ofMillis(10));
+        defaults.put("pixelDuration", Duration.ofMillis(10));
         return new WaterfallPlotParameters(defaults);
     }
 
@@ -115,7 +115,7 @@ public class WaterfallPlotParameters extends Parameters {
      * @param pixelDuration amount of time for each pixel
      * @return a new parameter
      */
-    public static WaterfallPlotParameters pixelDuration(TimeDuration pixelDuration) {
+    public static WaterfallPlotParameters pixelDuration(Duration pixelDuration) {
         return new WaterfallPlotParameters("pixelDuration", pixelDuration);
     }
 
@@ -180,7 +180,7 @@ public class WaterfallPlotParameters extends Parameters {
      *
      * @return the duration for each line
      */
-    public TimeDuration getPixelDuration() {
+    public Duration getPixelDuration() {
         return internalCopy().pixelDuration;
     }
 

@@ -4,11 +4,11 @@
  */
 package org.diirt.datasource.timecache.query;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VType;
 
 /**
@@ -17,34 +17,34 @@ import org.diirt.vtype.VType;
  */
 public class QueryDataBlank implements QueryData {
 
-        private final TimeInterval timeInterval;
+    private final TimeInterval timeInterval;
 
-        QueryDataBlank(TimeInterval timeInterval) {
-                this.timeInterval = timeInterval;
-        }
+    QueryDataBlank(TimeInterval timeInterval) {
+        this.timeInterval = timeInterval;
+    }
 
-        /** {@inheritDoc} */
-        @Override
-        public TimeInterval getTimeInterval() {
-                return timeInterval;
-        }
+    /** {@inheritDoc} */
+    @Override
+    public TimeInterval getTimeInterval() {
+        return timeInterval;
+    }
 
-        /** {@inheritDoc} */
-        @Override
-        public int getCount() {
-                return 0;
-        }
+    /** {@inheritDoc} */
+    @Override
+    public int getCount() {
+        return 0;
+    }
 
-        /** {@inheritDoc} */
-        @Override
-        public List<VType> getData() {
-                return Collections.emptyList();
-        }
+    /** {@inheritDoc} */
+    @Override
+    public List<VType> getData() {
+        return Collections.emptyList();
+    }
 
-        /** {@inheritDoc} */
-        @Override
-        public List<Timestamp> getTimestamps() {
-                return Collections.emptyList();
-        }
+    /** {@inheritDoc} */
+    @Override
+    public List<Instant> getTimestamps() {
+        return Collections.emptyList();
+    }
 
 }

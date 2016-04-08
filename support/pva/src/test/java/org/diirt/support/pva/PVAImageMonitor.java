@@ -20,7 +20,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 
-import org.diirt.util.time.TimeDuration;
+import static org.diirt.util.time.TimeDuration.ofHertz;
 import org.diirt.vtype.VImage;
 
 public class PVAImageMonitor {
@@ -63,72 +63,72 @@ public class PVAImageMonitor {
 
         System.arraycopy(vImage.getData(), 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0, vImage.getData().length);
         return image;
-        }
+    }
 
-        private final JFrame frame;
-        private static final BufferedImage DEFAULT_IMAGE = new BufferedImage(320, 200, BufferedImage.TYPE_3BYTE_BGR);
-        private volatile BufferedImage bufferedImage = DEFAULT_IMAGE;
-        private final ImagePanel imagePanel;
+    private final JFrame frame;
+    private static final BufferedImage DEFAULT_IMAGE = new BufferedImage(320, 200, BufferedImage.TYPE_3BYTE_BGR);
+    private volatile BufferedImage bufferedImage = DEFAULT_IMAGE;
+    private final ImagePanel imagePanel;
 
-        public PVAImageMonitor()
+    public PVAImageMonitor()
+    {
+        imagePanel = new ImagePanel();
+        imagePanel.setImage(bufferedImage);
+
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(BorderLayout.CENTER, imagePanel);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public void showImage(VImage vImage)
+    {
+        final BufferedImage lastBufferedImage = bufferedImage;
+        final BufferedImage newBufferedImage = updateBufferedImage(lastBufferedImage, vImage, BufferedImage.TYPE_3BYTE_BGR);
+        bufferedImage = newBufferedImage;
+
+        SwingUtilities.invokeLater(new Runnable()
         {
-                imagePanel = new ImagePanel();
-                imagePanel.setImage(bufferedImage);
-
-                frame = new JFrame();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(BorderLayout.CENTER, imagePanel);
-                frame.pack();
-                frame.setVisible(true);
-        }
-
-        public void showImage(VImage vImage)
-        {
-                final BufferedImage lastBufferedImage = bufferedImage;
-                final BufferedImage newBufferedImage = updateBufferedImage(lastBufferedImage, vImage, BufferedImage.TYPE_3BYTE_BGR);
-                bufferedImage = newBufferedImage;
-
-                SwingUtilities.invokeLater(new Runnable()
+            @Override
+            public void run()
+            {
+                if (newBufferedImage != lastBufferedImage)
                 {
-                        @Override
-                        public void run()
-                        {
-                                if (newBufferedImage != lastBufferedImage)
-                                {
-                                        imagePanel.setImage(newBufferedImage);
-                                        frame.pack();
-                                }
-                                imagePanel.repaint();
-                        }
-                });
-        }
+                    imagePanel.setImage(newBufferedImage);
+                    frame.pack();
+                }
+                imagePanel.repaint();
+            }
+        });
+    }
 
-        public void execute(String[] args) throws InterruptedException
-        {
-                // max 100Hz monitor
-                PVManager.setDefaultDataSource(new PVADataSource());
-                PVReader<VImage> reader = PVManager.read(channel("testImage", VImage.class, VImage.class)).
-                                readListener(new PVReaderListener<VImage>() {
+    public void execute(String[] args) throws InterruptedException
+    {
+        // max 100Hz monitor
+        PVManager.setDefaultDataSource(new PVADataSource());
+        PVReader<VImage> reader = PVManager.read(channel("testImage", VImage.class, VImage.class)).
+                readListener(new PVReaderListener<VImage>() {
 
-                                        @Override
-                                        public void pvChanged(PVReaderEvent<VImage> event) {
-                                                if (event.isValueChanged())
-                                                        showImage(event.getPvReader().getValue());
-                                                else
-                                                        System.out.println(event.toString());
-                                        }
-                                }).maxRate(TimeDuration.ofHertz(100));
+                    @Override
+                    public void pvChanged(PVReaderEvent<VImage> event) {
+                        if (event.isValueChanged())
+                            showImage(event.getPvReader().getValue());
+                        else
+                            System.out.println(event.toString());
+                    }
+                }).maxRate(ofHertz(100));
 
-                // forever
-                while (System.currentTimeMillis() != 0)
-                        Thread.sleep(Long.MAX_VALUE);
+        // forever
+        while (System.currentTimeMillis() != 0)
+            Thread.sleep(Long.MAX_VALUE);
 
-                reader.close();
-        }
+        reader.close();
+    }
 
-        public static void main(String[] args) throws InterruptedException
-        {
-                new PVAImageMonitor().execute(args);
-        }
+    public static void main(String[] args) throws InterruptedException
+    {
+        new PVAImageMonitor().execute(args);
+    }
 
 }

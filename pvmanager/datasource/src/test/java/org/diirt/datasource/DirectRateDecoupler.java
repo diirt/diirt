@@ -4,8 +4,12 @@
  */
 package org.diirt.datasource;
 
+import org.diirt.datasource.DesiredRateEvent;
+import org.diirt.datasource.SourceDesiredRateDecoupler;
+import org.diirt.datasource.DesiredRateEventListener;
+
+import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
@@ -13,7 +17,7 @@ import org.diirt.util.time.TimeDuration;
  */
 class DirectRateDecoupler extends SourceDesiredRateDecoupler {
 
-    public DirectRateDecoupler(ScheduledExecutorService scannerExecutor, TimeDuration maxDuration, DesiredRateEventListener listener) {
+    public DirectRateDecoupler(ScheduledExecutorService scannerExecutor, Duration maxDuration, DesiredRateEventListener listener) {
         super(scannerExecutor, maxDuration, listener);
     }
 

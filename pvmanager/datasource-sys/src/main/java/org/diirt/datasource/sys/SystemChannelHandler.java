@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.text.NumberFormats;
+import org.diirt.util.time.TimeInterval;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.DisplayBuilder;
 

@@ -12,6 +12,7 @@ import org.diirt.graphene.profile.impl.ProfileLineGraph2D;
 import org.diirt.graphene.profile.utils.Statistics;
 import org.diirt.graphene.profile.utils.Resolution;
 import org.diirt.graphene.profile.utils.StopWatch;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -22,13 +23,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
+
+import org.diirt.graphene.Cell2DDataset;
+import org.diirt.graphene.IntensityGraph2DRenderer;
 import org.diirt.graphene.LineGraph2DRenderer;
 import org.diirt.graphene.Point2DDataset;
 import org.diirt.graphene.profile.impl.ProfileAreaGraph2D;
@@ -38,8 +45,6 @@ import org.diirt.graphene.profile.impl.ProfileMultilineGraph2D;
 import org.diirt.graphene.profile.impl.ProfileNLineGraphs2D;
 import org.diirt.graphene.profile.io.ImageWriter;
 import org.diirt.graphene.profile.utils.DatasetFactory;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Provides individual and specialized cases to test the Graphene library
@@ -803,8 +808,8 @@ public final class TestCaseProfiler {
          */
         private void profile(){
             //Timing
-            Timestamp start = Timestamp.now();
-            Timestamp end = start.plus(TimeDuration.ofSeconds(testTimeSec));
+            Instant start = Instant.now();
+            Instant end = start.plus(Duration.ofSeconds(testTimeSec));
             stopWatch = new StopWatch(maxTries);
 
             nTries = 0;
@@ -817,7 +822,7 @@ public final class TestCaseProfiler {
             double[] data = makeData();
 
             //Trials
-            while (end.compareTo(Timestamp.now()) >= 0 && nTries < maxTries) {
+            while (end.compareTo(Instant.now()) >= 0 && nTries < maxTries) {
                 nTries++;
                 stopWatch.start();
 

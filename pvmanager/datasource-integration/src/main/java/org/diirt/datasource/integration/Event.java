@@ -4,7 +4,7 @@
  */
 package org.diirt.datasource.integration;
 
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  *
@@ -12,7 +12,7 @@ import org.diirt.util.time.Timestamp;
  */
 public interface Event {
 
-    public Timestamp getTimestamp();
+    public Instant getTimestamp();
 
     public String getPvName();
 

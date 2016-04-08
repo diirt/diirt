@@ -12,7 +12,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.formula.ExpressionLanguage;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 
 /**
  * Prompts for a channel name, connects and shows the events.
@@ -42,7 +42,7 @@ public class MonitorChannel {
                         System.out.println(event);
                     }
                 })
-                .maxRate(TimeDuration.ofMillis(50));
+                .maxRate(Duration.ofMillis(50));
 
         Thread.sleep(3000);
 

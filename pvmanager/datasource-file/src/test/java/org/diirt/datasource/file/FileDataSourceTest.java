@@ -30,15 +30,13 @@ import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 
 import org.diirt.util.array.ArrayDouble;
 
-import static org.diirt.util.time.TimeDuration.*;
-
 import org.diirt.vtype.VStringArray;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueFactory;
 
 import static org.hamcrest.Matchers.*;
-
+import static java.time.Duration.*;
 /**
  *
  * @author carcassi

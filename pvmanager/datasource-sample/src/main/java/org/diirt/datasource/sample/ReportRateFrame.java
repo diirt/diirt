@@ -9,12 +9,18 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.VDouble;
+
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.util.concurrent.Executors.swingEDT;
-import org.diirt.util.time.TimeDuration;
-import static org.diirt.util.time.TimeDuration.*;
-import org.diirt.util.time.Timestamp;
+
+import java.time.Duration;
+
+import static java.time.Duration.*;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -142,18 +148,18 @@ public class ReportRateFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private PVReader<VDouble> pv;
-    private Timestamp overallTimestamp;
+    private Instant overallTimestamp;
     private int overallCounter = 0;
     private int lastPeriodCounter;
-    private Timestamp lastPeriodTimestamp;
-    private final TimeDuration measureInterval = TimeDuration.ofSeconds(2);
+    private Instant lastPeriodTimestamp;
+    private final Duration measureInterval = Duration.ofSeconds(2);
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
         if (pv != null) {
             pv.close();
         }
 
-        overallTimestamp = Timestamp.now();
+        overallTimestamp = Instant.now();
         overallCounter = 0;
         lastPeriodTimestamp = overallTimestamp;
         lastPeriodCounter = 0;
@@ -171,18 +177,18 @@ public class ReportRateFrame extends javax.swing.JFrame {
                 if (event.isValueChanged()) {
                     valueLabel.setText(Double.toString(pv.getValue().getValue()));
                     overallCounter++;
-                    Timestamp now = Timestamp.now();
-                    double avgRage = overallCounter / now.durationFrom(overallTimestamp).toSeconds();
+                    Instant now = Instant.now();
+                    double avgRage = overallCounter / (overallTimestamp.until(now, ChronoUnit.SECONDS));
                     avgRateLabel.setText("" + avgRage);
                     if (now.compareTo(lastPeriodTimestamp.plus(measureInterval)) >= 0) {
-                        double currentRate = (overallCounter - lastPeriodCounter) / now.durationFrom(lastPeriodTimestamp).toSeconds();
+                        double currentRate = (overallCounter - lastPeriodCounter) / (lastPeriodTimestamp.until(now, ChronoUnit.SECONDS));
                         currentRateLabel.setText("" + currentRate);
                         lastPeriodTimestamp = now;
                         lastPeriodCounter = overallCounter;
                     }
                 }
             }
-        }).maxRate(ofHertz(scanRate));
+        }).maxRate(TimeDuration.ofHertz(scanRate));
     }//GEN-LAST:event_createPVButtonActionPerformed
 
     /**

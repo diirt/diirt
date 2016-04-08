@@ -11,35 +11,35 @@ import org.diirt.util.time.TimeInterval;
  */
 public interface Query {
 
-        /**
-         * Changes the parameters for the query. This method is thread safe and
-         * returns immediately. It may schedule asynchronous execution of service
-         * calls to fetch the data.
-         * @param queryParameters
-         */
-        public void update(QueryParameters queryParameters);
+    /**
+     * Changes the parameters for the query. This method is thread safe and
+     * returns immediately. It may schedule asynchronous execution of service
+     * calls to fetch the data.
+     * @param queryParameters
+     */
+    public void update(QueryParameters queryParameters);
 
-        /**
-         * This method returns all data available for the specified
-         * {@link TimeInterval}.
-         */
-        public QueryResult getResult();
+    /**
+     * This method returns all data available for the specified
+     * {@link TimeInterval}.
+     */
+    public QueryResult getResult();
 
-        /**
-         * This method can be polled at regular interval and should return right
-         * away with the data is already available, even if incomplete.
-         */
-        public QueryResult getUpdate();
+    /**
+     * This method can be polled at regular interval and should return right
+     * away with the data is already available, even if incomplete.
+     */
+    public QueryResult getUpdate();
 
-        /**
-         * Query can be disposed. Future calls to getResult() and getUpdate() will
-         * result in IllegalStateException.
-         */
-        public void close();
+    /**
+     * Query can be disposed. Future calls to getResult() and getUpdate() will
+     * result in IllegalStateException.
+     */
+    public void close();
 
-        /**
-         * @return <code>true</code> if the query has finished processing.
-         */
-        public boolean isCompleted();
+    /**
+     * @return <code>true</code> if the query has finished processing.
+     */
+    public boolean isCompleted();
 
 }

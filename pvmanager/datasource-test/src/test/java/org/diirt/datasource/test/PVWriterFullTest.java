@@ -4,22 +4,31 @@
  */
 package org.diirt.datasource.test;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.Executor;
+
 import org.diirt.datasource.DataSource;
+
 import static org.diirt.datasource.ExpressionLanguage.*;
+
 import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.util.concurrent.Executors;
-import org.diirt.util.time.TimeDuration;
-import static org.diirt.util.time.TimeDuration.*;
+
+import static java.time.Duration.*;
+
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
+
 import static org.hamcrest.Matchers.*;
+
 import org.junit.After;
+
 import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,9 +42,9 @@ public class PVWriterFullTest {
     }
 
     public static void waitForChannelToClose(DataSource source, String channelName) {
-        TimeDuration timeout = ofMillis(5000);
-        TimeInterval timeoutInterval = timeout.after(Timestamp.now());
-        while (timeoutInterval.contains(Timestamp.now())) {
+        Duration timeout = ofMillis(5000);
+        TimeInterval timeoutInterval = TimeInterval.after(timeout, Instant.now());
+        while (timeoutInterval.contains(Instant.now())) {
             if (source.getChannels().get(channelName) == null || !source.getChannels().get(channelName).isConnected()) {
                 return;
             }
@@ -98,7 +107,7 @@ public class PVWriterFullTest {
                 .async();
 
         // Wait for the connection notification
-        listener.await(TimeDuration.ofMillis(200));
+        listener.await(Duration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.CONNECTION_MASK));
         assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
@@ -117,12 +126,12 @@ public class PVWriterFullTest {
                 .async();
 
         // Wait for the connection notification
-        listener.await(TimeDuration.ofMillis(200));
+        listener.await(Duration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
 
         pvWriter.write("Value");
-        listener.await(TimeDuration.ofMillis(200));
+        listener.await(Duration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.WRITE_SUCCEEDED_MASK));
         assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
@@ -141,12 +150,12 @@ public class PVWriterFullTest {
                 .async();
 
         // Wait for the connection notification
-        listener.await(TimeDuration.ofMillis(200));
+        listener.await(Duration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
         listener.resetCount(1);
 
         pvWriter.write("Fail");
-        listener.await(TimeDuration.ofMillis(400));
+        listener.await(Duration.ofMillis(400));
         assertThat(listener.getCount(), equalTo(0));
         assertThat(listener.getEvent().getNotificationMask(), equalTo(PVWriterEvent.WRITE_FAILED_MASK));
         assertThat(listener.getThreadName(), equalTo("PVWriterFullTest 1"));
@@ -167,7 +176,7 @@ public class PVWriterFullTest {
                 .sync();
 
         // Wait for the connection notification
-        listener.await(TimeDuration.ofMillis(200));
+        listener.await(Duration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
 
         pvWriter.write("Value");
@@ -189,7 +198,7 @@ public class PVWriterFullTest {
                 .sync();
 
         // Wait for the connection notification
-        listener.await(TimeDuration.ofMillis(200));
+        listener.await(Duration.ofMillis(200));
         assertThat(listener.getCount(), equalTo(0));
 
         Throwable cause = null;

@@ -20,48 +20,48 @@ import org.diirt.util.time.TimeInterval;
  */
 public class PVCacheStatistics {
 
-        private final String channelName;
-        private SortedMap<Integer, DataRequestStatistics> requestStatsByID = Collections
-                        .synchronizedSortedMap(new TreeMap<Integer, DataRequestStatistics>());
+    private final String channelName;
+    private SortedMap<Integer, DataRequestStatistics> requestStatsByID = Collections
+            .synchronizedSortedMap(new TreeMap<Integer, DataRequestStatistics>());
 
-        public PVCacheStatistics(String channelName) {
-                this.channelName = channelName;
-        }
+    public PVCacheStatistics(String channelName) {
+        this.channelName = channelName;
+    }
 
-        public void intervalRequested(int requestID, DataSource source) {
-                requestStatsByID.put(requestID, new DataRequestStatistics(source));
-        }
+    public void intervalRequested(int requestID, DataSource source) {
+        requestStatsByID.put(requestID, new DataRequestStatistics(source));
+    }
 
-        /**
-         * Setting interval when the request ends avoid managing changes due to
-         * request optimization
-         */
-        public void intervalsCompleted(int requestID, TimeInterval interval) {
-                DataRequestStatistics rs = requestStatsByID.get(requestID);
-                rs.intervalCompleted();
-                rs.setInterval(interval);
-        }
+    /**
+     * Setting interval when the request ends avoid managing changes due to
+     * request optimization
+     */
+    public void intervalsCompleted(int requestID, TimeInterval interval) {
+        DataRequestStatistics rs = requestStatsByID.get(requestID);
+        rs.intervalCompleted();
+        rs.setInterval(interval);
+    }
 
-        public List<DataRequestStatistics> getRequestStatsIn(TimeInterval interval) {
-                List<DataRequestStatistics> stats_list = new LinkedList<DataRequestStatistics>();
-                Iterator<DataRequestStatistics> it_rs = requestStatsByID.values().iterator();
-                while (it_rs.hasNext()) {
-                        DataRequestStatistics rs = it_rs.next();
-                        if (interval.contains(rs.getStart())) {
-                                stats_list.add(rs);
-                        }
-                }
-                return stats_list;
+    public List<DataRequestStatistics> getRequestStatsIn(TimeInterval interval) {
+        List<DataRequestStatistics> stats_list = new LinkedList<DataRequestStatistics>();
+        Iterator<DataRequestStatistics> it_rs = requestStatsByID.values().iterator();
+        while (it_rs.hasNext()) {
+            DataRequestStatistics rs = it_rs.next();
+            if (interval.contains(rs.getStart())) {
+                stats_list.add(rs);
+            }
         }
+        return stats_list;
+    }
 
-        public String toConsoleString() {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Requested intervals for " + channelName + " (start => interval: duration):\n");
-                for (DataRequestStatistics stats : requestStatsByID.values()) {
-                        sb.append(stats.toConsoleString());
-                        sb.append("\n");
-                }
-                return sb.toString();
+    public String toConsoleString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Requested intervals for " + channelName + " (start => interval: duration):\n");
+        for (DataRequestStatistics stats : requestStatsByID.values()) {
+            sb.append(stats.toConsoleString());
+            sb.append("\n");
         }
+        return sb.toString();
+    }
 
 }

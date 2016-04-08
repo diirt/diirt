@@ -4,14 +4,17 @@
  */
 package org.diirt.util.time;
 
+import java.time.Duration;
+import java.time.Instant;
+
 /**
  * A period of time where each end can either be an absolute moment in time
  * (e.g. 5/16/2012 11:30 AM) or a relative moment from a reference (e.g. 30 seconds before)
  * which typically is going to be "now".
  * <p>
  * This class stores a reference for start and a reference for end. Each reference
- * can either be absolute, in which case it's a TimeStamp, or relative, in
- * which case it's a TimeDuration. The {@link #toAbsoluteInterval(org.diirt.util.time.Timestamp) }
+ * can either be absolute, in which case it's a Instant, or relative, in
+ * which case it's a TimeDuration. The {@link Instant}
  * can be used to transform the relative interval into an absolute one
  * calculated from the reference. This allows to keep the relative interval,
  * and then to convert multiple time to an absolute interval every time
@@ -31,7 +34,7 @@ public class TimeRelativeInterval {
         this.end = end;
     }
 
-    public static TimeRelativeInterval of(Timestamp start, Timestamp end) {
+    public static TimeRelativeInterval of(Instant start, Instant end) {
         return new TimeRelativeInterval(start, end);
     }
 
@@ -40,11 +43,11 @@ public class TimeRelativeInterval {
     }
 
     public boolean isStartAbsolute() {
-        return start instanceof Timestamp || start == null;
+        return start instanceof Instant || start == null;
     }
 
     public boolean isEndAbsolute() {
-        return end instanceof Timestamp || end == null;
+        return end instanceof Instant || end == null;
     }
 
     public Object getStart() {
@@ -55,30 +58,30 @@ public class TimeRelativeInterval {
         return end;
     }
 
-    public Timestamp getAbsoluteStart() {
-        return (Timestamp) start;
+    public Instant getAbsoluteStart() {
+        return (Instant) start;
     }
 
-    public Timestamp getAbsoluteEnd() {
-        return (Timestamp) end;
+    public Instant getAbsoluteEnd() {
+        return (Instant) end;
     }
 
-    public TimeDuration getRelativeStart() {
-        return (TimeDuration) start;
+    public Duration getRelativeStart() {
+        return (Duration) start;
     }
 
-    public TimeDuration getRelativeEnd() {
-        return (TimeDuration) end;
+    public Duration getRelativeEnd() {
+        return (Duration) end;
     }
 
-    public TimeInterval toAbsoluteInterval(Timestamp reference) {
-        Timestamp absoluteStart;
+    public TimeInterval toAbsoluteInterval(Instant reference) {
+        Instant absoluteStart;
         if (isStartAbsolute()) {
             absoluteStart = getAbsoluteStart();
         } else {
             absoluteStart = reference.plus(getRelativeStart());
         }
-        Timestamp absoluteEnd;
+        Instant absoluteEnd;
         if (isEndAbsolute()) {
             absoluteEnd = getAbsoluteEnd();
         } else {

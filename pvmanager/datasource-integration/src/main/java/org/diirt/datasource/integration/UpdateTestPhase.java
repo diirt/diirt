@@ -4,15 +4,19 @@
  */
 package org.diirt.datasource.integration;
 
+import java.time.Instant;
 import java.util.Arrays;
+
 import static org.diirt.datasource.ExpressionLanguage.*;
+
 import org.diirt.datasource.PVManager;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
+
 import static org.diirt.datasource.integration.VTypeMatchMask.*;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.integration.Constants.*;
+
 import org.diirt.support.ca.JCADataSourceConfiguration;
 
 /**
@@ -48,7 +52,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
         log.matchConnections(const_double, true);
         log.matchValues(const_double, ALL_EXCEPT_TIME,
                 const_double_value,
-                newVDouble(3.0, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
+                newVDouble(3.0, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone()));
         log.matchWriteConnections(const_double, true);
         log.matchWriteNotifications(const_double, true);
 
@@ -56,7 +60,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
         log.matchConnections(const_int, true);
         log.matchValues(const_int, ALL_EXCEPT_TIME,
                 const_int_value,
-                newVInt(42, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Timestamp.of(631152000, 0), null, false), displayNone()));
+                newVInt(42, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone()));
         log.matchWriteConnections(const_double, true);
         log.matchWriteNotifications(const_double, true);
 

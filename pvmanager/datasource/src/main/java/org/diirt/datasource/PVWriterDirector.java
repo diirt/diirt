@@ -5,6 +5,7 @@
 package org.diirt.datasource;
 
 import java.lang.ref.WeakReference;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,8 +20,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.diirt.datasource.expression.WriteExpression;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Orchestrates the different elements of pvmanager to make a writer functional.
@@ -61,7 +62,7 @@ public class PVWriterDirector<T> {
     private final WriteFunction<T> writeFunction;
     /** Executor to use to process the write */
     private final ScheduledExecutorService writeExecutor;
-    private final TimeDuration timeout;
+    private final Duration timeout;
     private final String timeoutMessage;
 
     // Required to connect/disconnect expressions
@@ -80,7 +81,7 @@ public class PVWriterDirector<T> {
 
     PVWriterDirector(PVWriterImpl<T> pvWriter, WriteFunction<T> writeFunction, DataSource dataSource,
             ScheduledExecutorService writeExecutor, Executor notificationExecutor,
-            ScheduledExecutorService scannerExecutor, TimeDuration writeTimeout, String writeTimeoutMessage,
+            ScheduledExecutorService scannerExecutor, Duration writeTimeout, String writeTimeoutMessage,
             ExceptionHandler exceptionHandler) {
         this.pvRef = new WeakReference<>(pvWriter);
         this.writeFunction = writeFunction;
@@ -199,7 +200,7 @@ public class PVWriterDirector<T> {
         WriteTask newTask = new WriteTask(pvWriter, newValue);
         writeExecutor.execute(newTask);
         if (timeout != null) {
-            writeExecutor.schedule(newTask.timeout(), timeout.toNanosLong(), TimeUnit.NANOSECONDS);
+            writeExecutor.schedule(newTask.timeout(), timeout.toNanos(), TimeUnit.NANOSECONDS);
         }
     }
 
@@ -320,7 +321,7 @@ public class PVWriterDirector<T> {
         boolean done;
         try {
             if (timeout != null) {
-                done = latch.await(timeout.toNanosLong(), TimeUnit.NANOSECONDS);
+                done = latch.await(timeout.toNanos(), TimeUnit.NANOSECONDS);
             } else {
                 latch.await();
                 done = true;

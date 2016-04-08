@@ -8,8 +8,12 @@ import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListDouble;
 import org.diirt.vtype.VDoubleArray;
 import org.diirt.vtype.ValueFactory;
+
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 import org.diirt.vtype.ValueUtil;
 
 /**
@@ -24,7 +28,7 @@ public class Square2DWaveform extends SimFunction<VDoubleArray> {
     private final int xSamples;
     private final int ySamples;
     private final double angle;
-    private Timestamp initialReference;
+    private Instant initialReference;
 
     /**
      * Creates sine wave of 100 samples, with period of 1 second, wavelength of
@@ -113,7 +117,7 @@ public class Square2DWaveform extends SimFunction<VDoubleArray> {
         if (initialReference == null) {
             initialReference = lastTime;
         }
-        double t = lastTime.durationFrom(initialReference).toSeconds();
+        double t = initialReference.until(lastTime, ChronoUnit.SECONDS);
         double omega = 2 * Math.PI / periodInSeconds;
         double k = 2 * Math.PI / wavelengthInSamples;
         double min = -1.0;

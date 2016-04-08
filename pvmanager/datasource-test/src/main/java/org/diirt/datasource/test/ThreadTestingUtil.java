@@ -4,11 +4,12 @@
  */
 package org.diirt.datasource.test;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.Callable;
+
 import org.diirt.datasource.PVReader;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  *
@@ -26,10 +27,10 @@ public class ThreadTestingUtil {
      * @return the value from the task or null
      * @throws Exception an exception from the task
      */
-    public static <T> T waitFor(Callable<T> task, TimeDuration timeout)
+    public static <T> T waitFor(Callable<T> task, Duration timeout)
     throws Exception {
-        TimeInterval runInterval = timeout.after(Timestamp.now());
-        while (runInterval.contains(Timestamp.now())) {
+        TimeInterval runInterval = TimeInterval.after(timeout, Instant.now());
+        while (runInterval.contains(Instant.now())) {
             T value = task.call();
             if (value != null) {
                 return value;
@@ -43,11 +44,11 @@ public class ThreadTestingUtil {
         return null;
     }
 
-    public static TimeDuration waitForValue(PVReader<?> pvReader, TimeDuration timeout)  {
-        TimeInterval runInterval = timeout.after(Timestamp.now());
-        while (runInterval.contains(Timestamp.now())) {
+    public static Duration waitForValue(PVReader<?> pvReader, Duration timeout)  {
+        TimeInterval runInterval = TimeInterval.after(timeout, Instant.now());
+        while (runInterval.contains(Instant.now())) {
             if (pvReader.getValue() != null) {
-                return runInterval.getStart().durationBetween(Timestamp.now());
+                return Duration.between(runInterval.getStart(), Instant.now());
             }
             try {
                 Thread.sleep(1);

@@ -4,6 +4,7 @@
  */
 package org.diirt.support.pva;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +43,6 @@ import org.diirt.support.pva.adapters.PVFieldToVStatistics;
 import org.diirt.support.pva.adapters.PVFieldToVString;
 import org.diirt.support.pva.adapters.PVFieldToVStringArray;
 import org.diirt.support.pva.adapters.PVFieldToVTable;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VBoolean;
 import org.diirt.vtype.VBooleanArray;
 import org.diirt.vtype.VByte;
@@ -459,11 +459,11 @@ public class PVAVTypeAdapterSet implements PVATypeAdapterSet {
 
     //  -> Timestamp
     final static PVATypeAdapter ToTimeStamp = new PVATypeAdapter(
-                Timestamp.class,
-                new String[] { "time_t" })
+            Instant.class,
+            new String[] { "time_t" })
         {
             @Override
-            public Timestamp createValue(final PVStructure message, PVField valueField, boolean disconnected) {
+            public Instant createValue(final PVStructure message, PVField valueField, boolean disconnected) {
                 return PVFieldToTimestamp.create(message);
             }
         };

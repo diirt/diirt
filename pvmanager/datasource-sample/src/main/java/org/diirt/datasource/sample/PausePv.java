@@ -13,7 +13,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.sim.SimulationDataSource;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 import org.diirt.vtype.VNumber;
 
 /**
@@ -41,9 +41,9 @@ public class PausePv {
                         }
                     }
                 })
-                .maxRate(TimeDuration.ofMillis(50));
+                .maxRate(Duration.ofMillis(50));
 
-        Thread.sleep(2000);
+    Thread.sleep(2000);
         System.out.println("Pausing for 3 seconds");
         reader.setPaused(true);
         Thread.sleep(3000);

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.ValueCacheImpl;
 import org.diirt.vtype.VDouble;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 import static org.diirt.support.ca.JCAVTypeAdapterSetTest.*;
 
 /**
@@ -36,7 +36,7 @@ public class JCAZeroPrecisionTest {
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(true);
 
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         meta.setPrecision((short) 0);
@@ -55,7 +55,7 @@ public class JCAZeroPrecisionTest {
         JCAConnectionPayload connPayload = mockJCAConnectionPayload(DBR_Double.TYPE, 1, Channel.ConnectionState.CONNECTED);
         when(connPayload.getJcaDataSource().isHonorZeroPrecision()).thenReturn(false);
 
-        Timestamp timestamp = Timestamp.of(1234567,1234);
+        Instant timestamp = Instant.ofEpochSecond(1234567,1234);
         DBR_TIME_Double value = createDBRTimeDouble(new double[]{3.25F}, Severity.MINOR_ALARM, Status.HIGH_ALARM, timestamp);
         DBR_CTRL_Double meta = createNumericMetadata();
         meta.setPrecision((short) 0);

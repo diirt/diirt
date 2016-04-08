@@ -12,7 +12,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderConfiguration;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterConfiguration;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 import static org.diirt.vtype.ValueFactory.*;
 
 /**
@@ -30,7 +30,7 @@ public abstract class TestPhase {
         return getClass().getSimpleName();
     }
 
-    protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, TimeDuration maxRate) {
+    protected <T> TestPhase addReader(PVReaderConfiguration<T> reader, Duration maxRate) {
         PVReader<T> pvReader = reader.readListener(phaseLog.createReadListener()).maxRate(maxRate);
         pvReaders.put(pvReader.getName(), pvReader);
         if (getDebugLevel() >= 2) {

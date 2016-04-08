@@ -7,9 +7,12 @@ package org.diirt.datasource.extra;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.ValueUtil;
@@ -17,7 +20,6 @@ import org.diirt.vtype.VImage;
 import org.diirt.datasource.extra.WaterfallPlotParameters.InternalCopy;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Implements the image calculation.
@@ -30,7 +32,7 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
     private WaterfallPlotParameters.InternalCopy previousParameters;
     private BufferedImage previousBuffer;
     private VImage previousImage;
-    private Timestamp previousPlotEnd;
+    private Instant previousPlotEnd;
     private AdaptiveRange adaptiveRange;
     private DoubleArrayTimeCache doubleArrayTimeCache;
 
@@ -58,17 +60,17 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
 
         // Calculate new end time for the plot, and how many pixels
         // should the plot scroll
-        Timestamp plotEnd;
+        Instant plotEnd;
         int nNewPixels;
         if (previousPlotEnd != null) {
-            nNewPixels = Timestamp.now().durationFrom(previousPlotEnd).dividedBy(parameters.pixelDuration);
+            nNewPixels = TimeDuration.dividedBy(Duration.between(previousPlotEnd, Instant.now()), parameters.pixelDuration);
             plotEnd = previousPlotEnd.plus(parameters.pixelDuration.multipliedBy(nNewPixels));
         } else {
-            plotEnd = Timestamp.now();
+            plotEnd = Instant.now();
             nNewPixels = 0;
             redrawAll = true;
         }
-        Timestamp plotStart = plotEnd.minus(parameters.pixelDuration.multipliedBy(parameters.height));
+        Instant plotStart = plotEnd.minus(parameters.pixelDuration.multipliedBy(parameters.height));
 
         List<DoubleArrayTimeCache.Data> dataToPlot;
         if (redrawAll) {
@@ -143,10 +145,10 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
         for (DoubleArrayTimeCache.Data data : dataToPlot) {
             int pixelsFromStart = 0;
             if (data.getBegin().compareTo(plotStart) > 0) {
-                pixelsFromStart = data.getBegin().durationFrom(plotStart).dividedBy(parameters.pixelDuration);
+                pixelsFromStart = TimeDuration.dividedBy(Duration.between(plotStart, data.getBegin()), parameters.pixelDuration);
             }
             int y = image.getHeight() - pixelsFromStart - 1;
-            Timestamp pixelStart = plotStart.plus(parameters.pixelDuration.multipliedBy(pixelsFromStart));
+            Instant pixelStart = plotStart.plus(parameters.pixelDuration.multipliedBy(pixelsFromStart));
             if (parameters.adaptiveRange) {
                 drawSection(image, parameters, null, adaptiveRange, parameters.colorScheme, data, pixelStart, parameters.pixelDuration, y);
             } else {
@@ -163,9 +165,9 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
 
     private static void drawSection(BufferedImage image, InternalCopy parameters,
             double[] positions, Display display, ColorScheme colorScheme, DoubleArrayTimeCache.Data data,
-            Timestamp pixelStart, TimeDuration pixelDuration, int y) {
+            Instant pixelStart, Duration pixelDuration, int y) {
         int usedArrays = 0;
-        Timestamp pixelEnd = pixelStart.plus(pixelDuration);
+        Instant pixelEnd = pixelStart.plus(pixelDuration);
 
         // Loop until the pixel starts before the range end
         while (pixelStart.compareTo(data.getEnd()) < 0) {
@@ -217,7 +219,7 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
         return values.get(values.size() - 1);
     }
 
-    private static List<ListNumber> valuesInPixel(Timestamp pixelStart, Timestamp pixelEnd, DoubleArrayTimeCache.Data data, int usedArrays) {
+    private static List<ListNumber> valuesInPixel(Instant pixelStart, Instant pixelEnd, DoubleArrayTimeCache.Data data, int usedArrays) {
         List<ListNumber> pixelValues = new ArrayList<ListNumber>();
         int currentArray = usedArrays;
         while (currentArray < data.getNArrays() && data.getTimestamp(currentArray).compareTo(pixelEnd) <= 0) {

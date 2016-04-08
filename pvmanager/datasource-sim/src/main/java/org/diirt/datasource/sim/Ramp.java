@@ -6,6 +6,7 @@ package org.diirt.datasource.sim;
 
 import org.diirt.vtype.VDouble;
 import static org.diirt.vtype.ValueFactory.*;
+import java.time.Instant;
 
 /**
  * Function to simulate a signal that increases constantly within a range

@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 import org.diirt.datasource.timecache.query.QueryParameters;
 import org.diirt.datasource.ExpressionLanguage.OneArgFunction;
@@ -24,7 +25,6 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.loc.LocalDataSource;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeRelativeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.io.CSVIO;
@@ -40,8 +40,8 @@ public class SampleTableClient extends javax.swing.JFrame {
 
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    private static Timestamp start;
-    private static Timestamp end;
+    private static Instant start;
+    private static Instant end;
 
     /**
      * Creates new form SampleTableClient
@@ -50,8 +50,8 @@ public class SampleTableClient extends javax.swing.JFrame {
         initComponents();
         try {
             // TODO: these can become different fields
-            start = Timestamp.of(dateFormat.parse("2014-04-03 09:00"));
-            end = Timestamp.of(dateFormat.parse("2014-04-04 09:00"));
+            start = dateFormat.parse("2014-04-03 09:00").toInstant();
+            end = dateFormat.parse("2014-04-04 09:00").toInstant();
         } catch (ParseException ex) {
         }
     }

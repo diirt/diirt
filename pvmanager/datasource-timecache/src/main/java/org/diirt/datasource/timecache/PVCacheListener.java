@@ -15,11 +15,11 @@ import org.diirt.util.time.TimeInterval;
  */
 public interface PVCacheListener {
 
-        /** Informs that a new set of {@link Data} is available in storage. */
-        public void newDataInCache(final SortedSet<Data> newData,
-                        final TimeInterval newDataInterval,
-                        final IntervalsList completedIntervals);
+    /** Informs that a new set of {@link Data} is available in storage. */
+    public void newDataInCache(final SortedSet<Data> newData,
+            final TimeInterval newDataInterval,
+            final IntervalsList completedIntervals);
 
-        public void updatedCompletedIntervals(final IntervalsList completedIntervals);
+    public void updatedCompletedIntervals(final IntervalsList completedIntervals);
 
 }

@@ -4,14 +4,20 @@
  */
 package org.diirt.datasource.formula.vnumber;
 
+import org.diirt.datasource.formula.vnumber.VNumberFunctionSet;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FunctionTester;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Time;
 import org.diirt.vtype.VNumber;
 import org.junit.Test;
+
 import static org.diirt.vtype.ValueFactory.*;
 
 /**
@@ -201,7 +207,7 @@ public class VNumberFunctionSetTest {
         Alarm none = alarmNone();
         Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
         Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "xor")
                 .compareReturnValue(0b0110, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
@@ -219,7 +225,7 @@ public class VNumberFunctionSetTest {
         Alarm none = alarmNone();
         Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
         Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "or")
                 .compareReturnValue(0b1110, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
@@ -247,7 +253,7 @@ public class VNumberFunctionSetTest {
         Alarm none = alarmNone();
         Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
         Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "and")
                 .compareReturnValue(0b1000, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
@@ -285,7 +291,7 @@ public class VNumberFunctionSetTest {
         Alarm alarm1 = alarmNone();
         Alarm alarm2 = newAlarm(AlarmSeverity.MINOR, "LOW");
         Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(TimeDuration.ofMillis(100)));
+        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "?:")
                 .compareReturnValue(1, true, 1, 0)
                 .compareReturnValue(0, false, 1, 0)

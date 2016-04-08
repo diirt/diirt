@@ -20,7 +20,7 @@ import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  * The base class for all graph renderers.
@@ -120,7 +120,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
     protected ListDouble valueReferences;
     protected List<String> valueReferenceLabels;
     protected ListDouble yReferenceCoords;
-    protected List<Timestamp> timeReferences;
+    protected List<Instant> timeReferences;
     protected ListDouble normalizedTimeReferences;
     protected List<String> timeReferenceLabels;
     private int xLabelMaxHeight;
@@ -229,8 +229,8 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
                     dataTimeInterval.contains(aggregatedTimeInterval.getStart())) {
                 return dataTimeInterval;
             }
-            Timestamp start;
-            Timestamp end;
+            Instant start;
+            Instant end;
             if (dataTimeInterval.getStart().compareTo(aggregatedTimeInterval.getStart()) > 0) {
                 start = aggregatedTimeInterval.getStart();
             } else {

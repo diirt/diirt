@@ -4,9 +4,10 @@
  */
 package org.diirt.datasource.timecache.source;
 
+import java.time.Instant;
+
 import org.diirt.datasource.timecache.DataChunk;
 import org.diirt.datasource.timecache.DataRequestThread;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Retrieves samples from a source.
@@ -14,14 +15,14 @@ import org.diirt.util.time.Timestamp;
  */
 public interface DataSource {
 
-        /**
-         * Read samples from source ordered by {@link Timestamp} and starting with
-         * the specified one. Polled by {@link DataRequestThread}.
-         * @param channelName channel to read.
-         * @param from lowest {@link Timestamp} of the first returned sample.
-         * @return {@link DataChunk} a chunk of ordered samples with all
-         *         {@link Timestamp} superior to the specified argument.
-         */
-        public DataChunk getData(String channelName, Timestamp from);
+    /**
+     * Read samples from source ordered by {@link Timestamp} and starting with
+     * the specified one. Polled by {@link DataRequestThread}.
+     * @param channelName channel to read.
+     * @param from lowest {@link Timestamp} of the first returned sample.
+     * @return {@link DataChunk} a chunk of ordered samples with all
+     *         {@link Timestamp} superior to the specified argument.
+     */
+    public DataChunk getData(String channelName, Instant from);
 
 }

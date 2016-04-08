@@ -4,12 +4,16 @@
  */
 package org.diirt.datasource;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.concurrent.Callable;
+
 import org.diirt.util.time.TimeDuration;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.Matchers.*;
-import static org.diirt.datasource.DesiredRateEvent.Type.*;
 
 /**
  *

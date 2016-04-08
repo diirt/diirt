@@ -4,7 +4,11 @@
  */
 package org.diirt.util.time;
 
-import java.text.ParseException;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,9 +24,9 @@ import java.util.regex.Pattern;
  *
  * "5 mins ago", "5 hours ago", "5 days ago", "5 weeks ago"
  *
- * The following returns a Timestamp "now"
+ * The following returns a Instant "now"
  *
- * The following returns a TimeDuration - relative
+ * The following returns a Duration - relative
  *
  * "last min", "last hour", "last day", "last week"
  *
@@ -35,7 +39,7 @@ import java.util.regex.Pattern;
  */
 public class TimeParser {
 
-    public static TimeDuration getTimeDuration(String time) {
+    public static Duration getDuration(String time) {
         // TODO this regular expression needs to be reviewed and improved if
         // possible
         int quantity = 0;
@@ -65,16 +69,16 @@ public class TimeParser {
         switch (unit) {
         case "min":
         case "mins":
-            return TimeDuration.ofMinutes(quantity);
+            return Duration.ofMinutes(quantity);
         case "hour":
         case "hours":
-            return TimeDuration.ofHours(quantity);
+            return Duration.ofHours(quantity);
         case "day":
         case "days":
-            return TimeDuration.ofHours(quantity * 24);
+            return Duration.ofHours(quantity * 24);
         case "week":
         case "weeks":
-            return TimeDuration.ofHours(quantity * 24 * 7);
+            return Duration.ofHours(quantity * 24 * 7);
         default:
             break;
         }
@@ -86,19 +90,20 @@ public class TimeParser {
     }
 
     public static TimeInterval getTimeInterval(String start, String end) {
-        return TimeInterval.between(getTimeStamp(start), getTimeStamp(end));
+        return TimeInterval.between(getInstant(start), getInstant(end));
     }
 
     /**
      * A Helper function to help you convert various string represented time
-     * definition to an absolute Timestamp.
+     * definition to an absolute Instant.
      *
-     * @param time a string represent the time
-     * @return the parsed timestamp or null
+     * @param time
+     *            a string represent the time
+     * @return the parsed Instant or null
      */
-    public static Timestamp getTimeStamp(String time) {
+    public static Instant getInstant(String time) {
         if (time.equalsIgnoreCase("now")) {
-            return Timestamp.now();
+            return Instant.now();
         } else {
             int quantity = 0;
             String unit = "";
@@ -114,20 +119,17 @@ public class TimeParser {
                 switch (unit) {
                 case "min":
                 case "mins":
-                    return Timestamp.now().minus(
-                            TimeDuration.ofMinutes(quantity));
+                    return Instant.now().minus(Duration.ofMinutes(quantity));
                 case "hour":
                 case "hours":
-                    return Timestamp.now()
-                            .minus(TimeDuration.ofHours(quantity));
+                    return Instant.now().minus(Duration.ofHours(quantity));
                 case "day":
                 case "days":
-                    return Timestamp.now().minus(
-                            TimeDuration.ofHours(quantity * 24));
+                    return Instant.now().minus(Duration.ofHours(quantity * 24));
                 case "week":
                 case "weeks":
-                    return Timestamp.now().minus(
-                            TimeDuration.ofHours(quantity * 24 * 7));
+                    return Instant.now().minus(
+                            Duration.ofHours(quantity * 24 * 7));
                 default:
                     break;
                 }
@@ -145,32 +147,24 @@ public class TimeParser {
                 switch (unit) {
                 case "min":
                 case "mins":
-                    return Timestamp.now().minus(
-                            TimeDuration.ofMinutes(quantity));
+                    return Instant.now().minus(Duration.ofMinutes(quantity));
 
                 case "hour":
                 case "hours":
-                    return Timestamp.now()
-                            .minus(TimeDuration.ofHours(quantity));
+                    return Instant.now().minus(Duration.ofHours(quantity));
                 case "day":
                 case "days":
-                    return Timestamp.now().minus(
-                            TimeDuration.ofHours(quantity * 24));
+                    return Instant.now().minus(Duration.ofHours(quantity * 24));
                 case "week":
                 case "weeks":
-                    return Timestamp.now().minus(
-                            TimeDuration.ofHours(quantity * 24 * 7));
+                    return Instant.now().minus(
+                            Duration.ofHours(quantity * 24 * 7));
                 default:
                     break;
                 }
             }
-            TimestampFormat format = new TimestampFormat(
-                    "yyyy-MM-dd'T'HH:mm:ss");
-            try {
-                return format.parse(time);
-            } catch (ParseException e) {
-                return null;
-            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            return LocalDateTime.parse(time, formatter).atZone(TimeZone.getDefault().toZoneId()).toInstant();
         }
     }
 }

@@ -7,6 +7,7 @@ package org.diirt.vtype;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,12 +15,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.text.NumberFormats;
-import org.diirt.util.time.TimestampFormat;
 
 /**
  * Various utility methods for runtime handling of the types defined in
@@ -379,7 +380,7 @@ public class ValueUtil {
         return false;
     }
 
-    private static volatile TimestampFormat defaultTimestampFormat = new TimestampFormat();
+    private static volatile DateTimeFormatter defaultTimestampFormat = DateTimeFormatter.ISO_DATE_TIME;
     private static volatile NumberFormat defaultNumberFormat = NumberFormats.toStringFormat();
     private static volatile ValueFormat defaultValueFormat = new SimpleValueFormat(3);
     private static volatile Map<AlarmSeverity, Integer> rgbSeverityColor = createDefaultSeverityColorMap();
@@ -431,7 +432,7 @@ public class ValueUtil {
      *
      * @return the default timestamp format
      */
-    public static TimestampFormat getDefaultTimestampFormat() {
+    public static DateTimeFormatter getDefaultTimestampFormat() {
         return defaultTimestampFormat;
     }
 
@@ -440,7 +441,7 @@ public class ValueUtil {
      *
      * @param defaultTimestampFormat the new default timestamp format
      */
-    public static void setDefaultTimestampFormat(TimestampFormat defaultTimestampFormat) {
+    public static void setDefaultTimestampFormat(DateTimeFormatter defaultTimestampFormat) {
         ValueUtil.defaultTimestampFormat = defaultTimestampFormat;
     }
 

@@ -12,12 +12,12 @@ import org.diirt.util.time.TimeRelativeInterval;
  */
 public class QueryParameters {
 
-        TimeRelativeInterval timeInterval;
-        public Parameter config = Parameter.Default;
+    TimeRelativeInterval timeInterval;
+    public Parameter config = Parameter.Default;
 
-        public QueryParameters timeInterval(TimeRelativeInterval timeInterval) {
-                this.timeInterval = timeInterval;
-                return this;
-        }
+    public QueryParameters timeInterval(TimeRelativeInterval timeInterval) {
+        this.timeInterval = timeInterval;
+        return this;
+    }
 
 }

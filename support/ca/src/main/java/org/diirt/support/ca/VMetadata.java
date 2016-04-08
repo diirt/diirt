@@ -8,7 +8,7 @@ import gov.aps.jca.dbr.TIME;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Time;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  *
@@ -18,7 +18,7 @@ class VMetadata<TValue extends TIME> implements Alarm, Time {
 
     final TValue dbrValue;
     private final boolean disconnected;
-    private final Timestamp timestamp;
+    private final Instant timestamp;
 
     VMetadata(TValue dbrValue, JCAConnectionPayload connPayload) {
         this.dbrValue = dbrValue;
@@ -45,7 +45,7 @@ class VMetadata<TValue extends TIME> implements Alarm, Time {
     }
 
     @Override
-    public Timestamp getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 

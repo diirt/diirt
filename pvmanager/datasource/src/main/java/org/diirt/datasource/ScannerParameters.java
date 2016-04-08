@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
@@ -17,8 +17,8 @@ class ScannerParameters {
 
     private Type type = Type.ACTIVE;
     private ScheduledExecutorService scannerExecutor;
-    private TimeDuration maxDuration;
-    private TimeDuration timeout;
+    private Duration maxDuration;
+    private Duration timeout;
     private String timeoutMessage;
     private DesiredRateEventListener listener;
 
@@ -31,12 +31,12 @@ class ScannerParameters {
         return type;
     }
 
-    public ScannerParameters maxDuration(TimeDuration maxDuration) {
+    public ScannerParameters maxDuration(Duration maxDuration) {
         this.maxDuration = maxDuration;
         return this;
     }
 
-    public TimeDuration getMaxDuration() {
+    public Duration getMaxDuration() {
         return maxDuration;
     }
 
@@ -59,7 +59,7 @@ class ScannerParameters {
         return scannerExecutor;
     }
 
-    public ScannerParameters timeout(TimeDuration timeout, String timeoutMessage) {
+    public ScannerParameters timeout(Duration timeout, String timeoutMessage) {
         this.timeout = timeout;
         this.timeoutMessage = timeoutMessage;
         return this;

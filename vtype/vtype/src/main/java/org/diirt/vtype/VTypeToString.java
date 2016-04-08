@@ -4,8 +4,13 @@
  */
 package org.diirt.vtype;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import org.diirt.util.text.NumberFormats;
-import org.diirt.util.time.TimestampFormat;
 import org.diirt.vtype.table.VTableFactory;
 
 /**
@@ -53,13 +58,13 @@ public class VTypeToString {
             return "null";
         }
 
-        return timeFormat.format(time.getTimestamp()) + "(" + time.getTimeUserTag()+ ")";
+        return timeFormat.format(LocalDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())) + "(" + time.getTimeUserTag()+ ")";
     }
 
-    private static final TimestampFormat timeFormat = new TimestampFormat("yyyy/MM/dd HH:mm:ss.SSS");
+    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
 
     private static void appendTime(StringBuilder builder, Time time) {
-        builder.append(", ").append(timeFormat.format(time.getTimestamp()));
+        builder.append(", ").append(timeFormat.format(LocalDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())));
     }
 
     /**

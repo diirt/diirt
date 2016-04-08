@@ -4,14 +4,17 @@
  */
 package org.diirt.vtype.json;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonNumber;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+
 import org.diirt.util.array.ArrayByte;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayFloat;
@@ -25,7 +28,6 @@ import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListLong;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListShort;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Utility classes to convert JSON arrays to and from Lists and ListNumbers.
@@ -172,15 +174,15 @@ public class JsonArrays {
 
 
     /**
-     * Converts the given JSON array to a List of Timestamp.
+     * Converts the given JSON array to a List of Instant.
      *
      * @param array an array
-     * @return a new List of Timestamps
+     * @return a new List of Instant
      */
-    public static List<Timestamp> toListTimestamp(JsonArray array) {
-        List<Timestamp> timestamps = new ArrayList<>();
+    public static List<Instant> toListTimestamp(JsonArray array) {
+        List<Instant> timestamps = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
-            timestamps.add(Timestamp.of(array.getJsonNumber(i).longValue(), 0));
+            timestamps.add(Instant.ofEpochSecond(array.getJsonNumber(i).longValue(), 0));
         }
         return timestamps;
     }
@@ -204,15 +206,15 @@ public class JsonArrays {
     }
 
     /**
-     * Converts the given List of Timestamp to a JSON array.
+     * Converts the given List of Instant to a JSON array.
      *
-     * @param list a List of Timestamps
+     * @param list a List of Instant
      * @return an array
      */
-    public static JsonArrayBuilder fromListTimestamp(List<Timestamp> list) {
+    public static JsonArrayBuilder fromListTimestamp(List<Instant> list) {
         JsonArrayBuilder b = Json.createArrayBuilder();
-        for (Timestamp element : list) {
-            b.add(element.getSec());
+        for (Instant element : list) {
+            b.add(element.getEpochSecond());
         }
         return b;
     }

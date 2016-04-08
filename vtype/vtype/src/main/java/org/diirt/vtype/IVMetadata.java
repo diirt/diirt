@@ -4,7 +4,7 @@
  */
 package org.diirt.vtype;
 
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 
 /**
@@ -33,7 +33,7 @@ class IVMetadata implements Alarm, Time {
     }
 
     @Override
-    public Timestamp getTimestamp() {
+    public Instant getTimestamp() {
         return time.getTimestamp();
     }
 

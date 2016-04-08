@@ -4,12 +4,14 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
+
 import org.diirt.datasource.expression.DesiredRateExpression;
+
 import static org.diirt.util.concurrent.Executors.*;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * An expression used to set the final parameters on how the pv expression
@@ -35,13 +37,13 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     /**
      * Sets a timeout for no values received.
      * <p>
-     * For more details, consult {@link #timeout(org.diirt.util.time.TimeDuration, java.lang.String) }.
+     * For more details, consult {@link #timeout(org.diirt.util.time.Duration, java.lang.String) }.
      *
      * @param timeout the duration of the timeout; can't be null
      * @return this expression
      */
     @Override
-    public PVReaderConfiguration<T> timeout(TimeDuration timeout) {
+    public PVReaderConfiguration<T> timeout(Duration timeout) {
         super.timeout(timeout);
         return this;
     }
@@ -62,7 +64,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @return this expression
      */
     @Override
-    public PVReaderConfiguration<T> timeout(TimeDuration timeout, String timeoutMessage) {
+    public PVReaderConfiguration<T> timeout(Duration timeout, String timeoutMessage) {
         super.timeout(timeout, timeoutMessage);
         return this;
     }
@@ -70,7 +72,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     private final DesiredRateExpression<T> aggregatedPVExpression;
     private final List<PVReaderListener<T>> readListeners = new ArrayList<>();
     private ExceptionHandler exceptionHandler;
-    private TimeDuration maxRate;
+    private Duration maxRate;
     PVReaderImpl<T> pv;
     ReadFunction<T> aggregatedFunction;
 
@@ -120,7 +122,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
      * @param rate the minimum time distance (i.e. the maximum rate) between two different notifications
      * @return the PVReader
      */
-    public PVReader<T> maxRate(TimeDuration rate) {
+    public PVReader<T> maxRate(Duration rate) {
         maxRateAndValidate(rate);
 
         preparePvReader();
@@ -131,7 +133,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
         return pv;
     }
 
-    void maxRateAndValidate(TimeDuration rate) {
+    void maxRateAndValidate(Duration rate) {
         this.maxRate = rate;
         validateReaderConfiguration();
     }
@@ -166,7 +168,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     }
 
     private void validateReaderConfiguration() {
-        if (maxRate.getSec() < 0 && maxRate.getNanoSec() < 5000000) {
+        if (maxRate.getSeconds() < 0 && maxRate.getNano() < 5000000) {
             throw new IllegalArgumentException("Current implementation limits the rate to >5ms or <200Hz (requested " + maxRate + "s)");
         }
 

@@ -5,7 +5,6 @@
 package org.diirt.datasource.timecache.storage;
 
 import org.diirt.datasource.timecache.util.TimestampsSet;
-import org.diirt.util.time.Timestamp;
 
 /**
  * {@link DataStorage} listener.
@@ -13,11 +12,11 @@ import org.diirt.util.time.Timestamp;
  */
 public interface DataStorageListener {
 
-        /**
-         * Informs that the specified set of {@link Timestamp} have been removed
-         * from storage.
-         * @param lostSet {@link TimestampsSet} of lost {@link Timestamp}.
-         */
-        public void dataLoss(final TimestampsSet lostSet);
+    /**
+     * Informs that the specified set of {@link Instant} have been removed
+     * from storage.
+     * @param lostSet {@link TimestampsSet} of lost {@link Instant}.
+     */
+    public void dataLoss(final TimestampsSet lostSet);
 
 }

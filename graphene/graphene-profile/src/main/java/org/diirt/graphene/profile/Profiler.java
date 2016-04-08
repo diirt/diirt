@@ -5,7 +5,10 @@
 package org.diirt.graphene.profile;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+
 import org.diirt.graphene.Cell1DDataset;
 import org.diirt.graphene.Cell1DDatasets;
 import org.diirt.graphene.Point1DDataset;
@@ -18,8 +21,6 @@ import org.diirt.graphene.profile.utils.Statistics;
 import org.diirt.graphene.profile.utils.StopWatch;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListMath;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 
 public abstract class Profiler {
     protected int         nTries = 0;
@@ -42,11 +43,11 @@ public abstract class Profiler {
         nTries = 0;
 
         //System Time
-        Timestamp start = Timestamp.now();
-        Timestamp end = start.plus(TimeDuration.ofSeconds(profileSettings.getTestTime()));
+        Instant start = Instant.now();
+        Instant end = start.plus(Duration.ofSeconds(profileSettings.getTestTime()));
 
         //Trials
-        while (end.compareTo(Timestamp.now()) >= 0 &&           //not over max time
+        while (end.compareTo(Instant.now()) >= 0 &&           //not over max time
                !Thread.currentThread().isInterrupted() &&       //not interrupted
                nTries < profileSettings.getMaxTries()) {        //not over max tries
 

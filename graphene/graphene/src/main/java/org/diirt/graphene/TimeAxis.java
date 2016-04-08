@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  *
@@ -20,11 +20,11 @@ import org.diirt.util.time.Timestamp;
 public class TimeAxis {
 
     private final TimeInterval timeInterval;
-    private final List<Timestamp> timeStamps;
+    private final List<Instant> timeStamps;
     private final ListDouble normalizedValues;
     private final List<String> tickLabels;
 
-    public TimeAxis(TimeInterval timeInterval, List<Timestamp> timeStamps, ListDouble normalizedValues, List<String> tickLabels) {
+    public TimeAxis(TimeInterval timeInterval, List<Instant> timeStamps, ListDouble normalizedValues, List<String> tickLabels) {
         this.timeInterval = timeInterval;
         this.timeStamps = timeStamps;
         this.normalizedValues = normalizedValues;
@@ -35,7 +35,7 @@ public class TimeAxis {
         return timeInterval;
     }
 
-    public List<Timestamp> getTimestamps() {
+    public List<Instant> getTimestamps() {
         return timeStamps;
     }
 

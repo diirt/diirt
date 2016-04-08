@@ -4,12 +4,12 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 
 /**
  *
@@ -23,14 +23,14 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
     private static final Level logLevel = Level.FINEST;
 
     private DesiredRateEvent queuedEvent;
-    private Timestamp lastSubmission;
+    private Instant lastSubmission;
     private boolean scanActive;
 
     public PassiveScanDecoupler(ScheduledExecutorService scannerExecutor,
-            TimeDuration maxDuration, DesiredRateEventListener listener) {
+            Duration maxDuration, DesiredRateEventListener listener) {
         super(scannerExecutor, maxDuration, listener);
         synchronized(lock) {
-            lastSubmission = Timestamp.now().minus(getMaxDuration());
+            lastSubmission = Instant.now().minus(getMaxDuration());
         }
     }
 
@@ -43,7 +43,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
                 nextEvent = queuedEvent;
                 queuedEvent = null;
                 if (log.isLoggable(logLevel)) {
-                    log.log(logLevel, "Submitted {0}", Timestamp.now());
+                    log.log(logLevel, "Submitted {0}", Instant.now());
                 }
             }
 
@@ -51,7 +51,7 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             if (nextEvent != null) {
                 sendDesiredRateEvent(nextEvent);
             } else {
-                log.log(logLevel, "Skipping null event {0}", Timestamp.now());
+                log.log(logLevel, "Skipping null event {0}", Instant.now());
             }
         }
     };
@@ -116,27 +116,27 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
 
     @Override
     void onDesiredEventProcessed() {
-        TimeDuration delay = null;
+        Duration delay = null;
         synchronized (lock) {
             // If an event is pending submit it
             if (queuedEvent != null) {
-                Timestamp nextSubmission = lastSubmission.plus(getMaxDuration());
-                delay = nextSubmission.durationFrom(Timestamp.now());
-                if (delay.isPositive()) {
+                Instant nextSubmission = lastSubmission.plus(getMaxDuration());
+                delay = Duration.between(Instant.now(), nextSubmission);
+                if (!delay.isNegative() || !delay.isZero()) {
                     lastSubmission = nextSubmission;
                     if (log.isLoggable(logLevel)) {
-                        log.log(logLevel, "Schedule next {0}", Timestamp.now());
+                        log.log(logLevel, "Schedule next {0}", Instant.now());
                     }
                 } else {
-                    lastSubmission = Timestamp.now();
+                    lastSubmission = Instant.now();
                     if (log.isLoggable(logLevel)) {
-                        log.log(logLevel, "Schedule now {0}", Timestamp.now());
+                        log.log(logLevel, "Schedule now {0}", Instant.now());
                     }
                 }
             } else {
                 scanActive = false;
                 if (log.isLoggable(logLevel)) {
-                    log.log(logLevel, "Do not schedule next {0}", Timestamp.now());
+                    log.log(logLevel, "Do not schedule next {0}", Instant.now());
                 }
             }
         }
@@ -148,14 +148,14 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
 
     private void newEvent(DesiredRateEvent.Type type) {
         boolean submit;
-        TimeDuration delay = null;
+        Duration delay = null;
 
         synchronized (lock) {
             // Add event to the queue
             if (queuedEvent == null) {
                 queuedEvent = new DesiredRateEvent();
                 if (log.isLoggable(logLevel)) {
-                    log.log(logLevel, "Creating queued event {0}", Timestamp.now());
+                    log.log(logLevel, "Creating queued event {0}", Instant.now());
                 }
             }
             queuedEvent.addType(type);
@@ -163,25 +163,25 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
             // If scan is not active, submit the next scan
             if (!scanActive && !isPaused()) {
                 submit = true;
-                Timestamp currentTimestamp = Timestamp.now();
-                Timestamp nextTimeSlot = lastSubmission.plus(getMaxDuration());
-                if (currentTimestamp.compareTo(nextTimeSlot) < 0) {
-                    delay = nextTimeSlot.durationFrom(currentTimestamp);
+                Instant currentInstant = Instant.now();
+                Instant nextTimeSlot = lastSubmission.plus(getMaxDuration());
+                if (currentInstant.compareTo(nextTimeSlot) < 0) {
+                    delay = Duration.between(currentInstant, nextTimeSlot);
                     lastSubmission = nextTimeSlot;
                     if (log.isLoggable(logLevel)) {
-                        log.log(logLevel, "Submit delayed {0}", Timestamp.now());
+                        log.log(logLevel, "Submit delayed {0}", Instant.now());
                     }
                 } else {
-                    lastSubmission = currentTimestamp;
+                    lastSubmission = currentInstant;
                     if (log.isLoggable(logLevel)) {
-                        log.log(logLevel, "Submit now {0}", Timestamp.now());
+                        log.log(logLevel, "Submit now {0}", Instant.now());
                     }
                 }
                 scanActive = true;
             } else {
                 submit = false;
                 if (log.isLoggable(logLevel)) {
-                    log.log(logLevel, "Do not submit {0}", Timestamp.now());
+                    log.log(logLevel, "Do not submit {0}", Instant.now());
                 }
             }
 
@@ -191,11 +191,11 @@ class PassiveScanDecoupler extends SourceDesiredRateDecoupler {
         }
     }
 
-    private void scheduleNext(TimeDuration delay) {
+    private void scheduleNext(Duration delay) {
         if (delay == null || delay.isNegative()) {
             getScannerExecutor().submit(notificationTask);
         } else {
-            getScannerExecutor().schedule(notificationTask, delay.toNanosLong(), TimeUnit.NANOSECONDS);
+            getScannerExecutor().schedule(notificationTask, delay.toNanos(), TimeUnit.NANOSECONDS);
         }
     }
 

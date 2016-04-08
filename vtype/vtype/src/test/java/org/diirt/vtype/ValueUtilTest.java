@@ -4,20 +4,42 @@
  */
 package org.diirt.vtype;
 
+import static org.diirt.vtype.ValueFactory.alarmNone;
+import static org.diirt.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.newAlarm;
+import static org.diirt.vtype.ValueFactory.newDisplay;
+import static org.diirt.vtype.ValueFactory.newTime;
+import static org.diirt.vtype.ValueFactory.newVDouble;
+import static org.diirt.vtype.ValueFactory.newVDoubleArray;
+import static org.diirt.vtype.ValueFactory.newVEnum;
+import static org.diirt.vtype.ValueFactory.newVEnumArray;
+import static org.diirt.vtype.ValueFactory.newVFloatArray;
+import static org.diirt.vtype.ValueFactory.newVInt;
+import static org.diirt.vtype.ValueFactory.newVIntArray;
+import static org.diirt.vtype.ValueFactory.newVNumberArray;
+import static org.diirt.vtype.ValueFactory.newVString;
+import static org.diirt.vtype.ValueFactory.timeNow;
+import static org.diirt.vtype.ValueUtil.colorFor;
+import static org.diirt.vtype.ValueUtil.displayHasValidDisplayLimits;
+import static org.diirt.vtype.ValueUtil.numericValueOf;
+import static org.diirt.vtype.ValueUtil.subArray;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.junit.Assert.assertThat;
+
 import java.awt.Color;
+import java.time.Instant;
 import java.util.Arrays;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.diirt.vtype.ValueFactory.*;
-import static org.diirt.vtype.ValueUtil.*;
-import org.diirt.util.text.NumberFormats;
+
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayFloat;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.time.Timestamp;
+import org.diirt.util.text.NumberFormats;
+import org.junit.Test;
 
 /**
  *
@@ -166,10 +188,10 @@ public class ValueUtilTest {
 
     @Test
     public void latestTimeOf1() {
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12340000, 0));
-        Time time3 = newTime(Timestamp.of(12350000, 0));
-        Time time4 = newTime(Timestamp.of(12360000, 0));
+        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time3 = newTime(Instant.ofEpochSecond(12350000, 0));
+        Time time4 = newTime(Instant.ofEpochSecond(12360000, 0));
         assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time1, time3)), sameInstance(time3));
         assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time3, time1)), sameInstance(time3));
         assertThat(ValueUtil.latestTimeOf(Arrays.<Object>asList(time1, time2)), sameInstance(time1));
@@ -179,11 +201,11 @@ public class ValueUtilTest {
 
     @Test
     public void latestValidTimeOrNewOf1() {
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12340000, 0));
-        Time time3 = newTime(Timestamp.of(12350000, 0));
-        Time time4 = newTime(Timestamp.of(12360000, 0));
-        Time time5 = newTime(Timestamp.of(12370000, 0), 1, false);
+        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time3 = newTime(Instant.ofEpochSecond(12350000, 0));
+        Time time4 = newTime(Instant.ofEpochSecond(12360000, 0));
+        Time time5 = newTime(Instant.ofEpochSecond(12370000, 0), 1, false);
         assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time1, time3)), sameInstance(time3));
         assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time3, time1)), sameInstance(time3));
         assertThat(ValueUtil.latestValidTimeOrNowOf(Arrays.<Object>asList(time1, time2)), sameInstance(time1));
@@ -195,7 +217,7 @@ public class ValueUtilTest {
 
     @Test
     public void subArray1() {
-        VNumberArray array = newVNumberArray(new ArrayDouble(1,2,3,4,5), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Timestamp.of(123, 123)), displayNone());
+        VNumberArray array = newVNumberArray(new ArrayDouble(1,2,3,4,5), newAlarm(AlarmSeverity.MINOR, "LOW"), newTime(Instant.ofEpochSecond(123, 123)), displayNone());
         VNumberArray selection = subArray(array, 2);
         assertThat(selection.getData(), equalTo((ListNumber) new ArrayDouble(3)));
         assertThat(selection.getSizes(), equalTo((ListInt) new ArrayInt(1)));

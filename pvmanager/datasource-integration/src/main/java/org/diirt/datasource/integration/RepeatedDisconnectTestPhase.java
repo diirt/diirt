@@ -5,13 +5,17 @@
 package org.diirt.datasource.integration;
 
 import static org.diirt.datasource.ExpressionLanguage.*;
+
+import java.time.Instant;
+
 import org.diirt.datasource.PVManager;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.AlarmSeverity;
+
 import static org.diirt.datasource.integration.VTypeMatchMask.*;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.integration.Constants.*;
+
 import org.diirt.support.ca.JCADataSourceConfiguration;
 import org.diirt.vtype.VDouble;
 
@@ -44,7 +48,7 @@ public class RepeatedDisconnectTestPhase extends AbstractCATestPhase {
     @Override
     public final void verify(Log log) {
         // Check double
-        VDouble disconnected = newVDouble(0.13, newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), newTime(Timestamp.of(631152000, 0), null, false), displayNone());
+        VDouble disconnected = newVDouble(0.13, newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone());
         log.matchConnections(const_double, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true);
         log.matchValues(const_double, ALL_EXCEPT_TIME,
                 const_double_value,

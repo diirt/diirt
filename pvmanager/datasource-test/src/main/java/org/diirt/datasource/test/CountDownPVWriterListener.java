@@ -4,12 +4,13 @@
  */
 package org.diirt.datasource.test;
 
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Write listener to wait that a certain number of notifications.
@@ -87,9 +88,9 @@ public class CountDownPVWriterListener<T> implements PVWriterListener<T> {
      * @return false if count didn't go to zero
      * @throws InterruptedException if interrupted
      */
-    public boolean await(TimeDuration duration)
+    public boolean await(Duration duration)
     throws InterruptedException {
-        return latch.await(duration.toNanosLong(), TimeUnit.NANOSECONDS);
+        return latch.await(duration.toNanos(), TimeUnit.NANOSECONDS);
     }
 
 }

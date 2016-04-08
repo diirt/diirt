@@ -4,10 +4,11 @@
  */
 package org.diirt.datasource.test;
 
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
 import org.diirt.datasource.ExceptionHandler;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Read listener to wait that a certain number of notifications.
@@ -54,9 +55,9 @@ public class CountDownWriteFunction extends ExceptionHandler {
      * @return false if count didn't go to zero
      * @throws InterruptedException if interrupted
      */
-    public boolean await(TimeDuration duration)
+    public boolean await(Duration duration)
     throws InterruptedException {
-        return latch.await(duration.toNanosLong(), TimeUnit.NANOSECONDS);
+        return latch.await(duration.toNanos(), TimeUnit.NANOSECONDS);
     }
 
     public Exception getException() {

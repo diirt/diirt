@@ -4,21 +4,22 @@
  */
 package org.diirt.javafx.tools;
 
+import java.time.Instant;
+
 import org.diirt.datasource.PVWriterEvent;
-import org.diirt.util.time.Timestamp;
 
 /**
  *
  * @author carcassi
  */
 public class WriteEvent implements Event {
-    private Timestamp timestamp;
+    private Instant timestamp;
     private String pvName;
     private PVWriterEvent<?> event;
     private boolean connected;
     private Exception lastException;
 
-    public WriteEvent(Timestamp timestamp, String pvName, PVWriterEvent<?> event, boolean coonected, Exception lastException) {
+    public WriteEvent(Instant timestamp, String pvName, PVWriterEvent<?> event, boolean coonected, Exception lastException) {
         this.timestamp = timestamp;
         this.pvName = pvName;
         this.event = event;
@@ -27,11 +28,11 @@ public class WriteEvent implements Event {
     }
 
     @Override
-    public Timestamp getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 

@@ -15,7 +15,7 @@ import org.diirt.datasource.PVReaderListener;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListNumber;
-import static org.diirt.util.time.TimeDuration.*;
+import static java.time.Duration.*;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.Time;

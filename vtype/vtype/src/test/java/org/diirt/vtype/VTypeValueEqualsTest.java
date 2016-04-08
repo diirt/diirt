@@ -4,11 +4,20 @@
  */
 package org.diirt.vtype;
 
+import static org.diirt.vtype.ValueFactory.alarmNone;
+import static org.diirt.vtype.ValueFactory.displayNone;
+import static org.diirt.vtype.ValueFactory.newAlarm;
+import static org.diirt.vtype.ValueFactory.newTime;
+import static org.diirt.vtype.ValueFactory.newVDouble;
+import static org.diirt.vtype.ValueFactory.newVInt;
+import static org.diirt.vtype.ValueFactory.newVString;
+import static org.diirt.vtype.ValueFactory.timeNow;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import java.time.Instant;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
-import static org.hamcrest.Matchers.*;
 
 /**
  *
@@ -39,15 +48,15 @@ public class VTypeValueEqualsTest {
 
     @Test
     public void timeEquals1() {
-        assertThat(VTypeValueEquals.timeEquals(newTime(Timestamp.of(12340000, 0)), newTime(Timestamp.of(12340000, 0))),
+        assertThat(VTypeValueEquals.timeEquals(newTime(Instant.ofEpochSecond(12340000, 0)), newTime(Instant.ofEpochSecond(12340000, 0))),
                 equalTo(true));
-        assertThat(VTypeValueEquals.timeEquals(newTime(Timestamp.of(12340000, 1)), newTime(Timestamp.of(12340000, 0))),
+        assertThat(VTypeValueEquals.timeEquals(newTime(Instant.ofEpochSecond(12340000, 1)), newTime(Instant.ofEpochSecond(12340000, 0))),
                 equalTo(false));
-        assertThat(VTypeValueEquals.timeEquals(newTime(Timestamp.of(12340000, 0), 12, true), newTime(Timestamp.of(12340000, 0), 12, true)),
+        assertThat(VTypeValueEquals.timeEquals(newTime(Instant.ofEpochSecond(12340000, 0), 12, true), newTime(Instant.ofEpochSecond(12340000, 0), 12, true)),
                 equalTo(true));
-        assertThat(VTypeValueEquals.timeEquals(newTime(Timestamp.of(12340000, 0), 11, false), newTime(Timestamp.of(12340000, 0), 12, false)),
+        assertThat(VTypeValueEquals.timeEquals(newTime(Instant.ofEpochSecond(12340000, 0), 11, false), newTime(Instant.ofEpochSecond(12340000, 0), 12, false)),
                 equalTo(false));
-        assertThat(VTypeValueEquals.timeEquals(newTime(Timestamp.of(12340000, 0), 12, true), newTime(Timestamp.of(12340000, 0), 12, false)),
+        assertThat(VTypeValueEquals.timeEquals(newTime(Instant.ofEpochSecond(12340000, 0), 12, true), newTime(Instant.ofEpochSecond(12340000, 0), 12, false)),
                 equalTo(false));
     }
 

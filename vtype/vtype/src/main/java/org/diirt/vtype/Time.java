@@ -4,7 +4,7 @@
  */
 package org.diirt.vtype;
 
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  * Time information.
@@ -14,13 +14,13 @@ import org.diirt.util.time.Timestamp;
 public interface Time {
 
     /**
-     * The timestamp of the value, typically indicating when it was
+     * The time instant of the value, typically indicating when it was
      * generated. If never connected, it returns the
      * time when it was last determined that no connection was made.
      *
-     * @return the timestamp
+     * @return the time instant
      */
-    Timestamp getTimestamp();
+    Instant getTimestamp();
 
     /**
      * Returns a user defined tag, that can be used to store extra

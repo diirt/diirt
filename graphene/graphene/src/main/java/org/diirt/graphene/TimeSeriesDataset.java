@@ -8,7 +8,7 @@ import org.diirt.util.stats.Statistics;
 import java.util.List;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  *
@@ -32,7 +32,7 @@ public interface TimeSeriesDataset {
      *
      * @return time; never null
      */
-    public List<Timestamp> getTimestamps();
+    public List<Instant> getTimestamps();
 
     /**
      * Returns the time normalized within the range of the dataset.

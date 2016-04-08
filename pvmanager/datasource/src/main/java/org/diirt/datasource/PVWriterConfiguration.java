@@ -4,12 +4,14 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
+
 import org.diirt.datasource.expression.WriteExpression;
+
 import static org.diirt.util.concurrent.Executors.*;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * An expression used to set the final parameters on how the pv expression
@@ -35,13 +37,13 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
     /**
      * Sets a timeout for write operation.
      * <p>
-     * For more details, consult {@link #timeout(org.diirt.util.time.TimeDuration, java.lang.String) }.
+     * For more details, consult {@link #timeout(org.diirt.util.time.Duration, java.lang.String) }.
      *
      * @param timeout the duration of the timeout; can't be null
      * @return this expression
      */
     @Override
-    public PVWriterConfiguration<T> timeout(TimeDuration timeout) {
+    public PVWriterConfiguration<T> timeout(Duration timeout) {
         super.timeout(timeout);
         return this;
     }
@@ -60,7 +62,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
      * @return this expression
      */
     @Override
-    public PVWriterConfiguration<T> timeout(TimeDuration timeout, String timeoutMessage) {
+    public PVWriterConfiguration<T> timeout(Duration timeout, String timeoutMessage) {
         super.timeout(timeout, timeoutMessage);
         return this;
     }
@@ -146,7 +148,7 @@ public class PVWriterConfiguration<T> extends CommonConfiguration {
         ScannerParameters scannerParameters = new ScannerParameters()
                 .writerDirector(director)
                 .scannerExecutor(PVManager.getReadScannerExecutorService())
-                .maxDuration(TimeDuration.ofMillis(100));
+                .maxDuration(Duration.ofMillis(100));
         scannerParameters.type(ScannerParameters.Type.PASSIVE);
         SourceDesiredRateDecoupler rateDecoupler = scannerParameters.build();
 

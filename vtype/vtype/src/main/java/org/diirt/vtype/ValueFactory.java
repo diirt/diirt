@@ -5,11 +5,12 @@
 package org.diirt.vtype;
 
 import java.text.NumberFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.diirt.util.text.NumberFormats;
+
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListBoolean;
@@ -21,7 +22,7 @@ import org.diirt.util.array.ListLong;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListNumbers;
 import org.diirt.util.array.ListShort;
-import org.diirt.util.time.Timestamp;
+import org.diirt.util.text.NumberFormats;
 import org.diirt.vtype.table.ListNumberProvider;
 
 /**
@@ -203,11 +204,11 @@ public class ValueFactory {
      * @param timeValid whether the time is valid
      * @return the new time
      */
-    public static Time newTime(final Timestamp timestamp, final Integer timeUserTag, final boolean timeValid) {
+    public static Time newTime(final Instant timestamp, final Integer timeUserTag, final boolean timeValid) {
         return new Time() {
 
             @Override
-            public Timestamp getTimestamp() {
+            public Instant getTimestamp() {
                 return timestamp;
             }
 
@@ -229,7 +230,7 @@ public class ValueFactory {
      * @param timestamp the timestamp
      * @return the new time
      */
-    public static Time newTime(final Timestamp timestamp) {
+    public static Time newTime(final Instant timestamp) {
         return newTime(timestamp, null, true);
     }
 
@@ -239,7 +240,7 @@ public class ValueFactory {
      * @return the new time
      */
     public static Time timeNow() {
-        return newTime(Timestamp.now(), null, true);
+        return newTime(Instant.now(), null, true);
     }
 
     /**

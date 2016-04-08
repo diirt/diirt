@@ -4,6 +4,7 @@
  */
 package org.diirt.datasource.extra;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,11 +12,11 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
 import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.time.Timestamp;
 
 /**
  *
@@ -23,7 +24,7 @@ import org.diirt.util.time.Timestamp;
  */
 public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCache {
 
-    private NavigableMap<Timestamp, VNumberArray> cache = new TreeMap<Timestamp, VNumberArray>();
+    private NavigableMap<Instant, VNumberArray> cache = new TreeMap<Instant, VNumberArray>();
     private ReadFunction<? extends List<? extends VNumberArray>> function;
     private Display display;
 
@@ -33,27 +34,27 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
 
     public class Data implements DoubleArrayTimeCache.Data {
 
-        private List<Timestamp> times = new ArrayList<Timestamp>();
+        private List<Instant> times = new ArrayList<Instant>();
         private List<ListNumber> arrays = new ArrayList<ListNumber>();
-        private Timestamp begin;
-        private Timestamp end;
+        private Instant begin;
+        private Instant end;
 
-        private Data(SortedMap<Timestamp, VNumberArray> subMap, Timestamp begin, Timestamp end) {
+        private Data(SortedMap<Instant, VNumberArray> subMap, Instant begin, Instant end) {
             this.begin = begin;
             this.end = end;
-            for (Map.Entry<Timestamp, VNumberArray> en : subMap.entrySet()) {
+            for (Map.Entry<Instant, VNumberArray> en : subMap.entrySet()) {
                 times.add(en.getKey());
                 arrays.add(en.getValue().getData());
             }
         }
 
         @Override
-        public Timestamp getBegin() {
+        public Instant getBegin() {
             return begin;
         }
 
         @Override
-        public Timestamp getEnd() {
+        public Instant getEnd() {
             return end;
         }
 
@@ -68,28 +69,28 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         }
 
         @Override
-        public Timestamp getTimestamp(int index) {
+        public Instant getTimestamp(int index) {
             return times.get(index);
         }
 
     }
 
-    private void deleteBefore(Timestamp timeStamp) {
+    private void deleteBefore(Instant Instant) {
         if (cache.isEmpty())
             return;
 
         // This we want to keep as we need to draw the area
-        // from the timestamp to the first new value
-        Timestamp firstEntryBeforeTimestamp = cache.lowerKey(timeStamp);
-        if (firstEntryBeforeTimestamp == null)
+        // from the Instant to the first new value
+        Instant firstEntryBeforeInstant = cache.lowerKey(Instant);
+        if (firstEntryBeforeInstant == null)
             return;
 
         // This is the last entry we want to delete
-        Timestamp lastToDelete = cache.lowerKey(firstEntryBeforeTimestamp);
+        Instant lastToDelete = cache.lowerKey(firstEntryBeforeInstant);
         if (lastToDelete == null)
             return;
 
-        Timestamp firstKey = cache.firstKey();
+        Instant firstKey = cache.firstKey();
         while (firstKey.compareTo(lastToDelete) <= 0) {
             cache.remove(firstKey);
             firstKey = cache.firstKey();
@@ -97,7 +98,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
     }
 
     @Override
-    public DoubleArrayTimeCache.Data getData(Timestamp begin, Timestamp end) {
+    public DoubleArrayTimeCache.Data getData(Instant begin, Instant end) {
         List<? extends VNumberArray> newValues = function.readValue();
         for (VNumberArray value : newValues) {
             cache.put(value.getTimestamp(), value);
@@ -105,7 +106,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         if (cache.isEmpty())
             return null;
 
-        Timestamp newBegin = cache.lowerKey(begin);
+        Instant newBegin = cache.lowerKey(begin);
         if (newBegin == null)
             newBegin = cache.firstKey();
 
@@ -113,12 +114,12 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
         return data(newBegin, end);
     }
 
-    private DoubleArrayTimeCache.Data data(Timestamp begin, Timestamp end) {
+    private DoubleArrayTimeCache.Data data(Instant begin, Instant end) {
         return new Data(cache.subMap(begin, end), begin, end);
     }
 
     @Override
-    public List<DoubleArrayTimeCache.Data> newData(Timestamp beginUpdate, Timestamp endUpdate, Timestamp beginNew, Timestamp endNew) {
+    public List<DoubleArrayTimeCache.Data> newData(Instant beginUpdate, Instant endUpdate, Instant beginNew, Instant endNew) {
         List<? extends VNumberArray> newValues = function.readValue();
 
         // No new values, just return the last value
@@ -126,21 +127,21 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
             return Collections.singletonList(data(cache.lowerKey(endNew), endNew));
         }
 
-        List<Timestamp> newTimestamps = new ArrayList<Timestamp>();
+        List<Instant> newInstants = new ArrayList<Instant>();
         for (VNumberArray value : newValues) {
             cache.put(value.getTimestamp(), value);
-            newTimestamps.add(value.getTimestamp());
+            newInstants.add(value.getTimestamp());
         }
         if (cache.isEmpty())
             return Collections.emptyList();
 
-        Collections.sort(newTimestamps);
-        Timestamp firstNewValue = newTimestamps.get(0);
+        Collections.sort(newInstants);
+        Instant firstNewValue = newInstants.get(0);
 
         // We have just one section that start from the oldest update.
         // If the oldest update is too far, we use the start of the update region.
         // If the oldest update is too recent, we start from the being period
-        Timestamp newBegin = firstNewValue;
+        Instant newBegin = firstNewValue;
         if (firstNewValue.compareTo(beginUpdate) < 0) {
             newBegin = beginUpdate;
         }

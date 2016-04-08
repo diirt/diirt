@@ -10,7 +10,7 @@ package org.diirt.support.ca;
 
 import gov.aps.jca.Channel;
 import gov.aps.jca.dbr.DBRType;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  * Represents the connection payload, which consists of the actual JCA
@@ -25,7 +25,7 @@ public class JCAConnectionPayload {
     private final boolean connected;
     private final boolean longString;
     private final DBRType fieldType;
-    private final Timestamp eventTime = Timestamp.now();
+    private final Instant eventTime = Instant.now();
 
     public JCAConnectionPayload(JCAChannelHandler channleHandler, Channel channel, JCAConnectionPayload previousPayload) {
         this.jcaDataSource = channleHandler.getJcaDataSource();
@@ -95,7 +95,7 @@ public class JCAConnectionPayload {
      *
      * @return client connection/disconnection time
      */
-    public Timestamp getEventTime() {
+    public Instant getEventTime() {
         return eventTime;
     }
 

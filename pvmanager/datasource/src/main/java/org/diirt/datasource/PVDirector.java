@@ -5,6 +5,7 @@
 package org.diirt.datasource;
 
 import java.lang.ref.WeakReference;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.diirt.datasource.expression.DesiredRateExpression;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Orchestrates the different elements of pvmanager to make a reader functional.
@@ -385,13 +386,13 @@ public class PVDirector<T> {
         }
     }
 
-    void readTimeout(TimeDuration timeout, final String timeoutMessage) {
+    void readTimeout(Duration timeout, final String timeoutMessage) {
         scannerExecutor.schedule(new Runnable() {
             @Override
             public void run() {
                 processReadTimeout(timeoutMessage);
             }
-        }, timeout.toNanosLong(), TimeUnit.NANOSECONDS);
+        }, timeout.toNanos(), TimeUnit.NANOSECONDS);
     }
 
     private final DesiredRateEventListener desiredRateEventListener = new DesiredRateEventListener() {
