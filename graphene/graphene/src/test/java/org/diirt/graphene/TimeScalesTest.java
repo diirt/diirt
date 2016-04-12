@@ -13,6 +13,7 @@ import org.diirt.util.time.TimeInterval;
 import java.time.Instant;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 import static org.hamcrest.Matchers.*;
 import static org.diirt.graphene.TimeScales.TimePeriod;
 import static java.util.GregorianCalendar.*;
@@ -628,7 +629,6 @@ public class TimeScalesTest {
     }
 
     @Test
-    @Ignore
     public void createReferencesHoursDST1() {
     //Test spring forward daylight savings time (DST)
     //Start: Sat Mar 07 23:00:00 EST 2015
@@ -636,6 +636,8 @@ public class TimeScalesTest {
 //    TimeZone oldZoneId = TimeZone.getDefault();
 //    TimeZone.setDefault(TimeZone.getTimeZone("EST"));
 
+
+    assumeTrue(TimeZone.getDefault().hasSameRules(TimeZone.getTimeZone("America/New_York")));
     Instant start = create( 2015 , 3 , 7 , 23 , 0 , 0 , 0 );
     Instant end = start.plus( Duration.ofHours( 3 ) );
 
@@ -651,11 +653,12 @@ public class TimeScalesTest {
     }
 
     @Test
-    @Ignore //create() does not use EDT/EST correctly
     public void createReferencesHoursDST2() {
     //Test fall back daylight savings time (DST)
     //Start: Sun Nov 02 00:00:00 EST 2014
     //End: Sun Nov 02 3:00:00 EST 2014 (right after fall back DST)
+
+    assumeTrue(TimeZone.getDefault().hasSameRules(TimeZone.getTimeZone("America/New_York")));
     Instant start = create( 2014 , 11 , 2 , 0 , 0 , 0 , 0 );
     Instant end = start.plus( Duration.ofHours( 4 ) );
     TimeInterval timeInterval = TimeInterval.between( start , end );
@@ -785,13 +788,14 @@ public class TimeScalesTest {
     }
 
     @Test
-    @Ignore //until daylight savings is figured out
     public void createReferencesWeeks3() {
     //test weeks: month has a first week that fully spans Sunday to Saturday
     //and does not need to be rounded down to a week in previous month
 
     //Start: Sun Feb 01 00:00:00 EST 2015
     //End: Sun Mar 08 00:00:00 EST 2015
+
+    assumeTrue(TimeZone.getDefault().hasSameRules(TimeZone.getTimeZone("America/New_York")));
     Instant start = create( 2015 , 2 , 1 , 0 , 0 , 0 , 0 );
     Instant end = start.plus( Duration.ofHours( 24*7*5 ) );
     TimeInterval timeInterval = TimeInterval.between( start , end );

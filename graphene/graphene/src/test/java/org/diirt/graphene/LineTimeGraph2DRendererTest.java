@@ -14,7 +14,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.TimeZone;
 
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.time.TimeDuration;
@@ -23,6 +25,7 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import static org.junit.Assume.assumeTrue;
 
 /**
  *
@@ -451,8 +454,8 @@ public class LineTimeGraph2DRendererTest {
     }
 
     @Test
-    @Ignore
     public void testSpringForward() throws Exception {
+    	assumeTrue(TimeZone.getDefault().hasSameRules(TimeZone.getTimeZone("America/New_York")));
         Instant start = TimeScalesTest.create(2015, 3, 8, 1, 0, 0, 0);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 90,34,58,66,61,16,90,24,87,61,97,89,4,89,63,70,67,66,64,2 ),
                 Arrays.asList(start,
