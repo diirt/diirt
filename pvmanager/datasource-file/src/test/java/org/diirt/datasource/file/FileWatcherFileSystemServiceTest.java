@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.time.Duration;
-import org.diirt.datasource.test.CountDownPVReaderListener;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -47,7 +46,6 @@ public class FileWatcherFileSystemServiceTest {
 
     @Test
     public void udpateFile() throws Exception {
-        CountDownPVReaderListener listener = new CountDownPVReaderListener(1, PVReaderEvent.VALUE_MASK);
         File filename = File.createTempFile("file.", ".csv");
         PrintWriter writer = new PrintWriter(filename);
         writer.println("Name,Value");
