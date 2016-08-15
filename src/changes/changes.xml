@@ -51,6 +51,9 @@
             <action dev="shroffk"  type="add">
                 cf: adding channelfinder support
             </action>
+            <action dev="shroffk"  type="update">
+                datasource: allowing configuration of pvmanager datasource
+            </action>
         </release>
     </body>
 </document>
