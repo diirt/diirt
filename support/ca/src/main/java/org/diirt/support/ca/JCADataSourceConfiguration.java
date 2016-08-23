@@ -8,6 +8,8 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
+import gov.aps.jca.configuration.Configurable;
+import gov.aps.jca.configuration.ConfigurationException;
 import gov.aps.jca.configuration.DefaultConfiguration;
 import gov.aps.jca.jni.JNIContext;
 import java.io.IOException;
@@ -31,6 +33,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+
+import com.cosylab.epics.caj.CAJContext;
 
 /**
  * Configuration for {@link JCADataSource}. This object is mutable and not
@@ -354,14 +358,20 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         }
 
         try {
-            JCALibrary jca = JCALibrary.getInstance();
             DefaultConfiguration conf = new DefaultConfiguration("CONTEXT");
             conf.setAttribute("class",  jcaContextClass);
             jcaContextProperties.entrySet().stream().forEach((entry) -> {
                 conf.setAttribute(entry.getKey(), entry.getValue());
             });
-            return jca.createContext(conf);
-        } catch (CAException ex) {
+			if (conf.getAttribute("class").equals(JCALibrary.CHANNEL_ACCESS_JAVA)) {
+				Context cajContext = new CAJContext();
+				((Configurable) cajContext).configure(conf);
+				return cajContext;
+			} else {
+				JCALibrary jca = JCALibrary.getInstance();
+				return jca.createContext(conf);
+			}            
+        } catch (ConfigurationException | CAException ex) {
             log.log(Level.SEVERE, "JCA context creation failed", ex);
             throw new RuntimeException("JCA context creation failed", ex);
         }
