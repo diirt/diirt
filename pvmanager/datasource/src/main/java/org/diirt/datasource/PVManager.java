@@ -52,7 +52,7 @@ public class PVManager {
             Math.max(1,
                     System.getProperty("MaxWorkerPoolSize") != null
                             ? Integer.valueOf(System.getProperty("MaxWorkerPoolSize"))
-                                    : Runtime.getRuntime().availableProcessors() - 1),
+                            : Runtime.getRuntime().availableProcessors() - 1),
             org.diirt.util.concurrent.Executors.namedPool("PVMgr Worker "));
     private static ScheduledExecutorService readScannerExecutorService = workerPool;
     private static ScheduledExecutorService asyncWriteExecutor = workerPool;
