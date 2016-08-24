@@ -15,7 +15,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.diirt</groupId>
     <artifactId>diirt-all</artifactId>
-    <version>3.1.5-SNAPSHOT</version>
+    <version>3.1.5</version>
     <packaging>pom</packaging>
     <name>diirt</name>
     <url>http://diirt.org</url>
@@ -34,7 +34,7 @@
         <connection>scm:git:https://github.com/ControlSystemStudio/diirt.git</connection>
         <developerConnection>scm:git:https://github.com/ControlSystemStudio/diirt.git</developerConnection>
         <url>https://github.com/diirt/diirt.git</url>
-        <tag>HEAD</tag>
+        <tag>diirt-all-3.1.5</tag>
     </scm>
     <distributionManagement>
         <site>
