@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt.support</groupId>
         <artifactId>support-all</artifactId>
-        <version>3.1.3-SNAPSHOT</version>
+        <version>3.1.6-SNAPSHOT</version>
     </parent>
     <artifactId>diirt-pva</artifactId>
     <name>org.diirt.support.pva</name>
@@ -13,12 +13,12 @@
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>pvDataJava</artifactId>
-            <version>4.0.3</version>
+            <version>5.0.3</version>
         </dependency>
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>pvAccessJava</artifactId>
-            <version>4.0.4</version>
+            <version>4.1.3</version>
         </dependency>
         <dependency>
             <groupId>org.diirt</groupId>

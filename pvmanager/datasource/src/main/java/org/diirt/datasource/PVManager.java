@@ -48,7 +48,11 @@ public class PVManager {
 
     private static volatile Executor defaultNotificationExecutor = org.diirt.util.concurrent.Executors.localThread();
     private static volatile DataSource defaultDataSource = DataSourceProvider.createDataSource();
-    private static final ScheduledExecutorService workerPool = Executors.newScheduledThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1),
+    private static final ScheduledExecutorService workerPool = Executors.newScheduledThreadPool(
+            Math.max(1,
+                    System.getProperty("MaxWorkerPoolSize") != null
+                            ? Integer.valueOf(System.getProperty("MaxWorkerPoolSize"))
+                            : Runtime.getRuntime().availableProcessors() - 1),
             org.diirt.util.concurrent.Executors.namedPool("PVMgr Worker "));
     private static ScheduledExecutorService readScannerExecutorService = workerPool;
     private static ScheduledExecutorService asyncWriteExecutor = workerPool;

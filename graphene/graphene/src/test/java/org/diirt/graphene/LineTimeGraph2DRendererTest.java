@@ -455,7 +455,7 @@ public class LineTimeGraph2DRendererTest {
 
     @Test
     public void testSpringForward() throws Exception {
-    	assumeTrue(TimeZone.getDefault().hasSameRules(TimeZone.getTimeZone("America/New_York")));
+        assumeTrue(TimeZone.getDefault().hasSameRules(TimeZone.getTimeZone("America/New_York")));
         Instant start = TimeScalesTest.create(2015, 3, 8, 1, 0, 0, 0);
         TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 90,34,58,66,61,16,90,24,87,61,97,89,4,89,63,70,67,66,64,2 ),
                 Arrays.asList(start,
