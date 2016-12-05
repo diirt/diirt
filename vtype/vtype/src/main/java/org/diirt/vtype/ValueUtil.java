@@ -322,6 +322,8 @@ public class ValueUtil {
      * Converts a VImage to an AWT BufferedImage, so that it can be displayed.
      * The content of the vImage buffer is copied, so further changes
      * to the VImage will not modify the BufferedImage.
+     * 
+     * 
      *
      * @param vImage the image to be converted
      * @return a new BufferedImage
@@ -338,7 +340,7 @@ public class ValueUtil {
      * <p>
      * Currently, only TYPE_3BYTE_BGR is supported
      *
-     * @param image
+     * @param image buffered image
      * @return a new image
      */
     public static VImage toVImage(BufferedImage image) {
