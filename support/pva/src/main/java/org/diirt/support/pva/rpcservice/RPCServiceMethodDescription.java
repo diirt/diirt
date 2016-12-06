@@ -139,7 +139,10 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
 
         if (fieldName != null) {
             this.fieldNames.put(name, fieldName);
+        } else {
+            this.fieldNames.put(name, FIELD_NAME_EQUALS_NAME);
         }
+        super.addResult(name, description, type);
 
         this.resultAdded = true;
         return this;
