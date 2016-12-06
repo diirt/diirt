@@ -11,15 +11,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.diirt.util.array.ArrayByte;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListNumber;
+import org.diirt.util.array.ListNumbers;
 import org.diirt.util.text.NumberFormats;
 
 /**
@@ -329,10 +332,18 @@ public class ValueUtil {
      * @return a new BufferedImage
      */
     public static BufferedImage toImage(VImage vImage) {
-        BufferedImage image = new BufferedImage(vImage.getWidth(), vImage.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
-        System.arraycopy(vImage.getData(), 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0,
-                vImage.getWidth() * vImage.getHeight() * 3);
-        return image;
+        if (vImage.getVImageType() == VImage.TYPE_3BYTE_BGR) {
+            BufferedImage image = new BufferedImage(vImage.getWidth(), vImage.getHeight(),
+                    BufferedImage.TYPE_3BYTE_BGR);
+            ListNumber data = vImage.getData();
+            for (int i = 0; i < data.size(); i++) {
+                ((DataBufferByte) image.getRaster().getDataBuffer()).getData()[i] = data.getByte(i);
+            }
+            return image;
+        } else {
+            throw new UnsupportedOperationException(
+                    "No support for creating a BufferedImage from Image Type: " + vImage.getVImageType());
+        }
     }
 
     /**

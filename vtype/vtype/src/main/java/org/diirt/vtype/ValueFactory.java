@@ -616,6 +616,21 @@ public class ValueFactory {
         return new IVImage(height, width, new ArrayByte(data), VImageDataType.pvByte, VImage.TYPE_3BYTE_BGR, alarm,
                 time);
     }
+    
+    /**
+     * Creates a new VImage of type TYPE_3BYTE_BGR given the data and the size.
+     *
+     * @param height the height
+     * @param width the width
+     * @param data the data {@link ListNumber}
+     * @param image data type {@link VImageDataType}
+     * @param alarm the alarm
+     * @param time the time
+     * @return a new object
+     */
+    public static VImage newVImage(int height, int width, final ListNumber data, VImageDataType imageDataType, Alarm alarm, Time time) {
+        return new IVImage(height, width, data, imageDataType, VImage.TYPE_3BYTE_BGR, alarm, time);
+    }
 
     /**
      * Creates a new VLongArray.
