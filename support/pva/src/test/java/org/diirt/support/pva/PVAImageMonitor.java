@@ -19,6 +19,7 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
+import org.diirt.util.array.ListNumber;
 
 import static org.diirt.util.time.TimeDuration.ofHertz;
 import org.diirt.vtype.VImage;
@@ -61,7 +62,10 @@ public class PVAImageMonitor {
                 image = new BufferedImage(vImage.getWidth(), vImage.getHeight(), imageType);
                 }
 
-        System.arraycopy(vImage.getData(), 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0, vImage.getData().length);
+        ListNumber data = vImage.getData();
+        for (int i = 0; i < data.size(); i++) {
+            ((DataBufferByte) image.getRaster().getDataBuffer()).getData()[i] = data.getByte(i);
+        }
         return image;
     }
 
