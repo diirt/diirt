@@ -623,7 +623,7 @@ public class ValueFactory {
      * @param height the height
      * @param width the width
      * @param data the data {@link ListNumber}
-     * @param image data type {@link VImageDataType}
+     * @param imageDataType {@link VImageDataType}
      * @param alarm the alarm
      * @param time the time
      * @return a new object
