@@ -17,50 +17,6 @@ import org.diirt.util.array.ListNumber;
 public interface VImage extends VType, Alarm, Time {
 
     /**
-     * Image type constants
-     */
-
-    public static int TYPE_CUSTOM = 0;
-    /**
-     * Monochromatic image
-     */
-    public static int TYPE_MONO = 1;
-    /**
-     * Bayer pattern image, 1 value per pixel but with color filter on detector
-     */
-    public static int TYPE_BAYER = 2;
-    /**
-     * RGB image with pixel color interleave, data array is [3, NX, NY]
-     */
-    public static int TYPE_RGB1 = 3;
-    /**
-     * RGB image with row color interleave, data array is [NX, 3, NY]
-     */
-    public static int TYPE_RGB2 = 4;
-    /**
-     * RGB image with plane color interleave, data array is [NX, NY, 3]
-     */
-    public static int TYPE_RGB3 = 5;
-    /**
-     * YUV image, 3 bytes encodes 1 RGB pixel
-     */
-    public static int TYPE_YUV444 = 6;
-    /**
-     * YUV image, 4 bytes encodes 2 RGB pixel
-     */
-    public static int TYPE_YUV422 = 7;
-    /**
-     * YUV image, 6 bytes encodes 4 RGB pixels
-     */
-    public static int TYPE_YUV411 = 8;
-    /**
-     * An image with 8-bit RGB color components, corresponding to a
-     * Windows-style BGR color model with the colors Blue, Green, and Red
-     * stored in 3 bytes.
-     */
-    public static int TYPE_3BYTE_BGR = 9;
-
-    /**
      * Height of the image in pixels.
      *
      * @return image height
@@ -106,6 +62,6 @@ public interface VImage extends VType, Alarm, Time {
      * 
      * @return the image type 
      */
-    public int getVImageType();
+    public VImageType getVImageType();
 
 }

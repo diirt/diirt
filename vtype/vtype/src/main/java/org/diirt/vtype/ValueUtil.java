@@ -327,12 +327,12 @@ public class ValueUtil {
      * to the VImage will not modify the BufferedImage.
      * 
      * 
-     *
+     * 
      * @param vImage the image to be converted
      * @return a new BufferedImage
      */
     public static BufferedImage toImage(VImage vImage) {
-        if (vImage.getVImageType() == VImage.TYPE_3BYTE_BGR) {
+        if (vImage.getVImageType() == VImageType.TYPE_3BYTE_BGR) {
             BufferedImage image = new BufferedImage(vImage.getWidth(), vImage.getHeight(),
                     BufferedImage.TYPE_3BYTE_BGR);
             ListNumber data = vImage.getData();

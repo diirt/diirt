@@ -17,10 +17,10 @@ class IVImage extends IVMetadata implements VImage {
     private final int width;
     private final ListNumber data;
     private final VImageDataType imageDataType;
-    private final int imageType;
+    private final VImageType imageType;
 
     public IVImage(int height, int width, ListNumber data, 
-            VImageDataType imageDataType, int imageType, 
+            VImageDataType imageDataType, VImageType imageType, 
             Alarm alarm, Time time) {
         super(alarm, time);
         this.height = height;
@@ -51,7 +51,7 @@ class IVImage extends IVMetadata implements VImage {
     }
 
     @Override
-    public int getVImageType() {
+    public VImageType getVImageType() {
         return imageType;
     }
 
