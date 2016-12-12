@@ -4,17 +4,9 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.Noise;
-import org.diirt.datasource.sim.Ramp;
-import org.diirt.datasource.sim.Sine;
-import org.diirt.datasource.sim.GaussianNoise;
-import org.diirt.datasource.sim.Replay;
-import org.diirt.datasource.sim.NameParser;
-
 import java.util.Arrays;
 import java.util.List;
 
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.diirt.vtype.VDouble;
 import org.junit.Test;
