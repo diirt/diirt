@@ -50,17 +50,7 @@ public interface VImage extends VType, Alarm, Time {
      * the data is encoded and how it can be converted to something that can be
      * rendered.
      * 
-     * @see #TYPE_MONO
-     * @see #TYPE_BAYER
-     * @see #TYPE_RGB1
-     * @see #TYPE_RGB2
-     * @see #TYPE_RGB3
-     * @see #TYPE_YUV444
-     * @see #TYPE_YUV422
-     * @see #TYPE_YUV411
-     * @see #TYPE_3BYTE_BGR
-     * 
-     * @return the image type 
+     * @return the image type {@link VImageType}
      */
     public VImageType getVImageType();
 
