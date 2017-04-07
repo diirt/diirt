@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <!-- The WebPods client, its depedency and its configuration -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" language="javascript" src="../js/webpods-client.js"></script>
+
+    <script>
+            // Calculating URL from document location, so that examples work no
+            // matter where they are deployed. Typical use would hard-code URL
+            var wsUri = document.location.protocol.replace("http", "ws") + "//" + document.location.host + "/" + 
+                    document.location.pathname.split("/")[1] + "/socket";
+            var wp = new Client(wsUri);
+        </script>
+
+    <!-- The text-monitor widget -->
+    <script type="text/javascript" language="javascript" src="../js/widgets/text-input.js"></script>
+    <link rel="stylesheet" href="../js/widgets/text-input.css">
+
+    <!-- Bootstrap is used to make this page look decent. It's not needed by the widgets. -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <title>WebPODS - Text monitor examples</title>
+</head>
+<body>
+<!-- Nav bar -->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">WebPODS</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="..">Home</a></li>
+                <li><a href=".">Examples</a></li>
+                <li class="active"><a href="#">text-input</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Useful links <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="http://diirt.org">diirt.org</a></li>
+                        <li class="divider"></li>
+                        <li><a href="https://github.com/diirt/diirt/wiki/WebPODS-users">User documentation</a></li>
+                        <li><a href="https://github.com/diirt/diirt/wiki/WebPods">Developer documentation</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid" >
+    <h1>Read-write text field for a channel (text-input)</h1>
+    <p>See the source of this page for examples on how to use the widget. For more details, see <a href="https://github.com/diirt/diirt/wiki/WebPODS-widgets">the WebPODS widgets reference documentation</a>.</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Simple monitoring</div>
+                <div class="panel-body">
+                    <p>These simple examples just add the channel, using the data-channel property.</p>
+                    <p>sim/ramp: <span class="text-input" data-channel="sim/ramp"></span></p>
+                    <p>sim/noise: <span class="text-input" data-channel="sim/noise"></span></p>
+                    <p>sim/strings: <span class="text-input" data-channel="sim/strings"></span></p>
+                    <p>sim/table: <span class="text-input" data-channel="sim/table"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Error conditions</div>
+                <div class="panel-body">
+                    <p>Behavior under different error conditions.</p>
+                    <p>Slow connection: <span class="text-input" data-channel='sim/delayedConnectionChannel(5, "Connected")'></span></p>
+                    <p>Error messages: <span class="text-input" data-channel="sim/wrongChannel"></span></p>
+                    <p>Wrong formula: <span class="text-input" data-channel='=1+"test"'></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Changing size</div>
+                <div class="panel-body">
+                    <p>Using CSS style width and height to change size.</p>
+                    <p>width: 50px; height: 18px - <span class="text-input" data-channel="sim/noise" style="width: 50px; height: 18px"></span></p>
+                    <p>width: 100px; height: 22px - <span class="text-input" data-channel="sim/noise" style="width: 100px; height: 22px"></span></p>
+                    <p>width: 150px; height: 26px - <span class="text-input" data-channel="sim/noise" style="width: 150px; height: 26px"></span></p>
+                    <p>width: 200px; height: 30px - <span class="text-input" data-channel="sim/noise" style="width: 200px; height: 30px"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Changing fonts</div>
+                <div class="panel-body">
+                    <p>Using CSS style font to change the font size or type. Note that, by default, the font
+                        is inherited.</p>
+                    <p>font-family: monospace - <span class="text-input" data-channel="sim/ramp" style="font-family: monospace"></span></p>
+                    <p>font-family: serif - <span class="text-input" data-channel="sim/ramp" style="font-family: serif"></span></p>
+                    <p>font: italic bold 18px Georgia, serif - <span class="text-input" data-channel="sim/ramp" style="font: italic bold 18px Georgia, serif;"></span></p>
+                    <p style="font: 14px monospace;">font: 14px monospace (on parent) - <span class="text-input" data-channel="sim/ramp"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Changing text alignment</div>
+                <div class="panel-body">
+                    <p>Using CSS style text-align to change text alignment in the field.</p>
+                    <p>text-align: left - <span class="text-input" data-channel="sim/ramp" style="text-align: left"></span></p>
+                    <p>text-align: center - <span class="text-input" data-channel="sim/ramp" style="text-align: center"></span></p>
+                    <p>text-align: right - <span class="text-input" data-channel="sim/ramp" style="text-align: right"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Resizing</div>
+                <div class="panel-body">
+                    <p>Using CSS style margin or float to adjust widget position.</p>
+                    <p>margin-left: 50px - <span class="text-input" data-channel="sim/ramp" data-resize="true"></span></p>
+                    <p>float: right - <span class="text-input" data-channel="sim/ramp" data-resize="true"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

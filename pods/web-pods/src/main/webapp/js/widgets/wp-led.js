@@ -2,10 +2,8 @@
  * @author: eschuhmacher
  *
  * scripts to be included on the html file
- * <script src="../js/widgets/lib/Drinks/Drinks.js" ></script>
  * <script type="text/javascript" language="javascript" src="../js/widgets/led.js"></script>
  * <script src="../js/widgets/lib/jquery-2.0.3.min.js"></script>
- * <script src="../js/widgets/lib/Drinks/Led.js" ></script>
  ******************************************************************************/
 
 

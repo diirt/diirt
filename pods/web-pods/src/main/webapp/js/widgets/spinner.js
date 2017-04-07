@@ -14,6 +14,8 @@ $(document).ready(function() {
 	var nodes = document.getElementsByClassName("spinner");
     var len = nodes.length;
     var spinners = {};
+    var modified = {};
+
 	for ( var i = 0; i < len; i++) {
         var channelname = nodes[i].getAttribute("data-channel");
         var max = parseFloat(nodes[i].getAttribute("data-max"));
@@ -21,32 +23,39 @@ $(document).ready(function() {
         var step = parseFloat(nodes[i].getAttribute("data-step"));
         var readOnly = nodes[i].getAttribute("data-channel-readonly");
         var id = nodes[i].getAttribute("id");
+        if (id === null) {
+            id = "spinner-" + i;
+            nodes[i].id = id;
+        }
         var callback = function(evt, channel) {
-                           switch (evt.type) {
-                           case "connection": //connection state changed
-                               channel.readOnly = !evt.writeConnected;
-                               break;
-                           case "value": //value changed
-                               var channelValue = channel.getValue();
-                               spinners[channel.getId()].spinner( "value", channelValue.value );
-                               if(channelValue.alarm.severity =="MINOR") {
-                               spinners[channel.getId()].animate({ backgroundColor: "yellow"});
-                               } else if (channelValue.alarm.severity =="MAJOR") {
-                                   spinners[channel.getId()].animate({ backgroundColor: "red"});
-                               } else {
-                                   spinners[channel.getId()].animate({ backgroundColor: "white"});
-                               }
-                               break;
-                           case "error": //error happened
-                               break;
-                           case "writePermission":	// write permission changed.
-                               break;
-                           case "writeCompleted": // write finished.
-                               break;
-                           default:
-                               break;
-                           }
-                       };
+           switch (evt.type) {
+           case "connection": //connection state changed
+               channel.readOnly = !evt.writeConnected;
+               break;
+           case "value": //value changed
+               if(modified[channel.getId()] == true) {
+                  break;
+               }
+               var channelValue = channel.getValue();
+               spinners[channel.getId()].spinner( "value", channelValue.value );
+               if(channelValue.alarm.severity =="MINOR") {
+               spinners[channel.getId()].animate({ backgroundColor: "yellow"});
+               } else if (channelValue.alarm.severity =="MAJOR") {
+                   spinners[channel.getId()].animate({ backgroundColor: "red"});
+               } else {
+                   spinners[channel.getId()].animate({ backgroundColor: "white"});
+               }
+               break;
+           case "error": //error happened
+               break;
+           case "writePermission":	// write permission changed.
+               break;
+           case "writeCompleted": // write finished.
+               break;
+           default:
+               break;
+           }
+        };
         var channel = wp.subscribeChannel(channelname, callback, readOnly);
         var spinner = $("#" + id).spinner({ step: step, min: min, max: max});
         spinners[channel.getId()] = spinner;
@@ -74,6 +83,23 @@ $(document).ready(function() {
                 ch.setValue(spinner.labeledspinner( "value"));
             }
         });
+        spinner[0].onfocus = function(evt) {
+            for(var sl in   spinners ) {
+                if(spinners[sl][0].id == evt.target.id) {
+                    modified[sl] = true;
+                    break;
+                }
+            }
+        };
+
+        spinner[0].onblur = function(evt) {
+            for(var sl in   spinners ) {
+                if(spinners[sl][0].id == evt.target.id) {
+                    modified[sl] = false;
+                    break;
+                }
+            }
+        };
     }
 
 });
@@ -82,4 +108,3 @@ $(document).ready(function() {
 window.onbeforeunload = function() {
 	wp.close();
 };
-
