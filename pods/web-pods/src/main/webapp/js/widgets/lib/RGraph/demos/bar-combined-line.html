@@ -2,24 +2,24 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A combined bar/line chart</title>
-    
+
     <meta name="keywords" content="bar combined line" />
     <meta name="description" content="A combined Bar and Line chart" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A combined bar/line chart</h1>
-    
+
     <p>
-        
+
     </p>
 
     <canvas id="cvs" width="1000" height="350">[No canvas support]</canvas>
@@ -41,11 +41,11 @@
                     barData[i] = RGraph.random(0, 100);
                     colors[i] = '#BD3929';
                 }
-                
+
                 lineData[i] = (((i/60) * 200) - 100) * RGraph.random(0, 10);
             }
 
-            var bar = new RGraph.Bar('cvs', barData)            
+            var bar = new RGraph.Bar('cvs', barData)
                 .Set('hmargin', 1)
                 .Set('colors', colors)
                 .Set('colors.sequential', true)
@@ -54,7 +54,7 @@
                 .Set('ymax', 100)
                 .Set('gutter.bottom', 50)
                 .Set('labels', ['1997', '1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011'])
-                
+
             /**
             * Now add the line chart
             */
@@ -66,12 +66,12 @@
                 .Set('shadow.offsetx', 0)
                 .Set('shadow.offsety', 0)
                 .Set('shadow.blur', 5)
-                
+
             /**
             * Create the combined class
             */
             combo = new RGraph.CombinedChart(bar, line);
-            combo.Draw();            
+            combo.Draw();
         }
     </script>
 

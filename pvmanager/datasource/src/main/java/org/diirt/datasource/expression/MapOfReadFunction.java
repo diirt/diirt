@@ -34,7 +34,7 @@ class MapOfReadFunction<T> implements ReadFunction<Map<String, T>> {
             functions.putAll(mapUpdate.getReadFunctionsToAdd());
             previousValue = null;
         }
-        
+
         Map<String, T> map = new HashMap<String, T>();
         for (Map.Entry<String, ReadFunction<T>> entry : functions.entrySet()) {
             String name = entry.getKey();
@@ -43,11 +43,11 @@ class MapOfReadFunction<T> implements ReadFunction<Map<String, T>> {
                 map.put(name, value);
             }
         }
-        
+
         if (Objects.equals(previousValue, map)) {
             return previousValue;
         }
-        
+
         previousValue = map;
         return map;
     }
@@ -55,5 +55,5 @@ class MapOfReadFunction<T> implements ReadFunction<Map<String, T>> {
     public QueueCollector<MapUpdate<T>> getMapUpdateCollector() {
         return mapUpdateCollector;
     }
-    
+
 }

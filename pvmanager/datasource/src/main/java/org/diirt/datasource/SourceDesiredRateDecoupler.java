@@ -4,9 +4,9 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
-import org.diirt.util.time.TimeDuration;
 
 /**
  * Represent a strategy to decouple desired rate events from source rate
@@ -15,12 +15,12 @@ import org.diirt.util.time.TimeDuration;
  * @author carcassi
  */
 abstract class SourceDesiredRateDecoupler {
-    
+
     private static final Logger log = Logger.getLogger(SourceDesiredRateDecoupler.class.getName());
     private final DesiredRateEventListener listener;
     private final ScheduledExecutorService scannerExecutor;
-    private final TimeDuration maxDuration;
-    
+    private final Duration maxDuration;
+
     protected final Object lock = new Object();
     private boolean eventProcessing = false;
     private boolean paused = false;
@@ -29,12 +29,12 @@ abstract class SourceDesiredRateDecoupler {
     /**
      * Creates a new rate decoupler that will send the events to the
      * given listener.
-     * 
+     *
      * @param scannerExecutor executor for the scanner tasks
      * @param maxDuration max interval between notifications
      * @param listener the event callback
      */
-    public SourceDesiredRateDecoupler(ScheduledExecutorService scannerExecutor, TimeDuration maxDuration,
+    public SourceDesiredRateDecoupler(ScheduledExecutorService scannerExecutor, Duration maxDuration,
             DesiredRateEventListener listener) {
         this.listener = listener;
         this.scannerExecutor = scannerExecutor;
@@ -45,10 +45,10 @@ abstract class SourceDesiredRateDecoupler {
         return scannerExecutor;
     }
 
-    public TimeDuration getMaxDuration() {
+    public Duration getMaxDuration() {
         return maxDuration;
     }
-    
+
     /**
      * Starts the scanning. From this moment on, source rate events
      * may trigger desired rate events.
@@ -56,7 +56,7 @@ abstract class SourceDesiredRateDecoupler {
     final void start() {
         onStart();
     }
-    
+
     /**
      * Initialization to be done when the pv is started.
      * <p>
@@ -64,7 +64,7 @@ abstract class SourceDesiredRateDecoupler {
      */
     void onStart() {
     }
-    
+
     /**
      * Pause the scanning. Events will be collected and delayed until a resume.
      */
@@ -76,7 +76,7 @@ abstract class SourceDesiredRateDecoupler {
             paused = true;
         }
     }
-    
+
     /**
      * Resumes the scanning. If events were collected during the pause,
      * they will be sent right away.
@@ -90,7 +90,7 @@ abstract class SourceDesiredRateDecoupler {
         }
         onResume();
     }
-    
+
     /**
      * Task to be executed on pv resume.
      * <p>
@@ -98,7 +98,7 @@ abstract class SourceDesiredRateDecoupler {
      */
     void onResume() {
     }
-    
+
     /**
      * Stops the scanning. From this moment on, the pv will no longer be
      * notified. Can't be restarted.
@@ -109,7 +109,7 @@ abstract class SourceDesiredRateDecoupler {
         }
         onStop();
     }
-    
+
     /**
      * Cleanup to be done when the pv is stopped.
      * <p>
@@ -117,42 +117,42 @@ abstract class SourceDesiredRateDecoupler {
      */
     void onStop() {
     }
-    
+
     /**
      * Called when a read connection state changes.
      */
     abstract void newReadConnectionEvent();
-    
+
     /**
      * Called when a write connection state changes.
      */
     abstract void newWriteConnectionEvent();
-    
+
     /**
      * Called when a new read value is available.
      */
     abstract void newValueEvent();
-    
+
     /**
      * Called when a reader error is encountered.
      */
     abstract void newReadExceptionEvent();
-    
+
     /**
      * Called when a writer error is encountered.
      */
     abstract void newWriteExceptionEvent();
-    
+
     /**
      * Called when a write operation terminated successfully.
      */
     abstract void newWriteSuccededEvent();
-    
+
     /**
      * Called when a write operation terminated unsuccessfully.
      */
     abstract void newWriteFailedEvent(Exception ex);
-    
+
     /**
      * Call when a new event should be triggered at the desired rate.
      * After calling this method, one should wait for the next {@link #readyForNextEvent() }
@@ -167,7 +167,7 @@ abstract class SourceDesiredRateDecoupler {
         }
         listener.desiredRateEvent(event);
     }
-    
+
     /**
      * Called after a pv is notified. Once {@link #sendDesiredRateEvent() }
      * is called, it should not be called again before this method is called.
@@ -181,7 +181,7 @@ abstract class SourceDesiredRateDecoupler {
         }
         onDesiredEventProcessed();
     }
-    
+
     /**
      * Called after an event was successfully processed.
      * <p>
@@ -192,7 +192,7 @@ abstract class SourceDesiredRateDecoupler {
 
     /**
      * True if an event was sent, but the ready for next event wasn't receiced.
-     * 
+     *
      * @return ture if there is still an event in-flight
      */
     public boolean isEventProcessing() {
@@ -216,5 +216,5 @@ abstract class SourceDesiredRateDecoupler {
     public boolean isStopped() {
         return stopped;
     }
-    
+
 }

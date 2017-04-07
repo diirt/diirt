@@ -29,12 +29,12 @@ import java.util.List;
  * @author carcassi
  */
 public enum AlarmSeverity {
-    
+
     /**
      * The current value is valid, and there is no alarm.
      */
     NONE,
-    
+
     /**
      * There is a minor problem with the value: the exact meaning is defined
      * by the channel, but typically this means that the value is valid and is
@@ -48,7 +48,7 @@ public enum AlarmSeverity {
      * outside some working range.
      */
     MAJOR,
-    
+
     /**
      * There is a major problem with the value itself: the exact meaning is defined
      * by the channel, but typically this means that the returned value is not a
@@ -62,7 +62,7 @@ public enum AlarmSeverity {
      * or connected with no read access. The value is either stale or invalid.
      */
     UNDEFINED;
-    
+
     private static final List<String> labels = new AbstractList<String>() {
         @Override
         public String get(int index) {
@@ -74,12 +74,12 @@ public enum AlarmSeverity {
             return AlarmSeverity.values().length;
         }
     };
-    
+
     /**
      * Returns the list of labels for the severity.
      * <p>
      * This is useful to create VEnums containing severities.
-     * 
+     *
      * @return an immutable list with the labels
      */
     public static List<String> labels() {

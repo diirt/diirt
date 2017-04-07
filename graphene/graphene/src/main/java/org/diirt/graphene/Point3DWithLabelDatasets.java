@@ -20,9 +20,9 @@ public class Point3DWithLabelDatasets {
         if (x.size() != y.size() || x.size() != y.size() || x.size() != labels.size()) {
             throw new IllegalArgumentException("Array lengths don't match: " + x.size() + " - " + y.size() + " - " + z.size() + " - " + labels.size());
         }
-        
+
         return new Point3DWithLabelDataset() {
-            
+
             private final Statistics xStatistics = StatisticsUtil.statisticsOf(x);
             private final Statistics yStatistics = StatisticsUtil.statisticsOf(y);
             private final Statistics zStatistics = StatisticsUtil.statisticsOf(z);
@@ -83,5 +83,5 @@ public class Point3DWithLabelDatasets {
             }
         };
     }
-    
+
 }

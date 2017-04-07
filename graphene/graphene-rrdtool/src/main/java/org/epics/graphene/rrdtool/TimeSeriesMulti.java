@@ -19,7 +19,7 @@ import org.epics.util.time.Timestamp;
  * @author carcassi
  */
 public class TimeSeriesMulti {
-    
+
     private List<Timestamp> time;
     private Map<String, ListDouble> values;
 
@@ -27,20 +27,20 @@ public class TimeSeriesMulti {
         this.time = time;
         this.values = values;
     }
-    
+
     public List<Timestamp> getTime() {
         return time;
     }
-    
+
     public Map<String, ListDouble> getValues() {
         return values;
     }
-    
+
     public static TimeSeriesMulti synchronizeSeries(Map<String, TimeSeries> seriesMap) {
         int[] offsets = new int[seriesMap.size()];
         Timestamp[] timestamps = new Timestamp[seriesMap.size()];
         boolean done = false;
-        
+
         List<Timestamp> finalTimes = new ArrayList<>();
         Map<String, ListDouble> data = new HashMap<>();
         List<CircularBufferDouble> buffers = new ArrayList<>();
@@ -53,7 +53,7 @@ public class TimeSeriesMulti {
             buffers.add(buffer);
             series.add(timeSeries);
         }
-                
+
         while (!done) {
             // The next time is going to be the maximum between all the
             // next time, because we want all values to change
@@ -61,7 +61,7 @@ public class TimeSeriesMulti {
                 timestamps[i] = series.get(i).getTime().get(offsets[i]);
             }
             Timestamp nextTime = Collections.max(Arrays.asList(timestamps));
-            
+
             // Advance all the offsets to a time that is nextTime or later
             for (int i = 0; i < offsets.length; i++) {
                 List<Timestamp> times = series.get(i).getTime();
@@ -69,7 +69,7 @@ public class TimeSeriesMulti {
                     offsets[i]++;
                 }
             }
-            
+
             // Add next values and increment
             finalTimes.add(nextTime);
             boolean hasIncremented = false;
@@ -80,7 +80,7 @@ public class TimeSeriesMulti {
                     offsets[i]++;
                 }
             }
-            
+
             // If no increment, we are done
             if (!hasIncremented) {
                 done = true;

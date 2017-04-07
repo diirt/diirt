@@ -4,16 +4,19 @@
  */
 package org.diirt.vtype.json;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+
 import org.diirt.util.array.ArrayBoolean;
 import org.diirt.util.array.ListBoolean;
 import org.diirt.util.array.ListByte;
@@ -22,12 +25,12 @@ import org.diirt.util.array.ListFloat;
 import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListLong;
 import org.diirt.util.array.ListShort;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.Time;
 import org.diirt.vtype.ValueFactory;
+
 import static org.diirt.vtype.json.JsonArrays.*;
 
 /**
@@ -35,13 +38,13 @@ import static org.diirt.vtype.json.JsonArrays.*;
  * @author carcassi
  */
 class VTypeJsonMapper implements JsonObject {
-    
+
     private final JsonObject json;
 
     public VTypeJsonMapper(JsonObject json) {
         this.json = json;
     }
-    
+
     public String getTypeName() {
         JsonObject type = json.getJsonObject("type");
         if (type == null) {
@@ -49,7 +52,7 @@ class VTypeJsonMapper implements JsonObject {
         }
         return type.getString("name");
     }
-    
+
     public Alarm getAlarm() {
         JsonObject alarm = json.getJsonObject("alarm");
         if (alarm == null) {
@@ -57,15 +60,15 @@ class VTypeJsonMapper implements JsonObject {
         }
         return ValueFactory.newAlarm(AlarmSeverity.valueOf(alarm.getString("severity")), alarm.getString("status"));
     }
-    
+
     public Time getTime() {
         VTypeJsonMapper time = getJsonObject("time");
         if (time == null) {
             return null;
         }
-        return ValueFactory.newTime(Timestamp.of(time.getInt("unixSec"), time.getInt("nanoSec")), time.getInteger("userTag"), true);
+        return ValueFactory.newTime(Instant.ofEpochSecond(time.getInt("unixSec"), time.getInt("nanoSec")), time.getInteger("userTag"), true);
     }
-    
+
     public Display getDisplay() {
         VTypeJsonMapper display = getJsonObject("display");
         if (display == null) {
@@ -81,42 +84,42 @@ class VTypeJsonMapper implements JsonObject {
                 Double.NaN,
                 Double.NaN);
     }
-    
+
     public ListDouble getListDouble(String string) {
         JsonArray array = getJsonArray(string);
         return toListDouble(array);
     }
-    
-    
+
+
     public ListFloat getListFloat(String string) {
         JsonArray array = getJsonArray(string);
         return toListFloat(array);
     }
-    
-    
+
+
     public ListLong getListLong(String string) {
         JsonArray array = getJsonArray(string);
         return toListLong(array);
     }
-    
-    
+
+
     public ListInt getListInt(String string) {
         JsonArray array = getJsonArray(string);
         return toListInt(array);
     }
-    
-    
+
+
     public ListShort getListShort(String string) {
         JsonArray array = getJsonArray(string);
         return toListShort(array);
     }
-    
-    
+
+
     public ListByte getListByte(String string) {
         JsonArray array = getJsonArray(string);
         return toListByte(array);
     }
-    
+
 
     public ListBoolean getListBoolean(String string) {
         JsonArray array = getJsonArray(string);
@@ -126,12 +129,12 @@ class VTypeJsonMapper implements JsonObject {
         }
         return new ArrayBoolean(values);
     }
-    
+
     public List<String> getListString(String string) {
         JsonArray array = getJsonArray(string);
         return toListString(array);
     }
-    
+
 
     public List<Class<?>> getColumnTypes(String string) {
         JsonArray array = getJsonArray(string);
@@ -153,7 +156,7 @@ class VTypeJsonMapper implements JsonObject {
             } else if ("byte".equals(type)) {
                 types.add(byte.class);
             } else if ("Timestamp".equals(type)) {
-                types.add(Timestamp.class);
+                types.add(Instant.class);
             } else {
                 throw new IllegalArgumentException("Column type " + type + " not supported");
             }
@@ -180,7 +183,7 @@ class VTypeJsonMapper implements JsonObject {
                 result.add(toListShort(array.getJsonArray(i)));
             } else if (byte.class.equals(type)) {
                 result.add(toListByte(array.getJsonArray(i)));
-            } else if (Timestamp.class.equals(type)) {
+            } else if (Instant.class.equals(type)) {
                 result.add(toListTimestamp(array.getJsonArray(i)));
             } else {
                 throw new IllegalArgumentException("Column type " + type + " not supported");
@@ -188,14 +191,14 @@ class VTypeJsonMapper implements JsonObject {
         }
         return result;
     }
-    
+
     public Integer getInteger(String string) {
         if (isNull(string)) {
             return null;
         }
         return getInt(string);
     }
-    
+
     public Double getNotNullDouble(String string) {
         if (isNull(string)) {
             return Double.NaN;

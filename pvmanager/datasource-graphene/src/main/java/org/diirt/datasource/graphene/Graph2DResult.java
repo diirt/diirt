@@ -31,11 +31,11 @@ public class Graph2DResult {
         this.focusDataIndex = focusDataIndex;
         this.selectedData = selectedData;
     }
-    
+
     public VType getData() {
         return data;
     }
-    
+
     public int focusDataIndex() {
         return focusDataIndex;
     }
@@ -51,5 +51,5 @@ public class Graph2DResult {
     public GraphDataRange getyRange() {
         return yRange;
     }
-    
+
 }

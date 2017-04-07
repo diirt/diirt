@@ -15,9 +15,9 @@ import java.util.List;
  * @author carcassi
  */
 public class DesiredRateExpressionListImpl<R> implements DesiredRateExpressionList<R> {
-    
+
     private List<DesiredRateExpression<R>> desiredRateExpressions;
-    
+
     final void addThis() {
         desiredRateExpressions.add((DesiredRateExpression<R>) this);
     }
@@ -32,7 +32,7 @@ public class DesiredRateExpressionListImpl<R> implements DesiredRateExpressionLi
     DesiredRateExpressionListImpl(Collection<? extends DesiredRateExpression<R>> desiredRateExpressions) {
         this.desiredRateExpressions = new ArrayList<DesiredRateExpression<R>>(desiredRateExpressions);
     }
-    
+
     @Override
     public final DesiredRateExpressionListImpl<R> and(DesiredRateExpressionList<? extends R> expressions) {
         @SuppressWarnings("unchecked")
@@ -45,5 +45,5 @@ public class DesiredRateExpressionListImpl<R> implements DesiredRateExpressionLi
     public final List<DesiredRateExpression<R>> getDesiredRateExpressions() {
         return desiredRateExpressions;
     }
-    
+
 }

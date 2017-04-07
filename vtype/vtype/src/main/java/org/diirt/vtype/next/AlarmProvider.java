@@ -10,10 +10,10 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 interface AlarmProvider {
-    
+
     /**
      * The alarm associated with this value.
-     * 
+     *
      * @return the alarm; not null
      */
     public abstract Alarm getAlarm();

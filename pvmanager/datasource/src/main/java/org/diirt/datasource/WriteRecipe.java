@@ -22,7 +22,7 @@ public class WriteRecipe {
 
     /**
      * The channel recipes for this recipe.
-     * 
+     *
      * @return the set of channel recipe
      */
     public Collection<ChannelWriteRecipe> getChannelWriteRecipes() {
@@ -50,5 +50,5 @@ public class WriteRecipe {
         }
         return true;
     }
-    
+
 }

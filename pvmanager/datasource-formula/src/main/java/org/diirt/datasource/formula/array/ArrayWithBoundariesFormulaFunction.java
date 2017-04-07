@@ -25,7 +25,7 @@ class ArrayWithBoundariesFormulaFunction implements FormulaFunction {
     public boolean isPure() {
         return true;
     }
-    
+
     @Override
     public boolean isVarArgs() {
         return true;
@@ -61,7 +61,7 @@ class ArrayWithBoundariesFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray array = (VNumberArray) args.get(0);
         if (array.getSizes().size() != args.size() - 1) {
             throw new IllegalArgumentException("Dimension of the array must match the number of ListNumberProvider");
@@ -72,9 +72,9 @@ class ArrayWithBoundariesFormulaFunction implements FormulaFunction {
             ListNumberProvider numberGenerator = (ListNumberProvider) args.get(i);
             dimDisplay.add(ValueFactory.newDisplay(numberGenerator.createListNumber(array.getSizes().getInt(i-1) + 1), ""));
         }
-        
-        
+
+
         return ValueFactory.newVNumberArray(array.getData(), array.getSizes(), dimDisplay, array, array, array);
     }
-    
+
 }

@@ -16,7 +16,7 @@ public class MessageUnsubscribe extends Message {
 
     /**
      * Creates a new message based on the JSON representation.
-     * 
+     *
      * @param obj JSON object
      * @throws MessageDecodeException if json format is incorrect
      */
@@ -26,16 +26,16 @@ public class MessageUnsubscribe extends Message {
 
     /**
      * Creates a new message based on the given parameters.
-     * 
+     *
      * @param id the channel id
      */
     public MessageUnsubscribe(int id) {
         super(MessageType.UNSUBSCRIBE, id);
     }
-    
+
     @Override
     public void toJson(Writer writer) {
         basicToJson(writer);
     }
-    
+
 }

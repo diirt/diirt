@@ -15,10 +15,10 @@ import java.util.List;
  * @author carcassi
  */
 public interface DesiredRateExpressionList<R> {
-    
+
     /**
      * Adds the given expressions to this list.
-     * 
+     *
      * @param expressions a list of expressions
      * @return this
      */
@@ -26,9 +26,9 @@ public interface DesiredRateExpressionList<R> {
 
     /**
      * The expressions of this list.
-     * 
+     *
      * @return a list of expressions
      */
     public List<DesiredRateExpression<R>> getDesiredRateExpressions();
-    
+
 }

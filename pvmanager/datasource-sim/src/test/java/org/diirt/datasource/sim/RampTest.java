@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.datasource.sim.Ramp;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VDouble;
 import org.junit.Test;
@@ -34,7 +33,7 @@ public class RampTest {
         assertThat(value.getUpperAlarmLimit(), equalTo(8.0));
         assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
-        
+
         assertThat(value.getValue(), equalTo(-10.0));
         value = ramp.nextValue();
         assertThat(value.getValue(), equalTo(-8.0));
@@ -77,7 +76,7 @@ public class RampTest {
         assertThat(value.getUpperAlarmLimit(), equalTo(8.0));
         assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
         assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
-        
+
         assertThat(value.getValue(), equalTo(10.0));
         value = ramp.nextValue();
         assertThat(value.getValue(), equalTo(8.0));

@@ -4,6 +4,8 @@
  */
 package org.diirt.datasource.formula;
 
+import java.time.Duration;
+
 import org.antlr.runtime.RecognitionException;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.PVManager;
@@ -11,16 +13,18 @@ import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.ReadExpressionTester;
 import org.diirt.vtype.VDouble;
 import org.junit.Test;
+
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+
 import org.diirt.datasource.test.CountDownPVWriterListener;
 import org.diirt.datasource.test.MockDataSource;
 import org.diirt.util.array.*;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.vtype.VBoolean;
 import org.diirt.vtype.VInt;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.ValueFactory;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 
@@ -220,7 +224,7 @@ public class ExpressionLanguageTest {
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), closeTo(0.0, 0.0001));
     }
-    
+
     @Test
     public void formula23() {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=1+2-3"));
@@ -578,7 +582,7 @@ public class ExpressionLanguageTest {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=1+'broken token"));
         assertThat(exp.getExpression().getDesiredRateExpressionImpl(), instanceOf(ErrorDesiredRateExpression.class));
     }
-    
+
     @Test(expected = RuntimeException.class)
     public void formulaCast1() {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=3.0", VString.class));
@@ -614,7 +618,7 @@ public class ExpressionLanguageTest {
     public void channelFromFormula6() {
         assertThat(ExpressionLanguage.channelFromFormula("2+3"), equalTo("2+3"));
     }
-    
+
     @Test
     public void readOnlyWriteExpression1() throws InterruptedException {
         DataSource sim = new MockDataSource();
@@ -624,7 +628,7 @@ public class ExpressionLanguageTest {
                 .writeListener(listener)
                 .async();
         try {
-            listener.await(TimeDuration.ofMillis(200));
+            listener.await(Duration.ofMillis(200));
             Exception ex = pvWriter.lastWriteException();
             assertThat(ex, instanceOf(RuntimeException.class));
             assertThat(ex.getMessage(), equalTo("Error message"));

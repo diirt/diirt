@@ -4,8 +4,6 @@
  */
 package org.diirt.vtype.next;
 
-import java.util.List;
-
 /**
  * Scalar enum with alarm and timestamp.
  * Given that enumerated values are of very limited use without
@@ -16,7 +14,7 @@ import java.util.List;
  * @author carcassi
  */
 public abstract class VEnum extends Scalar {
-    
+
     /**
      * {@inheritDoc }
      */
@@ -29,17 +27,17 @@ public abstract class VEnum extends Scalar {
      * @return the current index
      */
     public abstract int getIndex();
-    
+
     /**
      * Returns the metadata, including all possible labels.
-     * 
+     *
      * @return the metadata
      */
     public abstract EnumMetaData getMetaData();
 
     /**
      * Create a new VEnum.
-     * 
+     *
      * @param index the index in the label array
      * @param metaData the metadata
      * @param alarm the alarm

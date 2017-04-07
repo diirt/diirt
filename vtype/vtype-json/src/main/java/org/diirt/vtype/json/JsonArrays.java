@@ -4,14 +4,17 @@
  */
 package org.diirt.vtype.json;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonNumber;
 import javax.json.JsonString;
 import javax.json.JsonValue;
+
 import org.diirt.util.array.ArrayByte;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayFloat;
@@ -25,7 +28,6 @@ import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListLong;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListShort;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Utility classes to convert JSON arrays to and from Lists and ListNumbers.
@@ -33,10 +35,10 @@ import org.diirt.util.time.Timestamp;
  * @author carcassi
  */
 public class JsonArrays {
-    
+
     /**
      * Checks whether the array contains only numbers.
-     * 
+     *
      * @param array a JSON array
      * @return true if all elements are JSON numbers
      */
@@ -48,10 +50,10 @@ public class JsonArrays {
         }
         return true;
     }
-    
+
     /**
      * Checks whether the array contains only strings.
-     * 
+     *
      * @param array a JSON array
      * @return true if all elements are JSON strings
      */
@@ -63,10 +65,10 @@ public class JsonArrays {
         }
         return true;
     }
-    
+
     /**
      * Converts the given numeric JSON array to a ListDouble.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListDouble
      */
@@ -81,10 +83,10 @@ public class JsonArrays {
         }
         return new ArrayDouble(values);
     }
-    
+
     /**
      * Converts the given numeric JSON array to a ListFloat.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListFloat
      */
@@ -102,7 +104,7 @@ public class JsonArrays {
 
     /**
      * Converts the given numeric JSON array to a ListLong.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListLong
      */
@@ -113,10 +115,10 @@ public class JsonArrays {
         }
         return new ArrayLong(values);
     }
-    
+
     /**
      * Converts the given numeric JSON array to a ListInt.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListInt
      */
@@ -130,7 +132,7 @@ public class JsonArrays {
 
     /**
      * Converts the given numeric JSON array to a ListShort.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListShort
      */
@@ -144,7 +146,7 @@ public class JsonArrays {
 
     /**
      * Converts the given numeric JSON array to a ListByte.
-     * 
+     *
      * @param array an array of numbers
      * @return a new ListByte
      */
@@ -158,7 +160,7 @@ public class JsonArrays {
 
     /**
      * Converts the given string JSON array to a List of Strings.
-     * 
+     *
      * @param array an array of strings
      * @return a new List of Strings
      */
@@ -172,22 +174,22 @@ public class JsonArrays {
 
 
     /**
-     * Converts the given JSON array to a List of Timestamp.
-     * 
+     * Converts the given JSON array to a List of Instant.
+     *
      * @param array an array
-     * @return a new List of Timestamps
+     * @return a new List of Instant
      */
-    public static List<Timestamp> toListTimestamp(JsonArray array) {
-        List<Timestamp> timestamps = new ArrayList<>();
+    public static List<Instant> toListTimestamp(JsonArray array) {
+        List<Instant> timestamps = new ArrayList<>();
         for (int i = 0; i < array.size(); i++) {
-            timestamps.add(Timestamp.of(array.getJsonNumber(i).longValue(), 0));
+            timestamps.add(Instant.ofEpochSecond(array.getJsonNumber(i).longValue(), 0));
         }
         return timestamps;
     }
 
     /**
      * Converts the given List of String to a string JSON array.
-     * 
+     *
      * @param list a List of Strings
      * @return an array of strings
      */
@@ -204,22 +206,22 @@ public class JsonArrays {
     }
 
     /**
-     * Converts the given List of Timestamp to a JSON array.
-     * 
-     * @param list a List of Timestamps
+     * Converts the given List of Instant to a JSON array.
+     *
+     * @param list a List of Instant
      * @return an array
      */
-    public static JsonArrayBuilder fromListTimestamp(List<Timestamp> list) {
+    public static JsonArrayBuilder fromListTimestamp(List<Instant> list) {
         JsonArrayBuilder b = Json.createArrayBuilder();
-        for (Timestamp element : list) {
-            b.add(element.getSec());
+        for (Instant element : list) {
+            b.add(element.getEpochSecond());
         }
         return b;
     }
 
     /**
      * Converts the given ListNumber to a number JSON array.
-     * 
+     *
      * @param list a list of numbers
      * @return an array of numbers
      */
@@ -245,5 +247,5 @@ public class JsonArrays {
         }
         return b;
     }
-    
+
 }

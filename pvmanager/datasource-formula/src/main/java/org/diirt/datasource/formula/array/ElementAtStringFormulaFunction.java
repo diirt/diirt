@@ -17,43 +17,43 @@ import org.diirt.vtype.VStringArray;
 
 /**
  * @author carcassi
- * 
+ *
  */
 class ElementAtStringFormulaFunction implements FormulaFunction {
 
     @Override
     public boolean isPure() {
-	return true;
+        return true;
     }
 
     @Override
     public boolean isVarArgs() {
-	return false;
+        return false;
     }
 
     @Override
     public String getName() {
-	return "elementAt";
+        return "elementAt";
     }
 
     @Override
     public String getDescription() {
-	return "Returns the element at the specified position in the string array.";
+        return "Returns the element at the specified position in the string array.";
     }
 
     @Override
     public List<Class<?>> getArgumentTypes() {
-	return Arrays.<Class<?>> asList(VStringArray.class, VNumber.class);
+        return Arrays.<Class<?>> asList(VStringArray.class, VNumber.class);
     }
 
     @Override
     public List<String> getArgumentNames() {
-	return Arrays.asList("array", "index");
+        return Arrays.asList("array", "index");
     }
 
     @Override
     public Class<?> getReturnType() {
-	return VString.class;
+        return VString.class;
     }
 
     @Override
@@ -61,13 +61,13 @@ class ElementAtStringFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
-	VStringArray stringArray = (VStringArray) args.get(0);
+
+        VStringArray stringArray = (VStringArray) args.get(0);
         VNumber index = (VNumber) args.get(1);
         int i = index.getValue().intValue();
-        
-	return newVString(stringArray.getData().get(i),
-		stringArray, stringArray);
+
+        return newVString(stringArray.getData().get(i),
+                stringArray, stringArray);
     }
 
 }

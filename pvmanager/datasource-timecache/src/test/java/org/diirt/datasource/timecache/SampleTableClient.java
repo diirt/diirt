@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 
 import org.diirt.datasource.timecache.query.QueryParameters;
 import org.diirt.datasource.ExpressionLanguage.OneArgFunction;
@@ -24,24 +25,23 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.loc.LocalDataSource;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeRelativeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.VString;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.io.CSVIO;
 
 /**
- * 
+ *
  * @author carcassi
  */
 @SuppressWarnings("serial")
 public class SampleTableClient extends javax.swing.JFrame {
-    
-    private PVReader<VString> pvReader = null; 
-    
+
+    private PVReader<VString> pvReader = null;
+
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    private static Timestamp start;
-    private static Timestamp end;
+    private static Instant start;
+    private static Instant end;
 
     /**
      * Creates new form SampleTableClient
@@ -50,8 +50,8 @@ public class SampleTableClient extends javax.swing.JFrame {
         initComponents();
         try {
             // TODO: these can become different fields
-            start = Timestamp.of(dateFormat.parse("2014-04-03 09:00"));
-            end = Timestamp.of(dateFormat.parse("2014-04-04 09:00"));
+            start = dateFormat.parse("2014-04-03 09:00").toInstant();
+            end = dateFormat.parse("2014-04-04 09:00").toInstant();
         } catch (ParseException ex) {
         }
     }
@@ -121,27 +121,27 @@ public class SampleTableClient extends javax.swing.JFrame {
             pvReader.close();
             pvReader = null;
         }
-        
+
         resultField.setText("");
-        
+
         pvReader = PVManager.read(resultOf(new OneArgFunction<VString, VTable>() {
 
             private VTable oldArg;
             private VString oldResult;
-            
+
             @Override
             public VString calculate(VTable arg) {
                 if (arg == null) {
                     return null;
                 }
-                
+
                 // Don't reformat if same result
                 if (oldArg == arg) {
                     return oldResult;
                 }
-                
+
                 oldArg = arg;
-                
+
                 CSVIO io = new CSVIO();
                 StringWriter out = new StringWriter();
                 io.export(arg, out);
@@ -158,9 +158,9 @@ public class SampleTableClient extends javax.swing.JFrame {
                 }
             }
         }).maxRate(TimeDuration.ofHertz(10));
-        
+
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -168,7 +168,7 @@ public class SampleTableClient extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -190,7 +190,7 @@ public class SampleTableClient extends javax.swing.JFrame {
 
         // Just to make things work
         PVManager.setDefaultDataSource(new LocalDataSource());
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

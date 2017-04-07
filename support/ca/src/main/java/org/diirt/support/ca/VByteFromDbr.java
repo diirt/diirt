@@ -23,7 +23,7 @@ class VByteFromDbr extends VNumberMetadata<DBR_TIME_Byte, DBR_CTRL_Double> imple
     public Byte getValue() {
         return dbrValue.getByteValue()[0];
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

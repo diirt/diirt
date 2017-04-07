@@ -13,24 +13,24 @@ import java.util.Arrays;
  * @author Gabriele Carcassi
  */
 public final class ArrayBoolean extends ListBoolean implements Serializable {
-    
+
     private static final long serialVersionUID = 7493025761455302915L;
-    
+
     private final boolean[] array;
     private final boolean readOnly;
 
     /**
      * A new read-only {@code ArrayBoolean} that wraps around the given array.
-     * 
+     *
      * @param array an array
      */
     public ArrayBoolean(boolean... array) {
         this(array, true);
     }
-    
+
     /**
      * A new {@code ArrayBoolean} that wraps around the given array.
-     * 
+     *
      * @param array an array
      * @param readOnly if false the wrapper allows writes to the array
      */
@@ -63,12 +63,12 @@ public final class ArrayBoolean extends ListBoolean implements Serializable {
         if (obj instanceof ArrayBoolean) {
             return Arrays.equals(array, ((ArrayBoolean) obj).array);
         }
-        
+
         return super.equals(obj);
     }
 
     boolean[] wrappedArray() {
         return array;
     }
-    
+
 }

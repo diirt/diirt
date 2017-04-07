@@ -7,8 +7,6 @@ package org.diirt.datasource.sys;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import static org.diirt.vtype.ValueFactory.*;
@@ -18,7 +16,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 class QualifiedHostnameChannelHandler extends SystemChannelHandler {
-    
+
     private String previousValue = null;
 
     public QualifiedHostnameChannelHandler(String channelName) {
@@ -43,5 +41,5 @@ class QualifiedHostnameChannelHandler extends SystemChannelHandler {
             return null;
         }
     }
-    
+
 }

@@ -8,7 +8,7 @@
  * The {@link org.diirt.support.ca.JCADataSource} uses the {@link org.diirt.datasource.MultiplexedChannelHandler}. The
  * connection payload used is the JCA Channel class directly. The payload for
  * each monitor event is the {@link org.diirt.support.ca.JCAMessagePayload}, which includes both
- * metadata (taken with a GET at connection time) and value (taken from the 
+ * metadata (taken with a GET at connection time) and value (taken from the
  * MONITOR event).
  * <p>
  * The conversion between JCAMessagePayload and the actual type, is done

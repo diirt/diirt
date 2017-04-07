@@ -8,7 +8,7 @@ package org.diirt.vtype;
  * Scalar long with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public interface VLong extends VNumber, VType {

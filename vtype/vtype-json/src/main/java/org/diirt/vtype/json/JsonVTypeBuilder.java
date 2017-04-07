@@ -6,21 +6,24 @@ package org.diirt.vtype.json;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Instant;
 import java.util.List;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+
 import org.diirt.util.array.ListBoolean;
 import org.diirt.util.array.ListNumber;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.Time;
 import org.diirt.vtype.VTable;
 import org.diirt.vtype.VType;
 import org.diirt.vtype.ValueUtil;
+
 import static org.diirt.vtype.json.JsonArrays.*;
 
 /**
@@ -28,7 +31,7 @@ import static org.diirt.vtype.json.JsonArrays.*;
  * @author carcassi
  */
 class JsonVTypeBuilder implements JsonObjectBuilder {
-    
+
     private final JsonObjectBuilder builder = Json.createObjectBuilder();
 
     @Override
@@ -105,20 +108,20 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
     public JsonObject build() {
         return builder.build();
     }
-    
+
     public JsonVTypeBuilder addAlarm(Alarm alarm) {
         return add("alarm", new JsonVTypeBuilder()
                 .add("severity", alarm.getAlarmSeverity().toString())
                 .add("status", alarm.getAlarmName()));
     }
-    
+
     public JsonVTypeBuilder addTime(Time time) {
         return add("time", new JsonVTypeBuilder()
-                .add("unixSec", time.getTimestamp().getSec())
-                .add("nanoSec", time.getTimestamp().getNanoSec())
+                .add("unixSec", time.getTimestamp().getEpochSecond())
+                .add("nanoSec", time.getTimestamp().getNano())
                 .addNullableObject("userTag", time.getTimeUserTag()));
     }
-    
+
     public JsonVTypeBuilder addDisplay(Display display) {
         return add("display", new JsonVTypeBuilder()
                 .add("lowAlarm", display.getLowerAlarmLimit())
@@ -129,17 +132,17 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
                 .add("highWarning", display.getUpperDisplayLimit())
                 .add("units", display.getUnits()));
     }
-    
+
     public JsonVTypeBuilder addEnum(org.diirt.vtype.Enum en) {
         return add("enum", new JsonVTypeBuilder()
                 .addListString("labels", en.getLabels()));
     }
-    
+
     public JsonVTypeBuilder addListString(String string, List<String> ls) {
         add(string, fromListString(ls));
         return this;
     }
-    
+
     public JsonVTypeBuilder addListColumnType(String string, List<Class<?>> ls) {
         JsonArrayBuilder b = Json.createArrayBuilder();
         for (Class<?> element : ls) {
@@ -157,7 +160,7 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
                 b.add("short");
             } else if (element.equals(byte.class)) {
                 b.add("byte");
-            } else if (element.equals(Timestamp.class)) {
+            } else if (element.equals(Instant.class)) {
                 b.add("Timestamp");
             } else {
                 throw new IllegalArgumentException("Column type " + element + " not supported");
@@ -178,9 +181,9 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
             } else if (type.equals(double.class) || type.equals(float.class) || type.equals(long.class) ||
                     type.equals(int.class) || type.equals(short.class) || type.equals(byte.class)) {
                 b.add(fromListNumber((ListNumber) vTable.getColumnData(column)));
-            } else if (type.equals(Timestamp.class)) {
+            } else if (type.equals(Instant.class)) {
                 @SuppressWarnings("unchecked")
-                List<Timestamp> listTimestamp = (List<Timestamp>) vTable.getColumnData(column);
+                List<Instant> listTimestamp = (List<Instant>) vTable.getColumnData(column);
                 b.add(fromListTimestamp(listTimestamp));
             } else {
                 throw new IllegalArgumentException("Column type " + type.getSimpleName() + " not supported");
@@ -189,12 +192,12 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         add(string, b);
         return this;
     }
-    
+
     public JsonVTypeBuilder addListNumber(String string, ListNumber ln) {
         add(string, fromListNumber(ln));
         return this;
     }
-    
+
     public JsonVTypeBuilder addListBoolean(String string, ListBoolean lb) {
         JsonArrayBuilder b = Json.createArrayBuilder();
         for (int i = 0; i < lb.size(); i++) {
@@ -203,7 +206,7 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         add(string, b);
         return this;
     }
-    
+
     public JsonVTypeBuilder addNullableObject(String string, Object o) {
         if (o == null) {
             addNull(string);
@@ -212,12 +215,12 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         }
         return this;
     }
-    
+
     public JsonVTypeBuilder addObject(String string, Object o) {
         if (o == null) {
             return this;
         }
-        
+
         if (o instanceof Double || o instanceof Float) {
             add(string, ((Number) o).doubleValue());
         } else if (o instanceof Byte || o instanceof Short || o instanceof Integer) {
@@ -231,10 +234,10 @@ class JsonVTypeBuilder implements JsonObjectBuilder {
         } else {
             throw new UnsupportedOperationException("Class " + o.getClass() + " not supported");
         }
-    
+
         return this;
     }
-    
+
     public JsonVTypeBuilder addType(VType vType) {
         Class<?> clazz = ValueUtil.typeOf(vType);
         return add("type", new JsonVTypeBuilder()

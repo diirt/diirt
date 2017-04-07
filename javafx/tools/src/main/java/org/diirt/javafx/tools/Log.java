@@ -5,17 +5,20 @@
 package org.diirt.javafx.tools;
 
 import java.io.PrintStream;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
-import org.diirt.util.time.Timestamp;
-import org.diirt.util.time.TimestampFormat;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VNumber;
@@ -28,47 +31,47 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 public class Log {
-    
+
     private final Runnable callback;
     private final List<Event> events = Collections.synchronizedList(new ArrayList<Event>());
 
     public Log(Runnable callback) {
         this.callback = callback;
     }
-    
+
     public <T> PVReaderListener<T> createReadListener() {
         return new PVReaderListener<T>() {
 
             @Override
             public void pvChanged(PVReaderEvent<T> event) {
-                events.add(new ReadEvent(Timestamp.now(), event.getPvReader().getName(), event, event.getPvReader().isConnected(), event.getPvReader().getValue(), event.getPvReader().lastException()));
+                events.add(new ReadEvent(Instant.now(), event.getPvReader().getName(), event, event.getPvReader().isConnected(), event.getPvReader().getValue(), event.getPvReader().lastException()));
                 callback.run();
             }
         };
     }
-    
+
     public <T> PVWriterListener<T> createWriteListener(final String name) {
         return new PVWriterListener<T>() {
 
             @Override
             public void pvChanged(PVWriterEvent<T> event) {
-                events.add(new WriteEvent(Timestamp.now(), name, event, event.getPvWriter().isWriteConnected(), event.getPvWriter().lastWriteException()));
+                events.add(new WriteEvent(Instant.now(), name, event, event.getPvWriter().isWriteConnected(), event.getPvWriter().lastWriteException()));
                 callback.run();
             }
         };
     }
-    
+
     public List<Event> getEvents() {
         return events;
     }
-    
-    private TimestampFormat format = new TimestampFormat("ss.NNNNNNNNN");
-    
+
+    private DateTimeFormatter format = DateTimeFormatter.ofPattern("ss.NNNNNNNNN");
+
     public void print(PrintStream out) {
         for (Event event : events) {
             if (event instanceof ReadEvent) {
                 ReadEvent readEvent = (ReadEvent) event;
-                out.append(format.format(readEvent.getTimestamp()))
+                out.append(format.format(ZonedDateTime.ofInstant(readEvent.getTimestamp(), ZoneId.systemDefault())))
                         .append(" R(");
                 if (readEvent.getEvent().isConnectionChanged()) {
                     out.append("C");
@@ -95,7 +98,7 @@ public class Log {
             }
             if (event instanceof WriteEvent) {
                 WriteEvent writeEvent = (WriteEvent) event;
-                out.append(format.format(writeEvent.getTimestamp()))
+                out.append(format.format(ZonedDateTime.ofInstant(writeEvent.getTimestamp(), ZoneId.systemDefault())))
                         .append(" W(");
                 if (writeEvent.getEvent().isConnectionChanged()) {
                     out.append("C");

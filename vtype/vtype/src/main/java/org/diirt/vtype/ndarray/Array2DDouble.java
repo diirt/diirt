@@ -11,7 +11,7 @@ import org.diirt.util.array.ListInt;
  * @author carcassi
  */
 public class Array2DDouble {
-    
+
     private final int x1Size;
     private final int x0Size;
     private final boolean x1Invert;
@@ -23,7 +23,7 @@ public class Array2DDouble {
         this.x0Invert = x0Invert;
         this.x1Invert = x1Invert;
     }
-    
+
     public int getIndex(int x1, int x0) {
         int index;
         if (!x0Invert) {
@@ -39,5 +39,5 @@ public class Array2DDouble {
         }
         return index;
     }
-    
+
 }

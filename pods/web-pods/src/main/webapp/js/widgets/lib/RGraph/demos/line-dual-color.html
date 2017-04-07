@@ -2,11 +2,11 @@
 <head>
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
-    
+
     <title>A different colored line above/below a threshold</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="demo range line threshold dual two colors above below" />
     <meta name="description" content="A regular Line chart that has been drawn in two passes so that it can be a different color above and below a particular threshold" />
     <meta name="robots" content="noindex,nofollow" />
@@ -14,7 +14,7 @@
 <body>
 
     <h1>A different colored line above/below a threshold</h1>
-    
+
     <p>
         By using the clip() function the Line chart can be drawn in two passes so as to color it differently.
     </p>
@@ -91,7 +91,7 @@
                 var line = new RGraph.Line('cvs', data)
                     .Set('gutter.top', 5)
                     .Set('gutter.bottom', 45)
-                    .Set('colors', [color2])                    
+                    .Set('colors', [color2])
                     .Set('linewidth', 3)
                     .Set('tickmarks', 'endcircle')
                     .Set('hmargin', 10)

@@ -2,22 +2,22 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.line.js" ></script>
     <script src="../libraries/RGraph.drawing.circle.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A basic example of the drawing API circle object</title>
-    
+
     <meta name="keywords" content="demo drawing api circle" />
     <meta name="description" content="A basic example of the drawing API circle object" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A basic example of the drawing API circle object</h1>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -29,19 +29,19 @@
                 .Set('hmargin', 5)
                 .Set('labels', ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'])
                 .Draw();
-            
+
             var coords = line.coords[2];
-            
+
             var circle = new RGraph.Drawing.Circle('cvs', coords[0], coords[1], 30)
                 .Set('strokestyle', 'rgba(0,0,0,1)')
                 .Set('fillstyle', 'rgba(0,0,0,0.2)')
                 .Draw();
-            
+
             circle.onclick = function (e, shape)
             {
                 alert('[RGRAPH] The circle has been clicked!');
             }
-            
+
             circle.onmousemove = function (e, shape)
             {
                 e.target.style.cursor = 'pointer';

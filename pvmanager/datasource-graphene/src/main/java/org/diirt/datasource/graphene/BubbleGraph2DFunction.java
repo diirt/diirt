@@ -35,10 +35,10 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
             100);
 
     public BubbleGraph2DFunction(ReadFunction<?> tableData,
-	    ReadFunction<?> xColumnName,
-	    ReadFunction<?> yColumnName,
-	    ReadFunction<?> sizeColumnName,
-	    ReadFunction<?> colorColumnName) {
+            ReadFunction<?> xColumnName,
+            ReadFunction<?> yColumnName,
+            ReadFunction<?> sizeColumnName,
+            ReadFunction<?> colorColumnName) {
         this.tableData = new CheckedReadFunction<>(tableData, "Data", VTable.class);
         this.xColumnName = stringArgument(xColumnName, "X Column");
         this.yColumnName = stringArgument(yColumnName, "Y Column");
@@ -57,7 +57,7 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
         yColumnName.readNext();
         sizeColumnName.readNext();
         colorColumnName.readNext();
-        
+
         // Table and columns must be available
         if (vTable == null || xColumnName.isMissing() || yColumnName.isMissing() || sizeColumnName.isMissing() || colorColumnName.isMissing()) {
             return null;

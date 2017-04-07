@@ -4,21 +4,21 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
  * @author carcassi
  */
 class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
-    
+
     private volatile ScheduledFuture<?> scanTaskHandle;
 
     public ActiveScanDecoupler(ScheduledExecutorService scannerExecutor,
-            TimeDuration maxDuration, DesiredRateEventListener listener) {
+            Duration maxDuration, DesiredRateEventListener listener) {
         super(scannerExecutor, maxDuration, listener);
     }
 
@@ -38,7 +38,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
                     sendDesiredRateEvent(event);
                 }
             }
-        }, 0, getMaxDuration().toNanosLong(), TimeUnit.NANOSECONDS);
+        }, 0, getMaxDuration().toNanos(), TimeUnit.NANOSECONDS);
     }
 
     @Override
@@ -50,7 +50,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
             throw new IllegalStateException("Scan was never started");
         }
     }
-    
+
     @Override
     void newReadConnectionEvent() {
         // Do nothing
@@ -89,7 +89,7 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
         event.addWriteFailed(new RuntimeException());
         sendDesiredRateEvent(event);
     }
-    
+
     /**
      * If possible, submit the event right away, otherwise try again later.
      * @param event the event to submit
@@ -107,5 +107,5 @@ class ActiveScanDecoupler extends SourceDesiredRateDecoupler {
             });
         }
     }
-    
+
 }

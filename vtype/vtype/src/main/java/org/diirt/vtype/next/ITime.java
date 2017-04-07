@@ -12,7 +12,7 @@ import java.time.Instant;
  * @author carcassi
  */
 class ITime extends Time {
-    
+
     private final Instant timestamp;
     private final Integer userTag;
     private final boolean valid;

@@ -22,7 +22,7 @@ public class WriteExpressionImpl<W> extends WriteExpressionListImpl<W> implement
     private Map<String, WriteCache<?>> writeCaches;
     private WriteFunction<W> writeFunction;
     private String defaultName;
-    
+
     {
         // Make sure that the list includes this expression
         addThis();
@@ -43,7 +43,7 @@ public class WriteExpressionImpl<W> extends WriteExpressionListImpl<W> implement
 
     /**
      * Changes the name for this expression
-     * 
+     *
      * @param name new name
      * @return this
      */
@@ -54,7 +54,7 @@ public class WriteExpressionImpl<W> extends WriteExpressionListImpl<W> implement
 
     /**
      * Creates a new write expression.
-     * 
+     *
      * @param childExpressions the expressions used as arguments by this expression
      * @param function the function that will decompose the payload for this expression
      * @param defaultName the name for this expression

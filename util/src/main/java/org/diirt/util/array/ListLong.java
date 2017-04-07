@@ -14,7 +14,7 @@ public abstract class ListLong implements ListNumber, CollectionLong {
     @Override
     public IteratorLong iterator() {
         return new IteratorLong() {
-            
+
             private int index;
 
             @Override
@@ -53,7 +53,7 @@ public abstract class ListLong implements ListNumber, CollectionLong {
     public byte getByte(int index) {
         return (byte) getLong(index);
     }
-    
+
     @Override
     public void setDouble(int index, double value) {
         setLong(index, (long) value);
@@ -88,7 +88,7 @@ public abstract class ListLong implements ListNumber, CollectionLong {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        
+
         if (obj instanceof ListLong) {
             ListLong other = (ListLong) obj;
 
@@ -102,7 +102,7 @@ public abstract class ListLong implements ListNumber, CollectionLong {
 
             return true;
         }
-        
+
         return false;
     }
 

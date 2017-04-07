@@ -14,7 +14,7 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
     @Override
     public IteratorDouble iterator() {
         return new IteratorDouble() {
-            
+
             private int index;
 
             @Override
@@ -83,62 +83,62 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
     public void setByte(int index, byte value) {
         setDouble(index, (double) value);
     }
-    
+
     /**
      * Concatenates a several lists of numbers into a single list
-     * 
+     *
      * @param lists the lists to concatenate
      * @return the given lists concatenated together
      * @author mjchao
      */
     public static ListDouble concatenate( final ListNumber... lists ) {
-	
-	//since these lists are read-only, we precompute the size
-	int size = 0;
-	for ( ListNumber l : lists ) {
-	    size += l.size();
-	}
-	final int sizeCopy = size;
-	
-	return new ListDouble() {
-	    
-	    @Override
-	    public int size() {
-		return sizeCopy;
-	    }
-	    
-	    @Override
-	    public double getDouble( int index ) {
-		if ( index < 0 || index >= size() ) {
-		    throw new IndexOutOfBoundsException( "Index out of bounds: " + index + ", size: " + size() );
-		}
-		//treat the lists we concatenated as a whole set - that is
-		//we never start back at index 0 after traversing through one
-		//of the concatenated lists
-		
-		//for example, {a, b, c} {d, e, f} used to be indexed as
-		//             {0, 1, 2} {0, 1, 2} and they are now indexed as
-		//             {0, 1, 2} {3, 4, 5}
-		int startIdx = 0;
-		for ( ListNumber l : lists ) {
-		    int endIdx = startIdx + l.size()-1;
-		    if ( startIdx <= index && index <= endIdx ) {
-			return l.getDouble( index - startIdx );
-		    }
-		    startIdx += l.size();
-		}
-		
-		//should never happpen
-		return 0;
-	    }
-	};
+
+        //since these lists are read-only, we precompute the size
+        int size = 0;
+        for ( ListNumber l : lists ) {
+            size += l.size();
+        }
+        final int sizeCopy = size;
+
+        return new ListDouble() {
+
+            @Override
+            public int size() {
+                return sizeCopy;
+            }
+
+            @Override
+            public double getDouble( int index ) {
+                if ( index < 0 || index >= size() ) {
+                    throw new IndexOutOfBoundsException( "Index out of bounds: " + index + ", size: " + size() );
+                }
+                //treat the lists we concatenated as a whole set - that is
+                //we never start back at index 0 after traversing through one
+                //of the concatenated lists
+
+                //for example, {a, b, c} {d, e, f} used to be indexed as
+                //             {0, 1, 2} {0, 1, 2} and they are now indexed as
+                //             {0, 1, 2} {3, 4, 5}
+                int startIdx = 0;
+                for ( ListNumber l : lists ) {
+                    int endIdx = startIdx + l.size()-1;
+                    if ( startIdx <= index && index <= endIdx ) {
+                        return l.getDouble( index - startIdx );
+                    }
+                    startIdx += l.size();
+                }
+
+                //should never happpen
+                return 0;
+            }
+        };
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        
+
         if (obj instanceof ListDouble) {
             ListDouble other = (ListDouble) obj;
 
@@ -152,7 +152,7 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
 
             return true;
         }
-        
+
         return false;
     }
 
@@ -177,5 +177,5 @@ public abstract class ListDouble implements ListNumber, CollectionDouble {
         builder.append(getDouble(i)).append("]");
         return builder.toString();
     }
-    
+
 }

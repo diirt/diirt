@@ -2,11 +2,11 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.hbar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A horizontal bar chart fetching data via AJAX</title>
 
     <meta name="keywords" content="demo hbar ajax" />
@@ -29,7 +29,7 @@
                .Set('colors', ['Gradient(white:#3366CC:#3366CC)'])
                .Draw();
        }
-       
+
        RGraph.AJAX.getCSV('/getdata.html', drawHBar);
    </script>
 

@@ -18,14 +18,14 @@ import org.diirt.util.array.ListInt;
  * @author carcassi
  */
 class VStringArrayFromDbr extends VMetadata<DBR_TIME_String> implements VStringArray {
-    
+
     private List<String> data;
 
     public VStringArrayFromDbr(DBR_TIME_String dbrValue, JCAConnectionPayload connPayload) {
         super(dbrValue, connPayload);
         data = Collections.unmodifiableList(Arrays.asList(dbrValue.getStringValue()));
     }
-    
+
     @Override
     public List<String> getData() {
         return data;
@@ -35,7 +35,7 @@ class VStringArrayFromDbr extends VMetadata<DBR_TIME_String> implements VStringA
     public ListInt getSizes() {
         return new ArrayInt(dbrValue.getStringValue().length);
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

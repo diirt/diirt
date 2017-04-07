@@ -34,10 +34,10 @@ public abstract class AbstractVNumberVNumberToVBooleanFormulaFunction implements
     private final String description;
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
-    
+
     /**
      * Creates a new function.
-     * 
+     *
      * @param name function name; can't be null
      * @param description function description; can't be null
      * @param arg1Name first argument name; can't be null
@@ -57,7 +57,7 @@ public abstract class AbstractVNumberVNumberToVBooleanFormulaFunction implements
         if (arg2Name == null) {
             throw new NullPointerException("Second argument name can't be null");
         }
-        
+
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VNumber.class, VNumber.class);
@@ -104,24 +104,24 @@ public abstract class AbstractVNumberVNumberToVBooleanFormulaFunction implements
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumber arg1 = (VNumber) args.get(0);
         VNumber arg2 = (VNumber) args.get(1);
-        
-	return ValueFactory.newVBoolean(
-		calculate(arg1.getValue().doubleValue(), arg2.getValue().doubleValue()),
+
+        return ValueFactory.newVBoolean(
+                calculate(arg1.getValue().doubleValue(), arg2.getValue().doubleValue()),
                 ValueUtil.highestSeverityOf(args, false),
-		ValueUtil.latestValidTimeOrNowOf(args));
+                ValueUtil.latestValidTimeOrNowOf(args));
     }
-    
+
     /**
      * Calculates the result based on the two arguments. This is the only
      * method one has to implement.
-     * 
+     *
      * @param arg1 the first argument
      * @param arg2 the second argument
      * @return the result
      */
     public abstract boolean calculate(double arg1, double arg2);
-    
+
 }

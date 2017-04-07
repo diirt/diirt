@@ -12,10 +12,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
+
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * Value object for replay function. Adds introspection utilities to substitute
@@ -33,9 +35,9 @@ class ReplayValue {
 
     // TimeStamp support
     @XmlAttribute @XmlJavaTypeAdapter(value=XmlTimeStampAdapter.class)
-    Timestamp timeStamp;
+    Instant timeStamp;
 
-    public Timestamp getTimestamp() {
+    public Instant getTimestamp() {
         return timeStamp;
     }
 
@@ -52,7 +54,7 @@ class ReplayValue {
                 props.add(field);
             }
         }
-        
+
         if (clazz.getSuperclass() != null) {
             calculateFields(clazz.getSuperclass(), props);
         }
@@ -99,7 +101,7 @@ class ReplayValue {
      *
      * @param duration a time duration
      */
-    void adjustTime(TimeDuration duration) {
+    void adjustTime(Duration duration) {
         timeStamp = timeStamp.plus(duration);
     }
 

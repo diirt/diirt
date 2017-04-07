@@ -8,16 +8,6 @@ import org.diirt.datasource.test.MockDataSource;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import org.diirt.datasource.ChannelReadRecipe;
-import org.diirt.datasource.ChannelWriteRecipe;
-import org.diirt.datasource.CompositeDataSource;
-import org.diirt.datasource.ConnectionCollector;
-import org.diirt.datasource.ReadRecipe;
-import org.diirt.datasource.ReadRecipeBuilder;
-import org.diirt.datasource.ValueCacheImpl;
-import org.diirt.datasource.WriteCache;
-import org.diirt.datasource.WriteRecipe;
-import org.diirt.datasource.WriteRecipeBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +54,7 @@ public class CompositeDataSourceTest {
         assertThat(mock1.getReadRecipe().getChannelReadRecipes(), equalTo(recipe.getChannelReadRecipes()));
         assertThat(mock2.getReadRecipe(), nullValue());
     }
-    
+
     @Test
     public void testMixedCall() {
         // Setup composite
@@ -81,7 +71,7 @@ public class CompositeDataSourceTest {
         builder.addChannel("mock2://pv04", new ValueCacheImpl<Double>(Double.class));
         builder.addChannel("mock1://pv05", new ValueCacheImpl<Double>(Double.class));
         ReadRecipe recipe = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
-        
+
         // Call and check
         composite.connectRead(recipe);
         Collection<ChannelReadRecipe> mock1Caches = mock1.getReadRecipe().getChannelReadRecipes();
@@ -98,7 +88,7 @@ public class CompositeDataSourceTest {
         assertEquals(mock1Connect, mock1.getReadRecipe());
         assertEquals(mock2Connect, mock2.getReadRecipe());
     }
-    
+
     private Set<String> channelNames(Collection<ChannelReadRecipe> channelRecipes) {
         Set<String> names = new HashSet<String>();
         for (ChannelReadRecipe channelRecipe : channelRecipes) {
@@ -106,7 +96,7 @@ public class CompositeDataSourceTest {
         }
         return names;
     }
-    
+
     private Set<String> channelWriteNames(Collection<ChannelWriteRecipe> channelWriteBuffers) {
         Set<String> names = new HashSet<String>();
         for (ChannelWriteRecipe channelWriteBuffer : channelWriteBuffers) {
@@ -219,7 +209,7 @@ public class CompositeDataSourceTest {
         builder.addChannel("mock2://pv04", new WriteCache<>("mock2://pv04"));
         builder.addChannel("mock1://pv05", new WriteCache<>("mock1://pv05"));
         WriteRecipe buffer = builder.build(new ValueCacheImpl<Exception>(Exception.class), new ConnectionCollector());
-        
+
         // Call and check
         composite.connectWrite(buffer);
         Collection<ChannelWriteRecipe> mock1Buffers = mock1.getWriteRecipe().getChannelWriteRecipes();

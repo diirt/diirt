@@ -12,7 +12,7 @@ import org.diirt.datasource.expression.DesiredRateExpressionList;
  * @author carcassi
  */
 public class VTableColumn {
-    
+
     private final String name;
     private final DesiredRateExpressionList<?> valueExpressions;
 
@@ -28,6 +28,6 @@ public class VTableColumn {
     DesiredRateExpressionList<?> getValueExpressions() {
         return valueExpressions;
     }
-    
-    
+
+
 }

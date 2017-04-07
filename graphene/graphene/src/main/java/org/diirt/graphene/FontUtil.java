@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  * @author carcassi
  */
 public class FontUtil {
-    
+
     private static Font liberationSansRegular = loadFont("LiberationSans-Regular.ttf");
-    
+
     private static Font loadFont(String name) {
         try {
             Font font = Font.createFont(Font.TRUETYPE_FONT, FontUtil.class.getResourceAsStream(name));
@@ -33,5 +33,5 @@ public class FontUtil {
     public static Font getLiberationSansRegular() {
         return liberationSansRegular;
     }
-    
+
 }

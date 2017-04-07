@@ -8,20 +8,20 @@ import org.diirt.util.array.ListDouble;
 
 /**
  * Scalar double array with alarm, timestamp, display and control information.
- * 
+ *
  * @author carcassi
  */
 public abstract class VDoubleArray extends VNumberArray {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract ListDouble getData();
-    
+
     /**
      * Creates a new VDouble.
-     * 
+     *
      * @param data the value
      * @param alarm the alarm
      * @param time the time

@@ -4,22 +4,23 @@
  */
 package org.diirt.datasource.integration;
 
+import java.time.Instant;
+
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.util.time.Timestamp;
 
 /**
  *
  * @author carcassi
  */
 public class ReadEvent implements Event {
-    private final Timestamp timestamp;
+    private final Instant timestamp;
     private final String pvName;
     private final PVReaderEvent<?> event;
     private final boolean connected;
     private final Object value;
     private final Exception lastException;
 
-    public ReadEvent(Timestamp timestamp, String pvName, PVReaderEvent<?> event, boolean coonected, Object value, Exception lastException) {
+    public ReadEvent(Instant timestamp, String pvName, PVReaderEvent<?> event, boolean coonected, Object value, Exception lastException) {
         this.timestamp = timestamp;
         this.pvName = pvName;
         this.event = event;
@@ -27,9 +28,9 @@ public class ReadEvent implements Event {
         this.value = value;
         this.lastException = lastException;
     }
-    
+
     @Override
-    public Timestamp getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
@@ -54,5 +55,5 @@ public class ReadEvent implements Event {
     public Exception getLastException() {
         return lastException;
     }
-    
+
 }

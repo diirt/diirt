@@ -12,7 +12,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 class SystemPropertyChannelHandler extends SystemChannelHandler {
-    
+
     private final String propertyName;
     static final String PREFIX = "system.";
     private String previousValue = null;
@@ -35,5 +35,5 @@ class SystemPropertyChannelHandler extends SystemChannelHandler {
             return null;
         }
     }
-    
+
 }

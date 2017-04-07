@@ -23,28 +23,28 @@ public abstract class Statistics  {
 
     /**
      * The range of the values.
-     * 
+     *
      * @return the range
      */
     public abstract Range getRange();
-    
+
     /**
      * The number of values (excluding NaN) included in the set.
-     * 
+     *
      * @return the number of values
      */
     public abstract int getCount();
-    
+
     /**
      * The average value.
-     * 
+     *
      * @return the average value
      */
     public abstract double getAverage();
-    
+
     /**
      * The standard deviation.
-     * 
+     *
      * @return the standard deviation
      */
     public abstract double getStdDev();

@@ -8,20 +8,20 @@ package org.diirt.vtype.next;
  * Scalar float with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public abstract class VFloat extends VNumber {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract Float getValue();
-    
+
     /**
      * Creates a new VFloat.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time

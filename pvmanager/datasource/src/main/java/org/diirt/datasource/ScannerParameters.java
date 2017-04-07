@@ -4,24 +4,24 @@
  */
 package org.diirt.datasource;
 
+import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
  * @author carcassi
  */
 class ScannerParameters {
-    
+
     enum Type {ACTIVE, PASSIVE}
-    
+
     private Type type = Type.ACTIVE;
     private ScheduledExecutorService scannerExecutor;
-    private TimeDuration maxDuration;
-    private TimeDuration timeout;
+    private Duration maxDuration;
+    private Duration timeout;
     private String timeoutMessage;
     private DesiredRateEventListener listener;
-    
+
     public ScannerParameters type(Type type) {
         this.type = type;
         return this;
@@ -31,12 +31,12 @@ class ScannerParameters {
         return type;
     }
 
-    public ScannerParameters maxDuration(TimeDuration maxDuration) {
+    public ScannerParameters maxDuration(Duration maxDuration) {
         this.maxDuration = maxDuration;
         return this;
     }
 
-    public TimeDuration getMaxDuration() {
+    public Duration getMaxDuration() {
         return maxDuration;
     }
 
@@ -58,13 +58,13 @@ class ScannerParameters {
     public ScheduledExecutorService getScannerExecutor() {
         return scannerExecutor;
     }
-    
-    public ScannerParameters timeout(TimeDuration timeout, String timeoutMessage) {
+
+    public ScannerParameters timeout(Duration timeout, String timeoutMessage) {
         this.timeout = timeout;
         this.timeoutMessage = timeoutMessage;
         return this;
     }
-    
+
     public SourceDesiredRateDecoupler build() {
         if (type == Type.ACTIVE) {
             if (scannerExecutor == null) {
@@ -92,5 +92,5 @@ class ScannerParameters {
         }
         throw new IllegalStateException("Can't create suitable scanner");
     }
-    
+
 }

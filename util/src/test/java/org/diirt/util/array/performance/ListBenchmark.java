@@ -11,7 +11,7 @@ import org.diirt.util.array.ListDouble;
  * @author carcassi
  */
 public class ListBenchmark {
-    
+
     public static void profileListDouble(ListDouble list, int nIterations) {
         long startTime = System.nanoTime();
         for (int i = 0; i < nIterations; i++) {
@@ -28,5 +28,5 @@ public class ListBenchmark {
         System.out.println("Iteration on ListDouble: " + (stopTime - startTime) / nIterations +" ns/iter - " +
                 (stopTime - startTime) / nIterations / list.size() + " ns/sample");
     }
-    
+
 }

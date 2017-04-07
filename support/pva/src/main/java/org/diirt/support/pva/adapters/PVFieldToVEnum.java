@@ -16,70 +16,70 @@ import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VTypeToString;
 
 public class PVFieldToVEnum extends AlarmTimeExtractor implements VEnum {
-	
-	protected final int index;
-	protected final List<String> labels;
-	
-	public PVFieldToVEnum(PVStructure pvField, boolean disconnected)
-	{
-		super(pvField, disconnected);
-	
-		PVStructure enumField = pvField.getField().getID().equals("enum_t") ? pvField : pvField.getStructureField("value");
-		if (enumField != null)
-		{
-			PVStringArray labelsField =
-				(PVStringArray)enumField.getScalarArrayField("choices", ScalarType.pvString);
-			if (labelsField != null)
-			{
-				StringArrayData data = new StringArrayData();
-				labelsField.get(0, labelsField.getLength(), data);
-				labels = Arrays.asList(data.data);
-				
-				PVInt indexField = enumField.getIntField("index");
-				if (indexField != null)
-				{
-					index = indexField.get();
-				}
-				else
-				{
-					index = -1;
-				}
-				
-				return;
-			}
-		}
-		
-		// error
-		index = -1;
-		labels = null;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.Enum#getLabels()
-	 */
-	@Override
-	public List<String> getLabels() {
-		return labels;
-	}
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VEnum#getValue()
-	 */
-	@Override
-	public String getValue() {
-		if (labels != null && index >= 0 && index < labels.size())
-			return labels.get(index);
-		else
-			return Integer.toString(index);		// return integer as string as fallback
-	}
+        protected final int index;
+        protected final List<String> labels;
 
-	/* (non-Javadoc)
-	 * @see org.epics.pvmanager.data.VEnum#getIndex()
-	 */
-	@Override
-	public int getIndex() {
-		return index;
-	}
+        public PVFieldToVEnum(PVStructure pvField, boolean disconnected)
+        {
+                super(pvField, disconnected);
+
+                PVStructure enumField = pvField.getField().getID().equals("enum_t") ? pvField : pvField.getStructureField("value");
+                if (enumField != null)
+                {
+                        PVStringArray labelsField =
+                                (PVStringArray)enumField.getScalarArrayField("choices", ScalarType.pvString);
+                        if (labelsField != null)
+                        {
+                                StringArrayData data = new StringArrayData();
+                                labelsField.get(0, labelsField.getLength(), data);
+                                labels = Arrays.asList(data.data);
+
+                                PVInt indexField = enumField.getIntField("index");
+                                if (indexField != null)
+                                {
+                                        index = indexField.get();
+                                }
+                                else
+                                {
+                                        index = -1;
+                                }
+
+                                return;
+                        }
+                }
+
+                // error
+                index = -1;
+                labels = null;
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.Enum#getLabels()
+         */
+        @Override
+        public List<String> getLabels() {
+                return labels;
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.VEnum#getValue()
+         */
+        @Override
+        public String getValue() {
+                if (labels != null && index >= 0 && index < labels.size())
+                        return labels.get(index);
+                else
+                        return Integer.toString(index);         // return integer as string as fallback
+        }
+
+        /* (non-Javadoc)
+         * @see org.epics.pvmanager.data.VEnum#getIndex()
+         */
+        @Override
+        public int getIndex() {
+                return index;
+        }
 
     @Override
     public String toString() {

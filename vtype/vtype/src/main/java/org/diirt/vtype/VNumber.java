@@ -13,10 +13,10 @@ package org.diirt.vtype;
  * @author carcassi
  */
 public interface VNumber extends Scalar, Alarm, Time, Display, VType {
-    
+
     /**
      * The numeric value.
-     * 
+     *
      * @return the value
      */
     @Override

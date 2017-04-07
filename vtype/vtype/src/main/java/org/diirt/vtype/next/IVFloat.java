@@ -10,7 +10,7 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 class IVFloat extends VFloat {
-    
+
     private final Float value;
     private final Alarm alarm;
     private final Time time;

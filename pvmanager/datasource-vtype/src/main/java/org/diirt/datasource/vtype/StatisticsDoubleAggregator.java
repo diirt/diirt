@@ -78,17 +78,17 @@ class StatisticsDoubleAggregator extends Aggregator<VStatistics, VDouble> {
                     statSeverity = MAJOR;
                     stats.includeValue(vDouble.getValue());
                     break;
-                
+
                 case UNDEFINED:
                     if (statSeverity == null)
                         statSeverity = UNDEFINED;
                     break;
-                
+
                 case INVALID:
                     if (statSeverity == null || statSeverity == UNDEFINED)
                         statSeverity = INVALID;
                     break;
-                    
+
                 default:
             }
         }

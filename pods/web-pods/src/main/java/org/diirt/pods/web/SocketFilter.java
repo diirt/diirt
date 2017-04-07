@@ -5,9 +5,6 @@
 package org.diirt.pods.web;
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,10 +25,10 @@ public class SocketFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         httpRequest.getSession().setAttribute("remoteHost", httpRequest.getRemoteHost());
-        
+
         chain.doFilter(request, response);
     }
 
@@ -44,5 +41,5 @@ public class SocketFilter implements Filter {
     public void destroy() {
         // Nothing to do
     }
-    
+
 }

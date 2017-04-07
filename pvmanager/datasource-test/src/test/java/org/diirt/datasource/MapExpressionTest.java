@@ -4,26 +4,27 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.test.WriteRecipeUtil;
-import org.diirt.datasource.test.MockDataSource;
-import java.util.Arrays;
+import static java.time.Duration.ofMillis;
+import static org.diirt.datasource.ExpressionLanguage.channel;
+import static org.diirt.datasource.ExpressionLanguage.latestValueOf;
+import static org.diirt.datasource.ExpressionLanguage.readMapOf;
+import static org.diirt.datasource.ExpressionLanguage.writeMapOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertThat;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import org.diirt.datasource.ChannelReadRecipe;
-import org.diirt.datasource.ChannelWriteRecipe;
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PVReader;
-import org.diirt.datasource.PVWriter;
-import org.diirt.datasource.expression.Queue;
-import static org.junit.Assert.*;
-import org.junit.*;
-import static org.diirt.datasource.ExpressionLanguage.*;
+
 import org.diirt.datasource.expression.ReadMap;
 import org.diirt.datasource.expression.WriteMap;
-import static org.diirt.util.time.TimeDuration.*;
-import static org.hamcrest.Matchers.*;
+import org.diirt.datasource.test.MockDataSource;
+import org.diirt.datasource.test.WriteRecipeUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests map expression with a full pipeline.
@@ -51,9 +52,9 @@ public class MapExpressionTest {
             pvWriter.close();
             pvWriter = null;
         }
-        
+
         Thread.sleep(400);
-        
+
         assertThat(dataSource.getConnectedReadRecipes(), equalTo(Collections.<ChannelReadRecipe>emptyList()));
         assertThat(dataSource.getConnectedWriteRecipes(), equalTo(Collections.<ChannelWriteRecipe>emptyList()));
     }
@@ -102,10 +103,10 @@ public class MapExpressionTest {
         assertThat(dataSource.getWriteRecipeForWrite(), not(equalTo(null)));
         assertThat(WriteRecipeUtil.valueFor(dataSource.getWriteRecipeForWrite(), "test1"), equalTo((Object) "testing1"));
         assertThat(WriteRecipeUtil.valueFor(dataSource.getWriteRecipeForWrite(), "test1"), equalTo((Object) "testing1"));
-        
+
         map.remove("test2");
         assertThat(dataSource.getConnectedWriteRecipes(), hasSize(1));
     }
-    
+
 
 }

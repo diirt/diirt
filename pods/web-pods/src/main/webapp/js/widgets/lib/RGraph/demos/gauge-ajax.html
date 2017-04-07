@@ -2,14 +2,14 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.gauge.js" ></script>
-    
+
     <title>A customised and adjustable Gauge chart</title>
-    
+
     <meta name="keywords" content="demo gauge updated ajax" />
     <meta name="description" content="A Gauge chart that is updated periodically by AJAX" />
     <meta name="robots" content="noindex,nofollow" />
@@ -17,14 +17,14 @@
 <body>
 
     <h1>A customised Gauge chart (with AJAX updating)</h1>
-    
+
     <p>
         This Gauge is much like the previous one but with AJAX updating instead of click updating. Because
         of the AJAX it only works when viewed online - which you can do <a href="http://www.rgraph.net/demos/gauge-ajax.html" rel="nofollow">here</a>.
     </p>
 
     <canvas id="cvs" width="250" height="250">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
@@ -38,7 +38,7 @@
                 .Set('title.top', 'Speed')
                 .Set('labels.centered', true)
                 .Set('labels.offset', 7)
-            
+
             /**
             * This draws a simple gray circle over the centerpin
             */
@@ -52,7 +52,7 @@
                     co.arc(obj.centerx, obj.centery, 10, 0, TWOPI, false);
                 co.fill();
             }
-        
+
             gauge.Draw();
 
 
@@ -67,8 +67,8 @@
             {
                 gauge.value = num;
                 RGraph.Effects.Gauge.Grow(gauge);
-                
-                
+
+
                 // Make another AJAX call after the delay (which is in milliseconds)
                 setTimeout(function ()
                     {

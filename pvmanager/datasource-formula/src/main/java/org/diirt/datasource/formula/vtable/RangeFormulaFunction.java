@@ -56,12 +56,12 @@ class RangeFormulaFunction implements FormulaFunction {
     public Object calculate(final List<Object> args) {
         VNumber minValue = (VNumber) args.get(0);
         VNumber maxValue = (VNumber) args.get(1);
-        
+
         if (minValue == null || maxValue == null) {
             return null;
         }
-        
+
         return VTableFactory.range(minValue.getValue().doubleValue(), maxValue.getValue().doubleValue());
     }
-    
+
 }

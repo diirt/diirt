@@ -16,10 +16,10 @@ import java.util.List;
  * @author carcassi
  */
 public interface DesiredRateReadWriteExpressionList<R, W> extends DesiredRateExpressionList<R>, WriteExpressionList<W> {
-    
+
     /**
      * Adds the given expressions to this list.
-     * 
+     *
      * @param expressions a list of expressions
      * @return this
      */
@@ -27,7 +27,7 @@ public interface DesiredRateReadWriteExpressionList<R, W> extends DesiredRateExp
 
     /**
      * The expressions of this list.
-     * 
+     *
      * @return a list of expressions
      */
     public List<DesiredRateReadWriteExpression<R, W>> getDesiredRateReadWriteExpressions();

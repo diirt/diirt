@@ -12,7 +12,7 @@ import org.diirt.datasource.DataSourceTypeAdapterSet;
  * @author carcassi
  */
 public interface JCATypeAdapterSet extends DataSourceTypeAdapterSet {
-    
+
     @Override
     Collection<JCATypeAdapter> getAdapters();
 }

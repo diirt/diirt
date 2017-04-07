@@ -10,18 +10,18 @@ package org.diirt.util.array;
  * @author carcassi
  */
 public class CollectionNumbers {
-    
+
     private CollectionNumbers() {
         // prevent instances
     }
-    
+
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
      * is provided in case an external routine for computation
      * requires you to use array, and you want to avoid the copy
      * for performance reason.
-     * 
+     *
      * @param coll the collection
      * @return the array or null
      */
@@ -52,14 +52,14 @@ public class CollectionNumbers {
         }
         return null;
     }
-    
+
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
      * is provided in case an external routine for computation
      * requires you to use array, and you want to avoid the copy
      * for performance reason.
-     * 
+     *
      * @param coll the collection
      * @return the array or null
      */
@@ -67,17 +67,17 @@ public class CollectionNumbers {
         if (coll instanceof ArrayFloat) {
             return ((ArrayFloat) coll).wrappedArray();
         }
-        
+
         return null;
     }
-    
+
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
      * is provided in case an external routine for computation
      * requires you to use array, and you want to avoid the copy
      * for performance reason.
-     * 
+     *
      * @param coll the collection
      * @return the array or null
      */
@@ -85,17 +85,17 @@ public class CollectionNumbers {
         if (coll instanceof ArrayDouble) {
             return ((ArrayDouble) coll).wrappedArray();
         }
-        
+
         return null;
     }
-    
+
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
      * is provided in case an external routine for computation
      * requires you to use array, and you want to avoid the copy
      * for performance reason.
-     * 
+     *
      * @param coll the collection
      * @return the array or null
      */
@@ -103,17 +103,17 @@ public class CollectionNumbers {
         if (coll instanceof ArrayByte) {
             return ((ArrayByte) coll).wrappedArray();
         }
-        
+
         return null;
     }
-    
+
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
      * is provided in case an external routine for computation
      * requires you to use array, and you want to avoid the copy
      * for performance reason.
-     * 
+     *
      * @param coll the collection
      * @return the array or null
      */
@@ -121,17 +121,17 @@ public class CollectionNumbers {
         if (coll instanceof ArrayShort) {
             return ((ArrayShort) coll).wrappedArray();
         }
-        
+
         return null;
     }
-    
+
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
      * is provided in case an external routine for computation
      * requires you to use array, and you want to avoid the copy
      * for performance reason.
-     * 
+     *
      * @param coll the collection
      * @return the array or null
      */
@@ -139,17 +139,17 @@ public class CollectionNumbers {
         if (coll instanceof ArrayInt) {
             return ((ArrayInt) coll).wrappedArray();
         }
-        
+
         return null;
     }
-    
+
     /**
      * If available, return the array wrapped by the collection - USE WITH
      * CAUTION AS IT EXPOSES THE INTERNAL STATE OF THE COLLECTION. This
      * is provided in case an external routine for computation
      * requires you to use array, and you want to avoid the copy
      * for performance reason.
-     * 
+     *
      * @param coll the collection
      * @return the array or null
      */
@@ -157,13 +157,13 @@ public class CollectionNumbers {
         if (coll instanceof ArrayLong) {
             return ((ArrayLong) coll).wrappedArray();
         }
-        
+
         return null;
     }
-    
+
     /**
      * Copies the content of the collection to an array.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -177,10 +177,10 @@ public class CollectionNumbers {
         }
         return data;
     }
-    
+
     /**
      * Copies the content of the collection to an array.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -194,10 +194,10 @@ public class CollectionNumbers {
         }
         return data;
     }
-    
+
     /**
      * Copies the content of the collection to an array.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -211,10 +211,10 @@ public class CollectionNumbers {
         }
         return data;
     }
-    
+
     /**
      * Copies the content of the collection to an array.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -228,10 +228,10 @@ public class CollectionNumbers {
         }
         return data;
     }
-    
+
     /**
      * Copies the content of the collection to an array.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -245,10 +245,10 @@ public class CollectionNumbers {
         }
         return data;
     }
-    
+
     /**
      * Copies the content of the collection to an array.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -262,12 +262,12 @@ public class CollectionNumbers {
         }
         return data;
     }
-    
+
     /**
      * Returns either the wrapped array (if exists and matches the type)
      * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
      * OF THE COLLECTION.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -278,12 +278,12 @@ public class CollectionNumbers {
         }
         return floatArrayCopyOf(coll);
     }
-    
+
     /**
      * Returns either the wrapped array (if exists and matches the type)
      * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
      * OF THE COLLECTION.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -294,12 +294,12 @@ public class CollectionNumbers {
         }
         return doubleArrayCopyOf(coll);
     }
-    
+
     /**
      * Returns either the wrapped array (if exists and matches the type)
      * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
      * OF THE COLLECTION.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -310,12 +310,12 @@ public class CollectionNumbers {
         }
         return byteArrayCopyOf(coll);
     }
-    
+
     /**
      * Returns either the wrapped array (if exists and matches the type)
      * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
      * OF THE COLLECTION.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -326,12 +326,12 @@ public class CollectionNumbers {
         }
         return shortArrayCopyOf(coll);
     }
-    
+
     /**
      * Returns either the wrapped array (if exists and matches the type)
      * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
      * OF THE COLLECTION.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */
@@ -342,12 +342,12 @@ public class CollectionNumbers {
         }
         return intArrayCopyOf(coll);
     }
-    
+
     /**
      * Returns either the wrapped array (if exists and matches the type)
      * or a copy - USE WITH CAUTION AS IT MAY EXPOSE THE INTERNAL STATE
      * OF THE COLLECTION.
-     * 
+     *
      * @param coll the collection
      * @return the array
      */

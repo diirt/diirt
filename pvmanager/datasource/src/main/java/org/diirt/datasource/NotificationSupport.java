@@ -5,7 +5,6 @@
 package org.diirt.datasource;
 
 import java.util.Objects;
-import org.diirt.datasource.util.NullUtils;
 
 /**
  * Dedicated notification type support.
@@ -37,12 +36,12 @@ public abstract class NotificationSupport<T> extends TypeSupport<T> {
         NotificationSupport<T> support = findNotificationSupportFor(newValue);
         return support.prepareNotification(oldValue, newValue);
     }
-    
+
     /**
      * Retrieves the notification support based on the given value.
      * <p>
      * If no support is found, an exception is thrown.
-     * 
+     *
      * @param <T> value type
      * @param newValue the value; can't be null
      * @return the notification support

@@ -13,5 +13,5 @@ public interface CollectionFloat extends CollectionNumber {
 
     @Override
     IteratorFloat iterator();
-    
+
 }

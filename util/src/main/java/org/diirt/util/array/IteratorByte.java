@@ -35,5 +35,5 @@ public abstract class IteratorByte implements IteratorNumber {
     public long nextLong() {
         return (long) nextByte();
     }
-    
+
 }

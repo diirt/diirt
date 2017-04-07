@@ -10,7 +10,7 @@ package org.diirt.vtype;
  * @author carcassi
  */
 class IVInt extends IVNumeric implements VInt {
-    
+
     private final Integer value;
 
     IVInt(Integer value, Alarm alarm, Time time, Display display) {

@@ -20,7 +20,7 @@ class LogicalNotFormulaFunction implements FormulaFunction {
 
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
-    
+
     public LogicalNotFormulaFunction() {
         this.argumentTypes = Arrays.<Class<?>>asList(VBoolean.class);
         this.argumentNames = Arrays.asList("arg");
@@ -69,5 +69,5 @@ class LogicalNotFormulaFunction implements FormulaFunction {
         }
         return ValueFactory.newVBoolean(!value.getValue(), value, value);
     }
-    
+
 }

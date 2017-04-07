@@ -17,7 +17,7 @@ package org.diirt.datasource;
  * @author carcassi
  */
 public class ForwardCache<T, R> implements ValueCache<T> {
-    
+
     private final ValueCache<T> valueCache;
     private final ReadFunction<R> forwardFunction;
     private final WriteFunction<R> forwardWriter;
@@ -53,5 +53,5 @@ public class ForwardCache<T, R> implements ValueCache<T> {
     public Class<T> getType() {
         return valueCache.getType();
     }
-    
+
 }

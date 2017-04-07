@@ -9,7 +9,6 @@ import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
 import org.diirt.vtype.table.Column;
 import org.diirt.vtype.table.VTableFactory;
 
@@ -58,12 +57,12 @@ class ColumnFromVNumberArrayFunction implements FormulaFunction {
     public Object calculate(final List<Object> args) {
         VString name = (VString) args.get(0);
         VNumberArray data = (VNumberArray) args.get(1);
-        
+
         if (name == null || data == null) {
             return null;
         }
 
         return VTableFactory.column(name.getValue(), data);
     }
-    
+
 }

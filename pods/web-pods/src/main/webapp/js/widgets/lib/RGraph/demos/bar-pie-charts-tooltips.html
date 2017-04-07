@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.effects.js" ></script>
@@ -10,17 +10,17 @@
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.pie.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Bar chart with Pie charts in tooltips</title>
-    
+
     <meta name="keywords" content="demo bar tooltips ontooltip event pie" />
     <meta name="description" content="A Bar chart that has tooltips and uses the ontooltip event to add Pie charts to the tooltips" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
-        
+
     <h1>A Bar chart with Pie charts in tooltips</h1>
-    
+
     <p>
         This Bar chart shows how you can have charts in tooltips. It uses the new DOM1 style of adding
         the ontooltip event. This ontooltip event creates the chart in the tooltip.
@@ -64,7 +64,7 @@
                     .Set('gutter.top', 10)
                     .Set('gutter.bottom', 25)
                     .Draw();
-                
+
                 pie.onmousemove = function (e, shape)
                 {
                     alert('An alert triggered by the Pie chart! Segment: ' + shape.index);

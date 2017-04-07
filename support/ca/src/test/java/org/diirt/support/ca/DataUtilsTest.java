@@ -4,12 +4,11 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.DataUtils;
 import gov.aps.jca.dbr.TimeStamp;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  *
@@ -19,8 +18,8 @@ public class DataUtilsTest {
 
     @Test
     public void timestampOf1() {
-        Timestamp timestamp = DataUtils.timestampOf(new TimeStamp(0, 1234567890));
-        assertThat(timestamp, equalTo(Timestamp.of(DataUtils.TS_EPOCH_SEC_PAST_1970 + 1, 234567890)));
+        Instant timestamp = DataUtils.timestampOf(new TimeStamp(0, 1234567890));
+        assertThat(timestamp, equalTo(Instant.ofEpochSecond(DataUtils.TS_EPOCH_SEC_PAST_1970 + 1, 234567890)));
     }
 
     @Test
@@ -34,5 +33,5 @@ public class DataUtilsTest {
         TimeStamp timeStamp = new TimeStamp(123456789, 123456789);
         assertThat(DataUtils.isTimeValid(timeStamp), equalTo(true));
     }
-    
+
 }

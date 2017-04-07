@@ -8,20 +8,20 @@ package org.diirt.vtype.next;
  * Scalar integer with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public abstract class VInt extends VNumber {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract Integer getValue();
-    
+
     /**
      * Creates a new VInt.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time

@@ -20,7 +20,7 @@ public class IntensityGraph2DExpression extends DesiredRateExpressionImpl<Graph2
                 new IntensityGraph2DFunction(functionOf(arrayData)),
                 "Histogram Graph");
     }
-    
+
     @Override
     public void update(IntensityGraph2DRendererUpdate update) {
         ((IntensityGraph2DFunction) getFunction()).getUpdateQueue().writeValue(update);

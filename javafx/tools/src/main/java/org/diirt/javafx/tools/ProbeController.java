@@ -5,10 +5,12 @@
 package org.diirt.javafx.tools;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +21,7 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+
 import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderEvent;
@@ -33,11 +36,11 @@ import org.diirt.vtype.ValueFormat;
 import org.diirt.vtype.ValueUtil;
 
 public class ProbeController implements Initializable {
-    
+
     private PV<?, Object> pv;
-    
+
     private ValueFormat format = new SimpleValueFormat(3);
-    
+
     @FXML
     private TextField channelField;
     @FXML
@@ -65,7 +68,7 @@ public class ProbeController implements Initializable {
             errorField.setText(null);
             expressionProbe.setExpression(null);
         }
-        
+
         expressionProbe.setExpression(channelField.getText());
 
         pv = PVManager.readAndWrite(ExpressionLanguage.formula(channelField.getText()))
@@ -91,11 +94,11 @@ public class ProbeController implements Initializable {
                         }
                     }
                 })
-                .timeout(TimeDuration.ofSeconds(1), "Still connecting...", "Still writing...")
+                .timeout(Duration.ofSeconds(1), "Still connecting...", "Still writing...")
                 .notifyOn(Executors.javaFXAT())
                 .asynchWriteAndMaxReadRate(TimeDuration.ofHertz(50));
     }
-    
+
     private void changeValue(Object obj, boolean connected) {
         if (obj != null) {
             valueField.setText(format.format(obj));
@@ -105,7 +108,7 @@ public class ProbeController implements Initializable {
         setAlarm(obj, connected);
         valueViewer.setValue(obj, connected);
     }
-    
+
     private static final Map<AlarmSeverity, Border> BORDER_MAP = createBorderMap();
 
     private static Map<AlarmSeverity, Border> createBorderMap() {
@@ -117,7 +120,7 @@ public class ProbeController implements Initializable {
         map.put(AlarmSeverity.UNDEFINED, new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(2))));
         return Collections.unmodifiableMap(map);
     }
-    
+
     private void setAlarm(Object value, boolean connected) {
         Alarm alarm = ValueUtil.alarmOf(value, connected);
         valueField.setBorder(BORDER_MAP.get(alarm.getAlarmSeverity()));
@@ -127,9 +130,9 @@ public class ProbeController implements Initializable {
     private void onNewValueChanged(ActionEvent event) {
         pv.write(newValueField.getText());
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 }

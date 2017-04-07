@@ -4,12 +4,13 @@
  */
 package org.diirt.datasource.formula;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.text.NumberFormats;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Alarm;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.Display;
@@ -24,12 +25,17 @@ import org.diirt.vtype.VType;
 import org.diirt.vtype.VTypeToString;
 import org.diirt.vtype.VTypeValueEquals;
 import org.diirt.vtype.ValueFactory;
+
 import static org.diirt.vtype.ValueFactory.*;
+
 import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.table.Column;
 import org.hamcrest.Matcher;
+
 import static org.hamcrest.Matchers.*;
+
 import org.junit.Assert;
+
 import static org.junit.Assert.assertThat;
 
 /**
@@ -37,46 +43,46 @@ import static org.junit.Assert.assertThat;
  * @author carcassi
  */
 public class FunctionTester {
-    
+
     private final FormulaFunction function;
     private boolean convertTypes = true;
-    
+
     private FunctionTester(FormulaFunction function) {
         this.function = function;
     }
-    
+
     public static FunctionTester findByName(FormulaFunctionSet set, String name) {
         Collection<FormulaFunction> functions = set.findFunctions(name);
-	assertThat("Function '" + name + "' not found.", functions.isEmpty(),
-		equalTo(false));
-	assertThat("Multiple matches for function '" + name + "'.", functions.size(),
-		equalTo(1));
+        assertThat("Function '" + name + "' not found.", functions.isEmpty(),
+                equalTo(false));
+        assertThat("Multiple matches for function '" + name + "'.", functions.size(),
+                equalTo(1));
         return new FunctionTester(functions.iterator().next());
     }
-    
+
     public static FunctionTester findBySignature(FormulaFunctionSet set, String name, Class<?>... argTypes) {
         Collection<FormulaFunction> functions = set.findFunctions(name);
-	assertThat("Function '" + name + "' not found.", functions.isEmpty(),
-		equalTo(false));
-        
+        assertThat("Function '" + name + "' not found.", functions.isEmpty(),
+                equalTo(false));
+
         functions = FormulaFunctions.findArgTypeMatch(Arrays.asList(argTypes), functions);
-	assertThat("No matches found for function '" + name + "'.", functions.isEmpty(),
-		equalTo(false));
-	assertThat("Multiple matches for function '" + name + "'.", functions.size(),
-		equalTo(1));
+        assertThat("No matches found for function '" + name + "'.", functions.isEmpty(),
+                equalTo(false));
+        assertThat("Multiple matches for function '" + name + "'.", functions.size(),
+                equalTo(1));
         return new FunctionTester(functions.iterator().next());
     }
-    
+
     public FunctionTester convertTypes(boolean convertTypes) {
         this.convertTypes = convertTypes;
         return this;
     }
-    
+
     public FunctionTester matchReturnValue(Matcher<Object> matcher, Object... args) {
         if (convertTypes) {
             args = convertTypes(args);
         }
-	Object result = function.calculate(Arrays.asList(args));
+        Object result = function.calculate(Arrays.asList(args));
         Assert.assertThat(result, matcher);
         return this;
     }
@@ -86,11 +92,11 @@ public class FunctionTester {
             expected = convertType(expected);
             args = convertTypes(args);
         }
-	Object result = function.calculate(Arrays.asList(args));
+        Object result = function.calculate(Arrays.asList(args));
         if (result instanceof VDouble && expected instanceof VDouble) {
             assertThat("Wrong result for function '" + function.getName() + "("
                     + Arrays.toString(args) + ")'.", ((VDouble) result).getValue().doubleValue(),
-		closeTo(((VDouble) expected).getValue().doubleValue(), 0.0001));
+                closeTo(((VDouble) expected).getValue().doubleValue(), 0.0001));
         } else {
             assertThat(
                     "Wrong result for function '" + function.getName() + "("
@@ -100,7 +106,7 @@ public class FunctionTester {
         }
         return this;
     }
-    
+
     public static boolean compareValues(Object obj1, Object obj2) {
         if (Objects.equals(obj1, obj2)) {
             return true;
@@ -117,7 +123,7 @@ public class FunctionTester {
         }
         return false;
     }
-    
+
     private Object convertType(Object obj) {
         if (obj instanceof VType) {
             return obj;
@@ -128,12 +134,12 @@ public class FunctionTester {
         }
         return obj;
     }
-    
+
     private Object[] convertTypes(Object... obj) {
         Object[] result = new Object[obj.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = convertType(obj[i]);
-            
+
         }
         return result;
     }
@@ -142,11 +148,11 @@ public class FunctionTester {
         if (convertTypes) {
             args = convertTypes(args);
         }
-	Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
-	assertThat(
-		"Wrong result for function '" + function.getName() + "("
-			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
-			+ ") expected (" + VTypeToString.alarmToString(expected) + ")",
+        Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
+        assertThat(
+                "Wrong result for function '" + function.getName() + "("
+                        + Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
+                        + ") expected (" + VTypeToString.alarmToString(expected) + ")",
                 VTypeValueEquals.alarmEquals(result, expected), equalTo(true));
         return this;
     }
@@ -155,15 +161,15 @@ public class FunctionTester {
         if (convertTypes) {
             args = convertTypes(args);
         }
-	Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
-	assertThat(
-		"Wrong result for function '" + function.getName() + "("
-			+ Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
-			+ ") expected (" + VTypeToString.timeToString(expected) + ")",
-		VTypeValueEquals.timeEquals(result, expected), equalTo(true));
+        Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
+        assertThat(
+                "Wrong result for function '" + function.getName() + "("
+                        + Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
+                        + ") expected (" + VTypeToString.timeToString(expected) + ")",
+                VTypeValueEquals.timeEquals(result, expected), equalTo(true));
         return this;
     }
-    
+
     public FunctionTester highestAlarmReturned() {
         if (function.isVarArgs() || function.getArgumentTypes().size() > 1) {
             highestAlarmReturnedMultipleArgs(function);
@@ -188,7 +194,7 @@ public class FunctionTester {
             throw new IllegalArgumentException("Can't create sample argument for class " + clazz);
         }
     }
-    
+
     private void highestAlarmReturnedSingleArg(FormulaFunction function) {
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         Alarm none = alarmNone();
@@ -199,7 +205,7 @@ public class FunctionTester {
         compareReturnAlarm(minor, createValue(function.getArgumentTypes().get(0), minor, timeNow(), display));
         compareReturnAlarm(major, createValue(function.getArgumentTypes().get(0), major, timeNow(), display));
     }
-    
+
     private void highestAlarmReturnedMultipleArgs(FormulaFunction function) {
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         Object[] args;
@@ -211,7 +217,7 @@ public class FunctionTester {
         Alarm none = alarmNone();
         Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
         Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
-        
+
         // Prepare arguments with no alarm
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             args[i] = createValue(function.getArgumentTypes().get(i), none, timeNow(), display);
@@ -220,7 +226,7 @@ public class FunctionTester {
             args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), none, timeNow(), display);
         }
         compareReturnAlarm(none, args);
-        
+
         // Prepare arguments with one minor and everything else none
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {
@@ -233,7 +239,7 @@ public class FunctionTester {
             args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), none, timeNow(), display);
         }
         compareReturnAlarm(minor, args);
-        
+
         // Prepare arguments with one minor and everything else major
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {
@@ -247,7 +253,7 @@ public class FunctionTester {
         }
         compareReturnAlarm(major, args);
     }
-    
+
     public FunctionTester latestTimeReturned() {
         if (function.isVarArgs() || function.getArgumentTypes().size() > 1) {
             latestTimeReturnedMultipleArgs(function);
@@ -256,17 +262,17 @@ public class FunctionTester {
         }
         return this;
     }
-    
+
     private void latestTimeReturnedSingleArg(FormulaFunction function) {
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         Object[] args;
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
-        
+        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
+
         compareReturnTime(time1, createValue(function.getArgumentTypes().get(0), alarmNone(), time1, display));
         compareReturnTime(time2, createValue(function.getArgumentTypes().get(0), alarmNone(), time2, display));
     }
-    
+
     private void latestTimeReturnedMultipleArgs(FormulaFunction function) {
         Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
         Object[] args;
@@ -275,9 +281,9 @@ public class FunctionTester {
         } else {
             args = new Object[function.getArgumentTypes().size()];
         }
-        Time time1 = newTime(Timestamp.of(12340000, 0));
-        Time time2 = newTime(Timestamp.of(12350000, 0));
-        
+        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
+
         // Prepare arguments with all time1
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             args[i] = createValue(function.getArgumentTypes().get(i), alarmNone(), time1, display);
@@ -286,7 +292,7 @@ public class FunctionTester {
             args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), alarmNone(), time1, display);
         }
         compareReturnTime(time1, args);
-        
+
         // Prepare arguments with one time2 and everything else time1
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {
@@ -299,7 +305,7 @@ public class FunctionTester {
             args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), alarmNone(), time1, display);
         }
         compareReturnTime(time2, args);
-        
+
         // Prepare arguments with one minor and everything else major
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {

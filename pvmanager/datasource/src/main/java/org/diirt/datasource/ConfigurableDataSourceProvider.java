@@ -17,12 +17,12 @@ import org.diirt.util.config.Configuration;
  * @param <C> the configuration loaded by the provider
  */
 public abstract class ConfigurableDataSourceProvider<D extends DataSource, C extends DataSourceConfiguration<D>> extends DataSourceProvider {
-    
+
     protected Class<C> clazz;
 
     /**
      * Create a new configurable data source provider.
-     * 
+     *
      * @param clazz the class token for the configuration object
      */
     protected ConfigurableDataSourceProvider(Class<C> clazz) {
@@ -33,7 +33,7 @@ public abstract class ConfigurableDataSourceProvider<D extends DataSource, C ext
      * The path from DIIRT_HOME where to find the configuration file.
      * <p>
      * Default is "datasource/[providerName]".
-     * 
+     *
      * @return the path to the configuration directory for the data source
      */
     public String getConfigurationPath() {
@@ -44,20 +44,20 @@ public abstract class ConfigurableDataSourceProvider<D extends DataSource, C ext
      * The name of the configuration file.
      * <p>
      * Default is "[providerName].xml"
-     * 
+     *
      * @return the data source configuration filename
      */
     public String getConfigurationFilename() {
         return getName() + ".xml";
     }
-    
+
     /**
      * The name of the bundled resource with the default configuration
      * file. This is used by the framework to initialize the configuration
-     * file in the directory. It must be bundled in the same package of 
+     * file in the directory. It must be bundled in the same package of
      * the provider.
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getBundledDefaultConfiguration() {
         return getName() + ".default.xml";
@@ -66,14 +66,14 @@ public abstract class ConfigurableDataSourceProvider<D extends DataSource, C ext
     /**
      * Creates the instance by reading the configuration file and creating
      * the data source from the configuration.
-     * 
+     *
      * @return a new data source
      */
     @Override
     public D createInstance() {
         return createInstance(getConfigurationPath());
     }
-    
+
     private D createInstance(String confPath) {
         C defaultConfiguration;
         try {
@@ -82,7 +82,7 @@ public abstract class ConfigurableDataSourceProvider<D extends DataSource, C ext
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Counding instanciate configuration object " + clazz.getSimpleName(), ex);
             return null;
         }
-        
+
         DataSourceConfiguration<D> configuration = defaultConfiguration;
         try (InputStream input = Configuration.getFileAsStream(confPath + "/" + getConfigurationFilename(), this, getBundledDefaultConfiguration())) {
             configuration = defaultConfiguration.read(input);

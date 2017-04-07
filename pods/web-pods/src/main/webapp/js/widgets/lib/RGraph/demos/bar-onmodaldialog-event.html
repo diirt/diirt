@@ -5,11 +5,11 @@
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.modaldialog.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
-    
+
     <title>A bar chart the ModalDialog</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="demo bar onmodaldialog modaldialog event" />
     <meta name="description" content="A Bar chart with a ModalDialog that uses the onmodaldialog event" />
     <meta name="robots" content="noindex,nofollow" />
@@ -17,7 +17,7 @@
 <body>
 
     <h1>A Bar chart showing the onmodaldialog event</h1>
-    
+
     <p>
         This bar chart uses the ModalDialog which in turn uses the onmodaldialog event which is added using DOM1 style methods.
         Click on the canvas and a ModalDialog will be shown that uses the DOM1 style onmodaldialog event to show an alert().
@@ -28,17 +28,17 @@
         var bar = new RGraph.Bar('cvs', [4,8,5,3,4,6,8])
             .Set('labels', ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])
             .Draw();
-        
+
         bar.onclick = function (e, shape)
         {
             ModalDialog.Show('string:<h1>A sample dialog</h1><center><a href="javascript:ModalDialog.Close()">Close</a></center>');
         }
-        
+
         bar.onmousemove = function (e, shape)
         {
             e.target.style.cursor = 'pointer';
         }
-        
+
         ModalDialog.onmodaldialog = function (obj)
         {
             console.log('In the onmodaldialog DOM1 style event listener');

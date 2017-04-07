@@ -15,7 +15,7 @@ import org.diirt.util.array.IteratorNumber;
  * @author carcassi
  */
 public class Iterators {
-    
+
     /**
      *Creates a pointer for the given data at index 0.
      * @param data double[]
@@ -23,7 +23,7 @@ public class Iterators {
      */
     public static IteratorDouble arrayIterator(final double[] data) {
         return new IteratorDouble() {
-            
+
             int index = 0;
 
             @Override
@@ -41,7 +41,7 @@ public class Iterators {
             }
         };
     }
-    
+
     /**
      *Takes a list of IteratorDoubles and combines them into one IteratorDouble.
      * @param iterators the iterators to combine
@@ -49,7 +49,7 @@ public class Iterators {
      */
     public static IteratorDouble combine(final Collection<IteratorNumber> iterators) {
         return new IteratorDouble() {
-            
+
             private IteratorNumber currentIterator = null;
             private Iterator<IteratorNumber> iterator = iterators.iterator();
 
@@ -58,12 +58,12 @@ public class Iterators {
                 if (currentIterator != null && currentIterator.hasNext()) {
                     return true;
                 }
-                
+
                 if (iterator.hasNext()) {
                     currentIterator = iterator.next();
                     return hasNext();
                 }
-                
+
                 return false;
             }
 

@@ -3,11 +3,11 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.bar.js" ></script>
-    
+
     <title>A bar chart with horizontal gradients</title>
-    
+
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <meta name="keywords" content="bar horizontal gradients" />
     <meta name="description" content="A regular Bar chart but with horizontal gradients that are tailored to each individual bar" />
     <meta name="robots" content="noindex,nofollow" />
@@ -15,7 +15,7 @@
 <body>
 
     <h1>A bar chart with horizontal gradients</h1>
-    
+
     <p>
         This bar chart draws the chart then uses the coordinates of the bars to create gradients (each is specific to a bar),
         changes the colors to the gradients and finally redraws the chart.
@@ -29,12 +29,12 @@
             .Set('shadow', true)
             .Set('shadow.color', '#ccc')
             .Draw();
-        
+
         /**
         * Now the chart has been drawn use the coords to create some appropriate gradients
         */
         for (var i=0,colors=[]; i<bar.coords.length; ++i) {
-        
+
             // Because it's a horizontal gradient the Y coords don't matter
             var x1 = bar.coords[i][0];
             var y1 = 0;

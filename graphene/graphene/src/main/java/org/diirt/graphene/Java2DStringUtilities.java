@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene;
 
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
@@ -13,7 +12,7 @@ import java.awt.geom.Rectangle2D;
  * @author carcassi
  */
 public class Java2DStringUtilities {
-    
+
     /**
      *How a string will be drawn, in relation to the given center pixel.
      */
@@ -21,7 +20,7 @@ public class Java2DStringUtilities {
         TOP_RIGHT, TOP, TOP_LEFT,
         RIGHT, CENTER, LEFT,
         BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT;
-        
+
         private int stringRightSide(Rectangle2D stringBounds, int x) {
             switch(this) {
                 case BOTTOM_LEFT:
@@ -39,7 +38,7 @@ public class Java2DStringUtilities {
             }
             throw new UnsupportedOperationException("Unsupported case");
         }
-        
+
         private int stringBaseline(Rectangle2D stringBounds, int y) {
             switch(this) {
                 case TOP_RIGHT:
@@ -58,7 +57,7 @@ public class Java2DStringUtilities {
             throw new UnsupportedOperationException("Unsupported case");
         }
     }
-    
+
     /**
      *Draws a string using the given alignment.
      * @param g Graphics2D element, calls drawString.

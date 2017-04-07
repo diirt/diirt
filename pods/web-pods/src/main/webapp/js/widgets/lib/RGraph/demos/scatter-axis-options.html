@@ -6,9 +6,9 @@
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.scatter.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A Scatter chart with the X axis in the middle</title>
-    
+
     <meta name="keywords" content="demo scatter x axis options xaxis" />
     <meta name="description" content="A Scatter chart which is demonstrating the Scatter chart X axis options" />
     <meta name="robots" content="noindex,nofollow" />
@@ -24,11 +24,11 @@
     <button onclick="obj = getObject(); obj.Set('ylabels.specific', obj.Get('ylabels.specific') ? false : ['High','Medium','Low']); RGraph.Redraw();">Toggle specific Y axis labels</button>
     <button onclick="obj = getObject(); obj.Set('ymin', obj.Get('ymin') ? 0 : 50); RGraph.Redraw();">Toggle ymin (50) setting</button>
     <button onclick="obj = getObject(); obj.Set('xaxis', obj.Get('xaxis') ? false : true); RGraph.Redraw();">Toggle X axis</button>
-    
+
     <br />
 
     <canvas id="cvs" width="600" height="400">[No canvas support]</canvas>
-    
+
     <script>
         function getObject ()
         {
@@ -47,7 +47,7 @@
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

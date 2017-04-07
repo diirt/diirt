@@ -7,7 +7,6 @@ package org.diirt.datasource.sim;
 import java.util.Random;
 import org.diirt.vtype.VDouble;
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Function to simulate a signal that has a uniform distribution. The warning
@@ -32,11 +31,11 @@ public class Noise extends SimFunction<VDouble> {
     public Noise() {
         this(-5.0, 5.0, 1.0);
     }
-    
+
     /**
      * Do not use: only provided to provide some sort of error message
      * for people migrating from utility.pv.
-     * 
+     *
      * @param min minimum value
      * @param max maximum value
      * @param step ignored

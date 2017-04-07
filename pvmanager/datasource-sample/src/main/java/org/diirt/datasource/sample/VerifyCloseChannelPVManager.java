@@ -11,7 +11,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.sim.SimulationDataSource;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 
 /*
  * Copyright 2011 Brookhaven National Laboratory
@@ -33,13 +33,13 @@ public class VerifyCloseChannelPVManager {
                         System.out.println("Monitor called");
                     }
                 })
-                .maxRate(TimeDuration.ofMillis(10));
-	
-	Thread.sleep(10000);
+                .maxRate(Duration.ofMillis(10));
+
+    Thread.sleep(10000);
         reader.close();
         System.out.println("After five seconds");
-	
-	Thread.sleep(10000);
+
+        Thread.sleep(10000);
         System.out.println("After another five seconds");
         PVManager.getDefaultDataSource().close();
         System.out.println("Done");

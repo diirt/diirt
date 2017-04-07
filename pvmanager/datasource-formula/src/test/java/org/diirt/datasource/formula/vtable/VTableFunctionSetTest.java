@@ -26,7 +26,7 @@ import org.junit.Test;
 public class VTableFunctionSetTest {
 
     private static FormulaFunctionSet set = new VTableFunctionSet();
-    
+
     @Test
     public void columnOf() {
         VTable data = newVTable(Arrays.<Class<?>>asList(String.class, double.class, double.class),
@@ -39,7 +39,7 @@ public class VTableFunctionSetTest {
                 .compareReturnValue(null, data, null)
                 .compareReturnValue(null, null, "y");
     }
-    
+
     @Test
     public void tableOf1() {
         VTable expected = newVTable(Arrays.<Class<?>>asList(double.class, double.class),
@@ -50,7 +50,7 @@ public class VTableFunctionSetTest {
         FunctionTester.findByName(set, "tableOf")
                 .compareReturnValue(expected, column1, column2);
     }
-    
+
     @Test
     public void tableOf2() {
         VTable expected = newVTable(Arrays.<Class<?>>asList(double.class),
@@ -60,7 +60,7 @@ public class VTableFunctionSetTest {
         FunctionTester.findByName(set, "tableOf")
                 .compareReturnValue(expected, null, column2);
     }
-    
+
     @Test
     public void tableOf3() {
         Column column1 = VTableFactory.column("A", VTableFactory.step(0, 0.1));
@@ -68,7 +68,7 @@ public class VTableFunctionSetTest {
         FunctionTester.findByName(set, "tableOf")
                 .compareReturnValue(null, column1, null);
     }
-    
+
     @Test
     public void column1() {
         VStringArray array = newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow());
@@ -77,7 +77,7 @@ public class VTableFunctionSetTest {
         FunctionTester.findBySignature(set, "column", VString.class, VStringArray.class)
                 .compareReturnValue(column, "A", array);
     }
-    
+
     @Test
     public void tableRangeFilter1() {
         VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -94,7 +94,7 @@ public class VTableFunctionSetTest {
                 .compareReturnValue(null, table, "Slot", null, 2.5)
                 .compareReturnValue(null, table, "Slot", 1.0, null);
     }
-    
+
     @Test
     public void tableValueFilter1() {
         VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -110,7 +110,7 @@ public class VTableFunctionSetTest {
                 .compareReturnValue(null, table, null, "286")
                 .compareReturnValue(null, table, "CPU", null);
     }
-    
+
     @Test
     public void tableValueFilter2() {
         VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -126,7 +126,7 @@ public class VTableFunctionSetTest {
                 .compareReturnValue(null, table, null, "28")
                 .compareReturnValue(null, table, "CPU", null);
     }
-    
+
     @Test
     public void tableRangeFilter2() {
         VTable table = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -142,7 +142,7 @@ public class VTableFunctionSetTest {
                 .compareReturnValue(null, table, null, new ArrayDouble(1.0, 2.5))
                 .compareReturnValue(null, table, "Slot", null);
     }
-    
+
     @Test
     public void tableUnion() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -160,7 +160,7 @@ public class VTableFunctionSetTest {
         FunctionTester.findBySignature(set, "union", VString.class, VStringArray.class, VTable.class)
                 .compareReturnValue(expected, "Table", Arrays.asList("1", "2"), table1, table2);
     }
-    
+
     @Test
     public void tableUnion2() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -190,5 +190,5 @@ public class VTableFunctionSetTest {
                 .compareReturnValue(expected3, "Table", Arrays.asList("1", "2"), null, table2)
                 .compareReturnValue(null, "Table", Arrays.asList("1", "2"), null, null);
     }
-    
+
 }

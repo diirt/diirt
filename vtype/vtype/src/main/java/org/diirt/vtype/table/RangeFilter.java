@@ -5,7 +5,6 @@
 package org.diirt.vtype.table;
 
 import java.util.List;
-import java.util.Objects;
 import org.diirt.util.array.ListNumber;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VString;
@@ -42,7 +41,7 @@ class RangeFilter {
         this.min = min;
         this.max = max;
     }
-    
+
     public boolean filterRow(int rowIndex) {
         if (min instanceof VNumber) {
             double columnValue = ((ListNumber) table.getColumnData(columnIndex)).getDouble(rowIndex);
@@ -59,5 +58,5 @@ class RangeFilter {
         }
         throw new IllegalStateException("Unexpected error");
     }
-    
+
 }

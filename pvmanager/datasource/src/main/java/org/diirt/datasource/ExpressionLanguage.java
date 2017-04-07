@@ -41,14 +41,14 @@ public class ExpressionLanguage {
         // Install support for basic java types
         BasicTypeSupport.install();
     }
-    
+
     private ExpressionLanguage() {}
-    
+
     /**
      * Creates a constant expression that always return that object.
      * This is useful to test expressions or to introduce data that is available
      * at connection time at that will not change.
-     * 
+     *
      * @param <T> type of the value
      * @param value the actual value
      * @return an expression that is always going to return the given value
@@ -56,13 +56,13 @@ public class ExpressionLanguage {
     public static <T> DesiredRateExpression<T> constant(T value) {
         return constant(value, value.toString());
     }
-    
+
     /**
      * Creates a constant expression that always return that object, with the
      * given name for the expression.
      * This is useful to test expressions or to introduce data that is available
      * at connection time at that will not change.
-     * 
+     *
      * @param <T> type of the value
      * @param value the actual value
      * @param name the name of the expression
@@ -191,7 +191,7 @@ public class ExpressionLanguage {
                 new QueueCollector<T>(maxValues),
                 expression.getName());
     }
-    
+
     /**
      * Expression that returns (only) the latest value computed
      * from a {@code SourceRateExpression}.
@@ -253,7 +253,7 @@ public class ExpressionLanguage {
         }
         return list;
     }
-    
+
     /**
      * A user provided single argument function.
      *
@@ -372,7 +372,7 @@ public class ExpressionLanguage {
      * Filters a data stream, removing updates that match the given function.
      * Looks for objects of a specific type,
      * and filters based on previous and current value.
-     * 
+     *
      * @param <T> the type to cast to before the filtering
      */
     public static abstract class Filter<T> {
@@ -510,12 +510,12 @@ public class ExpressionLanguage {
                     }
                 }, name);
     }
-    
+
     // Static collections
 
     /**
      * Converts a list of expressions to an expression that returns the list of results.
-     * 
+     *
      * @param <T> type being read
      * @param expressions a list of expressions
      * @return an expression representing the list of results
@@ -532,15 +532,15 @@ public class ExpressionLanguage {
                 (ReadFunction<List<T>>) (ReadFunction) new ListOfFunction(functions), null);
         return expression;
     }
-    
+
     // Dynamic collections (change after expression creation)
-    
+
     /**
      * An empty map that can manage expressions of the given type.
      * <p>
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
-     * 
+     *
      * @param <R> the type of the values
      * @param clazz the type of the values
      * @return an expression representing a map from name to results
@@ -548,13 +548,13 @@ public class ExpressionLanguage {
     public static <R> ReadMap<R> readMapOf(Class<R> clazz){
         return new ReadMap<>();
     }
-    
+
     /**
      * An empty map that can write expressions of the given type.
      * <p>
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
-     * 
+     *
      * @param <W> the type of the values
      * @param clazz the type of the values
      * @return an expression representing a map from name to results
@@ -562,13 +562,13 @@ public class ExpressionLanguage {
     public static <W> WriteMap<W> writeMapOf(Class<W> clazz){
         return new WriteMap<>();
     }
-    
+
     /**
      * An empty map that can read/write expressions of the given type.
      * <p>
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
-     * 
+     *
      * @param <R> the type of the values to read
      * @param <W> the type of the values to write
      * @param readClass the type of the values to read
@@ -578,14 +578,14 @@ public class ExpressionLanguage {
     public static <R, W> ReadWriteMap<R, W> mapOf(Class<R> readClass, Class<W> writeClass){
         return new ReadWriteMap<>();
     }
-    
+
     /**
      * An expression that returns a key/value map where the key is the
      * expression name and the value is the expression value.
      * <p>
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
-     * 
+     *
      * @param <R> the type of the values
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
@@ -593,14 +593,14 @@ public class ExpressionLanguage {
     public static <R> ReadMap<R> mapOf(DesiredRateExpressionList<R> expressions){
         return new ReadMap<R>().add(expressions);
     }
-    
+
     /**
      * An expression that expects a key/value map where the key is the
      * expression name and the value is the expression value.
      * <p>
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
-     * 
+     *
      * @param <W> the type of the values
      * @param expressions a list of expressions
      * @return an expression representing a map from name to results
@@ -608,14 +608,14 @@ public class ExpressionLanguage {
     public static <W> WriteMap<W> mapOf(WriteExpressionList<W> expressions){
         return new WriteMap<W>().add(expressions);
     }
-    
+
     /**
      * An expression that works on a key/value map where the key is the
      * expression name and the value is the expression value.
      * <p>
      * The returned expression is dynamic, which means child expressions
      * can be added or removed from the map.
-     * 
+     *
      * @param <R> the type for the read values
      * @param <W> the type for the write values
      * @param expressions a list of expressions
@@ -624,9 +624,9 @@ public class ExpressionLanguage {
     public static <R, W> ReadWriteMap<R, W> mapOf(DesiredRateReadWriteExpressionList<R, W> expressions){
         return new ReadWriteMap<R, W>().add(expressions);
     }
-    
+
     // Collectors for external sources
-    
+
     /**
      * A queue of objects of the given class. By default, it holds at maximum
      * 10 elements.
@@ -635,7 +635,7 @@ public class ExpressionLanguage {
      * not just pvmanager data sources. One can add new values to a queue
      * from any thread, and in response to any event, such as user input,
      * updates from time consuming tasks or responses from services.
-     * 
+     *
      * @param <R> the type to be kept in the queue
      * @param clazz the type for the values to be kept in the queue
      * @return a new queue
@@ -643,7 +643,7 @@ public class ExpressionLanguage {
     public static <R> Queue<R> queueOf(Class<R> clazz) {
         return new Queue<>(10);
     }
-    
+
     /**
      * A cache of objects of the given class. By default, it holds at maximum
      * 10 elements.
@@ -652,7 +652,7 @@ public class ExpressionLanguage {
      * not just pvmanager data sources. One can add new values to the cache
      * from any thread, and in response to any event, such as user input,
      * updates from time consuming tasks or responses from services.
-     * 
+     *
      * @param <R> the type to be kept in the queue
      * @param clazz the type for the values to be kept in the queue
      * @return a new queue

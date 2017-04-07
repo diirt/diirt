@@ -27,13 +27,13 @@ public class SynchonousMethodExecutionExample {
         System.out.println("Locating service method...");
         ServiceMethod method = ServiceRegistry.getDefault().findServiceMethod("math/add");
         System.out.println("Service method found: " + method);
-        
+
         System.out.println("Preparing arguments...");
         Map<String, Object> arguments = new HashMap<>();
         arguments.put("arg1", ValueFactory.newVDouble(1.0));
         arguments.put("arg2", ValueFactory.newVDouble(2.0));
         System.out.println("Arguments: " + arguments);
-        
+
         System.out.println("Executing service...");
         Map<String, Object> result = method.executeSync(arguments);
         System.out.println("Result: " + result);

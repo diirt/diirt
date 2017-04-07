@@ -20,7 +20,7 @@ public enum VTypeMatchMask {
 //    DISPLAY(false, false, false, true),
     ALL(true, true, true, true),
     ALL_EXCEPT_TIME(true, true, false, true);
-    
+
     private final boolean value;
     private final boolean alarm;
     private final boolean time;
@@ -46,6 +46,6 @@ public enum VTypeMatchMask {
         }
         return null;
     }
-    
-    
+
+
 }

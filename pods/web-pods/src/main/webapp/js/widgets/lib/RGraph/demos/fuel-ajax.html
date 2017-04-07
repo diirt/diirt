@@ -2,12 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.fuel.js" ></script>
-    
+
     <title>A Fuel chart fetching its reading via AJAX</title>
-    
+
     <meta name="keywords" content="demo fuel ajax" />
     <meta name="description" content="A Fuel chart fetching its reading via AJAX" />
     <meta name="robots" content="noindex,nofollow" />
@@ -17,7 +17,7 @@
     <h1>A Fuel chart fetching its reading via AJAX</h1>
 
     <canvas id="cvs" width="200" height="200">[No canvas support]</canvas>
-    
+
     <script>
         RGraph.AJAX.getNumber('/getdata.html', drawFuel);
 

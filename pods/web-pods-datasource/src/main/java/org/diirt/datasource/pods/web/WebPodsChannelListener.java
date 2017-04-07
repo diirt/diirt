@@ -13,23 +13,23 @@ import javax.websocket.CloseReason;
 public class WebPodsChannelListener {
 
     public void onConnectionEvent(boolean connected, boolean writeConnected) {
-        
+
     }
-    
+
     public void onValueEvent(Object value) {
-        
+
     }
-    
+
     public void onErrorEvent(String errorMessage) {
-        
+
     }
 
     public void onWriteCompletedEvent(boolean successful, String error){
-        
+
     }
-    
+
     public void onDisconnect(CloseReason reason) {
-        
+
     }
 
 }

@@ -22,7 +22,7 @@ import org.diirt.vtype.ValueFactory;
  *    <li>time handling - returns the argument time</li>
  *    <li>display handling - returns display none</li>
  * </ul>
- * 
+ *
  * @author shroffk
  */
 public abstract class AbstractVNumberToVNumberFormulaFunction implements FormulaFunction {
@@ -31,10 +31,10 @@ public abstract class AbstractVNumberToVNumberFormulaFunction implements Formula
     private final String description;
     private final List<Class<?>> argumentTypes;
     private final List<String> argumentNames;
-    
+
     /**
      * Creates a new function.
-     * 
+     *
      * @param name function name; can't be null
      * @param description function description; can't be null
      * @param argName the argument name; can't be null
@@ -50,7 +50,7 @@ public abstract class AbstractVNumberToVNumberFormulaFunction implements Formula
         if (argName == null) {
             throw new NullPointerException("Argument name can't be null");
         }
-        
+
         this.name = name;
         this.description = description;
         this.argumentTypes = Arrays.<Class<?>>asList(VNumber.class);
@@ -101,14 +101,14 @@ public abstract class AbstractVNumberToVNumberFormulaFunction implements Formula
         return ValueFactory.newVDouble(calculate(arg.getValue().doubleValue()),
                 arg, arg, ValueFactory.displayNone());
     }
-    
+
     /**
      * Calculates the result based on the arguments. This is the only
      * method one has to implement.
-     * 
+     *
      * @param arg the argument
      * @return the result
      */
     public abstract double calculate(double arg);
-    
+
 }

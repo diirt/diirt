@@ -16,7 +16,7 @@ public class JCAVarArray {
         JCADataSource jcaDataSource = new JCADataSourceConfiguration().create();
         System.out.println("Supports variable arrays: " + jcaDataSource.isVarArraySupported());
         jcaDataSource.close();
-        
+
         // Test JCA
         jcaDataSource = new JCADataSourceConfiguration().jcaContextClass(JCALibrary.JNI_THREAD_SAFE).create();
         System.out.println("Supports variable arrays: " + jcaDataSource.isVarArraySupported());

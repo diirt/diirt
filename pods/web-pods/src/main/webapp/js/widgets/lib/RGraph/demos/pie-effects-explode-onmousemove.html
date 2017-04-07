@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
-    
+
     <title>Pie chart Explode</title>
 
     <meta name="keywords" content="demo pie events eplode exploding mousemove onmousemove" />
@@ -25,7 +25,7 @@
     </p>
 
     <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
-    
+
 <script>
     window.onload = function ()
     {
@@ -36,8 +36,8 @@
             .Set('exploded', 5)
             .Set('radius', 100)
             .Draw();
-        
-            
+
+
         // Add the click listener for the third segment
         pie.onmousemove = function (e, shape)
         {
@@ -47,9 +47,9 @@
                 pie.Set('exploded', 5)
                 pie.Explode(idx, 25);
             }
-            
+
             e.target.style.cursor = 'pointer';
-            
+
             e.stopPropagation();
         }
 
@@ -62,7 +62,7 @@
     }
 </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

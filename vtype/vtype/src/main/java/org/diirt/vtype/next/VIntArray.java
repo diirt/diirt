@@ -4,16 +4,15 @@
  */
 package org.diirt.vtype.next;
 
-import org.diirt.util.array.ListDouble;
 import org.diirt.util.array.ListInt;
 
 /**
  * Scalar int array with alarm, timestamp, display and control information.
- * 
+ *
  * @author carcassi
  */
 public abstract class VIntArray extends VNumberArray {
-    
+
     /**
      * {@inheritDoc }
      */

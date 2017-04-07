@@ -16,7 +16,7 @@ import org.diirt.util.array.ListNumbers;
  * @author carcassi
  */
 public abstract class VType {
-    
+
 //    private static Collection<Class<?>> types = Arrays.<Class<?>>asList(VByte.class, VByteArray.class, VDouble.class,
 //            VDoubleArray.class, VEnum.class, VEnumArray.class, VFloat.class, VFloatArray.class,
 //            VLong.class, VLongArray.class, VInt.class, VIntArray.class, VMultiDouble.class, VMultiEnum.class,
@@ -36,14 +36,14 @@ public abstract class VType {
      * of the VXxx interfaces. The getClass() methods returns the
      * concrete implementation type, which is of little use. If no
      * super-interface is found, Object.class is used.
-     * 
+     *
      * @param obj an object implementing a standard type
      * @return the type is implementing
      */
     public static Class<?> typeOf(Object obj) {
         if (obj == null)
             return null;
-        
+
         for (Class<?> type : types) {
             if (type.isInstance(obj)) {
                 return type;
@@ -52,11 +52,11 @@ public abstract class VType {
 
         return Object.class;
     }
-    
+
     /**
      * Returns the value with highest severity. null values can either be ignored or
      * treated as disconnected/missing value ({@link Alarm#noValue()}).
-     * 
+     *
      * @param values a list of values
      * @param ignoreNull true to simply skip null values
      * @return the value with highest alarm; can't be null
@@ -77,27 +77,27 @@ public abstract class VType {
                 finalAlarm = newAlarm;
             }
         }
-        
+
         return finalAlarm;
     }
-    
+
     /**
      * Converts a standard java type to VTypes. Returns null if no conversion
-     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.next.Alarm, org.diirt.vtype.next.Time, org.diirt.vtype.next.Display) } 
+     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.next.Alarm, org.diirt.vtype.next.Time, org.diirt.vtype.next.Display) }
      * with no alarm, time now and no display.
-     * 
+     *
      * @param javaObject the value to wrap
      * @return the new VType value
      */
     public static VType toVType(Object javaObject) {
         return toVType(javaObject, Alarm.none(), Time.now(), Display.none());
     }
-    
+
     /**
      * Converts a standard java type to VTypes. Returns null if no conversion
-     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.next.Alarm, org.diirt.vtype.next.Time, org.diirt.vtype.next.Display) } 
+     * is possible. Calls {@link #toVType(java.lang.Object, org.diirt.vtype.next.Alarm, org.diirt.vtype.next.Time, org.diirt.vtype.next.Display) }
      * with the given alarm, time now and no display.
-     * 
+     *
      * @param javaObject the value to wrap
      * @param alarm the alarm
      * @return the new VType value
@@ -105,7 +105,7 @@ public abstract class VType {
     public static VType toVType(Object javaObject, Alarm alarm) {
         return toVType(javaObject, alarm, Time.now(), Display.none());
     }
-    
+
     /**
      * Converts a standard java type to VTypes. Returns null if no conversion
      * is possible.
@@ -119,7 +119,7 @@ public abstract class VType {
      *   <li>ListNumber -&gt; corresponding VNumberArray</li>
      *   <li>List -&gt; if all elements are String, VStringArray</li>
      * </ul>
-     * 
+     *
      * @param javaObject the value to wrap
      * @param alarm the alarm
      * @param time the time
@@ -178,9 +178,9 @@ public abstract class VType {
     public static Alarm alarmOf(Object value) {
         return alarmOf(value, true);
     }
-    
+
     /**
-     * Null and non-VType safe utility to extracts alarm information for a 
+     * Null and non-VType safe utility to extracts alarm information for a
      * connection.
      * <ul>
      * <li>If the value is an {@link AlarmProvider}, the associate alarm is returned.</li>
@@ -188,7 +188,7 @@ public abstract class VType {
      * <li>If the value is null and connected is true, {@link Alarm#NO_VALUE} is returned.</li>
      * <li>If the value is null and disconnected is true, {@link Alarm#DISCONNECTED} is returned.</li>
      * </ul>
-     * 
+     *
      * @param value a value
      * @param connected the connection status
      * @return the alarm information

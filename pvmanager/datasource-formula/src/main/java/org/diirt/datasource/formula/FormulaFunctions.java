@@ -18,10 +18,10 @@ import java.util.regex.Pattern;
  * @author carcassi
  */
 public class FormulaFunctions {
-    
+
     /**
      * Check whether the function will accept the given list of values as arguments.
-     * 
+     *
      * @param arguments the possible values
      * @param function a function
      * @return true if the function can accept the given arguments
@@ -29,7 +29,7 @@ public class FormulaFunctions {
     public static boolean matchArgumentTypes(List<Object> arguments, FormulaFunction function) {
         return matchArgumentTypes(arguments, function, false);
     }
-    
+
     /**
      * Checks whether the function will accept the given arguments.
      *
@@ -40,11 +40,11 @@ public class FormulaFunctions {
      */
     public static boolean matchArgumentTypes(List<Object> arguments, FormulaFunction function, boolean allowNull) {
         List<Class<?>> types = function.getArgumentTypes();
-        
+
         if (!matchArgumentCount(arguments.size(), function)) {
             return false;
         }
-        
+
         for (int i = 0; i < arguments.size(); i++) {
             int j = Math.min(i, types.size() - 1);
             if (!types.get(j).isInstance(arguments.get(i))) {
@@ -59,7 +59,7 @@ public class FormulaFunctions {
 
     /**
      * Check whether the function will accept the given number of arguments.
-     * 
+     *
      * @param nArguments the number of arguments
      * @param function a function
      * @return true if the function can accept the given number of arguments
@@ -69,18 +69,18 @@ public class FormulaFunctions {
         if (!function.isVarArgs() && (function.getArgumentTypes().size() != nArguments)) {
             return false;
         }
-        
+
         // varargs can have 0 arguments
         if (function.isVarArgs() && ((function.getArgumentTypes().size() - 1) > nArguments)) {
             return false;
         }
-        
+
         return true;
     }
 
     /**
      * Finds the first function that can accept the given values as arguments.
-     * 
+     *
      * @param arguments the possible values
      * @param formulaFunctions a collection of functions
      * @return the first function that accepts the give arguments
@@ -91,13 +91,13 @@ public class FormulaFunctions {
                 return formulaFunction;
             }
         }
-        
+
         return null;
     }
 
     /**
      * Finds the functions that match the given types as arguments.
-     * 
+     *
      * @param argTypes the possible types
      * @param formulaFunctions a collection of functions
      * @return the first function that accepts the give arguments
@@ -109,7 +109,7 @@ public class FormulaFunctions {
                 functions.add(formulaFunction);
             }
         }
-        
+
         return functions;
     }
 
@@ -117,7 +117,7 @@ public class FormulaFunctions {
      * Returns a string representation of the function that will include
      * the function name, argument types, argument names and the result
      * type.
-     * 
+     *
      * @param function a function
      * @return string representation
      */
@@ -143,7 +143,7 @@ public class FormulaFunctions {
         sb.append(function.getReturnType().getSimpleName());
         return sb.toString();
     }
-    
+
     private static final Pattern postfixTwoArg = Pattern.compile("\\+|-|\\*|/|%|\\^|\\*\\*|<=|>=|<|>|==|!=|\\|\\||&&|\\||&");
     private static final Pattern prefixOneArg = Pattern.compile("-|!");
 
@@ -151,7 +151,7 @@ public class FormulaFunctions {
      * Given the function name and a string representation of the arguments,
      * returns the properly formatted string representation of the whole
      * expression.
-     * 
+     *
      * @param function the function name
      * @param args the arguments
      * @return the expression text representation
@@ -168,7 +168,7 @@ public class FormulaFunctions {
         }
         return formatFunction(function, args);
     }
-    
+
     private static String conditionalOperator(String function, List<String> args) {
         StringBuilder sb = new StringBuilder();
         sb.append("(")
@@ -180,7 +180,7 @@ public class FormulaFunctions {
           .append(")");
         return sb.toString();
     }
-    
+
     private static String formatPostfixTwoArgs(String function, List<String> args) {
         StringBuilder sb = new StringBuilder();
         sb.append("(")
@@ -192,14 +192,14 @@ public class FormulaFunctions {
           .append(")");
         return sb.toString();
     }
-    
+
     private static String formatPrefixOneArg(String function, List<String> args) {
         StringBuilder sb = new StringBuilder();
         sb.append(function)
           .append(args.get(0));
         return sb.toString();
     }
-    
+
     private static String formatFunction(String function, List<String> args) {
         StringBuilder sb = new StringBuilder();
         sb.append(function).append('(');
@@ -215,7 +215,7 @@ public class FormulaFunctions {
         sb.append(')');
         return sb.toString();
     }
-    
+
     static StatefulFormulaFunction createInstance(StatefulFormulaFunction function) {
         try {
             return function.getClass().newInstance();
@@ -227,5 +227,5 @@ public class FormulaFunctions {
             throw new RuntimeException("StatefulFormulaFunction " + FormulaFunctions.formatSignature(function) + " no arg constructor is not accessible.", ex);
         }
     }
-    
+
 }

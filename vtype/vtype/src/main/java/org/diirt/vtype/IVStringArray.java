@@ -12,7 +12,7 @@ import org.diirt.util.array.ListInt;
  * @author carcassi
  */
 class IVStringArray extends IVMetadata implements VStringArray {
-    
+
     private final ListInt sizes;
     private final List<String> data;
 
@@ -36,5 +36,5 @@ class IVStringArray extends IVMetadata implements VStringArray {
     public String toString() {
         return VTypeToString.toString(this);
     }
-    
+
 }

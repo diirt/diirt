@@ -40,7 +40,7 @@ class ValueFilter {
         }
         this.value = value;
     }
-    
+
     public boolean filterRow(int rowIndex) {
         if (value instanceof VNumber) {
             double columnValue = ((ListNumber) table.getColumnData(columnIndex)).getDouble(rowIndex);
@@ -52,5 +52,5 @@ class ValueFilter {
         }
         throw new IllegalStateException("Unexpected error");
     }
-    
+
 }

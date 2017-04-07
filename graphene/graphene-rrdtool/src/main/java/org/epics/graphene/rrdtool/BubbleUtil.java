@@ -22,9 +22,9 @@ import org.epics.util.time.TimestampFormat;
  * @author carcassi
  */
 public class BubbleUtil {
-    
+
     private static TimestampFormat format = new TimestampFormat("yyyy/MM/dd HH:mm:ss");
-    
+
     public static void createBubblePlot(String filename, final Point3DWithLabelDataset dataset, final String urlPrototype, String path, String signalX, String signalY, String signalZ, Timestamp time) throws IOException {
         if (dataset.getXStatistics() == null) {
             System.out.println("Found no valid data for x");

@@ -18,7 +18,7 @@ public class ImageAssert {
         boolean done = false;
         try {
             BufferedImage expected = ImageIO.read(ImageAssert.class.getResource(imageName + ".png"));
-            
+
             assertEquals("Images are not the same height", expected.getHeight(), image.getHeight());
             assertEquals("Images are not the same width", expected.getWidth(), image.getWidth());
 
@@ -38,5 +38,5 @@ public class ImageAssert {
                 }
             }
         }
-    }    
+    }
 }

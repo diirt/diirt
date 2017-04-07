@@ -34,7 +34,7 @@ public class Point2DDatasets {
     public static Point2DDataset lineData(final double[] x, final double[] y) {
         return lineData(new ArrayDouble(x), new ArrayDouble(y));
     }
-    
+
     public static Point2DDataset lineData(final Range xRange, final ListNumber y) {
         return lineData(ListNumbers.linearListFromRange(xRange.getMinimum(), xRange.getMaximum(), y.size()), y);
     }
@@ -43,9 +43,9 @@ public class Point2DDatasets {
         if (x.size() != y.size()) {
             throw new IllegalArgumentException("Arrays length don't match: " + x.size() + " - " + y.size());
         }
-        
+
         return new Point2DDataset() {
-            
+
             private final Statistics xStatistics = StatisticsUtil.statisticsOf(x);
             private final Statistics yStatistics = StatisticsUtil.statisticsOf(y);
 
@@ -85,5 +85,5 @@ public class Point2DDatasets {
             }
         };
     }
-    
+
 }

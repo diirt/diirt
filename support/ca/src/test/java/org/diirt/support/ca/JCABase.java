@@ -4,15 +4,11 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
-import gov.aps.jca.JCALibrary;
-import gov.aps.jca.Monitor;
 import java.util.ArrayList;
 import java.util.List;
 import org.diirt.datasource.PVManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
@@ -35,7 +31,7 @@ public class JCABase {
     public static void tearDownClass() throws Exception {
         PVManager.setDefaultDataSource(null);
     }
-    
+
     private List<Thread> activeThreads() {
         Thread[] buffer = new Thread[30];
         int size = Thread.enumerate(buffer);
@@ -45,7 +41,7 @@ public class JCABase {
         }
         return result;
     }
-    
+
     private boolean isJCAThreadPresent() {
         for (Thread thread : activeThreads()) {
             if (thread.getName().equals("com.cosylab.epics.caj.util.Timer")) {
@@ -54,12 +50,12 @@ public class JCABase {
         }
         return false;
     }
-    
+
     public void assertJCAOn() {
         assertNotNull("Context is not present", jca.getContext());
         assertTrue("JCA Timer thread not found", isJCAThreadPresent());
     }
-    
+
     public void assertJCAOff() {
         assertNull("Context is present", jca.getContext());
         assertFalse("JCA Timer thread was found", isJCAThreadPresent());

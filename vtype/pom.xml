@@ -4,11 +4,11 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>diirt-all</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.1.6-SNAPSHOT</version>
     </parent>
     <artifactId>vtype-all</artifactId>
     <packaging>pom</packaging>
-    
+
     <name>vtype</name>
     <description>A set of standard types for value processing.</description>
     <modules>

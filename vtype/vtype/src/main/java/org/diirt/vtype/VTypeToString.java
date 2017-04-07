@@ -4,8 +4,13 @@
  */
 package org.diirt.vtype;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import org.diirt.util.text.NumberFormats;
-import org.diirt.util.time.TimestampFormat;
 import org.diirt.vtype.table.VTableFactory;
 
 /**
@@ -17,7 +22,7 @@ public class VTypeToString {
     private VTypeToString() {
         // Do not create
     }
-    
+
     private static void appendAlarm(StringBuilder builder, Alarm alarm) {
         if (!alarm.getAlarmSeverity().equals(AlarmSeverity.NONE)) {
             builder.append(", ")
@@ -27,10 +32,10 @@ public class VTypeToString {
                     .append(")");
         }
     }
-    
+
     /**
      * Converts the given alarm to a string.
-     * 
+     *
      * @param alarm the alarm
      * @return the string representation; never null
      */
@@ -38,13 +43,13 @@ public class VTypeToString {
         if (alarm == null) {
             return "NONE";
         }
-        
+
         return alarm.getAlarmSeverity() + "(" + alarm.getAlarmName() + ")";
     }
 
     /**
      * Converts the given time to a string.
-     * 
+     *
      * @param time the time
      * @return the string representation; never null
      */
@@ -52,16 +57,16 @@ public class VTypeToString {
         if (time == null) {
             return "null";
         }
-        
-        return timeFormat.format(time.getTimestamp()) + "(" + time.getTimeUserTag()+ ")";
+
+        return timeFormat.format(LocalDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())) + "(" + time.getTimeUserTag()+ ")";
     }
-    
-    private static final TimestampFormat timeFormat = new TimestampFormat("yyyy/MM/dd HH:mm:ss.SSS");
-    
+
+    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+
     private static void appendTime(StringBuilder builder, Time time) {
-        builder.append(", ").append(timeFormat.format(time.getTimestamp()));
+        builder.append(", ").append(timeFormat.format(LocalDateTime.ofInstant(time.getTimestamp(), ZoneId.systemDefault())));
     }
-    
+
     /**
      * Default toString implementation for VNumber.
      *
@@ -79,7 +84,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VString.
      *
@@ -97,7 +102,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VBoolean.
      *
@@ -115,7 +120,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VEnum.
      *
@@ -136,13 +141,13 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     private final static ValueFormat format = new SimpleValueFormat(3);
-    
+
     static {
         format.setNumberFormat(NumberFormats.toStringFormat());
     }
-    
+
     /**
      * Default toString implementation for VNumberArray.
      *
@@ -162,7 +167,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VStringArray.
      *
@@ -182,7 +187,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VBooleanArray.
      *
@@ -202,7 +207,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VEnumArray.
      *
@@ -222,7 +227,7 @@ public class VTypeToString {
         builder.append(']');
         return builder.toString();
     }
-    
+
     /**
      * Default toString implementation for VTable.
      *

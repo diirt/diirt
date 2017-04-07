@@ -5,7 +5,6 @@
 package org.diirt.datasource.sim;
 
 import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VString;
 import static org.diirt.vtype.ValueFactory.*;
 
 /**

@@ -24,9 +24,9 @@ public class WriteRecipeUtil {
             }
         }
         if (foundRecipe == null) {
-            
+
         }
-        
+
         throw new IllegalStateException("Can't find reciep for channel '" + channelName + "'");
     }
 

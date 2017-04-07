@@ -26,7 +26,7 @@ public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRend
                     "sim://triangleWaveform",
                     "=tableOf(column(\"X\", range(-5, 5)), column(\"Y\", 'sim://gaussianWaveform'))"}));
     }
-    
+
     public InterpolationScheme getInterpolationScheme() {
         return interpolationScheme;
     }
@@ -54,7 +54,7 @@ public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRend
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
-    
+
     public static void main(String[] args) {
         main(MultiAxisLineGraphApp.class);
     }
@@ -65,5 +65,5 @@ public class MultiAxisLineGraphApp extends BaseGraphApp<MultiAxisLineGraph2DRend
             graph.update(graph.newUpdate().separateAreas(separateAreas));
         }
     }
-    
+
 }

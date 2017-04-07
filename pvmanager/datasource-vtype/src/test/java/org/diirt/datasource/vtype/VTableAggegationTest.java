@@ -8,7 +8,6 @@ import org.diirt.vtype.VTable;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.expression.DesiredRateExpression;
-import org.diirt.vtype.VTable;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -21,7 +20,7 @@ import org.diirt.util.array.ArrayInt;
  * @author carcassi
  */
 public class VTableAggegationTest {
-    
+
     @Test
     public void aggregateSimpleTable() throws Exception {
         List<String> names = Arrays.asList("One", "Two", "Three");

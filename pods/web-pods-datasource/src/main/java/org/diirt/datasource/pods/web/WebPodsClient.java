@@ -39,13 +39,13 @@ import org.diirt.pods.web.common.MessageWriteCompletedEvent;
     encoders = { MessageEncoder.class }
 )
 public class WebPodsClient {
- 
+
     private static final Logger log = Logger.getLogger(WebPodsClient.class.getName());
     private final Object lock = new Object();
     private Session session;
     private boolean connected = false;
     private String disconnectReason = "Connection failed";
- 
+
     @OnOpen
     public void onOpen(Session session) {
         synchronized(lock) {
@@ -58,7 +58,7 @@ public class WebPodsClient {
             subscribeChannel(channel);
         }
     }
-    
+
     @OnClose
     public void onClose(Session session, CloseReason closeReason) {
         synchronized(lock) {
@@ -66,7 +66,7 @@ public class WebPodsClient {
             connected = false;
             disconnectReason = closeReason.getReasonPhrase();
         }
-        
+
         for (Map.Entry<Integer, WebPodsChannel> entrySet : channels.entrySet()) {
             WebPodsChannel channel = entrySet.getValue();
             channel.getListener().onDisconnect(closeReason);
@@ -84,7 +84,7 @@ public class WebPodsClient {
             return disconnectReason;
         }
     }
- 
+
     @OnMessage
     public void onMessage(Message message, Session session) {
         int channelId = message.getId();
@@ -110,11 +110,11 @@ public class WebPodsClient {
             log.log(Level.WARNING, "Received unsupported message " + message.getMessage() + " for id " + channelId);
         }
     }
- 
-    
+
+
     private final AtomicInteger counter = new AtomicInteger();
     private final Map<Integer, WebPodsChannel> channels = new ConcurrentHashMap<>();
-    
+
     public WebPodsChannel subscribe(String channelName, WebPodsChannelListener listener) {
         int id = counter.incrementAndGet();
         WebPodsChannel channel = new WebPodsChannel(channelName, id, this, listener);
@@ -122,7 +122,7 @@ public class WebPodsClient {
         subscribeChannel(channel);
         return channel;
     }
-    
+
     void subscribeChannel(WebPodsChannel channel) {
         Session currentSession;
         synchronized(lock) {
@@ -133,7 +133,7 @@ public class WebPodsClient {
         }
         currentSession.getAsyncRemote().sendObject(new MessageSubscribe(channel.getId(), channel.getChannelName(), null, -1, true));
     }
-    
+
     void unsubscribeChannel(WebPodsChannel channel) {
         channels.remove(channel.getId());
         Session currentSession;
@@ -145,7 +145,7 @@ public class WebPodsClient {
         }
         currentSession.getAsyncRemote().sendObject(new MessageUnsubscribe(channel.getId()));
     }
-    
+
     void pauseChannel(WebPodsChannel channel) {
         channels.remove(channel.getId());
         Session currentSession;
@@ -157,7 +157,7 @@ public class WebPodsClient {
         }
         session.getAsyncRemote().sendObject(new MessagePause(channel.getId()));
     }
-    
+
     void resumeChannel(WebPodsChannel channel) {
         channels.remove(channel.getId());
         Session currentSession;
@@ -169,13 +169,13 @@ public class WebPodsClient {
         }
         session.getAsyncRemote().sendObject(new MessageResume(channel.getId()));
     }
-    
+
     public static void main(String[] args) throws Exception {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         WebPodsClient client = new WebPodsClient();
         container.connectToServer(client, new URI("ws://localhost:8080/web-pods/socket"));
         WebPodsChannel channel = client.subscribe("sim://noise", new WebPodsChannelListener() {
-            
+
             @Override
             public void onConnectionEvent(boolean connected, boolean writeConnected) {
                 System.out.println("Connected: " + connected + "; Write connected: " + writeConnected);
@@ -185,10 +185,10 @@ public class WebPodsClient {
             public void onValueEvent(Object value) {
                 System.out.println("New value: " + value);
             }
-            
+
         });
         WebPodsChannel channel2 = client.subscribe("sim://table", new WebPodsChannelListener() {
-            
+
             @Override
             public void onConnectionEvent(boolean connected, boolean writeConnected) {
                 System.out.println("Connected: " + connected + "; Write connected: " + writeConnected);
@@ -198,7 +198,7 @@ public class WebPodsClient {
             public void onValueEvent(Object value) {
                 System.out.println("New value: " + value);
             }
-            
+
         });
         Thread.sleep(5000);
         channel.unsubscribe();

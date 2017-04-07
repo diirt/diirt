@@ -40,7 +40,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
      * List of supported interpolation schemes for this renderer.
      */
     public static java.util.List<InterpolationScheme> supportedInterpolationScheme = Arrays.asList(InterpolationScheme.NEAREST_NEIGHBOR, InterpolationScheme.LINEAR, InterpolationScheme.CUBIC);
-    
+
     /**
      * List of supported data reduction schemes for this renderer.
      */
@@ -50,17 +50,17 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
      * Default interpolation scheme: nearest neighbor.
      */
     public static final InterpolationScheme DEFAULT_INTERPOLATION_SCHEME = InterpolationScheme.NEAREST_NEIGHBOR;
-    
+
     /**
      * Default interpolation scheme: nearest neighbor.
      */
     public static final ReductionScheme DEFAULT_REDUCTION_SCHEME = ReductionScheme.FIRST_MAX_MIN_LAST;
-    
+
     /**
      * Default separate area flag: false (all lines overlap in one area).
      */
     public static final boolean DEFAULT_SEPARATE_AREAS = false;
-    
+
     @Override
     public MultiAxisLineGraph2DRendererUpdate newUpdate() {
         return new MultiAxisLineGraph2DRendererUpdate();
@@ -89,12 +89,12 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
     private int xLabelMaxHeight;
     private NumberColorMap valueColorScheme = NumberColorMaps.JET;
     private NumberColorMapInstance valueColorSchemeInstance;
-    
+
     private double xPlotValueStart;
     private List<Double> yPlotValueStart;
     private double xPlotValueEnd;
     private List<Double> yPlotValueEnd;
-    
+
     private ArrayList<Double> graphBoundaries;
     private ArrayList<Double> graphBoundaryRatios;
     private int marginBetweenGraphs = 0;
@@ -118,12 +118,12 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
     // The pixel size of the range (not of the plot area)
     private List<Double> yPlotCoordHeight;
     private double xPlotCoordWidth;
-    
+
     private boolean stretch = false;
     private boolean separateAreas = DEFAULT_SEPARATE_AREAS;
     /**
      * Creates a new line graph renderer.
-     * 
+     *
      * @param imageWidth the graph width
      * @param imageHeight the graph height
      */
@@ -133,13 +133,13 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
 
     /**
      * The current interpolation used for the line.
-     * 
+     *
      * @return the current interpolation
      */
     public InterpolationScheme getInterpolation() {
         return interpolation;
     }
-    
+
     @Override
     public void update(MultiAxisLineGraph2DRendererUpdate update) {
         super.update(update);
@@ -181,13 +181,13 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
 
     /**
      * Draws the graph on the given graphics context.
-     * 
+     *
      * @param g the graphics on which to display the data
      * @param data the data to display
      */
     public void draw(Graphics2D g, List<Point2DDataset> data) {
         this.g = g;
-        
+
         //Make a list containing the x range of each data set (each one should be the same).
         List<Range> dataRangesX = new ArrayList<Range>();
         for(int i = 0; i < data.size(); i++){
@@ -200,7 +200,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         }
 
         labelFontMetrics = g.getFontMetrics(labelFont);
-        
+
         if(separateAreas){
             xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
             totalYMargins = xLabelMaxHeight + marginBetweenGraphs + topMargin + bottomMargin + topAreaMargin + bottomAreaMargin + xLabelMargin + 1;
@@ -210,7 +210,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             calculateRanges(dataRangesX, dataRangesY, numGraphs);
             setGraphBoundaries(data);
             calculateLabels();
-            calculateGraphAreaSplit();        
+            calculateGraphAreaSplit();
             drawBackground();
             drawGraphArea();
         }else{
@@ -219,17 +219,17 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             valueColorSchemeInstance = valueColorScheme.createInstance(datasetRange);
             calculateRanges(dataRangesX, dataRangesY, numGraphs);
             calculateLabels();
-            calculateGraphArea();        
+            calculateGraphArea();
             drawBackground();
             drawGraphArea();
         }
-        
-        
+
+
         List<SortedListView> xValues = new ArrayList<SortedListView>();
         for(int i = 0; i < numGraphs; i++){
             xValues.add(org.diirt.util.array.ListNumbers.sortedView(data.get(i).getXValues()));
         }
-        
+
         List<ListNumber> yValues = new ArrayList<ListNumber>();
         for(int i = 0; i < numGraphs; i++){
             yValues.add(org.diirt.util.array.ListNumbers.sortedView(data.get(i).getYValues(), xValues.get(i).getIndexes()));
@@ -248,7 +248,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         }
 
     }
-    
+
     //method to get the number of graphs to draw when simply drawing mutiple y axes.
     private void getNumGraphs(List<Point2DDataset> data){
             numGraphs = data.size();
@@ -274,7 +274,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 }
             }
     }
-    
+
     //method to get number of graphs when the graphs are separateAreas
     private void getNumGraphsSplit(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
@@ -283,11 +283,11 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 numGraphs-=1;
             }
         }
-        
+
         //if all the graphs are being drawn, they can be stretched along with the image.
         stretch = numGraphs == data.size();
     }
-    
+
     private void setGraphBoundaries(List<Point2DDataset> data){
         if(this.graphBoundaries == null || this.graphBoundaries.size() != numGraphs+1){
             graphBoundaries = new ArrayList<Double>();
@@ -318,15 +318,15 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                     graphBoundaryRatios.add((i*minimumGraphHeight)/getImageHeight());
                 }
             }
-        } 
+        }
     }
-    
+
     protected void calculateRanges(List<Range> xDataRange, List<Range> yDataRange, int length) {
         for(int i = 0; i < length; i++){
             xAggregatedRange = aggregateRange(xDataRange.get(i), xAggregatedRange);
             // TODO: should be update to use display range
             xPlotRange = xAxisRange.axisRange(xDataRange.get(i), xDataRange.get(i));
-        }  
+        }
         if(yAggregatedRange == null || yDataRange.size() != yAggregatedRange.size() || yDataRange.size() != length){
             yAggregatedRange = new ArrayList<Range>();
             yPlotRange = new ArrayList<Range>();
@@ -362,20 +362,20 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
         }
     }
-    
+
     @Override
     protected void calculateLabels() {
         // Calculate horizontal axis references. If range is zero, use special logic
         if (!(xPlotRange.getMinimum() == xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
-            xReferenceValues = new ArrayDouble(xAxis.getTickValues());            
+            xReferenceValues = new ArrayDouble(xAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             xReferenceLabels = Collections.singletonList(Double.toString(xPlotRange.getMinimum()));
             xReferenceValues = new ArrayDouble(xPlotRange.getMinimum());
-        }      
-        
+        }
+
         // Calculate vertical axis references. If range is zero, use special logic
         if(yReferenceLabels == null || yReferenceLabels.size() != numGraphs){
             yReferenceLabels = new ArrayList<List<String>>();
@@ -389,11 +389,11 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                         yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, getImageHeight() / 60));
                     }
                     yReferenceLabels.add(Arrays.asList(yAxis.getTickLabels()));
-                    yReferenceValues.add(new ArrayDouble(yAxis.getTickValues()));            
+                    yReferenceValues.add(new ArrayDouble(yAxis.getTickValues()));
                 } else {
                     // TODO: use something better to format the number
                     yReferenceLabels.add(Collections.singletonList(Double.toString(yPlotRange.get(i).getMinimum())));
-                    yReferenceValues.add(new ArrayDouble(yPlotRange.get(i).getMinimum()));            
+                    yReferenceValues.add(new ArrayDouble(yPlotRange.get(i).getMinimum()));
                 }
             }
         }
@@ -407,19 +407,19 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                         yAxis = yValueScale.references(yPlotRange.get(i), 2, Math.max(2, getImageHeight() / 60));
                     }
                     yReferenceLabels.set(i,Arrays.asList(yAxis.getTickLabels()));
-                    yReferenceValues.set(i,new ArrayDouble(yAxis.getTickValues()));            
+                    yReferenceValues.set(i,new ArrayDouble(yAxis.getTickValues()));
                 } else {
                     // TODO: use something better to format the number
                     yReferenceLabels.set(i,Collections.singletonList(Double.toString(yPlotRange.get(i).getMinimum())));
-                    yReferenceValues.set(i,new ArrayDouble(yPlotRange.get(i).getMinimum()));            
+                    yReferenceValues.set(i,new ArrayDouble(yPlotRange.get(i).getMinimum()));
                 }
             }
         }
-        
+
         labelFontMetrics = g.getFontMetrics(labelFont);
-        
+
         xLabelMaxHeight = labelFontMetrics.getHeight() - labelFontMetrics.getLeading();
-        
+
         // Compute y axis spacing
         int yLabelWidth = 0;
         yLabelMaxWidth = 0;
@@ -442,7 +442,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         else{
             areaFromRight = rightMargin;
         }
-        
+
         xPlotValueStart = xPlotRange.getMinimum();
         xPlotValueEnd = xPlotRange.getMaximum();
         if (xPlotValueStart == xPlotValueEnd) {
@@ -455,7 +455,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         xPlotCoordStart = xAreaCoordStart + leftAreaMargin + xPointMargin;
         xPlotCoordEnd = xAreaCoordEnd - rightAreaMargin - xPointMargin;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
-        
+
        //set the start and end of each plot in terms of values.
         if(yPlotValueStart == null || yPlotValueStart.size() != yPlotRange.size()){
             yPlotValueStart = new ArrayList<Double>();
@@ -471,7 +471,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum());
             }
         }
-        
+
         for(int i = 0; i < yPlotRange.size(); i++){
             if (yPlotValueStart.get(i).doubleValue() == yPlotValueEnd.get(i).doubleValue()) {
                 // If range is zero, fake a range
@@ -479,13 +479,13 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 yPlotValueEnd.set(i, yPlotValueEnd.get(i)+1.0);
             }
         }
-        
+
         super.yAreaCoordStart = topMargin;
         super.yAreaCoordEnd = getImageHeight() - areaFromBottom;
         super.yPlotCoordStart = super.yAreaCoordStart + topAreaMargin + yPointMargin;
         super.yPlotCoordEnd = super.yAreaCoordEnd - bottomAreaMargin - yPointMargin;
         super.yPlotCoordHeight = super.yPlotCoordEnd - super.yPlotCoordStart;
-        
+
         //Only calculates reference coordinates if calculateLabels() was called
         if (xReferenceValues != null) {
             double[] xRefCoords = new double[xReferenceValues.size()];
@@ -494,7 +494,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
             xReferenceCoords = new ArrayDouble(xRefCoords);
         }
-        
+
         yReferenceCoords = new ArrayList<ListDouble>();
         if (yReferenceValues != null) {
             for(int a = 0; a < yReferenceValues.size(); a++){
@@ -510,7 +510,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
         }
     }
-    
+
     protected void calculateGraphAreaSplit() {
         int areaFromBottom = bottomMargin + xLabelMaxHeight + xLabelMargin;
         int areaFromLeft = leftMargin + yLabelMaxWidth + yLabelMargin;
@@ -527,7 +527,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         xPlotCoordStart = xAreaCoordStart + leftAreaMargin + xPointMargin;
         xPlotCoordEnd = xAreaCoordEnd - rightAreaMargin - xPointMargin;
         xPlotCoordWidth = xPlotCoordEnd - xPlotCoordStart;
-        
+
         //set the start and end of each plot in terms of values.
         if(yPlotValueStart == null || yPlotValueStart.size() != yPlotRange.size()){
             yPlotValueStart = new ArrayList<Double>();
@@ -543,7 +543,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 yPlotValueEnd.set(i, yPlotRange.get(i).getMaximum());
             }
         }
-        
+
         //range faking
         for(int i = 0; i < yPlotRange.size(); i++){
             if (yPlotValueStart.get(i).doubleValue() == yPlotValueEnd.get(i).doubleValue()) {
@@ -552,7 +552,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 yPlotValueEnd.set(i, yPlotValueEnd.get(i)+1.0);
             }
         }
-       
+
         if(yAreaCoordStart == null || yAreaCoordStart.size() != numGraphs){
             yAreaCoordStart = new ArrayList<Integer>();
             yAreaCoordEnd = new ArrayList<Integer>();
@@ -597,7 +597,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             yPlotCoordEnd.set(numGraphs-1,yAreaCoordEnd.get(numGraphs-1) - bottomAreaMargin - yPointMargin);
             yPlotCoordHeight.set(numGraphs-1,yPlotCoordEnd.get(numGraphs-1)-yPlotCoordStart.get(numGraphs-1));
         }
-        
+
         //Only calculates reference coordinates if calculateLabels() was called
         if (xReferenceValues != null) {
             double[] xRefCoords = new double[xReferenceValues.size()];
@@ -621,15 +621,15 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
         }
     }
-    
+
     private final double scaledY(double value,  int index) {
         return yValueScale.scaleValue(value, yPlotValueStart.get(index), yPlotValueEnd.get(index), super.yPlotCoordEnd, super.yPlotCoordStart);
     }
-    
+
     private final double scaledYSplit(double value,  int index) {
         return yValueScale.scaleValue(value, yPlotValueStart.get(index), yPlotValueEnd.get(index), yPlotCoordEnd.get(index), yPlotCoordStart.get(index));
     }
-    
+
     @Override
     protected void drawGraphArea() {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -637,19 +637,19 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         if(separateAreas){
             drawVerticalReferenceLinesSplit();
             drawHorizontalReferenceLinesSplit();
-        
+
             drawYLabelsSplit();
             drawXLabelsSplit();
         }else{
             drawVerticalReferenceLines();
             drawHorizontalReferenceLines();
-        
+
             drawYLabels();
             drawXLabels();
         }
     }
-    
-    
+
+
     @Override
     protected void drawVerticalReferenceLines() {
         g.setColor(referenceLineColor);
@@ -674,7 +674,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             count++;
         }
     }
-    
+
     @Override
     protected void drawHorizontalReferenceLines() {
         g.setColor(referenceLineColor);
@@ -685,7 +685,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             g.draw(line);
         }
     }
-    
+
     protected void drawVerticalReferenceLinesSplit() {
         g.setColor(referenceLineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -697,7 +697,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
         }
     }
-    
+
     protected void drawHorizontalReferenceLinesSplit() {
         g.setColor(referenceLineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -709,7 +709,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
         }
     }
-    
+
     @Override
     protected void drawYLabels() {
         // Draw Y labels
@@ -749,7 +749,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
         }
     }
-    
+
     protected void drawYLabelsSplit() {
         // Draw Y labels
         for(int a = 0; a < numGraphs; a++){
@@ -775,7 +775,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             }
         }
     }
-    
+
     @Override
     protected void drawXLabels() {
         // Draw X labels
@@ -793,23 +793,23 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 drawRange, yTop, true, false);
             drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),
                 drawRange, yTop, false, false);
-            
+
             for (int i = 1; i < xReferenceLabels.size() - 1; i++) {
                 drawVerticalReferenceLabel(g, metrics, xReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
                     drawRange, yTop, true, false);
             }
         }
     }
-    
+
     private static void drawVerticalReferenceLabel(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
         int targetX = xCenter;
         int halfWidth = metrics.stringWidth(text) / 2;
@@ -828,14 +828,14 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
-        
+
         if (updateMin) {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
             drawRange[MAX] = targetX - metrics.getHeight();
         }
     }
-    
+
     protected void drawXLabelsSplit() {
         // Draw X labels
         ListNumber xTicks = xReferenceCoords;
@@ -852,25 +852,25 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 drawRange, yTop, true, false);
             drawVerticalReferenceLabelSplit(g, metrics, xReferenceLabels.get(xReferenceLabels.size() - 1), (int) Math.floor(xTicks.getDouble(xReferenceLabels.size() - 1)),
                 drawRange, yTop, false, false);
-            
+
             for (int i = 1; i < xReferenceLabels.size() - 1; i++) {
                 drawVerticalReferenceLabelSplit(g, metrics, xReferenceLabels.get(i), (int) Math.floor(xTicks.getDouble(i)),
                     drawRange, yTop, true, false);
             }
         }
     }
-    
+
     private static final int MIN = 0;
     private static final int MAX = 1;
     private static void drawHorizontalReferencesLabel(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly, int verticalLinePos) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
         int targetY = yCenter;
         int halfHeight = metrics.getAscent() / 2;
@@ -896,16 +896,16 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             drawRange[MIN] = targetY + metrics.getHeight();
         }
     }
-    
+
     private static void drawHorizontalReferencesLabelSplit(Graphics2D graphics, FontMetrics metrics, String text, int yCenter, int[] drawRange, int xRight, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < yCenter || drawRange[MIN] > yCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.RIGHT;
         int targetY = yCenter;
         int halfHeight = metrics.getAscent() / 2;
@@ -924,23 +924,23 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, xRight, targetY, text);
-        
+
         if (updateMin) {
             drawRange[MAX] = targetY - metrics.getHeight();
         } else {
             drawRange[MIN] = targetY + metrics.getHeight();
         }
     }
-    
+
     private static void drawVerticalReferenceLabelSplit(Graphics2D graphics, FontMetrics metrics, String text, int xCenter, int[] drawRange, int yTop, boolean updateMin, boolean centeredOnly) {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < xCenter || drawRange[MIN] > xCenter)
             return;
-        
+
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < metrics.getHeight())
             return;
-        
+
         Java2DStringUtilities.Alignment alignment = Java2DStringUtilities.Alignment.TOP;
         int targetX = xCenter;
         int halfWidth = metrics.stringWidth(text) / 2;
@@ -959,31 +959,31 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         }
 
         Java2DStringUtilities.drawString(graphics, alignment, targetX, yTop, text);
-        
+
         if (updateMin) {
             drawRange[MIN] = targetX + metrics.getHeight();
         } else {
             drawRange[MAX] = targetX - metrics.getHeight();
         }
     }
-    
+
     private final double scaledX1(double value) {
         return xValueScale.scaleValue(value, xPlotValueStart, xPlotValueEnd, xPlotCoordStart, xPlotCoordEnd);
     }
-    
+
     protected void drawValueExplicitLine(ListNumber xValues, ListNumber yValues, InterpolationScheme interpolation, ReductionScheme reduction, int index) {
         MultiAxisLineGraph2DRenderer.ScaledData scaledData;
-        
+
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        
+
         // Narrow the data
         int start = org.diirt.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
         int end = org.diirt.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
-        
+
         xValues = ListMath.limit(xValues, start, end + 1);
         yValues = ListMath.limit(yValues, start, end + 1);
-        
+
         switch (reduction) {
             default:
                 throw new IllegalArgumentException("Reduction scheme " + reduction + " not supported");
@@ -994,7 +994,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                 scaledData = scaleFirstMaxMinLastReduction(xValues, yValues, start, index);
                 break;
         }
-        
+
         // create path
         Path2D path;
         switch (interpolation) {
@@ -1013,14 +1013,14 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         // Draw the line
         g.draw(path);
     }
-    
+
     private static class ScaledData {
         private double[] scaledX;
         private double[] scaledY;
         private int start;
         private int end;
     }
-    
+
     private MultiAxisLineGraph2DRenderer.ScaledData scaleNoReduction(ListNumber xValues, ListNumber yValues, int dataStart, int index) {
         MultiAxisLineGraph2DRenderer.ScaledData scaledData = new MultiAxisLineGraph2DRenderer.ScaledData();
         int dataCount = xValues.size();
@@ -1038,9 +1038,9 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         scaledData.end = dataCount;
         return scaledData;
     }
-    
+
     private MultiAxisLineGraph2DRenderer.ScaledData scaleFirstMaxMinLastReduction(ListNumber xValues, ListNumber yValues, int dataStart, int index) {
-        // The number of points generated by this is about 4 times the 
+        // The number of points generated by this is about 4 times the
         // number of points on the x axis. If the number of points is less
         // than that, it's not worth it. Don't do the data reduction.
         if (xValues.size() < xPlotCoordWidth * 4) {
@@ -1108,7 +1108,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         scaledData.end = cursor;
         return scaledData;
     }
-    
+
     private static Path2D.Double nearestNeighbour(MultiAxisLineGraph2DRenderer.ScaledData scaledData) {
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
@@ -1129,14 +1129,14 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         line.lineTo(scaledX[end - 1], scaledY[end - 1]);
         return line;
     }
-    
+
     private static Path2D.Double linearInterpolation(MultiAxisLineGraph2DRenderer.ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
         int start = scaledData.start;
         int end = scaledData.end;
         Path2D.Double line = new Path2D.Double();
-        
+
         for (int i = start; i < end; i++) {
             // Do I have a current value?
             if (!java.lang.Double.isNaN(scaledY[i])) {
@@ -1156,11 +1156,11 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                         line.lineTo(scaledX[i] + 1, scaledY[i]);
                     }
                 }
-            } 
+            }
         }
         return line;
     }
-    
+
     private static Path2D.Double cubicInterpolation(MultiAxisLineGraph2DRenderer.ScaledData scaledData){
         double[] scaledX = scaledData.scaledX;
         double[] scaledY = scaledData.scaledY;
@@ -1168,7 +1168,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
         int end = scaledData.end;
         Path2D.Double path = new Path2D.Double();
         for (int i = start; i < end; i++) {
-            
+
             double y1;
             double y2;
             double x1;
@@ -1177,7 +1177,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             double x0;
             double y3;
             double x3;
-            
+
             double bx0;
             double by0;
             double bx3;
@@ -1193,7 +1193,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
             //3. if statements - start with most general to most specific in the middle
             //4. can make function that converts to bezier and then you call it
             //5 check location and if you have nan in most if's
-            
+
             //Do I have current value?
             if (!java.lang.Double.isNaN(scaledY[i])){
                 //Do I have previous value?
@@ -1221,7 +1221,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                         else{//Have current, previous, two before, but not value after
                             y2 = scaledY[i];
                             x2 = scaledX[i];
@@ -1242,7 +1242,7 @@ public class MultiAxisLineGraph2DRenderer extends Graph2DRenderer<MultiAxisLineG
                             bx2 = bx3 - (x3 - x1) / 6.0;
                             by2 = (bx2 - bx3) * bdy3 + by3;
                             path.curveTo(bx1, by1, bx2, by2, bx3, by3);
-                        } 
+                        }
                     } else if (i != end - 1 && !java.lang.Double.isNaN(scaledY[i + 1])) {
                         //Have current , previous, and next, but not two before
                         path.moveTo(scaledX[i - 1], scaledY[i - 1]);

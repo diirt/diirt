@@ -18,12 +18,12 @@ import static org.diirt.vtype.json.JsonArrays.*;
  * @author carcassi
  */
 public class JsonArraysTest {
-    
+
     public String integerArray = "[0,1,2]";
     public String doubleArray = "[0.0,0.1,0.2]";
     public String stringArray = "[\"A\",\"B\",\"C\"]";
     public String mixedArray = "[\"A\",1,\"C\"]";
-    
+
     public JsonArray parseJson(String json) {
         try (JsonReader reader = Json.createReader(new StringReader(json))) {
             return reader.readArray();
@@ -45,5 +45,5 @@ public class JsonArraysTest {
         assertThat(isStringArray(parseJson(stringArray)), equalTo(true));
         assertThat(isStringArray(parseJson(mixedArray)), equalTo(false));
     }
-    
+
 }

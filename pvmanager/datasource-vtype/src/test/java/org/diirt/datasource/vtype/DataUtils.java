@@ -7,8 +7,6 @@ package org.diirt.datasource.vtype;
 import org.diirt.vtype.VMultiDouble;
 import org.diirt.vtype.VDouble;
 import java.util.List;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VMultiDouble;
 
 /**
  *

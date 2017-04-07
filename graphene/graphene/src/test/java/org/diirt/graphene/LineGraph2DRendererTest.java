@@ -4,21 +4,10 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Point2DDataset;
-import org.diirt.graphene.NumberColorMaps;
-import org.diirt.graphene.AxisRanges;
-import org.diirt.graphene.InterpolationScheme;
-import org.diirt.graphene.LineGraph2DRenderer;
-import org.diirt.graphene.Point2DDatasets;
-import org.diirt.graphene.LineGraph2DRendererUpdate;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import javax.imageio.ImageIO;
-import junit.framework.AssertionFailedError;
 import org.diirt.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -229,7 +218,7 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     public static void tearDownClass() throws Exception {
         largeDataset = null;
     }
-    
+
     @Test
     public void oneDataPointLinear() throws Exception {
         Point2DDataset data = Point2DTestDatasets.oneValueDataset();
@@ -648,11 +637,11 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
         //Compares to correct image
         ImageAssert.compareImages("lineGraph2D.manyLinesStress", image);
     }
-    
+
     @Test
     @Ignore
     public void drawGraphBuffer()throws Exception{
-        
+
         Point2DDataset data = Point2DTestDatasets.twoValueDataset();
         GraphBuffer buffer = new GraphBuffer(300, 200);
         LineGraph2DRenderer renderer = new LineGraph2DRenderer(300, 200);

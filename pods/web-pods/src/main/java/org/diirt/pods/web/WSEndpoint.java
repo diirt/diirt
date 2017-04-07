@@ -16,13 +16,16 @@ import org.diirt.pods.web.common.MessageUnsubscribe;
 import org.diirt.pods.web.common.MessageEncoder;
 import org.diirt.pods.web.common.MessageResume;
 import org.diirt.pods.web.common.MessagePause;
+
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpSession;
 import javax.websocket.CloseReason;
 import javax.websocket.EndpointConfig;
@@ -32,9 +35,11 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+
 import org.diirt.pods.common.ChannelTranslation;
 import org.diirt.pods.common.ChannelTranslator;
 import org.diirt.util.config.Configuration;
+import org.diirt.util.time.TimeDuration;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
@@ -42,11 +47,12 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
+
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
+
 import org.diirt.datasource.formula.FormulaAst;
 import org.diirt.pods.common.ChannelRequest;
 import org.diirt.pods.web.common.MessageDecodeException;
-import org.diirt.util.time.TimeDuration;
 
 /**
  *
@@ -54,7 +60,7 @@ import org.diirt.util.time.TimeDuration;
  */
 @ServerEndpoint(value = "/socket", decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class}, configurator = WSEndpointConfigurator.class)
 public class WSEndpoint {
-    
+
     // TODO: understand lifecycle of whole web application and put
     // configuration there, including closing datasources.
     static {
@@ -66,14 +72,14 @@ public class WSEndpoint {
         }
         channelTranslator = temp;
     }
-    
+
     private static Logger log = Logger.getLogger(WSEndpoint.class.getName());
     private static final ChannelTranslator channelTranslator;
-    
+
     // XXX: need to understand how state can actually be used
     private final Map<Integer, PVReader<?>> channels = new ConcurrentHashMap<>();
     private int defaultMaxRate;
-    
+
     private String currentUser;
     private String remoteAddress;
 
@@ -105,7 +111,7 @@ public class WSEndpoint {
             sendError(session, message.getId(), "Subscription with id '" + message.getId() + "' already exists");
             return;
         }
-        
+
         // TODO: add maxRate check during parsing
         int maxRate = defaultMaxRate;
         if (message.getMaxRate() >= 20) {
@@ -121,13 +127,13 @@ public class WSEndpoint {
             sendError(session, message.getId(), ex.getMessage());
             return;
         }
-        
+
         List<String> clientChannels = clientAst.listChannelNames();
         Map<String, FormulaAst> substitutions = new HashMap<>();
         boolean readOnly = message.isReadOnly();
         for (String clientChannel : clientChannels) {
             ChannelTranslation translation = channelTranslator.translate(new ChannelRequest(clientChannel, currentUser, null, null, remoteAddress));
-            
+
             // No channel map, return an error
             if (translation == null) {
                 sendError(session, message.getId(), "Channel " + clientChannel + " does not exist");
@@ -144,7 +150,7 @@ public class WSEndpoint {
                 sendError(session, message.getId(), "No write access to channel " + clientChannel);
                 readOnly = true;
             }
-            
+
             try {
                 substitutions.put(clientChannel, FormulaAst.formula(translation.getFormula()));
             } catch (RuntimeException ex) {
@@ -152,7 +158,7 @@ public class WSEndpoint {
                 return;
             }
         }
-        
+
         connect(readOnly, clientAst.substituteChannels(substitutions), session, message, maxRate);
     }
 
@@ -162,14 +168,14 @@ public class WSEndpoint {
             reader = PVManager.read(ast.toExpression())
                     .readListener(new ReadOnlyListener(session, message))
                     .timeout(TimeDuration.ofSeconds(1.0), "Still connecting...")
-                    .maxRate(TimeDuration.ofMillis(maxRate));
+                    .maxRate(Duration.ofMillis(maxRate));
         } else {
             ReadWriteListener readWriteListener = new ReadWriteListener(session, message);
             reader = PVManager.readAndWrite(formula(ast))
                     .readListener(readWriteListener)
                     .writeListener(readWriteListener)
                     .timeout(TimeDuration.ofSeconds(1.0), "Still connecting...")
-                    .asynchWriteAndMaxReadRate(TimeDuration.ofMillis(maxRate));
+                    .asynchWriteAndMaxReadRate(Duration.ofMillis(maxRate));
         }
         channels.put(message.getId(), reader);
     }
@@ -229,7 +235,7 @@ public class WSEndpoint {
         } else {
             defaultMaxRate = 1000;
         }
-        
+
         // Retrive user and remote host for security purposes
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("session");
         remoteAddress = (String) httpSession.getAttribute("remoteHost");
@@ -248,7 +254,7 @@ public class WSEndpoint {
         }
         closed = true;
     }
-    
+
     private volatile boolean closed = false;
 
     @OnError
@@ -260,7 +266,7 @@ public class WSEndpoint {
             log.log(Level.WARNING, "Unhandled exception", cause);
         }
     }
-    
+
     public void sendError(Session session, int id, String message) {
         session.getAsyncRemote().sendObject(new MessageErrorEvent(id, message));
     }
@@ -297,7 +303,7 @@ public class WSEndpoint {
             }
         }
     }
-    
+
     private static boolean readConnected(Object channel) {
         @SuppressWarnings("unchecked")
         PVReader<Object> reader = (PVReader<Object>) channel;

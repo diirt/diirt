@@ -21,7 +21,7 @@ import static org.diirt.vtype.ValueFactory.*;
 import org.diirt.vtype.table.VTableFactory;
 
 /**
- * 
+ *
  * @author carcassi
  */
 class VTypeToJsonV1 {
@@ -60,7 +60,7 @@ class VTypeToJsonV1 {
                 throw new UnsupportedOperationException("Not implemented yet");
         }
     }
-    
+
     static String typeNameOf(JsonObject json) {
         JsonObject type = json.getJsonObject("type");
         if (type == null) {
@@ -68,7 +68,7 @@ class VTypeToJsonV1 {
         }
         return type.getString("name");
     }
-    
+
     static JsonObject toJson(VType vType) {
         if (vType instanceof VNumber) {
             return toJson((VNumber) vType);
@@ -91,7 +91,7 @@ class VTypeToJsonV1 {
         }
         throw new UnsupportedOperationException("Not implemented yet");
     }
-    
+
     static VNumber toVNumber(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         Number value;
@@ -119,34 +119,34 @@ class VTypeToJsonV1 {
         }
         return newVNumber(value, mapper.getAlarm(), mapper.getTime(), mapper.getDisplay());
     }
-    
+
     static VString toVString(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVString(mapper.getString("value"), mapper.getAlarm(), mapper.getTime());
     }
-    
+
     static VStringArray toVStringArray(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVStringArray(mapper.getListString("value"), mapper.getAlarm(), mapper.getTime());
     }
-    
+
     static VEnum toVEnum(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         List<String> labels = mapper.getJsonObject("enum").getListString("labels");
         return newVEnum(mapper.getInt("value"), labels, mapper.getAlarm(), mapper.getTime());
     }
-    
+
     static VEnumArray toVEnumArray(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVEnumArray(mapper.getListInt("value"), mapper.getJsonObject("enum").getListString("labels"), mapper.getAlarm(), mapper.getTime());
     }
-    
+
     static VTable toVTable(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         List<Class<?>> types = mapper.getColumnTypes("columnTypes");
         return newVTable(types, mapper.getListString("columnNames"), mapper.getColumnValues("columnValues", types));
     }
-    
+
     static VNumberArray toVNumberArray(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         ListNumber value;
@@ -174,17 +174,17 @@ class VTypeToJsonV1 {
         }
         return newVNumberArray(value, mapper.getAlarm(), mapper.getTime(), mapper.getDisplay());
     }
-    
+
     static VBoolean toVBoolean(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVBoolean(mapper.getBoolean("value"), mapper.getAlarm(), mapper.getTime());
     }
-    
+
     static VBooleanArray toVBooleanArray(JsonObject json) {
         VTypeJsonMapper mapper = new VTypeJsonMapper(json);
         return newVBooleanArray(mapper.getListBoolean("value"), mapper.getAlarm(), mapper.getTime());
     }
-    
+
     static JsonObject toJson(VNumber vNumber) {
         return new JsonVTypeBuilder()
                 .addType(vNumber)
@@ -194,7 +194,7 @@ class VTypeToJsonV1 {
                 .addDisplay(vNumber)
                 .build();
     }
-    
+
     static JsonObject toJson(VNumberArray vNumberArray) {
         return new JsonVTypeBuilder()
                 .addType(vNumberArray)
@@ -204,7 +204,7 @@ class VTypeToJsonV1 {
                 .addDisplay(vNumberArray)
                 .build();
     }
-    
+
     static JsonObject toJson(VBoolean vBoolean) {
         return new JsonVTypeBuilder()
                 .addType(vBoolean)
@@ -213,7 +213,7 @@ class VTypeToJsonV1 {
                 .addTime(vBoolean)
                 .build();
     }
-    
+
     static JsonObject toJson(VBooleanArray vBooleanArray) {
         return new JsonVTypeBuilder()
                 .addType(vBooleanArray)
@@ -222,7 +222,7 @@ class VTypeToJsonV1 {
                 .addTime(vBooleanArray)
                 .build();
     }
-    
+
     static JsonObject toJson(VString vString) {
         return new JsonVTypeBuilder()
                 .addType(vString)
@@ -231,7 +231,7 @@ class VTypeToJsonV1 {
                 .addTime(vString)
                 .build();
     }
-    
+
     static JsonObject toJson(VStringArray vStringArray) {
         return new JsonVTypeBuilder()
                 .addType(vStringArray)
@@ -240,7 +240,7 @@ class VTypeToJsonV1 {
                 .addTime(vStringArray)
                 .build();
     }
-    
+
     static JsonObject toJson(VEnum vEnum) {
         return new JsonVTypeBuilder()
                 .addType(vEnum)
@@ -250,7 +250,7 @@ class VTypeToJsonV1 {
                 .addEnum(vEnum)
                 .build();
     }
-    
+
     static JsonObject toJson(VEnumArray vEnum) {
         return new JsonVTypeBuilder()
                 .addType(vEnum)
@@ -260,7 +260,7 @@ class VTypeToJsonV1 {
                 .addEnum(vEnum)
                 .build();
     }
-    
+
     static JsonObject toJson(VTable vTable) {
         return new JsonVTypeBuilder()
                 .addType(vTable)

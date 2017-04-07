@@ -22,12 +22,12 @@ import org.diirt.service.ServiceDescription;
  * @author carcassi
  */
 public class JDBCServiceDescription extends ServiceDescription {
-    
+
     DataSource dataSource;
-    
+
     /**
      * A new service description with the given service name and description.
-     * 
+     *
      * @param name the name of the service
      * @param description a brief description
      */
@@ -39,7 +39,7 @@ public class JDBCServiceDescription extends ServiceDescription {
      * The JDBC DataSource to use for database connection.
      * <p>
      * Use {@link SimpleDataSource} if you have a JDBC url.
-     * 
+     *
      * @param dataSource a JDBC datasource; can't be null
      * @return this
      */
@@ -50,7 +50,7 @@ public class JDBCServiceDescription extends ServiceDescription {
         this.dataSource = dataSource;
         return this;
     }
-    
+
     @Override
     public Service createService(){
         return new JDBCService(this);

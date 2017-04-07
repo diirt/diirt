@@ -21,19 +21,19 @@ public class WebPodsChannel {
         this.listener = listener;
         this.channelName = channelName;
     }
-    
+
     public void pause() {
         client.pauseChannel(this);
     }
-    
+
     public void resume() {
         client.resumeChannel(this);
     }
-    
+
     public void unsubscribe() {
         client.unsubscribeChannel(this);
     }
-    
+
     public WebPodsChannelListener getListener() {
         return listener;
     }
@@ -45,5 +45,5 @@ public class WebPodsChannel {
     public String getChannelName() {
         return channelName;
     }
-    
+
 }

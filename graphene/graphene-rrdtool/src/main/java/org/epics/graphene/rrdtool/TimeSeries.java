@@ -14,7 +14,7 @@ import org.epics.util.time.Timestamp;
  * @author carcassi
  */
 public class TimeSeries {
-    
+
     private List<Timestamp> time;
     private ListDouble values;
 
@@ -22,11 +22,11 @@ public class TimeSeries {
         this.time = time;
         this.values = values;
     }
-    
+
     public List<Timestamp> getTime() {
         return time;
     }
-    
+
     public ListDouble getValues() {
         return values;
     }

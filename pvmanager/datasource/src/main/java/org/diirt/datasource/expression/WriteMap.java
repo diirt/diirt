@@ -44,7 +44,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
 
     /**
      * Removes all the expressions currently in the map.
-     * 
+     *
      * @return this expression
      */
     public WriteMap<T> clear() {
@@ -62,7 +62,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
 
     /**
      * Returns the number of expressions in the group.
-     * 
+     *
      * @return number of expressions in the group
      */
     public int size() {
@@ -73,7 +73,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
 
     /**
      * Adds the expression to the map.
-     * 
+     *
      * @param expression the expression to be added
      * @return this expression
      */
@@ -85,7 +85,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
             if (expressions.containsKey(expression.getName())) {
                 throw new IllegalArgumentException("MapExpression already contain an expression named '" + expression.getName() + "'");
             }
-            
+
             getMapOfWriteFunction().getMapUpdateCollector().writeValue(MapUpdate.addWriteFunction(expression.getName(), expression.getWriteFunction()));
             expressions.put(expression.getName(), expression);
             if (director != null) {
@@ -94,7 +94,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
             return this;
         }
     }
-    
+
     /**
      * Adds the expressions to the map.
      *
@@ -112,7 +112,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
 
     /**
      * Removes the expression with the given name.
-     * 
+     *
      * @param name the name of the expression to remove
      * @return this expression
      */
@@ -121,7 +121,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
             if (!expressions.containsKey(name)) {
                 throw new IllegalArgumentException("MapExpression does not contain an expression named '" + name + "'");
             }
-            
+
             getMapOfWriteFunction().getMapUpdateCollector().writeValue(MapUpdate.<T>removeFunction(name));
             WriteExpression<T> expression = expressions.remove(name);
             if (director != null) {
@@ -130,7 +130,7 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
             return this;
         }
     }
-    
+
     /**
      * Removes the expressions from the map.
      *
@@ -157,5 +157,5 @@ public class WriteMap<T> extends WriteExpressionImpl<Map<String, T>> {
             }
         }
     }
-    
+
 }

@@ -12,7 +12,7 @@ import org.diirt.util.array.ListNumber;
  * @author carcassi
  */
 class IVTable implements VTable {
-    
+
     private final List<Class<?>> types;
     private final List<String> names;
     private final List<Object> values;
@@ -28,14 +28,14 @@ class IVTable implements VTable {
         }
         this.rowCount = maxCount;
     }
-    
+
     private static int getDataSize(Object data) {
         if (data instanceof List) {
             return ((List) data).size();
         } else if (data instanceof ListNumber) {
             return ((ListNumber) data).size();
         }
-        
+
         throw new IllegalArgumentException("Object " + data + " is not supported");
     }
 
@@ -68,5 +68,5 @@ class IVTable implements VTable {
     public String toString() {
         return VTypeToString.toString(this);
     }
-    
+
 }

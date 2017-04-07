@@ -25,7 +25,7 @@ public class WriteRecipeBuilder {
     public WriteRecipeBuilder() {
         caches = new HashMap<>();
     }
-    
+
     /**
      * Adds a channel and its write cache to the recipe.
      *
@@ -48,7 +48,7 @@ public class WriteRecipeBuilder {
      * <p>
      * To finish building the recipe, one needs to specify where to send errors
      * and where to send the connection status changes.
-     * 
+     *
      * @param exceptionWriteFunction where exception should be routed
      * @param connectionCollector where connection status should be routed
      * @return a new WriteRecipe
@@ -59,11 +59,11 @@ public class WriteRecipeBuilder {
             String channelName = entry.getKey();
             Collection<WriteCache<?>> valueCaches = entry.getValue();
             for (WriteCache<?> valueCache : valueCaches) {
-                recipes.add(new ChannelWriteRecipe(channelName, 
+                recipes.add(new ChannelWriteRecipe(channelName,
                         new ChannelHandlerWriteSubscription(valueCache, exceptionWriteFunction, connectionCollector.addChannel(channelName))));
             }
         }
         return new WriteRecipe(recipes);
     }
-    
+
 }

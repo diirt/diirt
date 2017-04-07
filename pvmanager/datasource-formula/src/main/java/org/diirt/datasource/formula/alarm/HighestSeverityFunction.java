@@ -4,7 +4,6 @@
  */
 package org.diirt.datasource.formula.alarm;
 
-import java.util.AbstractList;
 import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
@@ -65,8 +64,8 @@ class HighestSeverityFunction implements FormulaFunction {
         if (time == null) {
             time = ValueFactory.timeNow();
         }
-        
+
         return ValueFactory.newVEnum(alarm.getAlarmSeverity().ordinal(), AlarmSeverity.labels(), alarm, time);
     }
-    
+
 }

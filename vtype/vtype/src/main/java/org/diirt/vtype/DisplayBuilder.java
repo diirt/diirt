@@ -14,7 +14,7 @@ import org.diirt.util.text.NumberFormats;
  * @author carcassi
  */
 public class DisplayBuilder {
-    
+
     private Double lowerDisplayLimit = Double.NaN;
     private Double lowerCtrlLimit = Double.NaN;
     private Double lowerAlarmLimit = Double.NaN;
@@ -47,11 +47,11 @@ public class DisplayBuilder {
      */
     public DisplayBuilder() {
     }
-    
-    
+
+
     /**
      * Changes the lower display limit.
-     * 
+     *
      * @param lowerDisplayLimit the lower display limit
      * @return this
      */
@@ -59,10 +59,10 @@ public class DisplayBuilder {
         this.lowerDisplayLimit = lowerDisplayLimit;
         return this;
     }
-    
+
     /**
      * Changes the lower control limit.
-     * 
+     *
      * @param lowerCtrlLimit the lower control limit
      * @return this
      */
@@ -73,7 +73,7 @@ public class DisplayBuilder {
 
     /**
      * Changes the lower alarm limit.
-     * 
+     *
      * @param lowerAlarmLimit the lower alarm limit
      * @return this
      */
@@ -81,10 +81,10 @@ public class DisplayBuilder {
         this.lowerAlarmLimit = lowerAlarmLimit;
         return this;
     }
-    
+
     /**
      * Changes the lower warning limit.
-     * 
+     *
      * @param lowerWarningLimit the lower warning limit
      * @return this
      */
@@ -92,10 +92,10 @@ public class DisplayBuilder {
         this.lowerWarningLimit = lowerWarningLimit;
         return this;
     }
-    
+
     /**
      * Changes the upper warning limit.
-     * 
+     *
      * @param upperWarningLimit the upper warning limit
      * @return this
      */
@@ -106,7 +106,7 @@ public class DisplayBuilder {
 
     /**
      * Changes the upper alarm limit.
-     * 
+     *
      * @param upperAlarmLimit the upper alarm limit
      * @return this
      */
@@ -114,10 +114,10 @@ public class DisplayBuilder {
         this.upperAlarmLimit = upperAlarmLimit;
         return this;
     }
-    
+
     /**
      * Changes the upper control limit.
-     * 
+     *
      * @param upperCtrlLimit the upper control limit
      * @return this
      */
@@ -125,10 +125,10 @@ public class DisplayBuilder {
         this.upperCtrlLimit = upperCtrlLimit;
         return this;
     }
-    
+
     /**
      * Changes the upper display limit.
-     * 
+     *
      * @param upperDisplayLimit the upper display limit
      * @return this
      */
@@ -136,10 +136,10 @@ public class DisplayBuilder {
         this.upperDisplayLimit = upperDisplayLimit;
         return this;
     }
-    
+
     /**
      * Changes the unit.
-     * 
+     *
      * @param units the unit
      * @return this
      */
@@ -150,7 +150,7 @@ public class DisplayBuilder {
 
     /**
      * Changes the number format.
-     * 
+     *
      * @param format the number format
      * @return this
      */
@@ -161,7 +161,7 @@ public class DisplayBuilder {
 
     /**
      * Creates a new Display.
-     * 
+     *
      * @return a new display
      */
     public Display build() {

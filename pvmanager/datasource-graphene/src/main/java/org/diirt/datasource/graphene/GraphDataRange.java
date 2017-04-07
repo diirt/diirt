@@ -15,7 +15,7 @@ import org.diirt.util.stats.Range;
  * @author carcassi
  */
 public class GraphDataRange {
-    
+
     private final Range plotRange;
     private final Range dataRange;
     private final Range integratedRange;
@@ -37,5 +37,5 @@ public class GraphDataRange {
     public Range getIntegratedRange() {
         return integratedRange;
     }
-    
+
 }

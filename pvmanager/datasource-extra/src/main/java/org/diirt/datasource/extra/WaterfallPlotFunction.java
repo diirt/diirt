@@ -7,9 +7,12 @@ package org.diirt.datasource.extra;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.diirt.datasource.ReadFunction;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.ValueUtil;
@@ -17,7 +20,6 @@ import org.diirt.vtype.VImage;
 import org.diirt.datasource.extra.WaterfallPlotParameters.InternalCopy;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Implements the image calculation.
@@ -30,7 +32,7 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
     private WaterfallPlotParameters.InternalCopy previousParameters;
     private BufferedImage previousBuffer;
     private VImage previousImage;
-    private Timestamp previousPlotEnd;
+    private Instant previousPlotEnd;
     private AdaptiveRange adaptiveRange;
     private DoubleArrayTimeCache doubleArrayTimeCache;
 
@@ -46,30 +48,30 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
     public void setParameters(InternalCopy parameters) {
         this.mutableParameters = parameters;
     }
-    
+
     private VImage drawImage() {
         // Make a safe copy of the parameters
         InternalCopy parameters = mutableParameters;
         if (parameters == null)
             return null;
-        
+
         // If parameters changed, redraw all
         boolean redrawAll = parameters != previousParameters;
-        
+
         // Calculate new end time for the plot, and how many pixels
         // should the plot scroll
-        Timestamp plotEnd;
+        Instant plotEnd;
         int nNewPixels;
         if (previousPlotEnd != null) {
-            nNewPixels = Timestamp.now().durationFrom(previousPlotEnd).dividedBy(parameters.pixelDuration);
+            nNewPixels = TimeDuration.dividedBy(Duration.between(previousPlotEnd, Instant.now()), parameters.pixelDuration);
             plotEnd = previousPlotEnd.plus(parameters.pixelDuration.multipliedBy(nNewPixels));
         } else {
-            plotEnd = Timestamp.now();
+            plotEnd = Instant.now();
             nNewPixels = 0;
             redrawAll = true;
         }
-        Timestamp plotStart = plotEnd.minus(parameters.pixelDuration.multipliedBy(parameters.height));
-        
+        Instant plotStart = plotEnd.minus(parameters.pixelDuration.multipliedBy(parameters.height));
+
         List<DoubleArrayTimeCache.Data> dataToPlot;
         if (redrawAll) {
             DoubleArrayTimeCache.Data data = doubleArrayTimeCache.getData(plotStart, plotEnd);
@@ -81,13 +83,13 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
         } else {
             dataToPlot = doubleArrayTimeCache.newData(plotStart, previousPlotEnd, previousPlotEnd, plotEnd);
         }
-        
+
         // If we already have an image, no new data, and the plot did not move,
         // just return the same plot!
         if (previousImage != null && nNewPixels == 0 && dataToPlot.isEmpty()) {
             return previousImage;
         }
-        
+
         // If we don't have an image, and we have no new data, return no image
         if (previousImage == null && dataToPlot.isEmpty()) {
             return null;
@@ -101,7 +103,7 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
         } else {
             adaptiveRange = null;
         }
-        
+
         // Scan new values
         // Should only scan if adaptive range is on and if parameters do not
         // have a fixed width
@@ -114,20 +116,20 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
                     adaptiveRange.considerValues(array);
             }
         }
-        
+
         if (adaptiveRange != null && adaptiveRange.limitsChanged()) {
             DoubleArrayTimeCache.Data data = doubleArrayTimeCache.getData(plotStart, plotEnd);
             dataToPlot = Collections.singletonList(data);
             redrawAll = true;
         }
-        
+
         int newWidth = calculateNewWidth(previousBuffer, parameters, newMaxArraySize);
         if (newWidth == 0) {
             // If all data was zero length, return no image
             return null;
         }
-        
-        
+
+
         // Create new image. Copy the old image if needed.
         BufferedImage image = new BufferedImage(newWidth, parameters.height, BufferedImage.TYPE_3BYTE_BGR);
         if (previousImage != null && !redrawAll) {
@@ -139,34 +141,34 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
             gc.fillRect(0, 0, newWidth, parameters.height);
             gc.dispose();
         }
-        
+
         for (DoubleArrayTimeCache.Data data : dataToPlot) {
             int pixelsFromStart = 0;
             if (data.getBegin().compareTo(plotStart) > 0) {
-                pixelsFromStart = data.getBegin().durationFrom(plotStart).dividedBy(parameters.pixelDuration);
+                pixelsFromStart = TimeDuration.dividedBy(Duration.between(plotStart, data.getBegin()), parameters.pixelDuration);
             }
             int y = image.getHeight() - pixelsFromStart - 1;
-            Timestamp pixelStart = plotStart.plus(parameters.pixelDuration.multipliedBy(pixelsFromStart));
+            Instant pixelStart = plotStart.plus(parameters.pixelDuration.multipliedBy(pixelsFromStart));
             if (parameters.adaptiveRange) {
                 drawSection(image, parameters, null, adaptiveRange, parameters.colorScheme, data, pixelStart, parameters.pixelDuration, y);
             } else {
                 drawSection(image, parameters, null, doubleArrayTimeCache.getDisplay(), parameters.colorScheme, data, pixelStart, parameters.pixelDuration, y);
             }
         }
-        
+
         previousImage = ValueUtil.toVImage(image);
         previousBuffer = image;
         previousPlotEnd = plotEnd;
         previousParameters = parameters;
         return previousImage;
     }
-    
+
     private static void drawSection(BufferedImage image, InternalCopy parameters,
             double[] positions, Display display, ColorScheme colorScheme, DoubleArrayTimeCache.Data data,
-            Timestamp pixelStart, TimeDuration pixelDuration, int y) {
+            Instant pixelStart, Duration pixelDuration, int y) {
         int usedArrays = 0;
-        Timestamp pixelEnd = pixelStart.plus(pixelDuration);
-        
+        Instant pixelEnd = pixelStart.plus(pixelDuration);
+
         // Loop until the pixel starts before the range end
         while (pixelStart.compareTo(data.getEnd()) < 0) {
             // Get all the values in the pixel
@@ -178,24 +180,24 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
             } else {
                 drawLine(y, dataToDisplay, positions, display, colorScheme, image, parameters);
             }
-            
+
             y--;
             pixelStart = pixelStart.plus(pixelDuration);
             pixelEnd = pixelStart.plus(pixelDuration);
         }
     }
-    
+
     private static int calculateNewWidth(BufferedImage previousBuffer, InternalCopy parameters, int maxArraySize) {
         if (previousBuffer == null)
             return maxArraySize;
-        
+
         return Math.max(previousBuffer.getWidth(), maxArraySize);
     }
 
     private static void copyPreviousLine(BufferedImage image, int y, InternalCopy parameters) {
         if (y < 0 || y >= image.getHeight())
             return;
-        
+
         int previousY = y + 1;
         if (previousY < 0 || previousY >= image.getHeight())
             return;
@@ -209,15 +211,15 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
             }
         }
     }
-    
+
     private static ListNumber aggregate(List<ListNumber> values) {
         if (values.isEmpty())
             return null;
-        
+
         return values.get(values.size() - 1);
     }
-    
-    private static List<ListNumber> valuesInPixel(Timestamp pixelStart, Timestamp pixelEnd, DoubleArrayTimeCache.Data data, int usedArrays) {
+
+    private static List<ListNumber> valuesInPixel(Instant pixelStart, Instant pixelEnd, DoubleArrayTimeCache.Data data, int usedArrays) {
         List<ListNumber> pixelValues = new ArrayList<ListNumber>();
         int currentArray = usedArrays;
         while (currentArray < data.getNArrays() && data.getTimestamp(currentArray).compareTo(pixelEnd) <= 0) {
@@ -226,14 +228,14 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
         }
         return pixelValues;
     }
-    
+
     private static void drawLine(int y, ListNumber data, double[] positions, Display display, ColorScheme colorScheme, BufferedImage image, InternalCopy parameters) {
         if (positions != null)
             throw new RuntimeException("Positions not supported yet");
-        
+
         if (y < 0 || y >= image.getHeight())
             return;
-            
+
         if (!parameters.scrollDown) {
             y = parameters.height - y - 1;
         }

@@ -8,20 +8,20 @@ package org.diirt.vtype.next;
  * Scalar long with alarm, timestamp, display and control information.
  * Auto-unboxing makes the extra method for the primitive type
  * unnecessary.
- * 
+ *
  * @author carcassi
  */
 public abstract class VLong extends VNumber {
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public abstract Long getValue();
-    
+
     /**
      * Creates a new VLong.
-     * 
+     *
      * @param value the value
      * @param alarm the alarm
      * @param time the time

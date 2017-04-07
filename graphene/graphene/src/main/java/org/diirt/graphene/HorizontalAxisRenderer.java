@@ -5,16 +5,13 @@
 package org.diirt.graphene;
 
 import java.awt.*;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author carcassi
  */
 class HorizontalAxisRenderer {
-    
+
     private ValueAxis axis;
     private static Font defaultAxisFont = FontUtil.getLiberationSansRegular();
     private Font axisFont = defaultAxisFont;
@@ -34,7 +31,7 @@ class HorizontalAxisRenderer {
         this.axis = valueAxis;
         this.bottomMargin = bottomMargin;
         metrics = graphics.getFontMetrics(axisFont);
-        
+
         // Compute x axis spacing
         xValueTicks = axis.getTickValues();
         xLabels = axis.getTickLabels();
@@ -43,9 +40,9 @@ class HorizontalAxisRenderer {
             xLabelWidths[i] = metrics.stringWidth(xLabels[i]);
         }
         axisHeight = bottomMargin + metrics.getHeight() - metrics.getLeading() + textTickMargin + tickSize;
-        
+
     }
-    
+
     public void draw(Graphics2D graphics, int startImage, int startAxis, int endAxis, int endImage, int axisPosition) {
         int plotWidth = endAxis - startAxis;
         int imageWidth = endImage - startImage;
@@ -54,28 +51,28 @@ class HorizontalAxisRenderer {
         for (int i = 0; i < xTicks.length; i++) {
             xTicks[i] = startAxis + (int) (MathUtil.normalize(xValueTicks[i], axis.getMinValue(), axis.getMaxValue()) * plotWidth);
         }
-        
+
         // Draw x-axis
         graphics.setColor(axisColor);
         graphics.setFont(axisFont);
         graphics.drawLine(startAxis, imageHeight - getAxisHeight(), startAxis + plotWidth, imageHeight - getAxisHeight());
         int[] drawRange = new int[] {0, imageWidth};
-        
+
         // Draw first and last value first, as they must be there
         graphics.setColor(axisTextColor);
         drawCenteredText(graphics, metrics, xLabels[0], xTicks[0], drawRange, imageHeight - bottomMargin, true, false);
         drawCenteredText(graphics, metrics, xLabels[xLabels.length - 1], xTicks[xLabels.length - 1], drawRange, imageHeight - bottomMargin, false, false);
-        
+
         for (int i = 0; i < xLabels.length; i++) {
             graphics.setColor(axisTextColor);
             drawCenteredText(graphics, metrics, xLabels[i], xTicks[i], drawRange, imageHeight - bottomMargin, true, true);
             graphics.setColor(axisTickColor);
             graphics.drawLine(xTicks[i], imageHeight - getAxisHeight(), xTicks[i], imageHeight - getAxisHeight() + tickSize);
         }
-        
+
     }
-    
-    
+
+
     public int getAxisHeight() {
         return axisHeight;
     }
@@ -86,12 +83,12 @@ class HorizontalAxisRenderer {
         // If the center is not in the range, don't draw anything
         if (drawRange[MAX] < center || drawRange[MIN] > center)
             return;
-        
+
         double width = metrics.getStringBounds(text, graphics).getWidth();
         // If there is no space, don't draw anything
         if (drawRange[MAX] - drawRange[MIN] < width)
             return;
-        
+
         int targetX = center - (int) ((width / 2));
         if (targetX < drawRange[MIN]) {
             if (centeredOnly)
@@ -102,9 +99,9 @@ class HorizontalAxisRenderer {
                 return;
             targetX = drawRange[MAX] - (int) width;
         }
-        
+
         graphics.drawString(text, targetX, y);
-        
+
         if (updateMin) {
             drawRange[MIN] = targetX + (int) width + marginBetweenXLabels;
         } else {
@@ -112,9 +109,9 @@ class HorizontalAxisRenderer {
         }
     }
 
-    
+
     public int[] horizontalTickPositions() {
         return xTicks;
     }
-    
+
 }

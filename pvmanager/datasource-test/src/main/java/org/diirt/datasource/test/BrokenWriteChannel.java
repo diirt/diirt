@@ -36,5 +36,5 @@ class BrokenWriteChannel extends MultiplexedChannelHandler<Object, Object> {
             callback.channelWritten(ex);
         }
     }
-    
+
 }

@@ -12,7 +12,7 @@ package org.diirt.datasource;
 class LastExceptionCollector extends QueueCollector<Exception> {
 
     private final ExceptionHandler exceptionHandler;
-    
+
     public LastExceptionCollector(int maxSize, ExceptionHandler exceptionHandler) {
         super(maxSize);
         this.exceptionHandler = exceptionHandler;
@@ -23,5 +23,5 @@ class LastExceptionCollector extends QueueCollector<Exception> {
         super.writeValue(newValue);
         exceptionHandler.handleException(newValue);
     }
-    
+
 }

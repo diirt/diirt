@@ -4,16 +4,8 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.graphene.Cell1DDataset;
-import org.diirt.graphene.AxisRanges;
-import org.diirt.graphene.AreaGraph2DRendererUpdate;
-import org.diirt.graphene.AreaGraph2DRenderer;
-import org.diirt.graphene.Cell1DDatasets;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import junit.framework.AssertionFailedError;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,14 +13,13 @@ import static org.mockito.Mockito.*;
 import org.junit.BeforeClass;
 import static org.diirt.graphene.ImageAssert.*;
 import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
 
 /**
  *
  * @author carcassi
  */
 public class AreaGraph2DRendererTest {
-    
+
     public AreaGraph2DRendererTest() {
     }
 
@@ -39,7 +30,7 @@ public class AreaGraph2DRendererTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Test
     public void test1() throws Exception {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
@@ -51,7 +42,7 @@ public class AreaGraph2DRendererTest {
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.1", image);
     }
-    
+
     @Test
     public void test2() throws Exception {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,5,10,5,0,5,10,0,5,10), 0, 10);
@@ -65,7 +56,7 @@ public class AreaGraph2DRendererTest {
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.3", image);
     }
-    
+
     @Test
     public void test4() throws Exception {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(0,1,2,3,4,5,6,7,8,9,10), 0, 10);
@@ -75,7 +66,7 @@ public class AreaGraph2DRendererTest {
         renderer.draw(graphics, dataset);
         compareImages("bar1DChart.4", image);
     }
-    
+
     @Test
     public void highlightSelection() throws Exception {
         Cell1DDataset dataset = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,

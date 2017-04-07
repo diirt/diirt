@@ -36,19 +36,19 @@ public class AddServiceMethod extends ServiceMethod {
         // Method implementation: this is what the service method actually does
         // Here we are choosing a synchronous implementation, that is the
         // calculation is done on the thread inside this method call.
-        
+
         // Extract data from parameters
         VNumber arg1 = (VNumber) parameters.get("arg1");
         VNumber arg2 = (VNumber) parameters.get("arg2");
-        
+
         // Check for nulls
         if (arg1 == null || arg2 == null) {
             return new HashMap<>();
         }
-        
+
         // Perform calculation
         VNumber result = ValueFactory.newVDouble(arg1.getValue().doubleValue() + arg2.getValue().doubleValue());
-        
+
         // Prepare the result
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("result", result);

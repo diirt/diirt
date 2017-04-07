@@ -105,11 +105,11 @@ class SubArrayFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray numberArray = (VNumberArray) args.get(0);
         int fromIndex = ((VNumber) args.get(1)).getValue().intValue();
         int toIndex = ((VNumber) args.get(2)).getValue().intValue();
-        
+
         return newVNumberArray(
                 ListMath.limit(numberArray.getData(), fromIndex, toIndex),
                 ValueUtil.highestSeverityOf(args, false),

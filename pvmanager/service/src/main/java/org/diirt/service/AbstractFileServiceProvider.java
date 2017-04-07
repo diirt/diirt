@@ -52,18 +52,18 @@ public abstract class AbstractFileServiceProvider implements ServiceProvider {
     /**
      * The default location for the configuration. By default, it is
      * $DIIRT_HOME/services/SERVICE_PROVIDER_NAME.
-     * 
+     *
      * @return the configuration location
      */
     public File getDefaultConfigurationDirectory() {
-        return new File(Configuration.getDirectory(), "services/" + getName()); 
+        return new File(Configuration.getDirectory(), "services/" + getName());
     }
 
     /**
      * Creates a service from the given file.
      * <p>
      * Implementors of this method need not to care about logging and service registration.
-     * 
+     *
      * @param file a file in the configuration directory
      * @return the new service or null if no service corresponds to the file
      * @throws Exception if there is a problem creating the service from the file
@@ -76,7 +76,7 @@ public abstract class AbstractFileServiceProvider implements ServiceProvider {
      * not user defined through configuration files.
      * <p>
      * Implementors need not to care about logging and service registration.
-     * 
+     *
      * @return a collection of services
      */
     public Collection<Service> additionalServices() {
@@ -125,7 +125,7 @@ public abstract class AbstractFileServiceProvider implements ServiceProvider {
             services.add(additionalService);
             log.log(Level.CONFIG, "Created {0} service ''{1}''", new Object[] {getName(), additionalService.getName()});
         }
-        
+
         log.log(Level.CONFIG, "Created {0} {1} services", new Object[] {services.size(), getName()});
         return services;
     }

@@ -32,7 +32,7 @@ public class ExpressionLanguage {
 
     /**
      * Aggregates the sample at the scan rate and takes the average.
-     * 
+     *
      * @param arrayPv the expression to take the average of; can't be null
      * @return an expression representing the average of the expression
      */
@@ -43,7 +43,7 @@ public class ExpressionLanguage {
 
     /**
      * Creates a waterfall plot from a series of scalar pvs.
-     * 
+     *
      * @param vDoubles the expression to take the average of; can't be null
      * @return an expression representing the average of the expression
      */
@@ -51,10 +51,10 @@ public class ExpressionLanguage {
         DesiredRateExpressionList<List<T>> queue = newValuesOf(vDoubles);
         return new WaterfallPlot(queue, "waterfallOf");
     }
-    
+
     /**
      * Creates a group of dynamically managed expressions.
-     * 
+     *
      * @return a new group
      */
     public static DynamicGroup group() {

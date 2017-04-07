@@ -6,7 +6,7 @@
         <title>graphene changes page</title>
         <author email="carcassi_AT_bnl.gov">Gabriele Carcassi</author>
     </properties>
-  
+
     <body>
         <release version="0.8" date="2014/07/31" description="Finalized axis range options.">
             <action dev="carcassi" type="update">

@@ -2,15 +2,15 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script type="text/javascript" src="../libraries/RGraph.common.core.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.dynamic.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.common.tooltips.js" ></script>
     <script type="text/javascript" src="../libraries/RGraph.bar.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A clickable grouped Bar chart</title>
-    
+
     <meta name="keywords" content="bar adjustabled adjusted click clicking" />
     <meta name="description" content="A Bar chart that can be adjusted by clicking it" />
     <meta name="robots" content="noindex,nofollow" />
@@ -18,9 +18,9 @@
 <body>
 
     <h1>A grouped Bar chart</h1>
-    
+
     <p>
-        
+
     </p>
 
     <canvas id="cvs" width="600" height="250">[No canvas support]</canvas>
@@ -37,7 +37,7 @@
                 .Set('ymax', 150)
                 .Draw();
 
-            
+
             bar5.canvas.onmousedown = function (e)
             {
                 var obj   = e.target.__object__;
@@ -48,9 +48,9 @@
                         value = Number(parseFloat(value).toFixed(1));
                     var index = shape['index'];
                     var group = RGraph.sequentialIndexToGrouped(index, obj.data);
-    
+
                     obj.data[group[0]][group[1]] = value.toFixed(1);
-                    
+
                     document.getElementById("out").value = "Value: " + value;
                     console.log('Value is: ' + value);
                 }

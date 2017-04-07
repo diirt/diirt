@@ -13,7 +13,7 @@ import org.diirt.vtype.VStringArray;
  * @author carcassi
  */
 public class VStringArrayToListStringReadFunction implements ReadFunction<List<String>> {
-    
+
     private final ReadFunction<VStringArray> function;
 
     public VStringArrayToListStringReadFunction(ReadFunction<VStringArray> function) {

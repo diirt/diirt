@@ -10,14 +10,14 @@ package org.diirt.util.array;
  * @author carcassi
  */
 public class ListNumbers {
-    
+
     /**
      * Creates a sorted view of the given ListNumber.
      * <p>
      * The ListNumber is not sorted in place, and the data is not copied out.
      * Therefore it's intended that the ListNumber is not changed while
      * the view is used.
-     * 
+     *
      * @param values the values to be sorted
      * @return the sorted view
      */
@@ -27,7 +27,7 @@ public class ListNumbers {
             // Nothing to sort
             return view;
         }
-        
+
         double value = values.getDouble(0);
         for (int i = 1; i < values.size(); i++) {
             double newValue = values.getDouble(i);
@@ -40,7 +40,7 @@ public class ListNumbers {
 
         return view;
     }
-    
+
     /**
      * Creates a sorted view of the given ListNumber based on the indexes provided.
      * This method can be used to sort the given values based on the ordering
@@ -49,7 +49,7 @@ public class ListNumbers {
      * The ListNumber is not sorted in place, and the data is not copied out.
      * Therefore it's intended that the ListNumber is not changed while
      * the view is used.
-     * 
+     *
      * @param values the values to be sorted
      * @param indexes the ordering to be used for the view
      * @return the sorted view
@@ -58,10 +58,10 @@ public class ListNumbers {
         SortedListView view = new SortedListView(values, indexes);
         return view;
     }
-    
+
     /**
      * Finds the value in the list, or the one right below it.
-     * 
+     *
      * @param values a list of values
      * @param value a value
      * @return the index of the value
@@ -73,19 +73,19 @@ public class ListNumbers {
         if (value >= values.getDouble(values.size() -1)) {
             return values.size() - 1;
         }
-        
+
         int index = binarySearch(0, values.size() - 1, values, value);
-        
+
         while (index != 0 && value == values.getDouble(index - 1)) {
             index--;
         }
-        
+
         return index;
     }
 
     /**
      * Finds the value in the list, or the one right above it.
-     * 
+     *
      * @param values a list of values
      * @param value a value
      * @return the index of the value
@@ -97,17 +97,17 @@ public class ListNumbers {
         if (value >= values.getDouble(values.size() -1)) {
             return values.size() - 1;
         }
-        
+
         int index = binarySearch(0, values.size() - 1, values, value);
-        
+
         while (index != values.size() - 1 && value > values.getDouble(index)) {
             index++;
         }
-        
+
         while (index != values.size() - 1 && value == values.getDouble(index + 1)) {
             index++;
         }
-        
+
         return index;
     }
 
@@ -132,17 +132,17 @@ public class ListNumbers {
                     high = mid - 1;
             }
         }
-        
+
         return low - 1;  // key not found.
     }
-    
+
     /**
      * Creates a list of equally spaced values given the range and the number of
      * elements.
      * <p>
      * Note that, due to rounding errors in double precision, the difference
      * between the elements may not be exactly the same.
-     * 
+     *
      * @param minValue the first value in the list
      * @param maxValue the last value in the list
      * @param size the size of the list
@@ -154,11 +154,11 @@ public class ListNumbers {
         }
         return new LinearListDoubleFromRange(size, minValue, maxValue);
     }
-    
+
     /**
      * Creates a list of equally spaced values given the first value, the
      * step between element and the size of the list.
-     * 
+     *
      * @param initialValue the first value in the list
      * @param increment the difference between elements
      * @param size the size of the list
@@ -170,7 +170,7 @@ public class ListNumbers {
         }
         return new LinearListDouble(size, initialValue, increment);
     }
-    
+
     /**
      * Tests whether the list contains a equally spaced numbers.
      * <p>
@@ -180,7 +180,7 @@ public class ListNumbers {
      * whether the difference is greater than the precision allowed by double.
      * Note that this method is really strict, and it may rule out cases
      * that may be considered to be linear.
-     * 
+     *
      * @param listNumber a list number
      * @return true if the elements of the list are equally spaced
      */
@@ -196,11 +196,11 @@ public class ListNumbers {
         }
         return true;
     }
-    
+
     /**
      * Converts an array of primitive numbers to the appropriate ListNumber
      * implementation.
-     * 
+     *
      * @param primitiveArray must be an array of primitive numbers (byte[],
      *        short[], int[], long[], float[] or double[])
      * @return the wrapped array
@@ -274,11 +274,11 @@ public class ListNumbers {
                 return size;
             }
     }
-    
+
     /**
      * Returns a view of the given list that presents only the elements
      * at the given indexes.
-     * 
+     *
      * @param list a numeric list
      * @param indexes the indexes with the values to expose
      * @return a wrapper around list

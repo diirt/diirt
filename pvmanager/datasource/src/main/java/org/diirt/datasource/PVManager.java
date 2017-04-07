@@ -48,7 +48,11 @@ public class PVManager {
 
     private static volatile Executor defaultNotificationExecutor = org.diirt.util.concurrent.Executors.localThread();
     private static volatile DataSource defaultDataSource = DataSourceProvider.createDataSource();
-    private static final ScheduledExecutorService workerPool = Executors.newScheduledThreadPool(Math.max(1, Runtime.getRuntime().availableProcessors() - 1),
+    private static final ScheduledExecutorService workerPool = Executors.newScheduledThreadPool(
+            Math.max(1,
+                    System.getProperty("MaxWorkerPoolSize") != null
+                            ? Integer.valueOf(System.getProperty("MaxWorkerPoolSize"))
+                            : Runtime.getRuntime().availableProcessors() - 1),
             org.diirt.util.concurrent.Executors.namedPool("PVMgr Worker "));
     private static ScheduledExecutorService readScannerExecutorService = workerPool;
     private static ScheduledExecutorService asyncWriteExecutor = workerPool;
@@ -64,7 +68,7 @@ public class PVManager {
 
     /**
      * Returns the current default executor that will execute all notifications.
-     * 
+     *
      * @return the default executor
      */
     public static Executor getDefaultNotificationExecutor() {
@@ -82,7 +86,7 @@ public class PVManager {
 
     /**
      * Returns the current default data source.
-     * 
+     *
      * @return a data source or null if it was not set
      */
     public static DataSource getDefaultDataSource() {
@@ -113,7 +117,7 @@ public class PVManager {
     public static <T> PVReaderConfiguration<T> read(DesiredRateExpression<T> pvExpression) {
         return new PVReaderConfiguration<T>(pvExpression);
     }
-    
+
     /**
      * Writes the given expression, and returns an object to configure the parameters
      * for the write.
@@ -125,7 +129,7 @@ public class PVManager {
     public static <T> PVWriterConfiguration<T> write(WriteExpression<T> writeExpression) {
         return new PVWriterConfiguration<T>(writeExpression);
     }
-    
+
     /**
      * Both reads and writes the given expression, and returns an object to configure the parameters
      * for the both read and write. It's similar to use both {@link #read(org.diirt.datasource.expression.SourceRateExpression) }
@@ -139,7 +143,7 @@ public class PVManager {
     public static <R, W> PVConfiguration<R, W> readAndWrite(SourceRateReadWriteExpression<R, W> readWriteExpression) {
         return readAndWrite(ExpressionLanguage.latestValueOf(readWriteExpression));
     }
-    
+
     /**
      * Both reads and writes the given expression, and returns an object to configure the parameters
      * for the both read and write. It's similar to use both {@link #read(org.diirt.datasource.expression.SourceRateExpression) }
@@ -156,7 +160,7 @@ public class PVManager {
 
     /**
      * Returns the current executor on which the asynchronous calls are executed.
-     * 
+     *
      * @return the current executor
      */
     public static ScheduledExecutorService getAsyncWriteExecutor() {
@@ -165,7 +169,7 @@ public class PVManager {
 
     /**
      * Changes the executor used for the asynchronous write calls.
-     * 
+     *
      * @param asyncWriteExecutor the new executor
      */
     public static void setAsyncWriteExecutor(ScheduledExecutorService asyncWriteExecutor) {
@@ -173,9 +177,9 @@ public class PVManager {
     }
 
     /**
-     * Returns the executor service used to schedule and run the 
+     * Returns the executor service used to schedule and run the
      * periodic reading scan for new values.
-     * 
+     *
      * @return the service for the read operations
      */
     public static ScheduledExecutorService getReadScannerExecutorService() {
@@ -185,11 +189,11 @@ public class PVManager {
     /**
      * Changes the executor service to use for executing the periodic read
      * scan.
-     * 
+     *
      * @param readScannerExecutorService  the new service for the read operations
      */
     public static void setReadScannerExecutorService(ScheduledExecutorService readScannerExecutorService) {
         PVManager.readScannerExecutorService = readScannerExecutorService;
     }
-    
+
 }

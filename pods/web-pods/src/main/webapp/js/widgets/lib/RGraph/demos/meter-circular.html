@@ -2,13 +2,13 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.effects.js" ></script>
     <script src="../libraries/RGraph.meter.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <meta name="keywords" content="demo meter circular css" />
     <meta name="description" content="A Meter chart that has been customised to appear circular. It use Meter chart customisations as well as CSS effects" />
     <meta name="robots" content="noindex,nofollow" />
@@ -16,7 +16,7 @@
 <body>
 
     <h1>A circular Meter chart</h1>
-    
+
     <p>
         This is a customised Meter chart. The canvas is still the usual rectangle but it has ben placed inside a DIV which has a large
         border-radius CSS property giving the circular appearance.
@@ -42,7 +42,7 @@
                 .Set('needle.radius', 110)
                 .Set('gutter.bottom', 35)
                 .Draw();
-            
+
             meter.canvas.onclick_rgraph = function (e)
             {
                 var obj = e.target.__object__;

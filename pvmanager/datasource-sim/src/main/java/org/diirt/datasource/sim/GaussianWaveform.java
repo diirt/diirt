@@ -4,11 +4,14 @@
  */
 package org.diirt.datasource.sim;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
+
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.vtype.VDoubleArray;
+
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Function to simulate a waveform containing a gaussian that moves to the
@@ -22,7 +25,7 @@ public class GaussianWaveform extends SimFunction<VDoubleArray> {
     private double[] buffer;
     private final double periodInSeconds;
     private VDoubleArray lastValue;
-    private Timestamp initialRefernce;
+    private Instant initialRefernce;
 
     /**
      * Creates a gaussian wave of 100 samples, with period of 1 second, standard deviation of
@@ -89,11 +92,11 @@ public class GaussianWaveform extends SimFunction<VDoubleArray> {
     @Override
     VDoubleArray nextValue() {
         if (lastTime == null)
-            lastTime = Timestamp.now();
+            lastTime = Instant.now();
         if (initialRefernce == null) {
             initialRefernce = lastTime;
         }
-        double t = lastTime.durationFrom(initialRefernce).toSeconds();
+        double t = initialRefernce.until(lastTime, ChronoUnit.SECONDS);
         double omega = 2 * Math.PI / periodInSeconds;
         return newVDoubleArray(new ArrayDouble(generateNewValue(omega, t)), alarmNone(),
                 newTime(lastTime), newDisplay(0.0, 0.0, 0.0, "x", Constants.DOUBLE_FORMAT,

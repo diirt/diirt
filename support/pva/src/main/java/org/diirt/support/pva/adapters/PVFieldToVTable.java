@@ -26,61 +26,61 @@ public class PVFieldToVTable implements VTable {
     private final List<String> names;
     private final List<Object> values;
     private final int rowCount;
-	
-	/**
-	 * @param pvField
-	 * @param disconnected
-	 */
-	public PVFieldToVTable(PVStructure pvField, boolean disconnected) {
-		
-		PVStringArray labelsField =
-			(PVStringArray)pvField.getScalarArrayField("labels", ScalarType.pvString);
-		String[] labels;
-		if (labelsField != null)
-		{
-			StringArrayData data = new StringArrayData();
-			labelsField.get(0, labelsField.getLength(), data);
-			labels = data.data;
-		}
-		else
-			labels = null;
-		
-		PVStructure valueField = pvField.getStructureField("value");
-		if (valueField != null)
-		{
-			PVField[] cols = valueField.getPVFields();
-			int numCols = cols.length;
-			types = new ArrayList<Class<?>>(numCols);
-			names = new ArrayList<String>(numCols);
-			values = new ArrayList<Object>(numCols);
 
-			int maxRowCount = 0;
+        /**
+         * @param pvField
+         * @param disconnected
+         */
+        public PVFieldToVTable(PVStructure pvField, boolean disconnected) {
 
-			int nameIndex = 0;
-	        for (PVField pvColumn : valueField.getPVFields())
-	        {
-	        	PVScalarArray scalarArray = (PVScalarArray)pvColumn;
+                PVStringArray labelsField =
+                        (PVStringArray)pvField.getScalarArrayField("labels", ScalarType.pvString);
+                String[] labels;
+                if (labelsField != null)
+                {
+                        StringArrayData data = new StringArrayData();
+                        labelsField.get(0, labelsField.getLength(), data);
+                        labels = data.data;
+                }
+                else
+                        labels = null;
 
-	        	types.add(NTUtils.scalarArrayElementClass(scalarArray));
-	        	values.add(NTUtils.scalarArrayToList(scalarArray, true));
-	        	names.add(labels != null ? labels[nameIndex] : pvColumn.getFieldName());
+                PVStructure valueField = pvField.getStructureField("value");
+                if (valueField != null)
+                {
+                        PVField[] cols = valueField.getPVFields();
+                        int numCols = cols.length;
+                        types = new ArrayList<Class<?>>(numCols);
+                        names = new ArrayList<String>(numCols);
+                        values = new ArrayList<Object>(numCols);
 
-	        	int len = scalarArray.getLength(); 
-        		if (len > maxRowCount) maxRowCount = len;
-	        	
-	        	nameIndex++;
-	        }
-	        
-	        rowCount = maxRowCount;
-		}
-		else
-		{
-			names = null;
-			types = null;
-			values = null;
-			rowCount = -1;
-		}
-	}
+                        int maxRowCount = 0;
+
+                        int nameIndex = 0;
+                for (PVField pvColumn : valueField.getPVFields())
+                {
+                        PVScalarArray scalarArray = (PVScalarArray)pvColumn;
+
+                        types.add(NTUtils.scalarArrayElementClass(scalarArray));
+                        values.add(NTUtils.scalarArrayToList(scalarArray, true));
+                        names.add(labels != null ? labels[nameIndex] : pvColumn.getFieldName());
+
+                        int len = scalarArray.getLength();
+                        if (len > maxRowCount) maxRowCount = len;
+
+                        nameIndex++;
+                }
+
+                rowCount = maxRowCount;
+                }
+                else
+                {
+                        names = null;
+                        types = null;
+                        values = null;
+                        rowCount = -1;
+                }
+        }
 
     @Override
     public int getColumnCount() {
@@ -107,9 +107,9 @@ public class PVFieldToVTable implements VTable {
         return values.get(column);
     }
 
-	@Override
+        @Override
     public String toString() {
-	return VTypeToString.toString(this);
+        return VTypeToString.toString(this);
     }
 
 }

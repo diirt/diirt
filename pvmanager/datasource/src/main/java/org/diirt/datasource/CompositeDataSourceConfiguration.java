@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
  * @author carcassi
  */
 public final class CompositeDataSourceConfiguration {
-    
+
     // Package private so we don't need getters
     String delimiter = "://";
     String defaultDataSource;
@@ -37,20 +37,20 @@ public final class CompositeDataSourceConfiguration {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/dataSources/@version", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             String delimiter = xPath.evaluate("/dataSources/compositeDataSource/@delimiter", document);
             if (delimiter != null && !delimiter.isEmpty()) {
                 this.delimiter = delimiter;
             }
-            
+
             String defaultDataSource = xPath.evaluate("/dataSources/compositeDataSource/@defaultDataSource", document);
             if (defaultDataSource != null && !defaultDataSource.isEmpty()) {
                 this.defaultDataSource = defaultDataSource;

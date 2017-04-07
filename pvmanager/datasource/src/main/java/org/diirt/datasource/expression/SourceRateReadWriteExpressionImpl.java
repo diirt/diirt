@@ -17,10 +17,10 @@ import org.diirt.datasource.WriteRecipeBuilder;
  * @author carcassi
  */
 public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWriteExpressionListImpl<R, W> implements SourceRateReadWriteExpression<R, W> {
-    
+
     private final SourceRateExpression<R> sourceRateExpression;
     private final WriteExpression<W> writeExpression;
-    
+
     {
         // Make sure that the list includes this expression
         addThis();
@@ -35,7 +35,7 @@ public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWrite
 
     /**
      * Creates an expression that can be both read and written.
-     * 
+     *
      * @param sourceRateExpression the read part of the expression
      * @param writeExpression the write part of the expression
      */
@@ -53,12 +53,12 @@ public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWrite
     public final ReadFunction<R> getFunction() {
         return sourceRateExpression.getFunction();
     }
-    
+
     @Override
     public final SourceRateExpressionImpl<R> getSourceRateExpressionImpl() {
         return sourceRateExpression.getSourceRateExpressionImpl();
     }
-    
+
     @Override
     public final WriteExpressionImpl<W> getWriteExpressionImpl() {
         return writeExpression.getWriteExpressionImpl();
@@ -73,5 +73,5 @@ public class SourceRateReadWriteExpressionImpl<R, W> extends SourceRateReadWrite
     public void fillWriteRecipe(PVWriterDirector director, WriteRecipeBuilder builder) {
         writeExpression.fillWriteRecipe(director, builder);
     }
-    
+
 }

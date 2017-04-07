@@ -13,7 +13,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.sim.SimulationDataSource;
-import org.diirt.util.time.TimeDuration;
+import java.time.Duration;
 import org.diirt.vtype.VNumber;
 
 /**
@@ -30,7 +30,7 @@ public class PausePv {
         PVManager.setDefaultDataSource(new SimulationDataSource());
         System.out.println("Note that events cannot be stopped while they are in-flight.");
         System.out.println("Therefore you may see one event arriving after the pause or after the close.");
-        
+
         System.out.println("Starting pv");
         PVReader<List<VNumber>> reader = PVManager.read(ExpressionLanguage.newValuesOf(vNumber("ramp()")))
                 .readListener(new PVReaderListener<List<VNumber>>() {
@@ -41,17 +41,17 @@ public class PausePv {
                         }
                     }
                 })
-                .maxRate(TimeDuration.ofMillis(50));
-	
-	Thread.sleep(2000);
+                .maxRate(Duration.ofMillis(50));
+
+    Thread.sleep(2000);
         System.out.println("Pausing for 3 seconds");
         reader.setPaused(true);
-	Thread.sleep(3000);
-	
+        Thread.sleep(3000);
+
         System.out.println("Unpausing...");
         reader.setPaused(false);
-	Thread.sleep(3000);
-        
+        Thread.sleep(3000);
+
         System.out.println("Closing...");
         reader.close();
         PVManager.getDefaultDataSource().close();

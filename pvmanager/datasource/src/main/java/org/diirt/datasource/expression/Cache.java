@@ -18,7 +18,7 @@ import org.diirt.datasource.WriteFunction;
  * @author carcassi
  */
 public class Cache<T> extends DesiredRateExpressionImpl<List<T>> {
-    
+
     private static <T> CacheCollector<T> createCache(int maxElements) {
         return new CacheCollector<>(maxElements);
     }
@@ -41,7 +41,7 @@ public class Cache<T> extends DesiredRateExpressionImpl<List<T>> {
     public Cache(SourceRateExpression<T> sourceExpression, int maxSize) {
         super(sourceExpression, Cache.<T>createCache(maxSize), "queue");
     }
-    
+
     /**
      * The write function to be used to fill the cache.
      *
@@ -50,12 +50,12 @@ public class Cache<T> extends DesiredRateExpressionImpl<List<T>> {
     public WriteFunction<T> getWriteFunction() {
         return getCollector();
     }
-    
+
     @SuppressWarnings("unchecked")
     private CacheCollector<T> getCollector() {
         return (CacheCollector<T>) getFunction();
     }
-    
+
     /**
      * Changes the maximum size of the cache.
      *
@@ -66,7 +66,7 @@ public class Cache<T> extends DesiredRateExpressionImpl<List<T>> {
         getCollector().setMaxSize(maxSize);
         return this;
     }
-    
+
     /**
      * Adds a new value to the cache.
      *
@@ -75,6 +75,5 @@ public class Cache<T> extends DesiredRateExpressionImpl<List<T>> {
     public void add(T newValue) {
         getWriteFunction().writeValue(newValue);
     }
-    
+
 }
- 

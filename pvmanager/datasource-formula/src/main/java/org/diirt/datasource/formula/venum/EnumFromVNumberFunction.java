@@ -15,7 +15,6 @@ import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.ValueUtil;
 
 /**

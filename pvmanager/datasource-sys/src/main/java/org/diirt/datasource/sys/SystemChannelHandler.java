@@ -6,15 +6,12 @@ package org.diirt.datasource.sys;
 
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.ChannelWriteCallback;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.diirt.util.text.NumberFormats;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 import org.diirt.vtype.Display;
 import org.diirt.vtype.DisplayBuilder;
 
@@ -23,7 +20,7 @@ import org.diirt.vtype.DisplayBuilder;
  * @author carcassi
  */
 abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Object> {
-    
+
     protected static Display memoryDisplay = new DisplayBuilder().format(NumberFormats.format(3))
             .units("MiB")
             .lowerAlarmLimit(0.0).lowerCtrlLimit(0.0).lowerDisplayLimit(0.0).lowerWarningLimit(0.0)
@@ -32,11 +29,11 @@ abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Ob
             .upperDisplayLimit(maxMemory())
             .upperWarningLimit(maxMemory())
             .build();
-    
+
     protected static double bytesToMebiByte(long bytes) {
         return ((double) bytes) / (1024.0 * 1024.0);
     }
-    
+
     private static double maxMemory() {
         return bytesToMebiByte(Runtime.getRuntime().maxMemory());
     }
@@ -59,7 +56,7 @@ abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Ob
     };
     private static final Logger log = Logger.getLogger(SystemChannelHandler.class.getName());
     private ScheduledFuture<?> taskFuture;
-    
+
     protected abstract Object createValue();
 
     public SystemChannelHandler(String channelName) {
@@ -93,5 +90,5 @@ abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Ob
     protected boolean saveMessageAfterDisconnect() {
         return true;
     }
-    
+
 }

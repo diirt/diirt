@@ -11,7 +11,7 @@ package org.diirt.datasource;
  * @author carcassi
  */
 public class LatestValueCollector<T> implements Collector<T, T> {
-    
+
     private final Object lock = new Object();
     private T value;
     private Runnable notification;
@@ -42,5 +42,5 @@ public class LatestValueCollector<T> implements Collector<T, T> {
             this.notification = notification;
         }
     }
-    
+
 }

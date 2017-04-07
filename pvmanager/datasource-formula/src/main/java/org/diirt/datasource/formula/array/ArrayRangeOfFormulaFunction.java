@@ -13,8 +13,6 @@ import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
 import org.diirt.util.array.ArrayDouble;
 
-import org.diirt.util.array.ListMath;
-import org.diirt.vtype.VNumber;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.ValueUtil;
 
@@ -64,11 +62,11 @@ class ArrayRangeOfFormulaFunction implements FormulaFunction {
         if (NullUtils.containsNull(args)) {
             return null;
         }
-        
+
         VNumberArray numberArray = (VNumberArray) args.get(0);
         double min = numberArray.getDimensionDisplay().get(0).getCellBoundaries().getDouble(0);
         double max = numberArray.getDimensionDisplay().get(0).getCellBoundaries().getDouble(numberArray.getSizes().getInt(0));
-        
+
         return newVNumberArray(
                 new ArrayDouble(min, max),
                 ValueUtil.highestSeverityOf(args, false),

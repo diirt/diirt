@@ -317,7 +317,7 @@ public class ListMath {
         if (x.size() != y.size()) {
             throw new IllegalArgumentException("Real and imaginary part must be of the same length");
         }
-        
+
         double cosarg,sinarg;
         double[] resX = new double[x.size()];
         double[] resY = new double[x.size()];

@@ -8,6 +8,8 @@ import gov.aps.jca.CAException;
 import gov.aps.jca.Context;
 import gov.aps.jca.JCALibrary;
 import gov.aps.jca.Monitor;
+import gov.aps.jca.configuration.Configurable;
+import gov.aps.jca.configuration.ConfigurationException;
 import gov.aps.jca.configuration.DefaultConfiguration;
 import gov.aps.jca.jni.JNIContext;
 import java.io.IOException;
@@ -30,8 +32,9 @@ import org.diirt.datasource.DataSourceConfiguration;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.cosylab.epics.caj.CAJContext;
 
 /**
  * Configuration for {@link JCADataSource}. This object is mutable and not
@@ -41,17 +44,17 @@ import org.xml.sax.SAXException;
  */
 public final class JCADataSourceConfiguration extends DataSourceConfiguration<JCADataSource> {
     private static final Logger log = Logger.getLogger(JCADataSource.class.getName());
-    
+
     // Package private so we don't need getters
     Context jcaContext;
     int monitorMask = Monitor.VALUE | Monitor.ALARM;
     JCATypeSupport typeSupport;
-    boolean dbePropertySupported  = false;
+    boolean dbePropertySupported = false;
     Boolean varArraySupported;
     boolean rtypValueOnly = false;
     boolean honorZeroPrecision = true;
     String jcaContextClass = null;
-    
+
     Map<String, String> jcaContextProperties = new HashMap<>();
 
     @Override
@@ -60,90 +63,90 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(input);
-            
+
             XPathFactory xpathFactory = XPathFactory.newInstance();
             XPath xPath = xpathFactory.newXPath();
-            
+
             String ver = xPath.evaluate("/ca/@version", document);
             if (!ver.equals("1")) {
                 throw new IllegalArgumentException("Unsupported version " + ver);
             }
-            
+
             String monitorMask = xPath.evaluate("/ca/dataSourceOptions/@monitorMask", document);
             if (monitorMask != null && !monitorMask.isEmpty()) {
                 switch (monitorMask.toUpperCase()) {
-                    case "VALUE":
-                        monitorMask(Monitor.VALUE | Monitor.ALARM);
-                        break;
-                    case "ARCHIVE":
-                        monitorMask(Monitor.LOG);
-                        break;
-                    case "ALARM":
-                        monitorMask(Monitor.ALARM);
-                        break;
-                    default:
-                        monitorMask(Integer.parseInt(monitorMask));
+                case "VALUE":
+                    monitorMask(Monitor.VALUE | Monitor.ALARM);
+                    break;
+                case "ARCHIVE":
+                    monitorMask(Monitor.LOG);
+                    break;
+                case "ALARM":
+                    monitorMask(Monitor.ALARM);
+                    break;
+                default:
+                    monitorMask(Integer.parseInt(monitorMask));
                 }
             }
-            
+
             String dbePropertySupported = xPath.evaluate("/ca/dataSourceOptions/@dbePropertySupported", document);
             if (dbePropertySupported != null && !dbePropertySupported.isEmpty()) {
                 switch (dbePropertySupported.toUpperCase()) {
-                    case "TRUE":
-                        dbePropertySupported(true);
-                        break;
-                    default:
-                        dbePropertySupported(false);
+                case "TRUE":
+                    dbePropertySupported(true);
+                    break;
+                default:
+                    dbePropertySupported(false);
                 }
             }
-            
+
             String honorZeroPrecision = xPath.evaluate("/ca/dataSourceOptions/@honorZeroPrecision", document);
             if (honorZeroPrecision != null && !honorZeroPrecision.isEmpty()) {
                 switch (honorZeroPrecision.toUpperCase()) {
-                    case "TRUE":
-                        honorZeroPrecision(true);
-                        break;
-                    default:
-                        honorZeroPrecision(false);
+                case "TRUE":
+                    honorZeroPrecision(true);
+                    break;
+                default:
+                    honorZeroPrecision(false);
                 }
             }
-            
+
             String rtypValueOnly = xPath.evaluate("/ca/dataSourceOptions/@rtypValueOnly", document);
             if (rtypValueOnly != null && !rtypValueOnly.isEmpty()) {
                 switch (rtypValueOnly.toUpperCase()) {
-                    case "TRUE":
-                        rtypValueOnly(true);
-                        break;
-                    default:
-                        rtypValueOnly(false);
+                case "TRUE":
+                    rtypValueOnly(true);
+                    break;
+                default:
+                    rtypValueOnly(false);
                 }
             }
-            
+
             String varArraySupported = xPath.evaluate("/ca/dataSourceOptions/@varArraySupported", document);
             if (varArraySupported != null && !varArraySupported.isEmpty()) {
                 switch (varArraySupported.toUpperCase()) {
-                    case "AUTO":
-                        // Do nothing
-                        break;
-                    case "TRUE":
-                        varArraySupported(true);
-                        break;
-                    default:
-                        varArraySupported(false);
+                case "AUTO":
+                    // Do nothing
+                    break;
+                case "TRUE":
+                    varArraySupported(true);
+                    break;
+                default:
+                    varArraySupported(false);
                 }
             }
-            
+
             String pureJava = xPath.evaluate("/ca/jcaContext/@pureJava", document);
             if (pureJava != null && !pureJava.isEmpty()) {
                 switch (pureJava.toUpperCase()) {
-                    case "TRUE":
-                        jcaContextClass(JCALibrary.CHANNEL_ACCESS_JAVA);
-                        break;
-                    default:
-                        jcaContextClass(JCALibrary.JNI_THREAD_SAFE);
+                case "TRUE":
+                    jcaContextClass(JCALibrary.CHANNEL_ACCESS_JAVA);
+                    break;
+                default:
+                    jcaContextClass(JCALibrary.JNI_THREAD_SAFE);
                 }
             }
-            
+
             Node jcaContext = (Node) xPath.evaluate("/ca/jcaContext", document, XPathConstants.NODE);
             if (jcaContext != null) {
                 NamedNodeMap attributes = jcaContext.getAttributes();
@@ -154,9 +157,10 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                     }
                 }
             }
-            
+
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException ex) {
-            Logger.getLogger(JCADataSourceConfiguration.class.getName()).log(Level.FINEST, "Couldn't load file configuration", ex);
+            Logger.getLogger(JCADataSourceConfiguration.class.getName()).log(Level.FINEST,
+                    "Couldn't load file configuration", ex);
             throw new IllegalArgumentException("Couldn't load file configuration", ex);
         }
         return this;
@@ -166,8 +170,9 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * The class name for the implementation of JCA.
      * <p>
      * Default is {@link JCALibrary#CHANNEL_ACCESS_JAVA}.
-     * 
-     * @param className the class name of the jca implementation
+     *
+     * @param className
+     *            the class name of the jca implementation
      * @return this
      */
     public JCADataSourceConfiguration jcaContextClass(String className) {
@@ -177,15 +182,16 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
         this.jcaContextClass = className;
         return this;
     }
-    
+
     /**
-     * The jca context to use. This allows complete customization
-     * of the jca context.
+     * The jca context to use. This allows complete customization of the jca
+     * context.
      * <p>
-     * By default, will be automatically
-     * created from the {@link #jcaContextClass(java.lang.String) }.
-     * 
-     * @param jcaContext the context
+     * By default, will be automatically created from the
+     * {@link #jcaContextClass(java.lang.String) }.
+     *
+     * @param jcaContext
+     *            the context
      * @return this
      */
     public JCADataSourceConfiguration jcaContext(Context jcaContext) {
@@ -201,21 +207,24 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * of {@link Monitor#VALUE}, {@link Monitor#ALARM}, ...
      * <p>
      * Default is {@code Monitor.VALUE | Monitor.ALARM }.
-     * 
-     * @param monitorMask the monitor mask
+     *
+     * @param monitorMask
+     *            the monitor mask
      * @return this
      */
     public JCADataSourceConfiguration monitorMask(int monitorMask) {
         this.monitorMask = monitorMask;
         return this;
     }
-    
+
     /**
      * Changes the way JCA DBR types are mapped to types supported in pvamanger.
      * <p>
-     * Default includes support for the VTypes (i.e. {@link JCAVTypeAdapterSet}).
-     * 
-     * @param typeSupport the custom type support
+     * Default includes support for the VTypes (i.e. {@link JCAVTypeAdapterSet}
+     * ).
+     *
+     * @param typeSupport
+     *            the custom type support
      * @return this
      */
     public JCADataSourceConfiguration typeSupport(JCATypeSupport typeSupport) {
@@ -228,8 +237,9 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
      * changes.
      * <p>
      * Default is false.
-     * 
-     * @param dbePropertySupported if true, metadata changes will trigger notification
+     *
+     * @param dbePropertySupported
+     *            if true, metadata changes will trigger notification
      * @return this
      */
     public JCADataSourceConfiguration dbePropertySupported(boolean dbePropertySupported) {
@@ -238,46 +248,49 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
     }
 
     /**
-     * If true, monitors will setup using "0" length, which will make
-     * the server a variable length array in return (if supported) or a "0"
-     * length array (if not supported). Variable array support was added
-     * to EPICS 3.14.12.2 and to CAJ 1.1.10.
+     * If true, monitors will setup using "0" length, which will make the server
+     * a variable length array in return (if supported) or a "0" length array
+     * (if not supported). Variable array support was added to EPICS 3.14.12.2
+     * and to CAJ 1.1.10.
      * <p>
      * By default it tries to auto-detected whether the client library
      * implements the proper checks.
-     * 
-     * @param varArraySupported true will enable
+     *
+     * @param varArraySupported
+     *            true will enable
      * @return this
      */
     public JCADataSourceConfiguration varArraySupported(boolean varArraySupported) {
         this.varArraySupported = varArraySupported;
         return this;
     }
-    
+
     /**
-     * If true, for fields that match ".*\.RTYP.*" only the value will be
-     * read; alarm and time will be created at client side. Version of EPICS
-     * before 3.14.11 do not send correct data (would send only the value),
-     * which would make the client behave incorrectly.
+     * If true, for fields that match ".*\.RTYP.*" only the value will be read;
+     * alarm and time will be created at client side. Version of EPICS before
+     * 3.14.11 do not send correct data (would send only the value), which would
+     * make the client behave incorrectly.
      * <p>
      * Default is false.
-     * 
-     * @param rtypValueOnly true will enable
+     *
+     * @param rtypValueOnly
+     *            true will enable
      * @return this
      */
     public JCADataSourceConfiguration rtypValueOnly(boolean rtypValueOnly) {
         this.rtypValueOnly = rtypValueOnly;
         return this;
     }
-    
+
     /**
-     * If true, the formatter returned by the VType will show
-     * no decimal digits (assumes it was configured);
-     * if false, it will return all the digit (assumes it wasn't configured).
+     * If true, the formatter returned by the VType will show no decimal digits
+     * (assumes it was configured); if false, it will return all the digit
+     * (assumes it wasn't configured).
      * <p>
      * Default is true.
-     * 
-     * @param honorZeroPrecision whether the formatter should treat 0 precision as meaningful
+     *
+     * @param honorZeroPrecision
+     *            whether the formatter should treat 0 precision as meaningful
      * @return this
      */
     public JCADataSourceConfiguration honorZeroPrecision(boolean honorZeroPrecision) {
@@ -288,38 +301,42 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
     /**
      * Adds a new property that is passed directly to the JCALibrary when
      * creating the context.
-     * 
-     * @param name the name of the property
-     * @param value the value of the property
+     *
+     * @param name
+     *            the name of the property
+     * @param value
+     *            the value of the property
      * @return this
      */
     public JCADataSourceConfiguration addContextProperty(String name, String value) {
         this.jcaContextProperties.put(name, value);
         return this;
     }
-    
+
     /**
-     * Determines whether the context supports variable arrays
-     * or not.
-     * 
-     * @param context a JCA Context
+     * Determines whether the context supports variable arrays or not.
+     *
+     * @param context
+     *            a JCA Context
      * @return true if supports variable sized arrays
      */
     static boolean isVarArraySupported(Context context) {
         try {
             Class cajClazz = Class.forName("com.cosylab.epics.caj.CAJContext");
             if (cajClazz.isInstance(context)) {
-                return !(context.getVersion().getMajorVersion() <= 1 && context.getVersion().getMinorVersion() <= 1 && context.getVersion().getMaintenanceVersion() <=9);
+                return !(context.getVersion().getMajorVersion() <= 1 && context.getVersion().getMinorVersion() <= 1
+                        && context.getVersion().getMaintenanceVersion() <= 9);
             }
         } catch (ClassNotFoundException ex) {
             // Can't be CAJ, fall back to JCA
         }
-        
+
         if (context instanceof JNIContext) {
             try {
                 Class<?> jniClazz = Class.forName("gov.aps.jca.jni.JNI");
                 final Method method = jniClazz.getDeclaredMethod("_ca_getRevision", new Class<?>[0]);
-                // The field is actually private, so we need to make it accessible
+                // The field is actually private, so we need to make it
+                // accessible
                 AccessController.doPrivileged(new PrivilegedAction<Object>() {
 
                     @Override
@@ -327,7 +344,7 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                         method.setAccessible(true);
                         return null;
                     }
-                    
+
                 });
                 Integer integer = (Integer) method.invoke(null, new Object[0]);
                 return (integer >= 13);
@@ -335,42 +352,49 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
                 log.log(Level.SEVERE, "Couldn't detect varArraySupported", ex);
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Creates a context from the configuration information.
-     * 
-     * @param className the class name
+     *
+     * @param className
+     *            the class name
      * @return a new context
      */
     Context createContext() {
         if (jcaContext != null) {
             return jcaContext;
         }
-        
+
         if (jcaContextClass == null) {
             jcaContextClass = JCALibrary.CHANNEL_ACCESS_JAVA;
         }
-        
+
         try {
-            JCALibrary jca = JCALibrary.getInstance();
             DefaultConfiguration conf = new DefaultConfiguration("CONTEXT");
-            conf.setAttribute("class",  jcaContextClass);
+            conf.setAttribute("class", jcaContextClass);
             jcaContextProperties.entrySet().stream().forEach((entry) -> {
                 conf.setAttribute(entry.getKey(), entry.getValue());
             });
-            return jca.createContext(conf);
-        } catch (CAException ex) {
+            if (conf.getAttribute("class").equals(JCALibrary.CHANNEL_ACCESS_JAVA)) {
+                Context cajContext = new CAJContext();
+                ((Configurable) cajContext).configure(conf);
+                return cajContext;
+            } else {
+                JCALibrary jca = JCALibrary.getInstance();
+                return jca.createContext(conf);
+            }
+        } catch (ConfigurationException | CAException ex) {
             log.log(Level.SEVERE, "JCA context creation failed", ex);
             throw new RuntimeException("JCA context creation failed", ex);
         }
-    }    
-    
+    }
+
     /**
      * Creates a new JCADataSource with the current configuration.
-     * 
+     *
      * @return a new data source
      */
     @Override

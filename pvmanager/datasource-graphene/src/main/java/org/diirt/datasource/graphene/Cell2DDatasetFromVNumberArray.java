@@ -32,7 +32,7 @@ class Cell2DDatasetFromVNumberArray implements Cell2DDataset {
     private final int yCount;
     private final VNumberArray data;
     private final ListNumber values;
-    
+
     private final Array2DDouble array2D;
 
     public Cell2DDatasetFromVNumberArray(VNumberArray data) {
@@ -49,7 +49,7 @@ class Cell2DDatasetFromVNumberArray implements Cell2DDataset {
         } else {
             throw new IllegalArgumentException("Array is 3D or more");
         }
-        
+
         this.xRange = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
         this.yRange = Ranges.range(yBoundaries.getDouble(0), yBoundaries.getDouble(yBoundaries.size() - 1));
         this.xCount = xBoundaries.size() - 1;
@@ -115,5 +115,5 @@ class Cell2DDatasetFromVNumberArray implements Cell2DDataset {
     public int getYCount() {
         return yCount;
     }
-    
+
 }

@@ -12,7 +12,7 @@ import org.diirt.util.array.ListByte;
  * @author carcassi
  */
 public interface VByteArray extends VNumberArray, VType {
-    
+
     /**
      * {@inheritDoc }
      * @return the data

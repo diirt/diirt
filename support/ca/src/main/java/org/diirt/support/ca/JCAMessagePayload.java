@@ -44,7 +44,7 @@ public class JCAMessagePayload {
 
     /**
      * The event returned by the monitor.
-     * 
+     *
      * @return the monitor event
      */
     public MonitorEvent getEvent() {
@@ -53,7 +53,7 @@ public class JCAMessagePayload {
 
     /**
      * The data taken with a GET at connection time.
-     * 
+     *
      * @return the dbr type for the metadata
      */
     public DBR getMetadata() {
@@ -68,5 +68,5 @@ public class JCAMessagePayload {
         }
         return "Metadata " + metadata + " value " + value;
     }
-    
+
 }

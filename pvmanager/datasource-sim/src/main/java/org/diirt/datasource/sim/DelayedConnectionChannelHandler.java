@@ -19,7 +19,7 @@ import org.diirt.vtype.ValueFactory;
  * @author carcassi
  */
 class DelayedConnectionChannelHandler extends MultiplexedChannelHandler<Object, Object> {
-    
+
     private final Object initialValue;
     private final double delayInSeconds;
     private final ScheduledExecutorService exec;
@@ -72,10 +72,10 @@ class DelayedConnectionChannelHandler extends MultiplexedChannelHandler<Object, 
         result.put("initialValue", initialValue);
         return result;
     }
-    
+
     @Override
     public void write(Object newValue, ChannelWriteCallback callback) {
         throw new UnsupportedOperationException("Can't write to simulation channel.");
     }
-    
+
 }

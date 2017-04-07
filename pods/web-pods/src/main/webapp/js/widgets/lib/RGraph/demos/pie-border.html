@@ -2,14 +2,14 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.common.dynamic.js" ></script>
     <script src="../libraries/RGraph.common.tooltips.js" ></script>
     <script src="../libraries/RGraph.pie.js" ></script>
-    
+
     <title>Pie chart with custom border highlighting</title>
-    
+
     <meta name="keywords" content="demo pie exploded border" />
     <meta name="description" content="A Pie chart that has been exploded and drawn with a border and custom highlighting" />
     <meta name="robots" content="noindex,nofollow" />
@@ -17,13 +17,13 @@
 <body>
 
     <h1>Pie chart custom border highlighting</h1>
-    
+
     <p>
         Tooltips and other dynamic features may be affected by the redrawing.
     </p>
 
     <canvas id="cvs" width="450" height="300">[No canvas support]</canvas>
-    
+
 <script>
     window.onload = function ()
     {
@@ -37,7 +37,7 @@
             .Set('strokestyle', 'rgba(0,0,0,0)')
             .Set('exploded', [,25])
             .Draw();
-        
+
         pie.ontooltip = function (obj)
         {
             var co = obj.context;
@@ -54,7 +54,7 @@
     }
 </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

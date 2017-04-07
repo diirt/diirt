@@ -13,15 +13,15 @@ import java.util.Arrays;
  * @author Gabriele Carcassi
  */
 public final class ArrayLong extends ListLong implements Serializable {
-    
+
     private static final long serialVersionUID = 7493025761455302920L;
-    
+
     private final long[] array;
     private final boolean readOnly;
 
     /**
      * A new {@code ArrayLong} that wraps around the given array.
-     * 
+     *
      * @param array an array
      */
     public ArrayLong(long... array) {
@@ -30,7 +30,7 @@ public final class ArrayLong extends ListLong implements Serializable {
 
     /**
      * A new {@code ArrayLong} that wraps around the given array.
-     * 
+     *
      * @param array an array
      * @param readOnly if false the wrapper allows writes to the array
      */
@@ -42,7 +42,7 @@ public final class ArrayLong extends ListLong implements Serializable {
     @Override
     public final IteratorLong iterator() {
         return new IteratorLong() {
-            
+
             private int index;
 
             @Override
@@ -61,7 +61,7 @@ public final class ArrayLong extends ListLong implements Serializable {
     public final int size() {
         return array.length;
     }
-    
+
     @Override
     public long getLong(int index) {
         return array[index];
@@ -78,13 +78,13 @@ public final class ArrayLong extends ListLong implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        
+
         if (obj instanceof ArrayLong) {
             return Arrays.equals(array, ((ArrayLong) obj).array);
         }
-        
+
         return super.equals(obj);
-    }    
+    }
 
     long[] wrappedArray() {
         return array;

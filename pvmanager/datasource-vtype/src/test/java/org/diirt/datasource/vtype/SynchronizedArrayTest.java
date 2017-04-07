@@ -5,15 +5,12 @@
 package org.diirt.datasource.vtype;
 
 import org.diirt.vtype.VMultiDouble;
-import org.diirt.datasource.vtype.DataTypeSupport;
 import java.util.Arrays;
 import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.datasource.vtype.DataTypeSupport;
-import org.diirt.vtype.VMultiDouble;
 import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.diirt.util.time.TimeDuration.*;
-import org.diirt.util.time.Timestamp;
+import static java.time.Duration.*;
+import java.time.Instant;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,9 +30,9 @@ public class SynchronizedArrayTest {
     public void missingValues() throws InterruptedException {
         ReadExpressionTester exp = new ReadExpressionTester(synchronizedArrayOf(ofNanos(10), ofMillis(10), vDoubles(Arrays.asList("pv1","pv2","pv3","pv4","pv5"))));
 
-        Timestamp reference = Timestamp.now();
-        Timestamp secondPass = reference.plus(ofMillis(1));
-        Timestamp thirdPass = reference.plus(ofMillis(2));
+        Instant reference = Instant.now();
+        Instant secondPass = reference.plus(ofMillis(1));
+        Instant thirdPass = reference.plus(ofMillis(2));
 
         // Set values
         exp.writeValue("pv1", newVDouble(0.0, newTime(reference)));
@@ -69,11 +66,11 @@ public class SynchronizedArrayTest {
     @Test
     public void reconstructArray() throws InterruptedException {
         ReadExpressionTester exp = new ReadExpressionTester(synchronizedArrayOf(ofMillis(5), ofMillis(10), vDoubles(Arrays.asList("pv1","pv2","pv3","pv4","pv5"))));
-        
-        Timestamp reference = Timestamp.now();
-        Timestamp future1 = reference.plus(ofMillis(1));
-        Timestamp past1 = reference.minus(ofMillis(1));
-        Timestamp past2 = reference.minus(ofMillis(2));
+
+        Instant reference = Instant.now();
+        Instant future1 = reference.plus(ofMillis(1));
+        Instant past1 = reference.minus(ofMillis(1));
+        Instant past2 = reference.minus(ofMillis(2));
 
         // Set values
         exp.writeValue("pv1", newVDouble(0.0, newTime(reference)));

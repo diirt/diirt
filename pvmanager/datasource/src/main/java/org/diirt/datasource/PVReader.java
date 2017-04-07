@@ -131,11 +131,11 @@ public interface PVReader<T> {
      * reader, though, is changed immediately.
      * <p>
      * This method is thread-safe.
-     * 
+     *
      * @param paused whether the reader should be paused or not
      */
     public void setPaused(boolean paused);
-    
+
     /**
      * Whether the reader is paused. If a reader is paused, all the notifications
      * are skipped. While the channels remains open, and data is still being collected,
@@ -143,11 +143,11 @@ public interface PVReader<T> {
      * resources.
      * <p>
      * This method is thread-safe.
-     * 
+     *
      * @return true if it is paused
      */
     public boolean isPaused();
-    
+
     /**
      * True if the reader is connected. <b>Do not use this method to display connection status
      * if using vTypes defined in org.epics.pvmanager.data.</b>
@@ -164,7 +164,7 @@ public interface PVReader<T> {
      * is connected or not.
      * <p>
      * This method is thread-safe.
-     * 
+     *
      * @return true if reader is connected
      */
     public boolean isConnected();

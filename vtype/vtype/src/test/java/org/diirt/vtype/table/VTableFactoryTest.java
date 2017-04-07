@@ -27,7 +27,7 @@ import static org.diirt.vtype.ValueFactory.*;
  * @author carcassi
  */
 public class VTableFactoryTest {
-    
+
     public VTableFactoryTest() {
     }
 
@@ -73,7 +73,7 @@ public class VTableFactoryTest {
         assertThat(rowTable.getColumnData(0), equalTo((Object) new ArrayDouble(1)));
         assertThat(rowTable.getColumnData(1), equalTo((Object) new ArrayDouble(2)));
     }
-    
+
     @Test
     public void join1() {
         VTable table1 = newVTable(column("Index", newVDoubleArray(new ArrayDouble(1.0,2.0,3.0), alarmNone(), timeNow(), displayNone())),
@@ -93,7 +93,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(3,2,1)));
         assertThat(table.getColumnData(2), equalTo((Object) new ArrayDouble(1,2,3)));
     }
-    
+
     @Test
     public void join2() {
         VTable table1 = newVTable(column("Name", newVStringArray(Arrays.asList("Gabriele", "Kunal", "Eric"), alarmNone(), timeNow())),
@@ -113,7 +113,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(9,10,8)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("Eng", "Dr", "Mr")));
     }
-    
+
     @Test
     public void join3() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -138,7 +138,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286", "386")));
         assertThat(table.getColumnData(3), equalTo((Object) new ArrayDouble(300,500)));
     }
-    
+
     @Test
     public void join4() {
         VTable table1 = newVTable(column("Rack", newVStringArray(new ArrayList<String>(), alarmNone(), timeNow())),
@@ -163,7 +163,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(2), equalTo((Object) new ArrayList<String>()));
         assertThat(table.getColumnData(3), equalTo((Object) new ArrayDouble()));
     }
-    
+
     @Test
     public void union1() {
         VTable table1 = newVTable(column("A", newVDoubleArray(new ArrayDouble(1.0,2.0,3.0), alarmNone(), timeNow(), displayNone())),
@@ -183,7 +183,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1,2,3,3,2,1)));
         assertThat(table.getColumnData(2), equalTo((Object) new ArrayDouble(3,2,1,3,2,1)));
     }
-    
+
     @Test
     public void union2() {
         VTable table1 = newVTable(column("A", newVDoubleArray(new ArrayDouble(1.0,2.0,3.0), alarmNone(), timeNow(), displayNone())),
@@ -202,7 +202,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1,2,3,3,2,1)));
         assertThat(table.getColumnData(2), equalTo((Object) new ArrayDouble(3,2,1,Double.NaN,Double.NaN,Double.NaN)));
     }
-    
+
     @Test
     public void valueTable1() {
         VDouble value1 = newVDouble(3.1);
@@ -221,7 +221,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) Arrays.asList("NONE", "MINOR", "NONE")));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("NONE", "HI", "NONE")));
     }
-    
+
     @Test(expected = IllegalArgumentException.class)
     public void valueTable2() {
         VDouble value1 = newVDouble(3.1);
@@ -229,7 +229,7 @@ public class VTableFactoryTest {
         VDouble value3 = newVDouble(3.3);
         VTable table = valueTable(Arrays.asList(value1, value2, value3));
     }
-    
+
     @Test
     public void valueTable3() {
         VTable table = valueTable(Collections.<VType>emptyList());
@@ -245,7 +245,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) Arrays.asList()));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
     }
-    
+
     @Test
     public void valueTable4() {
         VTable table = valueTable(Arrays.asList((VType) null));
@@ -261,7 +261,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) Arrays.asList()));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
     }
-    
+
     @Test
     public void valueTable5() {
         VDouble value1 = newVDouble(3.1);
@@ -283,7 +283,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("NONE", "MINOR", "NONE")));
         assertThat(table.getColumnData(3), equalTo((Object) Arrays.asList("NONE", "HI", "NONE")));
     }
-    
+
     @Test
     public void valueTable6() {
         VTable table = valueTable(Arrays.asList("A"), Arrays.asList((VType) null));
@@ -302,7 +302,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
         assertThat(table.getColumnData(3), equalTo((Object) Arrays.asList()));
     }
-    
+
     @Test
     public void valueTable7() {
         VTable table = valueTable(Arrays.asList("A", "B", "C", "D"), Arrays.asList((VType) null, null, null, null));
@@ -321,7 +321,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList()));
         assertThat(table.getColumnData(3), equalTo((Object) Arrays.asList()));
     }
-    
+
     @Test
     public void select1() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -340,7 +340,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(2)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286")));
     }
-    
+
     @Test
     public void tableValueFilter1() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -359,7 +359,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(2)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286")));
     }
-    
+
     @Test
     public void tableValueFilter2() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -378,7 +378,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1, 2)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286", "286")));
     }
-    
+
     @Test
     public void tableStringMatchFilter1() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -397,7 +397,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1, 2)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286", "286")));
     }
-    
+
     @Test
     public void tableRangeFilter1() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "A", "B"), alarmNone(), timeNow())),
@@ -416,7 +416,7 @@ public class VTableFactoryTest {
         assertThat(table.getColumnData(1), equalTo((Object) new ArrayDouble(1)));
         assertThat(table.getColumnData(2), equalTo((Object) Arrays.asList("286")));
     }
-    
+
     @Test
     public void tableRangeFilter2() {
         VTable table1 = newVTable(column("Rack", newVStringArray(Arrays.asList("A", "B", "C"), alarmNone(), timeNow())),

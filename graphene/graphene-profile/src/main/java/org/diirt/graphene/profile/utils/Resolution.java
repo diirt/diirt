@@ -10,11 +10,11 @@ import java.util.List;
 
 /**
  * A screen resolution that has a width and a height.
- * 
+ *
  * @author asbarber
  */
 public class Resolution implements Comparable, Settings{
-    
+
     /**
      * Common screen resolution.
      */
@@ -26,7 +26,7 @@ public class Resolution implements Comparable, Settings{
                              RESOLUTION_1600x1200 = new Resolution(1600, 1200);
 
     private int width, height;
-    
+
     /**
      * Creates a <code>Resolution</code> that stores a width to
      * height resolution size.
@@ -37,19 +37,19 @@ public class Resolution implements Comparable, Settings{
         this.setWidth(width);
         this.setHeight(height);
     }
-    
+
     /**
      * Sets the image width of the resolution in pixels.
      * @param width image width in pixels
      */
     public final void setWidth(int width){
         if (width <= 0){
-            throw new IllegalArgumentException("Width must be a postive non-zero integer.");            
+            throw new IllegalArgumentException("Width must be a postive non-zero integer.");
         }
-        
+
         this.width = width;
     }
-    
+
     /**
      * Sets the image height of the resolution in pixels.
      * @param height image height in pixels
@@ -58,10 +58,10 @@ public class Resolution implements Comparable, Settings{
         if (height <= 0){
             throw new IllegalArgumentException("Height must be a postive non-zero integer.");
         }
-        
+
         this.height = height;
     }
-    
+
     /**
      * Returns the image width of the resolution in pixels.
      * @return image width of the resolution
@@ -69,7 +69,7 @@ public class Resolution implements Comparable, Settings{
     public int getWidth(){
         return this.width;
     }
-    
+
     /**
      * Returns the image height of the resolution in pixels.
      * @return image height of the resolution
@@ -77,7 +77,7 @@ public class Resolution implements Comparable, Settings{
     public int getHeight(){
         return this.height;
     }
-    
+
     /**
      * Returns the amount of pixels based on this resolution.
      * @return image width times image height
@@ -85,7 +85,7 @@ public class Resolution implements Comparable, Settings{
     public int getPixels(){
         return this.width * this.height;
     }
-    
+
     /**
      * Returns a string representation of the resolution.
      * Formats the resolution as WxH with W as width and H as height.
@@ -113,16 +113,16 @@ public class Resolution implements Comparable, Settings{
             return 0;
         }
     }
-    
+
     /**
      * Default set of resolutions (image width and height set) to test
      * profiling on, based on standard computer resolutions.
      * @return  a list with standard computer screen resolutions
      * (160x120, 320x240, ... 1600x1200)
-     */    
+     */
     public static List<Resolution> defaultResolutions(){
         List<Resolution> r = new ArrayList<>();
-        
+
         r.add(new Resolution(160, 120));
         r.add(new Resolution(320, 240));
         r.add(new Resolution(640, 480));
@@ -130,8 +130,8 @@ public class Resolution implements Comparable, Settings{
         r.add(new Resolution(1024, 768));
         r.add(new Resolution(1440, 1080));
         r.add(new Resolution(1600, 1200));
-        return r;        
-    }    
+        return r;
+    }
 
     @Override
     /**
@@ -147,7 +147,7 @@ public class Resolution implements Comparable, Settings{
 
     /**
      * Gets the list of data to output this as settings.
-     * @return width and height data 
+     * @return width and height data
      */
     @Override
     public Object[] getOutput() {

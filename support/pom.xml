@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>diirt-all</artifactId>
-        <version>3.0.1-SNAPSHOT</version>
+        <version>3.1.6-SNAPSHOT</version>
     </parent>
     <groupId>org.diirt.support</groupId>
     <artifactId>support-all</artifactId>
@@ -15,5 +15,6 @@
         <module>cf</module>
         <module>ca</module>
         <module>pva</module>
+
     </modules>
 </project>

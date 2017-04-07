@@ -13,15 +13,15 @@ import java.util.Arrays;
  * @author Gabriele Carcassi
  */
 public final class ArrayDouble extends ListDouble implements Serializable {
-    
+
     private static final long serialVersionUID = 7493025761455302917L;
-    
+
     private final double[] array;
     private final boolean readOnly;
 
     /**
      * A new read-only {@code ArrayDouble} that wraps around the given array.
-     * 
+     *
      * @param array an array
      */
     public ArrayDouble(double... array) {
@@ -30,7 +30,7 @@ public final class ArrayDouble extends ListDouble implements Serializable {
 
     /**
      * A new {@code ArrayDouble} that wraps around the given array.
-     * 
+     *
      * @param array an array
      * @param readOnly if false the wrapper allows writes to the array
      */
@@ -42,7 +42,7 @@ public final class ArrayDouble extends ListDouble implements Serializable {
     @Override
     public final IteratorDouble iterator() {
         return new IteratorDouble() {
-            
+
             private int index;
 
             @Override
@@ -61,7 +61,7 @@ public final class ArrayDouble extends ListDouble implements Serializable {
     public final int size() {
         return array.length;
     }
-    
+
     @Override
     public double getDouble(int index) {
         return array[index];
@@ -78,14 +78,14 @@ public final class ArrayDouble extends ListDouble implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        
+
         if (obj instanceof ArrayDouble) {
             return Arrays.equals(array, ((ArrayDouble) obj).array);
         }
-        
+
         return super.equals(obj);
     }
-    
+
     double[] wrappedArray() {
         return array;
     }

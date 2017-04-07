@@ -28,7 +28,7 @@ final class LinearValueScale implements ValueScale {
     public double invScaleValue(double scaleValue, double minValue, double maxValue, double newMinValue, double newMaxValue) {
         return scaleValue(scaleValue, newMinValue, newMaxValue, minValue, maxValue);
     }
-    
+
     private static final DecimalFormat defaultFormat = new DecimalFormat("0.###");
 
     @Override
@@ -44,7 +44,7 @@ final class LinearValueScale implements ValueScale {
         int rangeOrder = (int) orderOfMagnitude(minValue, maxValue);
         int incrementOrder = (int) orderOfMagnitude(increment);
         int nDigits = rangeOrder - incrementOrder;
-        
+
         // The format will decide how many significant digit to show
         NumberFormat format = defaultFormat;
         // The normalization and the exponent will need to agree and
@@ -66,7 +66,7 @@ final class LinearValueScale implements ValueScale {
             normalization = Math.pow(10.0, rangeOrder);
             exponent = Integer.toString(rangeOrder);
         }
-        
+
         String[] labels = new String[ticks.length];
         for (int i = 0; i < ticks.length; i++) {
             double value = ticks[i];
@@ -74,7 +74,7 @@ final class LinearValueScale implements ValueScale {
         }
         return new ValueAxis(minValue, maxValue, ticks, labels);
     }
-    
+
     static String format(double number, NumberFormat format, String exponent, double normalization) {
         if (exponent != null) {
             return format.format(number/normalization) + "e" + exponent;
@@ -82,10 +82,10 @@ final class LinearValueScale implements ValueScale {
             return format.format(number/normalization);
         }
     }
-    
+
     /**
      * Find the space between ticks given the constraints.
-     * 
+     *
      * @param min range start
      * @param max range end
      * @param maxTick maximum ticks
@@ -106,7 +106,7 @@ final class LinearValueScale implements ValueScale {
             order = 0;
         BigDecimal magnitude = BigDecimal.ONE.scaleByPowerOfTen(order);
         double normalizedIncrement = increment / magnitude.doubleValue();
-        
+
         if (normalizedIncrement <= 1.0) {
             return magnitude.doubleValue();
         } else if (normalizedIncrement <= 2.0) {
@@ -117,18 +117,18 @@ final class LinearValueScale implements ValueScale {
             return magnitude.multiply(BigDecimal.valueOf(10)).doubleValue();
         }
     }
-    
+
     static double orderOfMagnitude(double value) {
         return Math.floor(Math.log10(value));
     }
-    
+
     static double orderOfMagnitude(double min, double max) {
         return orderOfMagnitude(Math.max(Math.abs(max), Math.abs(min)));
     }
-    
+
     /**
      * Create values for the axis tick given the range and the increment.
-     * 
+     *
      * @param min value range start
      * @param max value range end
      * @param increment space between ticks
@@ -158,8 +158,8 @@ final class LinearValueScale implements ValueScale {
         } else {
             smallerIncrement = magnitude.multiply(BigDecimal.valueOf(5)).doubleValue();
         }
-        
+
         return createTicks(minValue, maxValue, smallerIncrement);
     }
-    
+
 }

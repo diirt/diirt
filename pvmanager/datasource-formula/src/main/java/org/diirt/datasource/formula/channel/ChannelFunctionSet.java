@@ -9,9 +9,9 @@ import org.diirt.datasource.formula.FormulaFunctionSetDescription;
 
 /**
  * A set of functions to work with channels.
- * 
+ *
  * @author carcassi
- * 
+ *
  */
 public class ChannelFunctionSet extends FormulaFunctionSet {
 
@@ -19,12 +19,12 @@ public class ChannelFunctionSet extends FormulaFunctionSet {
      * Creates a new set.
      */
     public ChannelFunctionSet() {
-	super(new FormulaFunctionSetDescription("channel",
-		"Functions to work on channels")
-		.addFormulaFunction(new ChannelFormulaFunction())
-		.addFormulaFunction(new ChannelsFormulaFunction())
-		.addFormulaFunction(new PvFormulaFunction())
-		.addFormulaFunction(new PvsFormulaFunction())
+        super(new FormulaFunctionSetDescription("channel",
+                "Functions to work on channels")
+                .addFormulaFunction(new ChannelFormulaFunction())
+                .addFormulaFunction(new ChannelsFormulaFunction())
+                .addFormulaFunction(new PvFormulaFunction())
+                .addFormulaFunction(new PvsFormulaFunction())
                 );
     }
 

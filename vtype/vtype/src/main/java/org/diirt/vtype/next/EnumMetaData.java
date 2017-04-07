@@ -22,7 +22,7 @@ public abstract class EnumMetaData {
 
     /**
      * Whether the given object is an EnumMetadata with the same labels.
-     * 
+     *
      * @param obj another alarm
      * @return true if equal
      */
@@ -31,13 +31,13 @@ public abstract class EnumMetaData {
         if (this == obj) {
             return true;
         }
-        
-	if (obj instanceof EnumMetaData) {
+
+        if (obj instanceof EnumMetaData) {
             EnumMetaData other = (EnumMetaData) obj;
-        
+
             return getLabels().equals(other.getLabels());
         }
-        
+
         return false;
     }
 
@@ -50,15 +50,15 @@ public abstract class EnumMetaData {
     public final String toString() {
         return getLabels().toString();
     }
-    
+
     /**
      * New EnumMetaData with the given labels.
-     * 
+     *
      * @param labels the enum labels
      * @return the new alarm
      */
     public static EnumMetaData create(final List<String> labels) {
         return new IEnumMetaData(labels);
     }
-    
+
 }

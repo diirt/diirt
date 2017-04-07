@@ -19,48 +19,48 @@ public class StringUtil {
     private StringUtil() {
         // Prevent instantiation
     }
-    
+
     /**
      * The pattern of a string fragment with escape sequences.
      */
     public static final String STRING_ESCAPE_SEQUENCE_REGEX = "\\\\(\"|\\\\|\'|r|n|b|t|u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F]|[0-3]?[0-7]?[0-7])";
-    
+
     /**
      * The pattern of a string, including double quotes.
      */
     public static final String QUOTED_STRING_REGEX = "\"([^\"\\\\]|" + StringUtil.STRING_ESCAPE_SEQUENCE_REGEX + ")*\"";
-    
+
     /**
      * The pattern of a string using single quotes.
      */
     public static final String SINGLEQUOTED_STRING_REGEX = "\'([^\"\\\\]|" + StringUtil.STRING_ESCAPE_SEQUENCE_REGEX + ")*\'";
-    
+
     /**
      * The pattern of a double value.
      */
     public static final String DOUBLE_REGEX = "([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)";
-    
+
     /**
      * The pattern of a double value.
      */
     public static final String DOUBLE_REGEX_WITH_NAN = "([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)|NaN";
-    
+
     static Pattern escapeSequence = Pattern.compile(STRING_ESCAPE_SEQUENCE_REGEX);
-    
+
     /**
      * Takes a single quoted or double quoted String and returns the unquoted
      * and unescaped version of the string.
-     * 
+     *
      * @param quotedString the original string
      * @return the unquoted string
      */
     public static String unquote(String quotedString) {
         return unescapeString(quotedString.substring(1, quotedString.length() - 1));
     }
-    
+
     /**
      * Takes an escaped string and returns the unescaped version
-     * 
+     *
      * @param escapedString the original string
      * @return the unescaped string
      */
@@ -73,7 +73,7 @@ public class StringUtil {
         match.appendTail(output);
         return output.toString();
     }
-    
+
     private static String substitution(String escapedToken) {
         switch (escapedToken) {
             case "\\\"":
@@ -99,11 +99,11 @@ public class StringUtil {
         }
         return Character.toString((char) Long.parseLong(escapedToken.substring(1), 8));
     }
-    
+
     /**
      * Parses a line of text representing comma separated values and returns
      * the values themselves.
-     * 
+     *
      * @param line the line to parse
      * @param separatorRegex the regular expression for the separator
      * @return the list of values

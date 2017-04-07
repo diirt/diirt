@@ -10,7 +10,7 @@ package org.diirt.vtype.next;
  * @author carcassi
  */
 class IVEnum extends VEnum {
-    
+
     private final Alarm alarm;
     private final Time time;
     private final int index;

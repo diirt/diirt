@@ -21,7 +21,7 @@ public class FunctionParser {
     /**
      * Parse a function that accepts a scalar value (number or string) or
      * an array value (number or string).
-     * 
+     *
      * @param string the string to be parsed
      * @param errorMessage the error message
      * @return the name of the function and the argument
@@ -33,7 +33,7 @@ public class FunctionParser {
     /**
      * Parse a function that accepts a scalar value (number or string) or
      * an array value (number or string).
-     * 
+     *
      * @param nameRegex regex for function name
      * @param string the string to be parsed
      * @param errorMessage the error message for the exception if parsing fails
@@ -42,17 +42,17 @@ public class FunctionParser {
     public static List<Object> parseFunctionWithScalarOrArrayArguments(String nameRegex, String string, String errorMessage) {
         // Parse the channel name
         List<Object> parsedTokens = FunctionParser.parseFunctionAnyParameter(nameRegex, string);
-        
+
         // Parsing failed
         if (parsedTokens == null) {
             throw new IllegalArgumentException(errorMessage);
         }
-        
+
         // Single argument, return right away
         if (parsedTokens.size() <= 2) {
             return parsedTokens;
         }
-        
+
         // Multiple arguments, collect in array if possible
         Object data = asScalarOrList(parsedTokens.subList(1, parsedTokens.size()));
         if (data == null) {
@@ -60,11 +60,11 @@ public class FunctionParser {
         }
         return Arrays.asList(parsedTokens.get(0), data);
     }
-    
+
     /**
      * Converts the list of arguments into a scalar or
      * an appropriate list. Returns null if it's not possible.
-     * 
+     *
      * @param objects the argument list
      * @return the value converted or null
      */
@@ -81,11 +81,11 @@ public class FunctionParser {
             return null;
         }
     }
-    
+
     /**
      * Convert the list of arguments to a ListDouble. Returns
      * null if it's not possible.
-     * 
+     *
      * @param objects a list of arguments
      * @return the converted list or null
      */
@@ -105,7 +105,7 @@ public class FunctionParser {
     /**
      * Convert the list of arguments to a List. Returns
      * null if it's not possible.
-     * 
+     *
      * @param objects a list of arguments
      * @return  the converted list of null
      */
@@ -121,12 +121,12 @@ public class FunctionParser {
         }
         return data;
     }
-    
+
     /**
      * Parses the string and returns the name of the function plus the
      * list of arguments. The arguments can either be doubles or Strings.
      * Returns null if parsing fails.
-     * 
+     *
      * @param string the string to be parsed
      * @return the function name and arguments; null if parsing fails
      */
@@ -138,7 +138,7 @@ public class FunctionParser {
      * Parses the string and returns the name of the function plus the
      * list of arguments. The arguments can either be doubles or Strings.
      * Returns null if parsing fails.
-     * 
+     *
      * @param nameRegex the syntax for the function name
      * @param string the string to be parsed
      * @return the function name and arguments; null if parsing fails
@@ -151,14 +151,14 @@ public class FunctionParser {
                 return null;
             }
         }
-        
+
         String name = string.substring(0, string.indexOf('('));
         String arguments = string.substring(string.indexOf('(') + 1, string.lastIndexOf(')'));
-        
+
         if (!name.matches(nameRegex)) {
             return null;
         }
-        
+
         List<Object> result = new ArrayList<>();
         result.add(name);
         try {

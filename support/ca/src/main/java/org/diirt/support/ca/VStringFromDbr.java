@@ -22,7 +22,7 @@ class VStringFromDbr extends VMetadata<DBR_TIME_String> implements VString {
     VStringFromDbr(DBR_TIME_Byte dbrValue, JCAConnectionPayload JCAConnectionPayload) {
         this(convert(dbrValue), JCAConnectionPayload);
     }
-    
+
     private static DBR_TIME_String convert(DBR_TIME_Byte dbrValue) {
         DBR_TIME_String converted = new DBR_TIME_String(new String[] {JCAChannelHandler.toString(dbrValue.getByteValue())});
         converted.setTimeStamp(dbrValue.getTimeStamp());
@@ -35,7 +35,7 @@ class VStringFromDbr extends VMetadata<DBR_TIME_String> implements VString {
     public String getValue() {
         return dbrValue.getStringValue()[0];
     }
-    
+
     @Override
     public String toString() {
         return VTypeToString.toString(this);

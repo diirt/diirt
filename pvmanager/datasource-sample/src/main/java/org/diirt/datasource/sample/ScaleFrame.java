@@ -7,16 +7,20 @@ package org.diirt.datasource.sample;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.swing.JTextField;
+
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.vtype.SimpleValueFormat;
 import org.diirt.vtype.ValueFormat;
+
 import static org.diirt.datasource.ExpressionLanguage.*;
+
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.util.text.NumberFormats;
-import static org.diirt.util.time.TimeDuration.*;
+import org.diirt.util.time.TimeDuration;
 
 /**
  *
@@ -36,7 +40,7 @@ public class ScaleFrame extends javax.swing.JFrame {
         format = new SimpleValueFormat(3);
         format.setNumberFormat(NumberFormats.format(6));
     }
-    
+
     ValueFormat format;
 
     List<PVReader<Object>> pvs = new ArrayList<PVReader<Object>>();
@@ -51,7 +55,7 @@ public class ScaleFrame extends javax.swing.JFrame {
                         field.setText(format.format(event.getPvReader().getValue()));
                     }
                 })
-                .maxRate(ofHertz(50));
+                .maxRate(TimeDuration.ofHertz(50));
         pvs.add(pv);
     }
 

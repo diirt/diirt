@@ -16,7 +16,7 @@ import org.diirt.vtype.VBoolean;
  * @author carcassi
  */
 class ConditionalOperatorFormulaFunction implements FormulaFunction {
-    
+
     @Override
     public String getName() {
         return "?:";
@@ -56,7 +56,7 @@ class ConditionalOperatorFormulaFunction implements FormulaFunction {
     public Object calculate(List<Object> args) {
         // Convert arguments to actual types
         VBoolean condition = (VBoolean) args.get(0);
-        
+
         // Handle null case
         if (condition == null) {
             return null;
@@ -69,8 +69,8 @@ class ConditionalOperatorFormulaFunction implements FormulaFunction {
         } else {
             value = args.get(2);
         }
-        
+
         return value;
     }
-    
+
 }

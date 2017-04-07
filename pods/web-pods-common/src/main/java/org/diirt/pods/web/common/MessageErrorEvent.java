@@ -14,12 +14,12 @@ import javax.json.JsonObject;
  * @author carcassi
  */
 public class MessageErrorEvent extends Message {
-    
+
     private final String error;
 
     /**
      * Creates a new message based on the JSON representation.
-     * 
+     *
      * @param obj JSON object
      * @throws MessageDecodeException if json format is incorrect
      */
@@ -27,10 +27,10 @@ public class MessageErrorEvent extends Message {
         super(obj);
         this.error = stringMandatory(obj, "error");
     }
-    
+
     /**
      * Creates a new message based on the given parameters.
-     * 
+     *
      * @param id the channel id
      * @param error the error message
      */
@@ -41,13 +41,13 @@ public class MessageErrorEvent extends Message {
 
     /**
      * The error message.
-     * 
+     *
      * @return error message
      */
     public String getError() {
         return error;
     }
-    
+
     @Override
     public void toJson(Writer writer) {
         Json.createGenerator(writer).writeStartObject()
@@ -58,5 +58,5 @@ public class MessageErrorEvent extends Message {
                 .writeEnd()
                 .close();
     }
-    
+
 }

@@ -2,32 +2,32 @@
 <html>
 <head>
     <link rel="stylesheet" href="demos.css" type="text/css" media="screen" />
-    
+
     <script src="../libraries/RGraph.common.core.js" ></script>
     <script src="../libraries/RGraph.hprogress.js" ></script>
     <!--[if lt IE 9]><script src="../excanvas/excanvas.js"></script><![endif]-->
-    
+
     <title>A HProgress chart with custom title</title>
-    
+
     <meta name="keywords" content="demo hprogress title ondraw" />
     <meta name="description" content="A HProgress bar chart which has a custom title that is drawn using the ondraw event" />
     <meta name="robots" content="noindex,nofollow" />
 </head>
 <body>
 
-    <h1>A HProgress chart with custom title</h1>    
+    <h1>A HProgress chart with custom title</h1>
         <p>
             With this chart the title is not drawn using  the chart.title property - instead it is drawn using the ondraw
             custom event along with the RGraph.Text() API function.
         </p>
 
     <canvas id="cvs" width="600" height="100">[No canvas support]</canvas>
-    
+
     <script>
         window.onload = function ()
         {
             var hprogress = new RGraph.HProgress('cvs',0,100,89);
-            
+
             hprogress.ondraw = function (obj)
             {
                 obj.context.fillStyle = 'black';
@@ -42,12 +42,12 @@
                             'center'
                            );
             }
-            
+
             hprogress.Draw();
         }
     </script>
 
-    <p>        
+    <p>
         <a href="./">&laquo; Back</a>
     </p>
 

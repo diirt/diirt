@@ -27,9 +27,9 @@ public class ConnectionCollector implements ReadFunction<Boolean> {
             this.notification = notification;
         }
     }
-    
+
     private class ConnectionWriteFunction implements WriteFunction<Boolean> {
-        
+
         private final String name;
         private int counter = 1;
 
@@ -53,11 +53,11 @@ public class ConnectionCollector implements ReadFunction<Boolean> {
                 task.run();
             }
         }
-        
+
         private void open() {
             counter++;
         }
-        
+
         private boolean isClosed() {
             return counter == 0;
         }
@@ -65,13 +65,13 @@ public class ConnectionCollector implements ReadFunction<Boolean> {
         private void close() {
             counter--;
         }
-        
+
     }
 
     /**
      * Adds a new channel to the collector and returns the write function
      * to use to change the connection status.
-     * 
+     *
      * @param name channel name
      * @return the write function
      */
@@ -108,7 +108,7 @@ public class ConnectionCollector implements ReadFunction<Boolean> {
      * <p>
      * For future development, this is the method that one could
      * override to implement a different connection logic.
-     * 
+     *
      * @param channelConnected the connection status of each channel
      * @return the overall connection status
      */
@@ -123,7 +123,7 @@ public class ConnectionCollector implements ReadFunction<Boolean> {
 
     /**
      * Remove a channel from the collector.
-     * 
+     *
      * @param channelName the channel name
      */
     void removeChannel(String channelName) {

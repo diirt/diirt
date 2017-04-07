@@ -8,14 +8,17 @@ import org.diirt.vtype.Time;
 import org.diirt.vtype.VMultiDouble;
 import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.VDouble;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.diirt.datasource.ReadFunction;
-import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Provides an aggregator that returns a synchronized set of data by looking
@@ -26,7 +29,7 @@ import org.diirt.util.time.Timestamp;
 class SynchronizedVDoubleAggregator implements ReadFunction<VMultiDouble> {
 
     private static final Logger log = Logger.getLogger(SynchronizedVDoubleAggregator.class.getName());
-    private final TimeDuration tolerance;
+    private final Duration tolerance;
     private final List<ReadFunction<List<VDouble>>> collectors;
 
     /**
@@ -38,8 +41,8 @@ class SynchronizedVDoubleAggregator implements ReadFunction<VMultiDouble> {
      * @param tolerance the tolerance around the reference time for samples to be included
      */
     @SuppressWarnings("unchecked")
-    public SynchronizedVDoubleAggregator(List<String> names, List<ReadFunction<List<VDouble>>> collectors, TimeDuration tolerance) {
-        if (!tolerance.isPositive())
+    public SynchronizedVDoubleAggregator(List<String> names, List<ReadFunction<List<VDouble>>> collectors, Duration tolerance) {
+        if (tolerance.isNegative() || tolerance.isZero())
             throw new IllegalArgumentException("Tolerance between samples must be non-zero and positive");
         this.tolerance = tolerance;
         this.collectors = collectors;
@@ -47,11 +50,11 @@ class SynchronizedVDoubleAggregator implements ReadFunction<VMultiDouble> {
 
     @Override
     public VMultiDouble readValue() {
-        Timestamp reference = electReferenceTimeStamp(collectors);
+        Instant reference = electReferenceTimeStamp(collectors);
         if (reference == null)
             return null;
 
-        TimeInterval allowedInterval = tolerance.around(reference);
+        TimeInterval allowedInterval = TimeInterval.around(tolerance, reference);
         List<VDouble> values = new ArrayList<VDouble>(collectors.size());
         StringBuilder buffer = new StringBuilder();
         for (ReadFunction<List<VDouble>> collector : collectors) {
@@ -69,11 +72,11 @@ class SynchronizedVDoubleAggregator implements ReadFunction<VMultiDouble> {
                 ValueFactory.newTime(reference), ValueFactory.displayNone());
     }
 
-    static <T extends Time> Timestamp electReferenceTimeStamp(List<ReadFunction<List<T>>> collectors) {
+    static <T extends Time> Instant electReferenceTimeStamp(List<ReadFunction<List<T>>> collectors) {
         for (ReadFunction<List<T>> collector : collectors) {
             List<T> data = collector.readValue();
             if (data.size() > 1) {
-                Timestamp time = data.get(data.size() - 2).getTimestamp();
+                Instant time = data.get(data.size() - 2).getTimestamp();
                 if (time != null)
                     return time;
             }
@@ -81,22 +84,22 @@ class SynchronizedVDoubleAggregator implements ReadFunction<VMultiDouble> {
         return null;
     }
 
-    static <T extends Time> T closestElement(List<T> data, TimeInterval interval, Timestamp reference) {
+    static <T extends Time> T closestElement(List<T> data, TimeInterval interval, Instant reference) {
         StringBuilder buffer = new StringBuilder();
         T latest = null;
         long latestDistance = Long.MAX_VALUE;
         for (T value : data) {
-            Timestamp newTime = value.getTimestamp();
+            Instant newTime = value.getTimestamp();
             if (log.isLoggable(Level.FINEST)) {
-                buffer.append(newTime.getNanoSec()).append(", ");
+                buffer.append(newTime.getNano()).append(", ");
             }
 
             if (interval.contains(newTime)) {
                 if (latest == null) {
                     latest = value;
-                    latestDistance = newTime.durationBetween(reference).getNanoSec();
+                    latestDistance = Math.abs(reference.until(newTime, ChronoUnit.NANOS));
                 } else {
-                    long newDistance = newTime.durationBetween(reference).getNanoSec();
+                    long newDistance = Math.abs(reference.until(newTime, ChronoUnit.NANOS));
                     if (newDistance < latestDistance) {
                         latest = value;
                         latestDistance = newDistance;
@@ -105,7 +108,7 @@ class SynchronizedVDoubleAggregator implements ReadFunction<VMultiDouble> {
             }
         }
         if (log.isLoggable(Level.FINEST)) {
-            buffer.append("[").append(latest.getTimestamp().getNanoSec()).append("|").append(reference.getNanoSec()).append("]");
+            buffer.append("[").append(latest.getTimestamp().getNano()).append("|").append(reference.getNano()).append("]");
             log.finest(buffer.toString());
         }
         return latest;

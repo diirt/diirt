@@ -4,7 +4,6 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.support.ca.JCADataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,19 +23,19 @@ public class JCALongTerm {
     public static void main(String[] args) throws Exception {
         JCADataSource jca = new JCADataSourceProvider().createInstance();
         PVManager.setDefaultDataSource(jca);
-        
+
         List<String> names = new ArrayList<String>();
         for (int i = 0; i <= 20; i++) {
             names.add("counter" + i);
             names.add("counter" + i);
         }
-        List<PVReader<?>> pvs = new ArrayList<PVReader<?>>(); 
+        List<PVReader<?>> pvs = new ArrayList<PVReader<?>>();
         for (String name : names) {
             pvs.add(null);
         }
         Random rand = new Random(1);
         final AtomicInteger count = new AtomicInteger(-1);
-        
+
         while (true) {
             int index = rand.nextInt(names.size());
             PVReader<?> pv = pvs.get(index);
@@ -57,8 +56,8 @@ public class JCALongTerm {
                 pv.close();
                 pvs.set(index, null);
             }
-            
+
             Thread.sleep(1000);
         }
-    }    
+    }
 }

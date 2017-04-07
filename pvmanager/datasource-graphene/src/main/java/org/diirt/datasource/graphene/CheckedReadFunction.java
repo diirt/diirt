@@ -14,7 +14,7 @@ import org.diirt.vtype.ValueUtil;
  * @author carcassi
  */
 public class CheckedReadFunction<T> implements ReadFunction<T> {
-    
+
     private final Class<T> clazz;
     private final Class<? extends T>[] classes;
     private final ReadFunction<?> arg;
@@ -40,7 +40,7 @@ public class CheckedReadFunction<T> implements ReadFunction<T> {
         this.arg = arg;
         this.argName = argName;
     }
-    
+
     @Override
     public T readValue() {
         Object obj = arg.readValue();

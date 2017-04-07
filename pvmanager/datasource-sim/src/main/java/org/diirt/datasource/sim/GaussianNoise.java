@@ -7,7 +7,6 @@ package org.diirt.datasource.sim;
 import java.util.Random;
 import org.diirt.vtype.VDouble;
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
 
 /**
  * Function to simulate a signal that has a gaussian distribution. The warning

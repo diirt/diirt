@@ -19,7 +19,7 @@ public interface Alarm {
      * @return the alarm severity
      */
     AlarmSeverity getAlarmSeverity();
-    
+
     /**
      * Returns a brief text representation of the highest currently active alarm.
      * Never null.

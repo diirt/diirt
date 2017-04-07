@@ -6,7 +6,7 @@ package org.diirt.datasource.sim;
 
 import org.diirt.vtype.VDouble;
 import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.util.time.Timestamp;
+import java.time.Instant;
 
 /**
  * Function to simulate a signal that increases constantly within a range
@@ -65,7 +65,7 @@ public class Ramp extends SimFunction<VDouble> {
     public Ramp(Double min, Double max, Double interval) {
         this(min, max, 1.0, interval);
     }
-    
+
     /**
      * Creates a ramp shaped signal between -5 and +5, incrementing 1 every second.
      */

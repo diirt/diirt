@@ -10,7 +10,7 @@ import org.diirt.util.stats.Range;
  * An optimized instance of a color map, where colors are pre-calculated.
  * <p>
  * TODO: allow choice of number of colors
- * 
+ *
  * @author sjdallst
  */
 class NumberColorMapInstanceOptimized implements NumberColorMapInstance {
@@ -65,7 +65,7 @@ class NumberColorMapInstanceOptimized implements NumberColorMapInstance {
         if (Double.isNaN(value)) {
             return nanColor;
         }
-        
+
         int index = (int) ((value - min) / total * (arrayLength - 1));
         if (index < 0) {
             index = 0;
@@ -79,5 +79,5 @@ class NumberColorMapInstanceOptimized implements NumberColorMapInstance {
     public String toString() {
         return name;
     }
-    
+
 }

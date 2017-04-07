@@ -4,13 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.WriteRecipe;
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.ChannelWriteRecipe;
-import org.diirt.datasource.ReadRecipe;
-import org.diirt.datasource.DataSource;
-import org.diirt.datasource.PVReader;
-import org.diirt.datasource.WriteCache;
 import org.diirt.datasource.expression.ChannelExpressionList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,7 +33,7 @@ public class PVSyntaxTest {
     @Test
     public void readMap() throws Exception {
         DataSource dataSource = new LocalDataSource();
-        
+
         PVReader<Map<String, Object>> pvReader =
                 PVManager.read(mapOf(latestValueOf(channel("channel1"))
                                     .and(latestValueOf(channel("channel2")))))
@@ -55,7 +48,7 @@ public class PVSyntaxTest {
         assertThat(buffer.getChannelWriteRecipes().size(), equalTo(2));
         assertThat(channelNames(buffer), containsInAnyOrder("channel1", "channel2"));
     }
-    
+
     private static Collection<String> channelNames(WriteRecipe buffer) {
         Set<String> names = new HashSet<String>();
         for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteRecipes()) {
@@ -63,7 +56,7 @@ public class PVSyntaxTest {
         }
         return names;
     }
-    
+
     private static ChannelWriteRecipe channelWriteBuffer(String channelName, WriteRecipe buffer) {
         for (ChannelWriteRecipe channelWriteBuffer : buffer.getChannelWriteRecipes()) {
             if (channelWriteBuffer.getChannelName().equals(channelName)) {
@@ -72,7 +65,7 @@ public class PVSyntaxTest {
         }
         return null;
     }
-    
+
     @Test
     public void channelList1() {
         List<String> names = Arrays.asList("channel1", "channel2", "channel3");
@@ -88,7 +81,7 @@ public class PVSyntaxTest {
             index++;
         }
     }
-    
+
     @Test
     public void channelList2() {
         List<String> names = Arrays.asList("channel1", "channel2", "channel3");
@@ -104,13 +97,13 @@ public class PVSyntaxTest {
             index++;
         }
     }
-    
+
     @Test
     public void latestValueOf1() {
         DesiredRateReadWriteExpressionList<Object, Object> exp = latestValueOf(channels("one", "two", "three"));
         assertThat(exp.getDesiredRateReadWriteExpressions(), hasSize(3));
     }
-    
+
     @Test
     public void writeMap1() {
         WriteExpression<Map<String, Object>> mapOf = mapOf(channel("first").and(channels("second", "third").after("first")));
@@ -121,7 +114,7 @@ public class PVSyntaxTest {
         assertThat(channelWriteBuffer("second", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));
         assertThat(channelWriteBuffer("third", buffer).getWriteSubscription().getWriteCache().getPrecedingChannels(), contains("first"));
     }
-    
+
     @Test
     public void rename1() {
         SourceRateReadWriteExpressionImpl<Object, Object> exp = channel("myChannel").as("myName");
@@ -131,5 +124,5 @@ public class PVSyntaxTest {
         assertThat(recipe.getChannelReadRecipes(), hasSize(1));
         assertThat(finalExp.recipeFor("myChannel"), notNullValue());
     }
-    
+
 }

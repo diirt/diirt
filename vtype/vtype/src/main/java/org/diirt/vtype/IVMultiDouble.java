@@ -12,7 +12,7 @@ import java.util.List;
  * @author carcassi
  */
 class IVMultiDouble extends IVNumeric implements VMultiDouble {
-    
+
     private final List<VDouble> values;
 
     IVMultiDouble(List<VDouble> values, Alarm alarm, Time time, Display display) {

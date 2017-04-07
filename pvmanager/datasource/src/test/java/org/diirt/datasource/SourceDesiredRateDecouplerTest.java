@@ -4,8 +4,6 @@
  */
 package org.diirt.datasource;
 
-import org.diirt.datasource.DesiredRateEvent;
-import org.diirt.datasource.SourceDesiredRateDecoupler;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -56,5 +54,5 @@ public class SourceDesiredRateDecouplerTest {
         assertThat(log.getEventTypes(5), contains(DesiredRateEvent.Type.WRITE_FAILED));
         assertThat(log.getEventTypes(6), contains(DesiredRateEvent.Type.WRITE_SUCCEEDED));
     }
-    
+
 }
