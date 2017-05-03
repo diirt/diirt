@@ -53,6 +53,11 @@ import org.diirt.vtype.ValueFactory;
 
 /**
  * A set of functions to work with NTNDArray-s.
+ * 
+ * TODO With the new VImage supporting Image types other than TYPE_3BYTE_BGR,
+ * these formulas could encapsulate the entire image data coming from pvaccess
+ * and register the appropriate conversion functions in the VTypeUtil
+ *
  * @author msekoranja
  */
 public class NTNDArrayFunctionSet extends FormulaFunctionSet {

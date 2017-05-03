@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.diirt.util.array.ArrayByte;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
 import org.diirt.util.array.ListBoolean;
@@ -588,6 +589,7 @@ public class ValueFactory {
                 time, display);
     }
 
+    
     /**
      * Creates a new VImage given the data and the size.
      *
@@ -597,7 +599,37 @@ public class ValueFactory {
      * @return a new object
      */
     public static VImage newVImage(int height, int width, byte[] data) {
-        return new IVImage(height, width, data);
+        return newVImage(height, width, data, alarmNone(), timeNow());
+    }
+
+    /**
+     * Creates a new VImage given the data and the size.
+     *
+     * @param height the height
+     * @param width the width
+     * @param data the data
+     * @param alarm the alarm
+     * @param time the time
+     * @return a new object
+     */
+    public static VImage newVImage(int height, int width, byte[] data, Alarm alarm, Time time) {
+        return new IVImage(height, width, new ArrayByte(data), VImageDataType.pvByte, VImageType.TYPE_3BYTE_BGR, alarm,
+                time);
+    }
+    
+    /**
+     * Creates a new VImage of type TYPE_3BYTE_BGR given the data and the size.
+     *
+     * @param height the height
+     * @param width the width
+     * @param data the data {@link ListNumber}
+     * @param imageDataType {@link VImageDataType}
+     * @param alarm the alarm
+     * @param time the time
+     * @return a new object
+     */
+    public static VImage newVImage(int height, int width, final ListNumber data, VImageDataType imageDataType, Alarm alarm, Time time) {
+        return new IVImage(height, width, data, imageDataType, VImageType.TYPE_3BYTE_BGR, alarm, time);
     }
 
     /**
@@ -639,6 +671,19 @@ public class ValueFactory {
     public static VShortArray newVShortArray(final ListShort values, Alarm alarm, Time time, Display display) {
         ListInt sizes = new ArrayInt(values.size());
         return new IVShortArray(values, sizes, ValueUtil.defaultArrayDisplay(sizes), alarm, time, display);
+    }
+    /**
+     * Creates a new VByteArray.
+     *
+     * @param values array values
+     * @param alarm the alarm
+     * @param time the time
+     * @param display the display
+     * @return the new value
+     */
+    public static VByteArray newVByteArray(final ListByte values, Alarm alarm, Time time, Display display) {
+        ListInt sizes = new ArrayInt(values.size());
+        return new IVByteArray(values, sizes, ValueUtil.defaultArrayDisplay(sizes), alarm, time, display);
     }
 
     /**
