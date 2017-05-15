@@ -105,10 +105,9 @@ class RPCServiceMethod extends ServiceMethod {
         this.isResultStandalone = serviceMethodDescription.isResultStandalone;
         this.fieldNames = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.getFieldNames()));
         this.operationName = serviceMethodDescription.operationName;
-
+        this.strictArguments = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.strictArguments));
         this.requestStructure = createRequestStructure(serviceMethodDescription.structureId);
 
-        this.strictArguments = Collections.unmodifiableMap(new HashMap<>(serviceMethodDescription.strictArguments));
     }
 
     private Structure createRequestStructure(String structureId) {
@@ -215,7 +214,7 @@ class RPCServiceMethod extends ServiceMethod {
             //back to the pool
             rpcClient.destroy();
         }
-    }
+    }   
 
     PVStructure createPvRequest(final Map<String, Object> parameters, String methodName) {
         PVStructure pvRequest = PVDataFactory.getPVDataCreate().createPVStructure(this.requestStructure);

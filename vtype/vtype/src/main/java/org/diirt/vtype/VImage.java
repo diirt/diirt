@@ -4,40 +4,18 @@
  */
 package org.diirt.vtype;
 
+import org.diirt.util.array.ListNumber;
+
 /**
- * Represent a buffered image. Use {@link ValueUtil#toImage(org.diirt.vtype.VImage) }
+ * Represent an image. Use {@link ValueUtil#toImage(org.diirt.vtype.VImage) }
  * and {@link ValueUtil#toVImage(java.awt.image.BufferedImage)} to convert objects
  * of this class to and from awt images.
- * <p>
- * The data is currently encoded as 3 bytes for each pixel (RGB). To read the
- * buffer in AWT use the following code:
- * </p>
- * <pre>
- * BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
- * System.arraycopy(buffer, 0, ((DataBufferByte) image.getRaster().getDataBuffer()).getData(), 0, 100*100*3);
- * </pre>
- * <p>
- * To read in SWT:
- * </p>
- * <pre>
- * ImageData imageData = new ImageData(width, height, 24, new PaletteData(0xFF, 0xFF00, 0xFF0000), width*3, buffer);
- * Image image = new Image(gc.getDevice(), imageData);
- * </pre>
- * <p>
- * To prepare an image using Java2D:
- * </p>
- * <pre>
- * BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
- * Graphics2D g = image.createGraphics();
- * ...
- * byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
- * </pre>
- * <p>
- * TODO: should be extended to support different encodings.
+ * 
  *
  * @author carcassi
  */
-public interface VImage extends VType {
+public interface VImage extends VType, Alarm, Time {
+
     /**
      * Height of the image in pixels.
      *
@@ -53,9 +31,27 @@ public interface VImage extends VType {
     public int getWidth();
 
     /**
-     * Image buffer;
+     * Image data;
      *
-     * @return image buffer
+     * @return image data
      */
-    public byte[] getData();
+    public ListNumber getData();
+    
+    /**
+     * Describes the type in which the data is stored
+     * {@link VImageDataType}
+     * 
+     * @return image data type 
+     */
+    public VImageDataType getDataType();
+
+    /**
+     * Returns the image type, The image type describes the mechanism in which
+     * the data is encoded and how it can be converted to something that can be
+     * rendered.
+     * 
+     * @return the image type {@link VImageType}
+     */
+    public VImageType getVImageType();
+
 }

@@ -4,21 +4,30 @@
  */
 package org.diirt.vtype;
 
+import org.diirt.util.array.ListNumber;
+
 /**
  * Image implementation
  *
  * @author carcassi
  */
-class IVImage implements VImage {
+class IVImage extends IVMetadata implements VImage {
 
     private final int height;
     private final int width;
-    private final byte[] data;
+    private final ListNumber data;
+    private final VImageDataType imageDataType;
+    private final VImageType imageType;
 
-    public IVImage(int height, int width, byte[] data) {
+    public IVImage(int height, int width, ListNumber data, 
+            VImageDataType imageDataType, VImageType imageType, 
+            Alarm alarm, Time time) {
+        super(alarm, time);
         this.height = height;
         this.width = width;
         this.data = data;
+        this.imageDataType = imageDataType;
+        this.imageType = imageType;
     }
 
     @Override
@@ -32,8 +41,18 @@ class IVImage implements VImage {
     }
 
     @Override
-    public byte[] getData() {
+    public ListNumber getData() {
         return data;
+    }
+
+    @Override
+    public VImageDataType getDataType() {
+        return imageDataType;
+    }
+
+    @Override
+    public VImageType getVImageType() {
+        return imageType;
     }
 
 }
