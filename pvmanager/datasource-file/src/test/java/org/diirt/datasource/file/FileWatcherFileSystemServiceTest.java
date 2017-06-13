@@ -13,9 +13,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import org.diirt.datasource.PVReaderEvent;
+
 import static org.junit.Assert.*;
+
 import org.junit.*;
+
 import static org.hamcrest.Matchers.*;
 
 /**
@@ -64,7 +66,7 @@ public class FileWatcherFileSystemServiceTest {
         writer.println("Charlie,71");
         writer.close();
 
-        latch.await(1000, TimeUnit.MILLISECONDS);
+        latch.await(10000, TimeUnit.MILLISECONDS);
         assertThat(latch.getCount(), equalTo(0L));
     }
 
