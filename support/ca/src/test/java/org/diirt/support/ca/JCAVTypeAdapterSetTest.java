@@ -11,14 +11,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.ValueCacheImpl;
 import org.diirt.util.array.CollectionNumbers;
+import org.diirt.util.config.TimeStampFormatter;
 import org.diirt.vtype.AlarmSeverity;
 import org.diirt.vtype.VByte;
 import org.diirt.vtype.VByteArray;
@@ -68,8 +68,8 @@ import gov.aps.jca.event.MonitorEvent;
 public class JCAVTypeAdapterSetTest {
 
     // Create a Zone specific string representation of epoc 0
-    private final String testTimeString = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS")
-            .format(LocalDateTime.ofInstant(Instant.ofEpochSecond(1234567,1234), ZoneId.systemDefault()));
+    private final String testTimeString = TimeStampFormatter.TIMESTAMP_FORMAT
+            .format(ZonedDateTime.ofInstant(Instant.ofEpochSecond(1234567,1234), ZoneId.systemDefault()));
 
     public JCAVTypeAdapterSetTest() {
     }

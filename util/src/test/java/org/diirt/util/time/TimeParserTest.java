@@ -4,15 +4,13 @@
  */
 package org.diirt.util.time;
 
-import java.text.ParseException;
+import static java.time.Duration.between;
+
 import java.time.Duration;
 import java.time.Instant;
-import java.util.TimeZone;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static java.time.Duration.*;
 /**
  *
  * @author shroffk
