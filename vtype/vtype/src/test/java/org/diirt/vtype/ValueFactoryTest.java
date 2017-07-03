@@ -33,8 +33,8 @@ import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
@@ -55,6 +55,7 @@ import org.diirt.util.array.ListInt;
 import org.diirt.util.array.ListLong;
 import org.diirt.util.array.ListNumber;
 import org.diirt.util.array.ListShort;
+import org.diirt.util.config.TimeStampFormatter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,7 +67,7 @@ public class ValueFactoryTest {
 
     private Time testTime;
     private String testTimeString;
-    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+    private static final DateTimeFormatter timeFormat = TimeStampFormatter.TIMESTAMP_FORMAT;
 
     public ValueFactoryTest() {
     }
@@ -74,7 +75,7 @@ public class ValueFactoryTest {
     @Before
     public void setUp() {
         testTime = newTime(Instant.ofEpochSecond(1354719441, 521786982));
-        testTimeString = timeFormat.format(LocalDateTime.ofInstant(testTime.getTimestamp(), ZoneId.systemDefault()));
+        testTimeString = timeFormat.format(ZonedDateTime.ofInstant(testTime.getTimestamp(), ZoneId.systemDefault()));
     }
 
     @Test
