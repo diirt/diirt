@@ -15,7 +15,7 @@ function catTests {
 }
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
-if [[ [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$REPO_ORG" == "diirt" ] && [ "$TRAVIS_BRANCH" =~  diirt-all-[0-9]+\.[0-9]+\.[0-9] ] ]]; then
+if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$REPO_ORG" == "diirt" ] && ( [[ "$TRAVIS_BRANCH" =~  diirt-all-[0-9]+\.[0-9]+\.[0-9] ]] ); then
     echo "Deploying"
     doCompileWithDeploy
     catTests
