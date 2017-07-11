@@ -4,7 +4,7 @@ jdk:
   - oraclejdk8
   
 script:
-  - mvn clean verify
+  - ./build/build.sh
 
 after_failure:
  - find ./ -type d -name "surefire-reports" -print0 | xargs -0 -I {} find {} -iname "*.txt" -type f | xargs cat
