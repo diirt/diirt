@@ -4,13 +4,13 @@
     <parent>
         <artifactId>javafx-all</artifactId>
         <groupId>org.diirt.javafx</groupId>
-        <version>3.1.6-SNAPSHOT</version>
+        <version>3.1.7-SNAPSHOT</version>
     </parent>
 
     <artifactId>tools</artifactId>
     <name>org.diirt.javafx.tools</name>
     <description>A set of standard diirt tools for debugging and basic usage.</description>
-    <version>3.1.6-SNAPSHOT</version>
+    <version>3.1.7-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.diirt.support</groupId>
             <artifactId>diirt-ca</artifactId>
-            <version>3.1.6-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.diirt</groupId>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.diirt.support</groupId>
             <artifactId>diirt-pva</artifactId>
-            <version>3.1.6-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.diirt</groupId>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>org.diirt</groupId>
             <artifactId>datasource-graphene</artifactId>
-            <version>3.1.6-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>

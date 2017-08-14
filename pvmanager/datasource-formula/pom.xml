@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.diirt</groupId>
         <artifactId>pvmanager-all</artifactId>
-        <version>3.1.6-SNAPSHOT</version>
+        <version>3.1.7-SNAPSHOT</version>
     </parent>
     <artifactId>datasource-formula</artifactId>
     <name>org.diirt.datasource.formula</name>
