@@ -4,12 +4,16 @@
  */
 package org.diirt.datasource.sys;
 
-import static org.diirt.vtype.ValueFactory.*;
+import static org.diirt.vtype.ValueFactory.alarmNone;
+import static org.diirt.vtype.ValueFactory.newTime;
+import static org.diirt.vtype.ValueFactory.newVString;
 
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
+import org.diirt.util.config.TimeStampFormatter;
 
 /**
  *
@@ -17,8 +21,7 @@ import java.time.format.DateTimeFormatter;
  */
 class TimeChannelHandler extends SystemChannelHandler {
 
-    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
-
+    private static final DateTimeFormatter timeFormat = TimeStampFormatter.TIMESTAMP_FORMAT;
     public TimeChannelHandler(String channelName) {
         super(channelName);
     }

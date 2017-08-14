@@ -22,14 +22,15 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 import org.diirt.util.array.ArrayBoolean;
 import org.diirt.util.array.ArrayDouble;
 import org.diirt.util.array.ArrayInt;
+import org.diirt.util.config.TimeStampFormatter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public class VTypeToStringTest {
 
     private Time testTime;
     private String testTimeString;
-    private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+    private static final DateTimeFormatter timeFormat = TimeStampFormatter.TIMESTAMP_FORMAT;
 
     public VTypeToStringTest() {
     }
@@ -49,7 +50,7 @@ public class VTypeToStringTest {
     @Before
     public void setUp() {
         testTime = newTime(Instant.ofEpochSecond(1234567, 123000000));
-        testTimeString = timeFormat.format(LocalDateTime.ofInstant(testTime.getTimestamp(), ZoneId.systemDefault()));
+        testTimeString = timeFormat.format(ZonedDateTime.ofInstant(testTime.getTimestamp(), ZoneId.systemDefault()));
     }
 
     @Test
