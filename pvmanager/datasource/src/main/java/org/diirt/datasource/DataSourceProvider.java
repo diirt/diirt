@@ -61,7 +61,7 @@ public abstract class DataSourceProvider {
             return conf;
         } catch (Exception ex) {
             Logger.getLogger(CompositeDataSourceConfiguration.class.getName()).log(Level.SEVERE, "Couldn't load DIIRT_HOME/" + confPath + "/datasources.xml", ex);
-            return null;
+            return new CompositeDataSourceConfiguration();
         }
     }
 }
