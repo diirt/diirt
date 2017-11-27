@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
+ * Copyright (C) 2010-17 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.diirt.datasource;
@@ -56,7 +56,7 @@ public abstract class TypeSupport<T> {
         TypeSupportMap familyMap = map.get(typeSupportFamily);
         if (familyMap == null) {
             TypeSupportMap supportMap = new TypeSupportMap();
-            map.put(typeSupportFamily, supportMap);
+            map.putIfAbsent(typeSupportFamily, supportMap);
         }
     }
 
@@ -75,18 +75,27 @@ public abstract class TypeSupport<T> {
         Class<? extends TypeSupport> typeSupportFamily = typeSupport.getTypeSupportFamily();
 
         addTypeSupportFamilyIfNotExists(allTypeSupports, typeSupportFamily);
-        addTypeSupportFamilyIfNotExists(allCalcTypeSupports, typeSupportFamily);
 
         // Can't install support for the same type twice
         if (allTypeSupports.get(typeSupportFamily).get(typeSupport.getType()) != null) {
             throw new RuntimeException(typeSupportFamily.getSimpleName() + " was already added for type " + typeSupport.getType().getName());
         }
 
-        allTypeSupports.get(typeSupportFamily).put(typeSupport.getType(), typeSupport);
+        if (allTypeSupports.get(typeSupportFamily).putIfAbsent(typeSupport.getType(), typeSupport) != null) {
+            throw new RuntimeException(typeSupportFamily.getSimpleName() + " was already added for type " + typeSupport.getType().getName());
+        }
         // Need to clear all calculated supports since registering an
         // interface may affect all the calculated supports
-        // of all the implementations
-        allCalcTypeSupports.get(typeSupportFamily).clear();
+        // of all the implementations.
+        // Obviously, there is a race condition between us adding the new type
+        // support to allTypeSupports and the map in allCalcTypeSupports being
+        // cleared. The findTypeSupportFor method could add a type support to
+        // the map in allCalcTypeSupports which has been calculated based on old
+        // data in allTypeSupports. For this reason, we do not simply clear the
+        // map, but replace it with a new one. This way, findTypeSupportFor will
+        // add it to the old map and the next time findTypeSupportFor is called,
+        // it will use a clear, new map.
+        allCalcTypeSupports.put(typeSupportFamily, new TypeSupportMap());
     }
 
     /**
@@ -148,7 +157,9 @@ public abstract class TypeSupport<T> {
                 // It's up to the specific support to decide what to do
                 return null;
             }
-            calcSupportMap.put(typeClass, support);
+            if (calcSupportMap.putIfAbsent(typeClass, support) != null) {
+                support = calcSupportMap.get(typeClass);
+            }
         }
         return support;
     }
