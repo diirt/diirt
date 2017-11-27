@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
+ * Copyright (C) 2010-17 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.diirt.datasource;
@@ -27,6 +27,7 @@ public class BasicTypeSupport {
     }
 
     private static volatile boolean installed = false;
+    private static final Object installLock = new Object();
 
     /**
      * Installs type support.
@@ -37,15 +38,27 @@ public class BasicTypeSupport {
             return;
         }
 
-        // Add support for lists
-        addList();
-        addMap();
+        // This looks like double-checked locking and in fact it is, but it is
+        // safe because installed is volatile.
+        // If we used an AtomicBoolean instead of the volatile boolean, we would
+        // not need the lock (we could use a compare-and-set operation), but in
+        // this case another thread calling this method might return before the
+        // installation has actually finished.
+        synchronized (installLock) {
+            if (installed) {
+                return;
+            }
 
-        // Add support for numbers and strings
-        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Number.class));
-        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(String.class));
+            // Add support for lists
+            addList();
+            addMap();
 
-        installed = true;
+            // Add support for numbers and strings
+            TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(Number.class));
+            TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(String.class));
+
+            installed = true;
+        }
     }
 
     private static void addList() {
