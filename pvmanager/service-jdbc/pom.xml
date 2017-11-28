@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.diirt</groupId>
@@ -29,10 +30,37 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.2-1002-jdbc4</version>
+            <version>42.1.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <profiles>
+        <!-- This profile adds postgres JDBC drivers, to the org.diirt.service.jdbc.JDBCServiceProvider
+             Apache Aries SPIfly http://aries.apache.org/modules/spi-fly.html is used to register SPI service to the OSGI service registry
+             This way class loading problems of the JDBC drivers are fixed. 
+             https://github.com/ControlSystemStudio/cs-studio/wiki/OSGi-and-ServiceLoaders
+             Apache Aries SPIFly bundles must be added to the product, to satisfy dependencies 
+        -->
+        <profile>
+            <id>postgres</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.felix</groupId>
+                        <artifactId>maven-bundle-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <instructions>
+                                <Require-Bundle>org.postgresql.jdbc42</Require-Bundle>
+                                <Require-Capability>osgi.extender;filter:="(osgi.extender=osgi.serviceloader.registrar)"</Require-Capability>
+                                <Provide-Capability>osgi.serviceloader;osgi.serviceloader=org.diirt.service.jdbc.JDBCServiceProvider</Provide-Capability>
+                            </instructions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <build>
         <plugins>
             <plugin>
