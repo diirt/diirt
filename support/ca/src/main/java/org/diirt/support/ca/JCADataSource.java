@@ -11,7 +11,6 @@ import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.DataSource;
 import org.diirt.datasource.vtype.DataTypeSupport;
 import com.cosylab.epics.caj.CAJContext;
-import gov.aps.jca.jni.JNIContext;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import static org.diirt.util.concurrent.Executors.namedPool;
@@ -162,9 +161,6 @@ public class JCADataSource extends DataSource {
     }
 
     final boolean useContextSwitchForAccessRightCallback() {
-        if (ctxt instanceof JNIContext) {
-            return true;
-        }
         return false;
     }
 
