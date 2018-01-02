@@ -44,7 +44,10 @@ $(document).ready(function() {
                        };
 	    var channel = wp.subscribeChannel(channelname, callback, readOnly);
         var id = nodes[i].getAttribute("id");
-
+        if (id === null) {
+            id = "xygraph2-" + i;
+            nodes[i].id = id;
+        }
         var chart = new Dygraph(id, buffer,
                                  {
                                    drawPoints: true,

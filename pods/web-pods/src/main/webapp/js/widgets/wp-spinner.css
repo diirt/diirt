@@ -1,0 +1,19 @@
+.ui-spinner .alarm-none {
+    background: white;
+}
+
+.ui-spinner .alarm-minor {
+    background: yellow;
+}
+
+.ui-spinner .alarm-major  {
+    background: red;
+}
+
+.ui-spinner .alarm-invalid {
+    background: magenta;
+}
+
+.ui-spinner .alarm-undefined {
+    background: magenta;
+}

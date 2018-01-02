@@ -1,0 +1,18 @@
+.ui-progressbar .alarm-none
+ {background: green; }
+
+.ui-progressbar .alarm-minor {
+    background: yellow;
+}
+
+.ui-progressbar .alarm-major  {
+    background: red;
+}
+
+.ui-progressbar .alarm-invalid {
+    background: magenta;
+}
+
+.ui-progressbar .alarm-undefined {
+    background: magenta;
+}

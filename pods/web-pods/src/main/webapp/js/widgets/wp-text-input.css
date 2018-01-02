@@ -1,0 +1,24 @@
+.wp-text-input {
+    display: inline-block;
+}
+
+.wp-text-input .alarm-none {
+    background-color: white;
+}
+
+.wp-text-input .alarm-minor {
+    background-color: yellow;
+}
+
+.wp-text-input .alarm-major {
+    background-color: red;
+}
+
+.wp-text-input .alarm-invalid {
+    background-color: magenta;
+}
+
+.wp-text-input .alarm-undefined {
+    background-color: magenta;
+}
+
