@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2010-14 diirt developers. See COPYRIGHT.TXT
+ * Copyright (C) 2010-18 diirt developers. See COPYRIGHT.TXT
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.diirt.support.ca;
@@ -11,7 +11,6 @@ import gov.aps.jca.Monitor;
 import gov.aps.jca.configuration.Configurable;
 import gov.aps.jca.configuration.ConfigurationException;
 import gov.aps.jca.configuration.DefaultConfiguration;
-import gov.aps.jca.jni.JNIContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -329,28 +328,6 @@ public final class JCADataSourceConfiguration extends DataSourceConfiguration<JC
             }
         } catch (ClassNotFoundException ex) {
             // Can't be CAJ, fall back to JCA
-        }
-
-        if (context instanceof JNIContext) {
-            try {
-                Class<?> jniClazz = Class.forName("gov.aps.jca.jni.JNI");
-                final Method method = jniClazz.getDeclaredMethod("_ca_getRevision", new Class<?>[0]);
-                // The field is actually private, so we need to make it
-                // accessible
-                AccessController.doPrivileged(new PrivilegedAction<Object>() {
-
-                    @Override
-                    public Object run() {
-                        method.setAccessible(true);
-                        return null;
-                    }
-
-                });
-                Integer integer = (Integer) method.invoke(null, new Object[0]);
-                return (integer >= 13);
-            } catch (Exception ex) {
-                log.log(Level.SEVERE, "Couldn't detect varArraySupported", ex);
-            }
         }
 
         return true;

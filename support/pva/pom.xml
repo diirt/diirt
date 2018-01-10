@@ -13,12 +13,12 @@
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>epics-pvdata</artifactId>
-            <version>6.0.2</version>
+            <version>6.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>epics-pvaccess</artifactId>
-            <version>5.0.2</version>
+            <version>5.1.1</version>
         </dependency>
         <dependency>
             <groupId>org.diirt</groupId>
@@ -36,19 +36,6 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <id>epics</id>
-            <name>EPICS Repository</name>
-            <url>http://epics.sourceforge.net/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     <build>
         <plugins>
             <plugin>

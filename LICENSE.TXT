@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (C) 2012-14 diirt developers. See COPYRIGHT.TXT
+Copyright (C) 2012-18 diirt developers. See COPYRIGHT.TXT
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
