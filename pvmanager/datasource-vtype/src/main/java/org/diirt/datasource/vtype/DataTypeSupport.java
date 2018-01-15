@@ -15,7 +15,8 @@ import org.diirt.datasource.TypeSupport;
  */
 public final class DataTypeSupport {
 
-    private static boolean installed = false;
+    private static volatile boolean installed = false;
+    private static final Object installLock = new Object();
 
     /**
      * Installs type support. This should only be called by either DataSources
@@ -27,10 +28,22 @@ public final class DataTypeSupport {
             return;
         }
 
-        // Add notification support for all immutable types
-        TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(VType.class));
+        // This looks like double-checked locking and in fact it is, but it is
+        // safe because installed is volatile.
+        // If we used an AtomicBoolean instead of the volatile boolean, we would
+        // not need the lock (we could use a compare-and-set operation), but in
+        // this case another thread calling this method might return before the
+        // installation has actually finished.
+        synchronized (installLock) {
+            if (installed) {
+                return;
+            }
 
-        installed = true;
+            // Add notification support for all immutable types
+            TypeSupport.addTypeSupport(NotificationSupport.immutableTypeSupport(VType.class));
+
+            installed = true;
+        }
     }
 
     /**
