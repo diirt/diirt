@@ -37,10 +37,14 @@
         <tag>HEAD</tag>
     </scm>
     <distributionManagement>
-        <site>
-            <id>diirt.org</id>
-            <url>scm:git:ssh://git@github.com/diirt/diirt.org.git</url>
-        </site>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
     </distributionManagement>
     <developers>
         <developer>
