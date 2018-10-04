@@ -4,7 +4,6 @@
  */
 package org.diirt.javafx.tools;
 
-import com.sun.javafx.collections.ImmutableObservableList;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -182,7 +181,7 @@ public final class ValueViewer extends ScrollPane {
         } else {
             tableMetadata.setVisible(false);
             tableMetadata.setManaged(false);
-            columnsTable.setItems(new ImmutableObservableList<>());
+            columnsTable.setItems(FXCollections.unmodifiableObservableList(null));
         }
     }
 
