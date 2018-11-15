@@ -3,7 +3,7 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 /**
- * <p align="center"><img alt="pvManager" src="http://pvmanager.diirt.org/images/PVManagerLogo150.png"></p>
+ * <p style="text-align: center;"><img alt="pvManager" src="http://pvmanager.diirt.org/images/PVManagerLogo150.png"></p>
  * <div style="float: right; margin-top: -170px" id="contents"></div>
  *
  *
