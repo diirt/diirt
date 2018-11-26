@@ -7,7 +7,7 @@ package org.diirt.util.stats;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -21,7 +21,7 @@ public class StatisticsUtilTest {
 
     @Test
     public void statisticsOf1() {
-        Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(1.0));
+        Statistics stats = StatisticsUtil.statisticsOf(ArrayDouble.of(1.0));
         assertThat(stats.getAverage(), equalTo(1.0));
         assertThat(stats.getStdDev(), equalTo(0.0));
         assertThat(stats.getRange().getMinimum(), equalTo(1.0));
@@ -31,7 +31,7 @@ public class StatisticsUtilTest {
 
     @Test
     public void statisticsOf2() {
-        Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(1, 3, 5, -1, 7));
+        Statistics stats = StatisticsUtil.statisticsOf(ArrayDouble.of(1, 3, 5, -1, 7));
         assertThat(stats.getAverage(), equalTo(3.0));
         assertThat(stats.getStdDev(), equalTo(2.8284271247461903));
         assertThat(stats.getRange().getMinimum(), equalTo(-1.0));
@@ -43,7 +43,7 @@ public class StatisticsUtilTest {
     public void statisticsOf3() {
         List<Statistics> list = new ArrayList<Statistics>();
         for (int i = 0; i < 10; i++) {
-            list.add(StatisticsUtil.statisticsOf(new ArrayDouble(i)));
+            list.add(StatisticsUtil.statisticsOf(ArrayDouble.of(i)));
         }
         Statistics stats = StatisticsUtil.statisticsOf(list);
         assertThat(stats.getAverage(), equalTo(4.5));
@@ -55,7 +55,7 @@ public class StatisticsUtilTest {
 
     @Test
     public void statisticsOf4() {
-        Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(1, 3, 5, Double.NaN, -1, 7));
+        Statistics stats = StatisticsUtil.statisticsOf(ArrayDouble.of(1, 3, 5, Double.NaN, -1, 7));
         assertThat(stats.getAverage(), equalTo(3.0));
         assertThat(stats.getStdDev(), equalTo(2.8284271247461903));
         assertThat(stats.getRange().getMinimum(), equalTo(-1.0));
@@ -65,7 +65,7 @@ public class StatisticsUtilTest {
 
     @Test
     public void statisticsOf5() {
-        Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(1, 3, 5, -1, 7));
+        Statistics stats = StatisticsUtil.statisticsOf(ArrayDouble.of(1, 3, 5, -1, 7));
         stats = StatisticsUtil.statisticsOf(Arrays.asList(stats));
         assertThat(stats.getAverage(), equalTo(3.0));
         assertThat(stats.getStdDev(), equalTo(2.8284271247461903));

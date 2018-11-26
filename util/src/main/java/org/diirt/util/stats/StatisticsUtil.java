@@ -6,8 +6,8 @@ package org.diirt.util.stats;
 
 import java.util.Iterator;
 import java.util.List;
-import org.diirt.util.array.CollectionNumber;
-import org.diirt.util.array.IteratorNumber;
+import org.epics.util.array.CollectionNumber;
+import org.epics.util.array.IteratorNumber;
 
 /**
  * Utility class to calculate statistical information.

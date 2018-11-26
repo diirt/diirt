@@ -6,6 +6,8 @@ package org.diirt.util.text;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.epics.util.text.StringUtil;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

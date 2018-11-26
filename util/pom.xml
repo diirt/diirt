@@ -39,4 +39,11 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+      <dependency>
+        <groupId>org.epics</groupId>
+        <artifactId>epics-util</artifactId>
+        <version>1.0.0</version>
+      </dependency>
+    </dependencies>
 </project>

@@ -7,8 +7,8 @@ package org.diirt.util.text;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -80,8 +80,8 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("A\"", "B", "C", "D", "E")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
-        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) ArrayDouble.of(1,2,3,4,5)));
     }
 
     @Test
@@ -95,8 +95,8 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
-        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) ArrayDouble.of(1,2,3,4,5)));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) String.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("Gabriele Carcassi", "Kunal Shroff", "Eric Berryman")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(201401281140.0, 201401281150.0, 201401281160.0)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(201401281140.0, 201401281150.0, 201401281160.0)));
         assertThat(result.getColumnValues().get(2), equalTo((Object) Arrays.asList("This is my message:\nI said \"Hi!\" to everybody",
                 "I am busy", "Shopping list:\n* potatoes\n* carrots")));
     }
@@ -141,8 +141,8 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
-        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) ArrayDouble.of(1,2,3,4,5)));
     }
 
     @Test
@@ -156,8 +156,8 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("B", "C", "D", "E")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(1.456, 234567891234.0, 0.000000123, 123)));
-        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(2,3,4,5)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) ArrayDouble.of(2,3,4,5)));
     }
 
     @Test
@@ -201,8 +201,8 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("A", "B", "C", "D", "E")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
-        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3,4,5)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(0.234, 1.456, 234567891234.0, 0.000000123, 123)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) ArrayDouble.of(1,2,3,4,5)));
     }
 
     @Test
@@ -216,8 +216,8 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("", "B", "C", "D", "E")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(Double.NaN, 1.456, 234567891234.0, 0.000000123, 0.0)));
-        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(Double.NaN,2,3,4,5)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(Double.NaN, 1.456, 234567891234.0, 0.000000123, 0.0)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) ArrayDouble.of(Double.NaN,2,3,4,5)));
     }
 
     @Test
@@ -231,7 +231,7 @@ public class CsvParserTest {
         assertThat((Object) result.getColumnTypes().get(1), equalTo((Object) double.class));
         assertThat((Object) result.getColumnTypes().get(2), equalTo((Object) double.class));
         assertThat(result.getColumnValues().get(0), equalTo((Object) Arrays.asList("a", "b", "c", "", "e")));
-        assertThat(result.getColumnValues().get(1), equalTo((Object) new ArrayDouble(1, Double.NaN, Double.NaN, 4, Double.NaN)));
-        assertThat(result.getColumnValues().get(2), equalTo((Object) new ArrayDouble(1,2,3, Double.NaN, Double.NaN)));
+        assertThat(result.getColumnValues().get(1), equalTo((Object) ArrayDouble.of(1, Double.NaN, Double.NaN, 4, Double.NaN)));
+        assertThat(result.getColumnValues().get(2), equalTo((Object) ArrayDouble.of(1,2,3, Double.NaN, Double.NaN)));
     }
 }

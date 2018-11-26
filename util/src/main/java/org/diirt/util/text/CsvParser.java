@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
-import static org.diirt.util.text.StringUtil.DOUBLE_REGEX_WITH_NAN;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListDouble;
+import static org.epics.util.text.StringUtil.DOUBLE_REGEX_WITH_NAN;
 
 /**
  * Utility class to parse CSV text. The parser is thread safe: it includes an
@@ -292,7 +293,7 @@ public class CsvParser {
                 values[i] = Double.parseDouble(tokens.get(i));
             }
         }
-        return new ArrayDouble(values);
+        return CollectionNumbers.toListDouble(values);
     }
 
     /**
