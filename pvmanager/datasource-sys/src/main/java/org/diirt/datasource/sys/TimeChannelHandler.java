@@ -4,16 +4,15 @@
  */
 package org.diirt.datasource.sys;
 
-import static org.diirt.vtype.ValueFactory.alarmNone;
-import static org.diirt.vtype.ValueFactory.newTime;
-import static org.diirt.vtype.ValueFactory.newVString;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.diirt.util.config.TimeStampFormatter;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
 
 /**
  *
@@ -30,7 +29,7 @@ class TimeChannelHandler extends SystemChannelHandler {
     protected Object createValue() {
         Instant time = Instant.now();
         String formatted = timeFormat.format(ZonedDateTime.ofInstant(time, ZoneId.systemDefault()));
-        return newVString(formatted, alarmNone(), newTime(time));
+        return VString.of(formatted, Alarm.none(), Time.of(time));
     }
 
 }

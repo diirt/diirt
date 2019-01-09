@@ -4,7 +4,9 @@
  */
 package org.diirt.datasource.sys;
 
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 
 /**
  *
@@ -18,7 +20,7 @@ class UsedMemoryChannelHandler extends SystemChannelHandler {
 
     @Override
     protected Object createValue() {
-        return newVDouble(bytesToMebiByte(Runtime.getRuntime().totalMemory()), alarmNone(), timeNow(), memoryDisplay);
+        return VDouble.of(bytesToMebiByte(Runtime.getRuntime().totalMemory()), Alarm.none(), Time.now(), memoryDisplay);
     }
 
 }

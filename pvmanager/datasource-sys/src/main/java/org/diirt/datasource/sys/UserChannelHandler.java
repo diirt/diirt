@@ -5,7 +5,10 @@
 package org.diirt.datasource.sys;
 
 import java.util.Objects;
-import static org.diirt.vtype.ValueFactory.*;
+
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
 
 /**
  *
@@ -29,7 +32,7 @@ class UserChannelHandler extends SystemChannelHandler {
         }
         if (!Objects.equals(value, previousValue)) {
             previousValue = value;
-            return newVString(value, alarmNone(), timeNow());
+            return VString.of(value, Alarm.none(), Time.now());
         } else {
             return null;
         }

@@ -7,9 +7,11 @@ package org.diirt.datasource.sys;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.AlarmStatus;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
 
 /**
  *
@@ -29,14 +31,14 @@ class QualifiedHostnameChannelHandler extends SystemChannelHandler {
         Alarm alarm;
         try {
             hostname = InetAddress.getLocalHost().getCanonicalHostName();
-            alarm = alarmNone();
+            alarm = Alarm.none();
         } catch (UnknownHostException ex) {
             hostname = "Unknown host";
-            alarm = newAlarm(AlarmSeverity.INVALID, "Undefined");
+            alarm = Alarm.of(AlarmSeverity.INVALID, AlarmStatus.NONE, "Undefined");
         }
         if (!Objects.equals(hostname, previousValue)) {
             previousValue = hostname;
-            return newVString(hostname, alarm, timeNow());
+            return VString.of(hostname, alarm, Time.now());
         } else {
             return null;
         }

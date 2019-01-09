@@ -6,14 +6,14 @@ package org.diirt.datasource.sys;
 
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.ChannelWriteCallback;
+
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.diirt.util.text.NumberFormats;
-import org.diirt.util.time.TimeInterval;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.DisplayBuilder;
+import org.epics.util.stats.Range;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.Display;
 
 /**
  *
@@ -21,15 +21,16 @@ import org.diirt.vtype.DisplayBuilder;
  */
 abstract class SystemChannelHandler extends MultiplexedChannelHandler<Object, Object> {
 
-    protected static Display memoryDisplay = new DisplayBuilder().format(NumberFormats.format(3))
-            .units("MiB")
-            .lowerAlarmLimit(0.0).lowerCtrlLimit(0.0).lowerDisplayLimit(0.0).lowerWarningLimit(0.0)
-            .upperAlarmLimit(maxMemory())
-            .upperCtrlLimit(maxMemory())
-            .upperDisplayLimit(maxMemory())
-            .upperWarningLimit(maxMemory())
-            .build();
-
+    static Range maxRange = Range.of(0.0, maxMemory());
+    
+    protected static Display memoryDisplay = Display.of(
+            maxRange,
+            maxRange,
+            maxRange,
+            maxRange,
+            "MiB",
+            NumberFormats.precisionFormat(3));
+    
     protected static double bytesToMebiByte(long bytes) {
         return ((double) bytes) / (1024.0 * 1024.0);
     }
