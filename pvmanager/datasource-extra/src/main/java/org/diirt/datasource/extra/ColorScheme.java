@@ -6,9 +6,7 @@ package org.diirt.datasource.extra;
 
 import java.awt.Color;
 import java.util.Random;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.ValueUtil;
-
+import org.epics.vtype.Display;
 /**
  *
  * @author carcassi
@@ -46,7 +44,7 @@ public abstract class ColorScheme {
                 if (Double.isNaN(value))
                     return nanColor.getRGB();
 
-                double normalValue = ValueUtil.normalize(value, ranges);
+                double normalValue = ranges.getDisplayRange().normalize(value);
                 normalValue = Math.min(normalValue, 1.0);
                 normalValue = Math.max(normalValue, 0.0);
                 int alpha = 255;
@@ -76,22 +74,22 @@ public abstract class ColorScheme {
                 // Determine in which range the value is.
                 // The equals are put so that if the value is at the limit,
                 // the range closer to the center wins
-                if (value < ranges.getLowerDisplayLimit()) {
+                if (value < ranges.getDisplayRange().getMinimum()) {
                     return lowerDisplayColor.getRGB();
-                } else if (value < ranges.getLowerAlarmLimit()) {
-                    normalValue = ValueUtil.normalize(value, ranges.getLowerDisplayLimit(), ranges.getLowerAlarmLimit());
+                } else if (value < ranges.getAlarmRange().getMinimum()) {
+                    normalValue = normalize(value, ranges.getDisplayRange().getMinimum(), ranges.getAlarmRange().getMinimum());
                     minValueColor = lowerDisplayColor;
                     maxValueColor = lowerAlarmColor;
-                } else if (value < ranges.getLowerWarningLimit()) {
-                    normalValue = ValueUtil.normalize(value, ranges.getLowerAlarmLimit(), ranges.getLowerWarningLimit());
+                } else if (value < ranges.getWarningRange().getMinimum()) {
+                    normalValue = normalize(value, ranges.getAlarmRange().getMinimum(), ranges.getWarningRange().getMinimum());
                     minValueColor = lowerAlarmColor;
                     maxValueColor = lowerWarningColor;
-                } else if (value <= ranges.getUpperWarningLimit()) {
-                    normalValue = ValueUtil.normalize(value, ranges.getLowerWarningLimit(), ranges.getUpperWarningLimit());
+                } else if (value <= ranges.getWarningRange().getMaximum()) {
+                    normalValue = normalize(value, ranges.getWarningRange().getMinimum(), ranges.getWarningRange().getMaximum());
                     minValueColor = lowerWarningColor;
                     maxValueColor = upperWarningColor;
-                } else if (value <= ranges.getUpperAlarmLimit()) {
-                    normalValue = ValueUtil.normalize(value, ranges.getUpperWarningLimit(), ranges.getUpperAlarmLimit());
+                } else if (value <= ranges.getAlarmRange().getMaximum()) {
+                    normalValue = normalize(value, ranges.getWarningRange().getMaximum(), ranges.getAlarmRange().getMaximum());
                     minValueColor = upperWarningColor;
                     maxValueColor = upperAlarmColor;
                 } else {
@@ -105,5 +103,21 @@ public abstract class ColorScheme {
                 return (alpha << 24) | (red << 16) | (green << 8) | blue;
             }
         };
+    }
+
+    /**
+     * Normalizes the given value according to the given range;
+     *
+     * @param value a value
+     * @param lowValue the lowest value in the range
+     * @param highValue the highest value in the range
+     * @return the normalized value, or null if any value is null
+     */
+    public static Double normalize(Number value, Number lowValue, Number highValue) {
+        if (value == null || lowValue == null || highValue == null) {
+            return null;
+        }
+
+        return (value.doubleValue() - lowValue.doubleValue()) / (highValue.doubleValue() - lowValue.doubleValue());
     }
 }

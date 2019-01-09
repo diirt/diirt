@@ -7,6 +7,7 @@ package org.diirt.datasource.extra;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -14,12 +15,16 @@ import java.util.Collections;
 import java.util.List;
 
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.VImage;
 import org.diirt.datasource.extra.WaterfallPlotParameters.InternalCopy;
-import org.diirt.util.array.ListNumber;
 import org.diirt.util.time.TimeDuration;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VImage;
+import org.epics.vtype.VImageDataType;
+import org.epics.vtype.VImageType;
 
 /**
  * Implements the image calculation.
@@ -155,8 +160,8 @@ class WaterfallPlotFunction implements ReadFunction<VImage> {
                 drawSection(image, parameters, null, doubleArrayTimeCache.getDisplay(), parameters.colorScheme, data, pixelStart, parameters.pixelDuration, y);
             }
         }
-
-        previousImage = ValueUtil.toVImage(image);
+        byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        previousImage = VImage.of(image.getHeight(), image.getWidth(), CollectionNumbers.toListByte(buffer), VImageDataType.pvByte, VImageType.TYPE_3BYTE_BGR, Alarm.none(), Time.now());
         previousBuffer = image;
         previousPlotEnd = plotEnd;
         previousParameters = parameters;

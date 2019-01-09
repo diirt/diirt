@@ -14,9 +14,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.util.array.ListNumber;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumberArray;
+import org.epics.util.array.ListNumber;
 
 /**
  *
@@ -101,7 +101,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
     public DoubleArrayTimeCache.Data getData(Instant begin, Instant end) {
         List<? extends VNumberArray> newValues = function.readValue();
         for (VNumberArray value : newValues) {
-            cache.put(value.getTimestamp(), value);
+            cache.put(value.getTime().getTimestamp(), value);
         }
         if (cache.isEmpty())
             return null;
@@ -129,8 +129,8 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
 
         List<Instant> newInstants = new ArrayList<Instant>();
         for (VNumberArray value : newValues) {
-            cache.put(value.getTimestamp(), value);
-            newInstants.add(value.getTimestamp());
+            cache.put(value.getTime().getTimestamp(), value);
+            newInstants.add(value.getTime().getTimestamp());
         }
         if (cache.isEmpty())
             return Collections.emptyList();
@@ -161,7 +161,7 @@ public class DoubleArrayTimeCacheFromVDoubleArray implements DoubleArrayTimeCach
     @Override
     public Display getDisplay() {
         if (display == null) {
-            display = cache.firstEntry().getValue();
+            display = cache.firstEntry().getValue().getDisplay();
         }
 
         return display;

@@ -6,15 +6,16 @@ package org.diirt.datasource.extra;
 
 import java.text.NumberFormat;
 import java.util.List;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.util.array.ListNumber;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumberArray;
+import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Range;
 
 /**
  *
  * @author carcassi
  */
-class AdaptiveRange implements Display {
+class AdaptiveRange extends Display {
 
     private Double lowerDisplayLimit = 0.0;
     private Double lowerCtrlLimit = 0.0;
@@ -75,28 +76,60 @@ class AdaptiveRange implements Display {
         }
     }
 
-    @Override
-    public Double getLowerDisplayLimit() {
+    Double getLowerDisplayLimit() {
         return lowerDisplayLimit;
     }
 
-    @Override
-    public Double getLowerCtrlLimit() {
+    Double getLowerCtrlLimit() {
         return lowerCtrlLimit;
     }
 
-    @Override
-    public Double getLowerAlarmLimit() {
+    Double getLowerAlarmLimit() {
         return lowerAlarmLimit;
     }
 
-    @Override
-    public Double getLowerWarningLimit() {
+    Double getLowerWarningLimit() {
         return lowerWarningLimit;
     }
 
+    Double getUpperWarningLimit() {
+        return upperWarningLimit;
+    }
+
+    Double getUpperAlarmLimit() {
+        return upperAlarmLimit;
+    }
+
+    Double getUpperCtrlLimit() {
+        return upperCtrlLimit;
+    }
+
+    Double getUpperDisplayLimit() {
+        return upperDisplayLimit;
+    }
+
     @Override
-    public String getUnits() {
+    public Range getDisplayRange() {
+        return Range.of(getLowerDisplayLimit(), getUpperDisplayLimit());
+    }
+
+    @Override
+    public Range getAlarmRange() {
+        return Range.of(getLowerAlarmLimit(), getUpperAlarmLimit());
+    }
+
+    @Override
+    public Range getWarningRange() {
+        return Range.of(getLowerWarningLimit(), getUpperWarningLimit());
+    }
+
+    @Override
+    public Range getControlRange() {
+        return Range.of(getLowerCtrlLimit(), getUpperCtrlLimit());
+    }
+
+    @Override
+    public String getUnit() {
         throw new UnsupportedOperationException("Units not part of auto range");
     }
 
@@ -104,25 +137,4 @@ class AdaptiveRange implements Display {
     public NumberFormat getFormat() {
         throw new UnsupportedOperationException("Format not part of auto range");
     }
-
-    @Override
-    public Double getUpperWarningLimit() {
-        return upperWarningLimit;
-    }
-
-    @Override
-    public Double getUpperAlarmLimit() {
-        return upperAlarmLimit;
-    }
-
-    @Override
-    public Double getUpperCtrlLimit() {
-        return upperCtrlLimit;
-    }
-
-    @Override
-    public Double getUpperDisplayLimit() {
-        return upperDisplayLimit;
-    }
-
 }

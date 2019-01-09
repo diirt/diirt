@@ -16,11 +16,11 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VNumber;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.CollectionNumbers;
-import org.diirt.util.array.ListNumber;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListNumber;
 import org.diirt.util.time.TimeInterval;
 
 /**
@@ -110,11 +110,13 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
         // Nothing found. Create a new array and initialize it with
         // the previous data (if any)
         if (newTime != null) {
-            array = new ArrayDouble(Arrays.copyOf(CollectionNumbers.wrappedDoubleArray(cache.get(newTime)), functions.size()), false);
+            double[] initialVal = new double[cache.get(newTime).size()];
+            CollectionNumbers.arrayCopy(cache.get(newTime), initialVal, 0);
+            CollectionNumbers.toListDouble(initialVal);
         } else {
             double[] blank = new double[functions.size()];
             Arrays.fill(blank, Double.NaN);
-            array = new ArrayDouble(blank, false);
+            array = CollectionNumbers.toListDouble(blank);
         }
         cache.put(Instant, array);
         return array;
@@ -127,13 +129,13 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
             List<? extends VNumber> vDoubles = functions.get(n).readValue();
             for (VNumber vNumber : vDoubles) {
                 if (display == null)
-                    display = vNumber;
-                ArrayDouble array = arrayFor(vNumber.getTimestamp());
+                    display = vNumber.getDisplay();
+                ArrayDouble array = arrayFor(vNumber.getTime().getTimestamp());
                 double oldValue = array.getDouble(n);
                 array.setDouble(n, vNumber.getValue().doubleValue());
 
                 // Fix the following values
-                for (Map.Entry<Instant, ArrayDouble> en : cache.tailMap(vNumber.getTimestamp().plus(tolerance)).entrySet()) {
+                for (Map.Entry<Instant, ArrayDouble> en : cache.tailMap(vNumber.getTime().getTimestamp().plus(tolerance)).entrySet()) {
                     // If no value or same value as before, replace it
                     if (Double.isNaN(en.getValue().getDouble(n)) || en.getValue().getDouble(n) == oldValue)
                         en.getValue().setDouble(n, vNumber.getValue().doubleValue());
@@ -161,21 +163,21 @@ public class DoubleArrayTimeCacheFromVDoubles implements DoubleArrayTimeCache {
             List<? extends VNumber> vNumbers = functions.get(n).readValue();
             for (VNumber vNumber : vNumbers) {
                 if (display == null)
-                    display = vNumber;
-                ArrayDouble array = arrayFor(vNumber.getTimestamp());
+                    display = vNumber.getDisplay();
+                ArrayDouble array = arrayFor(vNumber.getTime().getTimestamp());
                 double oldValue = array.getDouble(n);
                 array.setDouble(n, vNumber.getValue().doubleValue());
                 if (firstChange == null) {
-                    firstChange = vNumber.getTimestamp();
+                    firstChange = vNumber.getTime().getTimestamp();
                 }
                 if (lastChange == null) {
-                    lastChange = vNumber.getTimestamp();
+                    lastChange = vNumber.getTime().getTimestamp();
                 }
-                firstChange = min(firstChange, vNumber.getTimestamp());
-                lastChange = max(lastChange, vNumber.getTimestamp());
+                firstChange = min(firstChange, vNumber.getTime().getTimestamp());
+                lastChange = max(lastChange, vNumber.getTime().getTimestamp());
 
                 // Fix the following values
-                for (Map.Entry<Instant, ArrayDouble> en : cache.tailMap(vNumber.getTimestamp().plus(tolerance)).entrySet()) {
+                for (Map.Entry<Instant, ArrayDouble> en : cache.tailMap(vNumber.getTime().getTimestamp().plus(tolerance)).entrySet()) {
                     // If no value or same value as before, replace it
                     if (Double.isNaN(en.getValue().getDouble(n)) || en.getValue().getDouble(n) == oldValue)
                         en.getValue().setDouble(n, vNumber.getValue().doubleValue());

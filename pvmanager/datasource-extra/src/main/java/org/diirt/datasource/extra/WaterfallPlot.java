@@ -9,9 +9,9 @@ import java.util.List;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
+import org.epics.vtype.VImage;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 import org.diirt.datasource.expression.DesiredRateExpressionList;
 
 /**

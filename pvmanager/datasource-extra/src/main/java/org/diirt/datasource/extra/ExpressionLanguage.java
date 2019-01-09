@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource.extra;
 
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VNumber;
 import org.diirt.datasource.vtype.DataTypeSupport;
 import java.util.List;
 import org.diirt.datasource.BasicTypeSupport;

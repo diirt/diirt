@@ -7,8 +7,8 @@ package org.diirt.datasource.extra;
 import java.time.Instant;
 import java.util.List;
 
-import org.diirt.vtype.Display;
-import org.diirt.util.array.ListNumber;
+import org.epics.vtype.Display;
+import org.epics.util.array.ListNumber;
 
 
 /**
