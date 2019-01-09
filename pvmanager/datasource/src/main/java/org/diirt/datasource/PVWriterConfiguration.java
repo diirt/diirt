@@ -11,7 +11,7 @@ import java.util.concurrent.Executor;
 
 import org.diirt.datasource.expression.WriteExpression;
 
-import static org.diirt.util.concurrent.Executors.*;
+import static org.epics.util.concurrent.Executors.*;
 
 /**
  * An expression used to set the final parameters on how the pv expression
