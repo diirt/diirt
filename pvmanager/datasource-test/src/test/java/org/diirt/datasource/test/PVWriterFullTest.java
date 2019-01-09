@@ -17,11 +17,11 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterEvent;
-import org.diirt.util.concurrent.Executors;
 
 import static java.time.Duration.*;
 
 import org.diirt.util.time.TimeInterval;
+import org.epics.util.concurrent.Executors;
 
 import static org.hamcrest.Matchers.*;
 
