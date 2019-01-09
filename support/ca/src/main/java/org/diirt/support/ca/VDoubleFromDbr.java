@@ -4,18 +4,18 @@
  */
 package org.diirt.support.ca;
 
+import org.epics.vtype.VDouble;
+
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_TIME_Double;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VTypeToString;
 
 /**
  *
  * @author carcassi
  */
-class VDoubleFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Double> implements VDouble {
+class VDoubleFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Double> {
 
     public VDoubleFromDbr(DBR_TIME_Double dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
@@ -33,14 +33,9 @@ class VDoubleFromDbr extends VNumberMetadata<DBR_TIME_Double, DBR_CTRL_Double> i
         this(convert(dbrValue), metadata, connPayload);
     }
 
-    @Override
-    public Double getValue() {
-        return dbrValue.getDoubleValue()[0];
+    public VDouble getVDouble() {
+        return VDouble.of(dbrValue.getDoubleValue()[0], getAlarm(), getTime(), getDisplay());
     }
 
-    @Override
-    public String toString() {
-        return VTypeToString.toString(this);
-    }
 
 }

@@ -4,18 +4,18 @@
  */
 package org.diirt.support.ca;
 
+import org.epics.vtype.VInt;
+
 import gov.aps.jca.dbr.DBR;
 import gov.aps.jca.dbr.DBRType;
 import gov.aps.jca.dbr.DBR_CTRL_Double;
 import gov.aps.jca.dbr.DBR_TIME_Int;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VTypeToString;
 
 /**
  *
  * @author carcassi
  */
-class VIntFromDbr extends VNumberMetadata<DBR_TIME_Int, DBR_CTRL_Double> implements VInt {
+class VIntFromDbr extends VNumberMetadata<DBR_TIME_Int, DBR_CTRL_Double> {
 
     public VIntFromDbr(DBR_TIME_Int dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
@@ -33,14 +33,8 @@ class VIntFromDbr extends VNumberMetadata<DBR_TIME_Int, DBR_CTRL_Double> impleme
         this(convert(dbrValue), metadata, connPayload);
     }
 
-    @Override
-    public Integer getValue() {
-        return dbrValue.getIntValue()[0];
-    }
-
-    @Override
-    public String toString() {
-        return VTypeToString.toString(this);
+    public VInt getVInt() {
+        return VInt.of(dbrValue.getIntValue()[0], getAlarm(), getTime(), getDisplay());
     }
 
 }

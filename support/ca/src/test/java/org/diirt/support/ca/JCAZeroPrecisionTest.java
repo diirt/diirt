@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.ValueCacheImpl;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import java.time.Instant;
 import static org.diirt.support.ca.JCAVTypeAdapterSetTest.*;
 
@@ -44,7 +44,7 @@ public class JCAZeroPrecisionTest {
 
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
 
-        assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3"));
+        assertThat(cache.readValue().getDisplay().getFormat().format(cache.readValue().getValue()), equalTo("3"));
     }
 
     @Test
@@ -63,6 +63,6 @@ public class JCAZeroPrecisionTest {
 
         adapter.updateCache(cache, connPayload, new JCAMessagePayload(meta, event));
 
-        assertThat(cache.readValue().getFormat().format(cache.readValue().getValue()), equalTo("3.25"));
+        assertThat(cache.readValue().getDisplay().getFormat().format(cache.readValue().getValue()), equalTo("3.25"));
     }
 }

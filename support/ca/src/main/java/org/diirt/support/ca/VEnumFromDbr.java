@@ -8,14 +8,15 @@ import gov.aps.jca.dbr.DBR_LABELS_Enum;
 import gov.aps.jca.dbr.DBR_TIME_Enum;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VTypeToString;
+
+import org.epics.vtype.EnumDisplay;
+import org.epics.vtype.VEnum;
 
 /**
  *
  * @author carcassi
  */
-class VEnumFromDbr extends VMetadata<DBR_TIME_Enum> implements VEnum {
+class VEnumFromDbr extends VMetadata<DBR_TIME_Enum> {
 
     private final DBR_LABELS_Enum metadata;
 
@@ -24,38 +25,14 @@ class VEnumFromDbr extends VMetadata<DBR_TIME_Enum> implements VEnum {
         this.metadata = metadata;
     }
 
-    @Override
-    public String getValue() {
-        // There are pathological cases in which CA returns no labels.
-        // In those cases, we return the integer value converted to String.
-        if (metadata.getLabels() == null) {
-            return Integer.toString(getIndex());
-        }
-
-        // There are also pathologica cases in which the labels
-        // are less than the actual value
-        if (getIndex() >= metadata.getLabels().length || getIndex() < 0) {
-            return Integer.toString(getIndex());
-        }
-
-        return getLabels().get(getIndex());
-    }
-
-    @Override
-    public int getIndex() {
-        return dbrValue.getEnumValue()[0];
-    }
-
-    @Override
     public List<String> getLabels() {
         if (metadata.getLabels() == null)
             throw new RuntimeException("Metadata returned no labels");
         return Arrays.asList(metadata.getLabels());
     }
 
-    @Override
-    public String toString() {
-        return VTypeToString.toString(this);
+    public VEnum getVEnum() {
+        return VEnum.of(dbrValue.getEnumValue()[0], EnumDisplay.of(getLabels()), getAlarm(), getTime());
     }
 
 }

@@ -13,7 +13,8 @@ import org.diirt.datasource.vtype.DataTypeSupport;
 import com.cosylab.epics.caj.CAJContext;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import static org.diirt.util.concurrent.Executors.namedPool;
+
+import static org.epics.util.concurrent.Executors.namedPool;
 
 /**
  * A data source that uses jca.

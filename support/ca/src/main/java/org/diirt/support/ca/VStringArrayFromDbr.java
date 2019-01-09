@@ -4,20 +4,19 @@
  */
 package org.diirt.support.ca;
 
-import gov.aps.jca.dbr.DBR_TIME_String;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ListInt;
+
+import org.epics.vtype.VStringArray;
+
+import gov.aps.jca.dbr.DBR_TIME_String;
 
 /**
  *
  * @author carcassi
  */
-class VStringArrayFromDbr extends VMetadata<DBR_TIME_String> implements VStringArray {
+class VStringArrayFromDbr extends VMetadata<DBR_TIME_String> {
 
     private List<String> data;
 
@@ -26,19 +25,8 @@ class VStringArrayFromDbr extends VMetadata<DBR_TIME_String> implements VStringA
         data = Collections.unmodifiableList(Arrays.asList(dbrValue.getStringValue()));
     }
 
-    @Override
-    public List<String> getData() {
-        return data;
-    }
-
-    @Override
-    public ListInt getSizes() {
-        return new ArrayInt(dbrValue.getStringValue().length);
-    }
-
-    @Override
-    public String toString() {
-        return VTypeToString.toString(this);
+    public VStringArray getVStringArray() {
+        return VStringArray.of(data, getAlarm(), getTime());
     }
 
 }

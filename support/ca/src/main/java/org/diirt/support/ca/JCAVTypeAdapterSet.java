@@ -4,19 +4,19 @@
  */
 package org.diirt.support.ca;
 
-import org.diirt.vtype.VFloat;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VShort;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VByte;
-import org.diirt.vtype.VByteArray;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VShortArray;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VFloatArray;
+import org.epics.vtype.VFloat;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VString;
+import org.epics.vtype.VShort;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VByte;
+import org.epics.vtype.VByteArray;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VShortArray;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VFloatArray;
 import gov.aps.jca.dbr.*;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,7 +39,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VFloat createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VFloatFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VFloatFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, connPayload).getVFloat();
             }
         };
 
@@ -48,7 +48,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VDouble createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VDoubleFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VDoubleFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, connPayload).getVDouble();
             }
         };
 
@@ -57,7 +57,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VByte createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VByteFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VByteFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload).getVByte();
             }
         };
 
@@ -66,7 +66,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VShort createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VShortFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VShortFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, connPayload).getVShort();
             }
         };
 
@@ -75,7 +75,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VInt createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VIntFromDbr((DBR_TIME_Int) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VIntFromDbr((DBR_TIME_Int) value, (DBR_CTRL_Double) metadata, connPayload).getVInt();
             }
         };
 
@@ -84,7 +84,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VString createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VStringFromDbr((DBR_TIME_String) value, connPayload);
+                return new VStringFromDbr((DBR_TIME_String) value, connPayload).getVString();
             }
         };
 
@@ -102,7 +102,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VString createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VStringFromDbr((DBR_TIME_Byte) value, connPayload);
+                return new VStringFromDbr((DBR_TIME_Byte) value, connPayload).getVString();
             }
         };
 
@@ -111,7 +111,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VEnum createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VEnumFromDbr((DBR_TIME_Enum) value, (DBR_LABELS_Enum) metadata, connPayload);
+                return new VEnumFromDbr((DBR_TIME_Enum) value, (DBR_LABELS_Enum) metadata, connPayload).getVEnum();
             }
         };
 
@@ -120,7 +120,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VFloatArray createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VFloatArrayFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VFloatArrayFromDbr((DBR_TIME_Float) value, (DBR_CTRL_Double) metadata, connPayload).getVFloatArray();
             }
         };
 
@@ -129,7 +129,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VDoubleArray createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VDoubleArrayFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VDoubleArrayFromDbr((DBR_TIME_Double) value, (DBR_CTRL_Double) metadata, connPayload).getVDoubleArray();
             }
         };
 
@@ -147,7 +147,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VByteArray createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VByteArrayFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VByteArrayFromDbr((DBR_TIME_Byte) value, (DBR_CTRL_Double) metadata, connPayload).getVByteArray();
             }
         };
 
@@ -156,7 +156,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VShortArray createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VShortArrayFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VShortArrayFromDbr((DBR_TIME_Short) value, (DBR_CTRL_Double) metadata, connPayload).getVShortArray();
             }
         };
 
@@ -165,7 +165,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VIntArray createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VIntArrayFromDbr((DBR_TIME_Int) value, (DBR_CTRL_Double) metadata, connPayload);
+                return new VIntArrayFromDbr((DBR_TIME_Int) value, (DBR_CTRL_Double) metadata, connPayload).getVIntArray();
             }
         };
 
@@ -174,7 +174,7 @@ public class JCAVTypeAdapterSet implements JCATypeAdapterSet {
 
             @Override
             public VStringArray createValue(DBR value, DBR metadata, JCAConnectionPayload connPayload) {
-                return new VStringArrayFromDbr((DBR_TIME_String) value, connPayload);
+                return new VStringArrayFromDbr((DBR_TIME_String) value, connPayload).getVStringArray();
             }
         };
 

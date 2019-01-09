@@ -8,6 +8,10 @@ import org.diirt.datasource.ChannelHandlerWriteSubscription;
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.ValueCache;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.UnsafeUnwrapper;
+
 import gov.aps.jca.CAException;
 import gov.aps.jca.Channel;
 import gov.aps.jca.Monitor;
@@ -30,8 +34,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.diirt.util.array.CollectionNumbers;
-import org.diirt.util.array.ListNumber;
 
 /**
  * A ChannelHandler for the JCADataSource.
@@ -192,9 +194,9 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         // If it's a ListNumber, extract the array
         if (newValue instanceof ListNumber) {
             ListNumber data = (ListNumber) newValue;
-            Object wrappedArray = CollectionNumbers.wrappedArray(data);
+            Object wrappedArray = UnsafeUnwrapper.wrappedArray(data);
             if (wrappedArray == null) {
-                newValue = CollectionNumbers.doubleArrayCopyOf(data);
+                newValue = data.toArray(new Double[data.size()]);
             } else {
                 newValue = wrappedArray;
             }
@@ -250,9 +252,9 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
         // If it's a ListNumber, extract the array
         if (newValue instanceof ListNumber) {
             ListNumber data = (ListNumber) newValue;
-            Object wrappedArray = CollectionNumbers.wrappedArray(data);
+            Object wrappedArray = UnsafeUnwrapper.wrappedArray(data);
             if (wrappedArray == null) {
-                newValue = CollectionNumbers.doubleArrayCopyOf(data);
+                newValue = data.toArray(new Double[data.size()]);
             } else {
                 newValue = wrappedArray;
             }

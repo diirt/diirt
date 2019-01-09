@@ -4,16 +4,16 @@
  */
 package org.diirt.support.ca;
 
+import org.epics.vtype.VString;
+
 import gov.aps.jca.dbr.DBR_TIME_Byte;
 import gov.aps.jca.dbr.DBR_TIME_String;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTypeToString;
 
 /**
  *
  * @author carcassi
  */
-class VStringFromDbr extends VMetadata<DBR_TIME_String> implements VString {
+class VStringFromDbr extends VMetadata<DBR_TIME_String> {
 
     public VStringFromDbr(DBR_TIME_String dbrValue, JCAConnectionPayload connPayload) {
         super(dbrValue, connPayload);
@@ -31,14 +31,7 @@ class VStringFromDbr extends VMetadata<DBR_TIME_String> implements VString {
         return converted;
     }
 
-    @Override
-    public String getValue() {
-        return dbrValue.getStringValue()[0];
+    public VString getVString() {
+        return VString.of(dbrValue.getStringValue()[0], getAlarm(), getTime());
     }
-
-    @Override
-    public String toString() {
-        return VTypeToString.toString(this);
-    }
-
 }

@@ -8,14 +8,17 @@ import gov.aps.jca.dbr.CTRL;
 import gov.aps.jca.dbr.PRECISION;
 import gov.aps.jca.dbr.TIME;
 import java.text.NumberFormat;
-import org.diirt.util.text.NumberFormats;
-import org.diirt.vtype.Display;
+
+import org.epics.util.stats.Range;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.Display;
+import org.epics.vtype.DisplayProvider;
 
 /**
  *
  * @author carcassi
  */
-class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> extends VMetadata<TValue> implements Display {
+class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> extends VMetadata<TValue> implements DisplayProvider {
 
     private final TMetadata metadata;
     private final boolean honorZeroPrecision;
@@ -26,32 +29,26 @@ class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> extends VMeta
         this.honorZeroPrecision = connPayload.getJcaDataSource().isHonorZeroPrecision();
     }
 
-    @Override
     public Double getLowerDisplayLimit() {
         return (Double) metadata.getLowerDispLimit();
     }
 
-    @Override
     public Double getLowerCtrlLimit() {
         return (Double) metadata.getLowerCtrlLimit();
     }
 
-    @Override
     public Double getLowerAlarmLimit() {
         return (Double) metadata.getLowerAlarmLimit();
     }
 
-    @Override
     public Double getLowerWarningLimit() {
         return (Double) metadata.getLowerWarningLimit();
     }
 
-    @Override
     public String getUnits() {
         return metadata.getUnits();
     }
 
-    @Override
     public NumberFormat getFormat() {
         int precision = -1;
         if (metadata instanceof PRECISION) {
@@ -63,33 +60,39 @@ class VNumberMetadata<TValue extends TIME, TMetadata extends CTRL> extends VMeta
             return NumberFormats.toStringFormat();
         } else if (precision == 0) {
             if (honorZeroPrecision) {
-                return NumberFormats.format(0);
+                return NumberFormats.precisionFormat(0);
             } else {
                 return NumberFormats.toStringFormat();
             }
         } else {
-            return NumberFormats.format(precision);
+            return NumberFormats.precisionFormat(precision);
         }
     }
 
-    @Override
     public Double getUpperWarningLimit() {
         return (Double) metadata.getUpperWarningLimit();
     }
 
-    @Override
     public Double getUpperAlarmLimit() {
         return (Double) metadata.getUpperAlarmLimit();
     }
 
-    @Override
     public Double getUpperCtrlLimit() {
         return (Double) metadata.getUpperCtrlLimit();
     }
 
-    @Override
     public Double getUpperDisplayLimit() {
         return (Double) metadata.getUpperDispLimit();
+    }
+
+    @Override
+    public Display getDisplay() {
+        return Display.of(Range.of(getLowerDisplayLimit(), getUpperDisplayLimit()),
+                          Range.of(getLowerAlarmLimit(), getUpperAlarmLimit()),
+                          Range.of(getLowerWarningLimit(), getUpperWarningLimit()),
+                          Range.of(getLowerCtrlLimit(), getUpperCtrlLimit()),
+                          getUnits(),
+                          getFormat());
     }
 
 }

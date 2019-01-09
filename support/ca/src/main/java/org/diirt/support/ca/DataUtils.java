@@ -4,16 +4,18 @@
  */
 package org.diirt.support.ca;
 
-import gov.aps.jca.dbr.Severity;
-import gov.aps.jca.dbr.Status;
-import gov.aps.jca.dbr.TimeStamp;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import java.time.Duration;
-import org.diirt.vtype.AlarmSeverity;
-import java.time.Instant;
+
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.AlarmStatus;
+
+import gov.aps.jca.dbr.Severity;
+import gov.aps.jca.dbr.Status;
+import gov.aps.jca.dbr.TimeStamp;
 
 /**
  * Utilities to convert JCA types to VData types.
@@ -51,7 +53,7 @@ class DataUtils {
      * @param severity the JCA severity
      * @return the VData severity
      */
-    static AlarmSeverity fromEpics(Severity severity) {
+    static AlarmSeverity alarmSeverityFromEpics(Severity severity) {
         if (Severity.NO_ALARM.isEqualTo(severity)) {
             return AlarmSeverity.NONE;
         } else if (Severity.MINOR_ALARM.isEqualTo(severity)) {
@@ -63,6 +65,17 @@ class DataUtils {
         } else {
             return AlarmSeverity.UNDEFINED;
         }
+    }
+    
+    /**
+     * Converts an alarm status from JCA to VData.
+     *
+     * @param severity the JCA status
+     * @return the VData alarmStatus
+     */
+    public static AlarmStatus alarmStatusfromEpics(Status status) {
+        // TODO map alarm from Status to AlarmStatus
+        return AlarmStatus.UNDEFINED;
     }
 
     // Creates the list of EPICS 3 status by

@@ -5,16 +5,20 @@
 package org.diirt.support.ca;
 
 import gov.aps.jca.dbr.TIME;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.Time;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmProvider;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.AlarmStatus;
+import org.epics.vtype.Time;
+import org.epics.vtype.TimeProvider;
+
 import java.time.Instant;
 
 /**
  *
  * @author carcassi
  */
-class VMetadata<TValue extends TIME> implements Alarm, Time {
+class VMetadata<TValue extends TIME> implements AlarmProvider, TimeProvider {
 
     final TValue dbrValue;
     private final boolean disconnected;
@@ -30,33 +34,40 @@ class VMetadata<TValue extends TIME> implements Alarm, Time {
         }
     }
 
-    @Override
     public AlarmSeverity getAlarmSeverity() {
         if (disconnected)
             return AlarmSeverity.UNDEFINED;
-        return DataUtils.fromEpics(dbrValue.getSeverity());
+        return DataUtils.alarmSeverityFromEpics(dbrValue.getSeverity());
     }
 
-    @Override
+    public AlarmStatus getAlarmStatus() {
+        if (disconnected)
+            return AlarmStatus.UNDEFINED;
+        return DataUtils.alarmStatusfromEpics(dbrValue.getStatus());
+    }
+
     public String getAlarmName() {
         if (disconnected)
             return "Disconnected";
         return dbrValue.getStatus().getName();
     }
 
-    @Override
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    @Override
     public Integer getTimeUserTag() {
         return null;
     }
 
-    @Override
     public boolean isTimeValid() {
         return DataUtils.isTimeValid(dbrValue.getTimeStamp());
+    }
+
+    @Override
+    public Time getTime() {
+        return Time.of(timestamp, getTimeUserTag(), isTimeValid());
+    }
+
+    @Override
+    public Alarm getAlarm() {
+        return Alarm.of(getAlarmSeverity(), getAlarmStatus(), getAlarmName());
     }
 
 }
