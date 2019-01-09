@@ -21,13 +21,12 @@ import org.diirt.datasource.ReadRecipe;
 import org.diirt.datasource.ReadRecipeBuilder;
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.ValueCacheImpl;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
 import org.junit.Test;
 
 /**
@@ -112,7 +111,7 @@ public class LocalDataSourceTest {
         dataSource1.disconnectRead(recipe);
         assertThat(value, instanceOf(VDoubleArray.class));
         VDoubleArray vDouble = (VDoubleArray) value;
-        assertThat(vDouble.getData(), equalTo((ListNumber) new ArrayDouble(1.0, 2.0, 3.0)));
+        assertThat(vDouble.getData(), equalTo(CollectionNumbers.toListDouble(1.0, 2.0, 3.0)));
     }
 
     @Test
@@ -146,7 +145,7 @@ public class LocalDataSourceTest {
         dataSource1.disconnectRead(recipe);
         assertThat(value, instanceOf(VEnum.class));
         VEnum val = (VEnum) value;
-        assertThat(val.getLabels(), equalTo(Arrays.asList("A", "B", "C")));
+        assertThat(val.getDisplay().getChoices(), equalTo(Arrays.asList("A", "B", "C")));
         assertThat(val.getIndex(), equalTo(1));
     }
 

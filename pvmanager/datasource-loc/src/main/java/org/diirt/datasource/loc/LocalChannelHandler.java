@@ -13,15 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueFactory;
+
+import org.epics.vtype.Alarm;
+import org.epics.vtype.EnumDisplay;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 
 /**
  * Implementation for channels of a {@link LocalDataSource}.
@@ -86,7 +88,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                 // Handle enum writes
                 int newIndex = -1;
                 VEnum firstEnum = (VEnum) initialValue;
-                List<String> labels = firstEnum.getLabels();
+                List<String> labels = firstEnum.getDisplay().getChoices();
                 if (newValue instanceof Number) {
                     newIndex = ((Number) newValue).intValue();
                 }else if (newValue instanceof String) {
@@ -103,9 +105,9 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                 } else {
                     throw new IllegalArgumentException("Value" + newValue + " can not be accepted by VEnum.");
                 }
-                newValue = ValueFactory.newVEnum(newIndex, firstEnum.getLabels(), alarmNone(), timeNow());
+                newValue = VEnum.of(newIndex, firstEnum.getDisplay(), Alarm.none(), Time.now());
             } else if (VString.class.equals(type) && newValue instanceof String) {
-                newValue = ValueFactory.newVString((String)newValue, alarmNone(), timeNow());
+                newValue = VString.of((String)newValue, Alarm.none(), Time.now());
             } else {
                 // If the string can be parsed to a number, do it
                 if (newValue instanceof String) {
@@ -118,7 +120,7 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                 }
                 // If new value is not a VType, try to convert it
                 if (!(newValue instanceof VType)) {
-                    newValue = checkValue(ValueFactory.toVTypeChecked(newValue));
+                    newValue = checkValue(VType.toVTypeChecked(newValue));
                 }
             }
             processMessage(newValue);
@@ -150,9 +152,9 @@ class LocalChannelHandler extends MultiplexedChannelHandler<Object, Object> {
                 // TODO error message if not Number
                 int index = ((Number) args.get(0)).intValue();
                 List<String> labels = (List<String>) args.get(1);
-                initialValue = ValueFactory.newVEnum(index, labels, alarmNone(), timeNow());
+                initialValue = VEnum.of(index,EnumDisplay.of(labels), Alarm.none(), Time.now());
             } else {
-                initialValue = checkValue(ValueFactory.toVTypeChecked(value));
+                initialValue = checkValue(VType.toVTypeChecked(value));
             }
             processMessage(initialValue);
         }
