@@ -4,15 +4,18 @@
  */
 package org.diirt.service.exec;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import org.diirt.service.Service;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.ValueFactory;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
 import org.junit.Test;
 
 /**
@@ -45,7 +48,7 @@ public class ExecServiceTest {
                 .addArgument("param", "The parameter", VString.class))
                 .createService();
         Map<String, Object> params = new HashMap<>();
-        params.put("param", ValueFactory.newVString("FOO!", ValueFactory.alarmNone(), ValueFactory.timeNow()));
+        params.put("param", VString.of("FOO!", Alarm.none(), Time.now()));
         Map<String, Object> result = service.getServiceMethods().get("echo").executeSync(params);
         VString output = (VString) result.get("output");
         assertThat(output.getValue(), equalTo("You entered FOO!\n"));

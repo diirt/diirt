@@ -6,9 +6,9 @@ package org.diirt.service.jdbc;
 
 import java.io.InputStream;
 import org.diirt.service.Service;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

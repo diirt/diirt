@@ -6,9 +6,10 @@ package org.diirt.service.jdbc;
 
 import java.util.concurrent.Executors;
 import org.diirt.service.Service;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
 
+import static org.epics.util.concurrent.Executors.namedPool;
 /**
  *
  * @author carcassi
@@ -18,7 +19,7 @@ public class JDBCSampleService {
     public static Service create() {
         return new JDBCServiceDescription("jdbcSample", "A test service")
                 .dataSource(new SimpleDataSource("jdbc:mysql://localhost/test?user=root&password=root"))
-                .executorService(Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("jdbcSample")))
+                .executorService(Executors.newSingleThreadExecutor(namedPool("jdbcSample")))
                 .addServiceMethod(new JDBCServiceMethodDescription("query", "A test query")
                     .query("SELECT * FROM Data")
                     .queryResult("result", "The query result")

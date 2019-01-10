@@ -10,9 +10,10 @@ import org.diirt.service.Service;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VType;
+import org.epics.vtype.VString;
+import org.epics.vtype.VType;
 
+import static org.epics.util.concurrent.Executors.namedPool;
 /**
  * A utility class to create service method and services for general exec
  * services.
@@ -21,7 +22,7 @@ import org.diirt.vtype.VType;
  */
 public class GenericExecService {
 
-    static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("Exec services"));
+    static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(namedPool("Exec services"));
 
     /**
      * Creates description for the "run" service method; which simply runs the

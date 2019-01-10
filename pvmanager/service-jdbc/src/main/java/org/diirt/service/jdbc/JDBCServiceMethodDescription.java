@@ -9,7 +9,7 @@ import java.util.List;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.VTable;
+import org.epics.vtype.VTable;
 
 /**
  * The description for a JDBC service method (i.e. a query).

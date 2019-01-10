@@ -9,9 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceRegistry;
-import org.diirt.vtype.VTable;
 import org.diirt.vtype.io.CSVIO;
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 
 /**
  *
@@ -28,9 +32,9 @@ public class JDBCSampleClient {
 
         method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/insert");
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("name", newVString("George", alarmNone(), timeNow()));
-        arguments.put("index", newVDouble(4.1, alarmNone(), timeNow(), displayNone()));
-        arguments.put("value", newVDouble(2.11, alarmNone(), timeNow(), displayNone()));
+        arguments.put("name", VString.of("George", Alarm.none(), Time.now()));
+        arguments.put("index", VDouble.of(4.1, Alarm.none(), Time.now(), Display.none()));
+        arguments.put("value", VDouble.of(2.11, Alarm.none(), Time.now(), Display.none()));
         method.executeSync(arguments);
 
         method = ServiceRegistry.getDefault().findServiceMethod("jdbcSample/query");

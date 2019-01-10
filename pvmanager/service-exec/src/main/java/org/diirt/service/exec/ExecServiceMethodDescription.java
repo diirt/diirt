@@ -9,7 +9,7 @@ import java.util.List;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.VType;
+import org.epics.vtype.VType;
 
 /**
  * The description for an executor service method (i.e. a shell command).

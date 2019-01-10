@@ -12,12 +12,17 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>vtype</artifactId>
+            <artifactId>service</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
+          <groupId>org.epics</groupId>
+          <artifactId>vtype</artifactId>
+          <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>service</artifactId>
+            <artifactId>diirt-io</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

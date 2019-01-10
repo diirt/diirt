@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
+import static org.epics.util.concurrent.Executors.namedPool;
 
 /**
  * Group of request/response operations that share the same resources. Each service is a collection of one of more methods.
@@ -43,7 +44,7 @@ public class Service {
 
         // If no executor is attached to the description, we create one
         if (serviceDescription.executorService == null){
-            serviceDescription.executorService = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool(this.name + " services"));
+            serviceDescription.executorService = Executors.newSingleThreadExecutor(namedPool(this.name + " services"));
         }
         this.executorService = serviceDescription.executorService;
 

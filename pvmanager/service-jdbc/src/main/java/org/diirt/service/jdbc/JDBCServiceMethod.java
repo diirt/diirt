@@ -21,11 +21,10 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.diirt.service.ServiceMethod;
-import org.diirt.util.array.CircularBufferDouble;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
+import org.epics.util.array.CircularBufferDouble;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 
 /**
  * The implementation of a JDBC service method.
@@ -182,7 +181,7 @@ class JDBCServiceMethod extends ServiceMethod {
             }
         }
 
-        return ValueFactory.newVTable(types, names, data);
+        return VTable.of(types, names, data);
     }
 
 }

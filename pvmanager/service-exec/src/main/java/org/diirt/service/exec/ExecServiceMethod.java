@@ -6,7 +6,7 @@ package org.diirt.service.exec;
 
 import java.util.Map;
 import org.diirt.service.ServiceMethod;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VString;
 
 /**
  * The implementation of an exec service method: for execution of shell

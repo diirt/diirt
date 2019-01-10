@@ -18,13 +18,14 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.diirt.service.Service;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import static org.epics.util.concurrent.Executors.namedPool;
 /**
  * Utility class to create JDBCServices.
  *
@@ -36,7 +37,7 @@ public class JDBCServices {
         // Prevent instantiation
     }
 
-    private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("JDBC services"));
+    private static final ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(namedPool("JDBC services"));
 
     /**
      * Creates a JDBCService based on the description of an XML file.

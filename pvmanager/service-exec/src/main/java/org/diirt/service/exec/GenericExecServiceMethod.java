@@ -12,10 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.io.CSVIO;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 
 /**
  * The implementation of a generic exec service method: for execution of shell
@@ -84,7 +85,7 @@ class GenericExecServiceMethod extends ServiceMethod {
 
             // Return output as a String
             Map<String, Object> resultMap = new HashMap<>();
-            resultMap.put("output", ValueFactory.newVString(output, ValueFactory.alarmNone(), ValueFactory.timeNow()));
+            resultMap.put("output", VString.of(output, Alarm.none(), Time.now()));
             return resultMap;
 
         } catch (Exception ex) {
