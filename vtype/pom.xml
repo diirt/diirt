@@ -1,25 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.diirt</groupId>
-        <artifactId>diirt-all</artifactId>
-        <version>3.1.8-SNAPSHOT</version>
-    </parent>
-    <artifactId>vtype-all</artifactId>
-    <packaging>pom</packaging>
-
-    <name>vtype</name>
-    <description>A set of standard types for value processing.</description>
-    <modules>
-        <module>vtype</module>
-        <module>vtype-json</module>
-    </modules>
-    <dependencies>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>diirt-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>diirt-vtype</artifactId>
+  <parent>
+    <groupId>org.diirt</groupId>
+    <artifactId>diirt-all</artifactId>
+    <version>3.1.8-SNAPSHOT</version>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>org.epics</groupId>
+      <artifactId>vtype</artifactId>
+      <version>1.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>diirt-util</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 </project>

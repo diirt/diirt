@@ -5,6 +5,7 @@
 package org.diirt.datasource.file;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -12,7 +13,13 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
-import org.diirt.vtype.ValueUtil;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VImage;
+import org.epics.vtype.VImageDataType;
+import org.epics.vtype.VImageType;
+
 
 /**
  * A FileFormat for reading .bmp and .png into VImage
@@ -25,7 +32,9 @@ public class ImageFileFormat implements FileFormat {
     @Override
     public Object readValue(InputStream in) throws Exception {
         BufferedImage image = ImageIO.read(in);
-        return ValueUtil.toVImage(image);
+        byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        return VImage.of(image.getHeight(), image.getWidth(), CollectionNumbers.toListByte(buffer), VImageDataType.pvByte, VImageType.TYPE_3BYTE_BGR, Alarm.none(), Time.now());
+
     }
 
     @Override
