@@ -90,7 +90,7 @@ public class JCACloseIT extends JCABase {
         pv3.close();
         pv4.close();
 
-        Thread.sleep(1500);
+        Thread.sleep(15000);
 
         assertJCAOff();
     }

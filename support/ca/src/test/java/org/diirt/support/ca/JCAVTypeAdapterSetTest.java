@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 import org.diirt.datasource.ValueCache;
@@ -68,7 +69,7 @@ import gov.aps.jca.event.MonitorEvent;
 public class JCAVTypeAdapterSetTest {
 
     // Create a Zone specific string representation of epoc 0
-    private final String testTimeString = TimeStampFormatter.TIMESTAMP_FORMAT
+    private final String testTimeString = DateTimeFormatter.ISO_INSTANT
             .format(ZonedDateTime.ofInstant(Instant.ofEpochSecond(1234567,1234), ZoneId.systemDefault()));
 
     public JCAVTypeAdapterSetTest() {
@@ -150,7 +151,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VFloat[3.25, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VFloat[3.25, MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -237,7 +238,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VDouble[3.25, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VDouble[3.25, MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -324,7 +325,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VByte[32, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VByte[32, MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -411,7 +412,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VShort[32, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VShort[32, MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -498,7 +499,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VInt[32, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VInt[32, MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -576,7 +577,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarm().getSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarm().getName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTime().getTimestamp(), equalTo(timestamp));
-        assertThat(converted.toString(), equalTo("VString[32, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VString[\"32\", MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -651,7 +652,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarm().getSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarm().getName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTime().getTimestamp(), equalTo(timestamp));
-        assertThat(converted.toString(), equalTo("VString[Testing, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VString[\"Testing\", MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -723,7 +724,9 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarm().getSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarm().getName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTime().getTimestamp(), equalTo(timestamp));
-        assertThat(converted.toString(), equalTo("VEnum[Two(2), MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        // TODO shroffk include index
+        // assertThat(converted.toString(), equalTo("VEnum[\"Two\"(2), MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VEnum[\"Two\", MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -802,7 +805,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VFloatArray[[3.25, 3.75, 4.25], size 3, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VFloatArray[[3.25, 3.75, 4.25], size [3], MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -889,7 +892,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VDoubleArray[[3.25, 3.75, 4.25], size 3, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VDoubleArray[[3.25, 3.75, 4.25], size [3], MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -977,7 +980,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VByteArray[[3, 4, 5], size 3, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VByteArray[[3, 4, 5], size [3], MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -1150,7 +1153,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getDisplay().getAlarmRange().getMinimum(), equalTo(-6.0));
         assertThat(converted.getDisplay().getControlRange().getMinimum(), equalTo(-8.0));
         assertThat(converted.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
-        assertThat(converted.toString(), equalTo("VIntArray[[3, 4, 5], size 3, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VIntArray[[3, 4, 5], size [3], MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test
@@ -1229,7 +1232,7 @@ public class JCAVTypeAdapterSetTest {
         assertThat(converted.getAlarm().getSeverity(), equalTo(AlarmSeverity.MINOR));
         assertThat(converted.getAlarm().getName(), equalTo("HIGH_ALARM"));
         assertThat(converted.getTime().getTimestamp(), equalTo(timestamp));
-        assertThat(converted.toString(), equalTo("VStringArray[[Zero, One, Two], size 3, MINOR(HIGH_ALARM), "+testTimeString+"]"));
+        assertThat(converted.toString(), equalTo("VStringArray[[Zero, One, Two], size [3], MINOR(UNDEFINED) - HIGH_ALARM, "+testTimeString+"]"));
     }
 
     @Test

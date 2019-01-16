@@ -44,7 +44,10 @@ public class JCABase {
 
     private boolean isJCAThreadPresent() {
         for (Thread thread : activeThreads()) {
-            if (thread.getName().equals("com.cosylab.epics.caj.util.Timer")) {
+            // TODO shroffk need to verify if this thread rename is valid
+            // if (thread.getName().equals("com.cosylab.epics.caj.util.Timer"))
+            // {
+            if (thread.getName().equals("com.cosylab.epics.caj.util.SearchTimer")) {
                 return true;
             }
         }

@@ -15,11 +15,14 @@ import gov.aps.jca.dbr.DBR_TIME_Short;
  */
 class VShortFromDbr extends VNumberMetadata<DBR_TIME_Short, DBR_CTRL_Double> {
 
+    private VShort vShort;
+
     public VShortFromDbr(DBR_TIME_Short dbrValue, DBR_CTRL_Double metadata, JCAConnectionPayload connPayload) {
         super(dbrValue, metadata, connPayload);
+        vShort = VShort.of(dbrValue.getShortValue()[0], getAlarm(), getTime(), getDisplay());
     }
 
     public VShort getVShort() {
-        return VShort.of(dbrValue.getShortValue()[0], getAlarm(), getTime(), getDisplay());
+        return vShort;
     }
 }

@@ -269,7 +269,7 @@ class JCAChannelHandler extends MultiplexedChannelHandler<JCAConnectionPayload, 
             newValue = val;
         }
         if (newValue instanceof Integer[]) {
-            log.warning("You are writing a Integer[] to channel " + getChannelName() + ": use org.diirt.util.array.ListInt instead");
+            log.warning("You are writing a Integer[] to channel " + getChannelName() + ": use org.diirt.util.array.ListInteger instead");
             final Integer ival[] = (Integer[]) newValue;
             final int val[] = new int[ival.length];
             for (int i = 0; i < val.length; ++i) {
