@@ -4,6 +4,9 @@
  */
 package org.diirt.javafx.tools;
 
+import static org.diirt.javafx.tools.ServiceProbe.Editors.makeEditor;
+import static org.diirt.javafx.tools.ServiceProbe.Viewers.makeViewer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,9 +14,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import org.diirt.javafx.tools.ServiceProbe.Editors.Editor;
+import org.diirt.javafx.tools.ServiceProbe.Viewers.Viewer;
+import org.diirt.service.Service;
+import org.diirt.service.ServiceMethod;
+import org.diirt.service.ServiceMethod.DataDescription;
+import org.diirt.service.ServiceRegistry;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
+import org.epics.vtype.VType;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -31,21 +47,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 import javafx.util.StringConverter;
-import org.diirt.javafx.tools.ServiceProbe.Editors.Editor;
-import static org.diirt.javafx.tools.ServiceProbe.Editors.makeEditor;
-import org.diirt.javafx.tools.ServiceProbe.Viewers.Viewer;
-import static org.diirt.javafx.tools.ServiceProbe.Viewers.makeViewer;
-import org.diirt.service.Service;
-import org.diirt.service.ServiceMethod;
-import org.diirt.service.ServiceMethod.DataDescription;
-import org.diirt.service.ServiceRegistry;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueFactory;
 
 /**
  *
@@ -164,7 +166,7 @@ public final class ServiceProbe extends VBox {
 
             @Override
             public VString parseInput() {
-                return ValueFactory.newVString(field.getText(), ValueFactory.alarmNone(), ValueFactory.timeNow());
+                return VString.of(field.getText(), Alarm.none(), Time.now());
             }
 
             @Override
@@ -180,7 +182,7 @@ public final class ServiceProbe extends VBox {
 
             @Override
             public VInt parseInput() {
-                return ValueFactory.newVInt(Integer.parseInt(field.getText()), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+                return VInt.of(Integer.parseInt(field.getText()), Alarm.none(), Time.now(), Display.none());
             }
 
             @Override
@@ -205,7 +207,7 @@ public final class ServiceProbe extends VBox {
 
             @Override
             public VNumber parseInput() {
-                return ValueFactory.newVNumber(Double.parseDouble(field.getText()), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+                return VNumber.of(Double.parseDouble(field.getText()), Alarm.none(), Time.now(), Display.none());
             }
 
             @Override

@@ -13,18 +13,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.VTypeValueEquals;
-import org.diirt.vtype.ValueUtil;
 
 /**
  *

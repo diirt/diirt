@@ -14,8 +14,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import org.diirt.vtype.SimpleValueFormat;
-import org.diirt.vtype.ValueFormat;
+import org.epics.vtype.SimpleValueFormat;
+import org.epics.vtype.ValueFormat;
 
 public final class EventViewer extends ScrollPane {
 

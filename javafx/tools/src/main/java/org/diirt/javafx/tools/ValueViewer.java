@@ -20,11 +20,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.diirt.util.array.ListNumber;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.ValueUtil;
+
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 
 public final class ValueViewer extends ScrollPane {
 
@@ -89,7 +92,7 @@ public final class ValueViewer extends ScrollPane {
 
     public void setValue(Object value, boolean connection) {
         commonMetadata(value, connection);
-        numberDisplay(ValueUtil.displayOf(value));
+        numberDisplay(Display.displayOf(value));
         enumMetadata(value);
         tableMetadata(value);
         this.value = value;
@@ -101,14 +104,14 @@ public final class ValueViewer extends ScrollPane {
             alarmField.setText(null);
             timeField.setText(null);
         } else {
-            Class<?> clazz = ValueUtil.typeOf(value);
+            Class<?> clazz = VType.typeOf(value);
             if (clazz == null) {
                 typeField.setText(null);
             } else {
                 typeField.setText(clazz.getSimpleName());
             }
-            alarmField.setText(VTypeToString.alarmToString(ValueUtil.alarmOf(value, connection)));
-            timeField.setText(VTypeToString.timeToString(ValueUtil.timeOf(value)));
+            alarmField.setText(Alarm.alarmOf(value, connection).toString());
+            timeField.setText(Time.timeOf(value).toString());
         }
     }
 
@@ -119,19 +122,19 @@ public final class ValueViewer extends ScrollPane {
         } else {
             numberMetadata.setVisible(true);
             numberMetadata.setManaged(true);
-            displayRangeField.setText(display.getLowerDisplayLimit() + " - " + display.getUpperDisplayLimit());
-            alarmRangeField.setText(display.getLowerAlarmLimit()+ " - " + display.getUpperAlarmLimit());
-            warningRangeField.setText(display.getLowerWarningLimit()+ " - " + display.getUpperWarningLimit());
-            controlRangeField.setText(display.getLowerCtrlLimit()+ " - " + display.getUpperCtrlLimit());
-            unitField.setText(display.getUnits());
+            displayRangeField.setText(display.getDisplayRange().getMinimum() + " - " + display.getDisplayRange().getMaximum());
+            alarmRangeField.setText(display.getAlarmRange().getMinimum() + " - " + display.getAlarmRange().getMaximum());
+            warningRangeField.setText(display.getWarningRange().getMinimum()+ " - " + display.getWarningRange().getMaximum());
+            controlRangeField.setText(display.getControlRange().getMinimum()+ " - " + display.getControlRange().getMaximum());
+            unitField.setText(display.getUnit());
         }
     }
 
     private void enumMetadata(Object value) {
-        if (value instanceof org.diirt.vtype.Enum) {
+        if (value instanceof VEnum) {
             enumMetadata.setVisible(true);
             enumMetadata.setManaged(true);
-            labelsField.setItems(FXCollections.observableList(((org.diirt.vtype.Enum) value).getLabels()));
+            labelsField.setItems(FXCollections.observableList(((VEnum) value).getDisplay().getChoices()));
         } else {
             enumMetadata.setVisible(false);
             enumMetadata.setManaged(false);
@@ -170,7 +173,7 @@ public final class ValueViewer extends ScrollPane {
     }
 
     private void tableMetadata(Object value) {
-        if (value instanceof org.diirt.vtype.VTable) {
+        if (value instanceof VTable) {
             tableMetadata.setVisible(true);
             tableMetadata.setManaged(true);
             VTable vTable = (VTable) value;

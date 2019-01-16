@@ -156,7 +156,7 @@ public final class ExpressionProbe extends ScrollPane {
 //        } else {
 //            numberMetadata.setVisible(true);
 //            numberMetadata.setManaged(true);
-//            displayRangeField.setText(display.getLowerDisplayLimit() + " - " + display.getUpperDisplayLimit());
+//            displayRangeField.setText(display.getLowerDisplayLimit() + " - " + display.getDisplay().getDisplayRange().getMaximum());
 //            alarmRangeField.setText(display.getLowerAlarmLimit()+ " - " + display.getUpperAlarmLimit());
 //            warningRangeField.setText(display.getLowerWarningLimit()+ " - " + display.getUpperWarningLimit());
 //            controlRangeField.setText(display.getLowerCtrlLimit()+ " - " + display.getUpperCtrlLimit());

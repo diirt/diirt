@@ -43,7 +43,8 @@ public class JavaFXLaunchUtil {
         @Override
         public void start(Stage primaryStage) throws Exception {
             primaryStage.setTitle(appTitle);
-            Scene scene = new Scene(appRootClass.newInstance());
+            Parent root = appRootClass.newInstance();
+            Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();
         }

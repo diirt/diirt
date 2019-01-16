@@ -14,12 +14,10 @@ import javafx.scene.layout.VBox;
 public class Probe extends VBox {
 
     public Probe() {
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/fxml/Probe.fxml"));
-
-        fxmlLoader.setRoot(this);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Probe.fxml"));
 
         try {
+            fxmlLoader.setRoot(this);
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);

@@ -11,6 +11,18 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.diirt.datasource.PV;
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReaderEvent;
+import org.diirt.datasource.PVWriterEvent;
+import org.diirt.datasource.formula.ExpressionLanguage;
+import org.diirt.javafx.util.Executors;
+import org.diirt.util.time.TimeDuration;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.SimpleValueFormat;
+import org.epics.vtype.ValueFormat;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,19 +33,6 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-
-import org.diirt.datasource.PV;
-import org.diirt.datasource.PVManager;
-import org.diirt.datasource.PVReaderEvent;
-import org.diirt.datasource.PVWriterEvent;
-import org.diirt.datasource.formula.ExpressionLanguage;
-import org.diirt.javafx.util.Executors;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.SimpleValueFormat;
-import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.ValueUtil;
 
 public class ProbeController implements Initializable {
 
@@ -122,8 +121,8 @@ public class ProbeController implements Initializable {
     }
 
     private void setAlarm(Object value, boolean connected) {
-        Alarm alarm = ValueUtil.alarmOf(value, connected);
-        valueField.setBorder(BORDER_MAP.get(alarm.getAlarmSeverity()));
+        Alarm alarm = Alarm.alarmOf(value, connected);
+        valueField.setBorder(BORDER_MAP.get(alarm.getSeverity()));
     }
 
     @FXML

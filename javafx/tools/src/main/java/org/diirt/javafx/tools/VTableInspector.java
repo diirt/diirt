@@ -5,6 +5,7 @@
 package org.diirt.javafx.tools;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -18,9 +19,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import static org.diirt.util.text.StringUtil.DOUBLE_REGEX_WITH_NAN;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.table.VTableFactory;
+import org.epics.vtype.VTable;
 
 /**
  * FXML Controller class
@@ -36,6 +35,10 @@ public class VTableInspector extends GridPane {
     @FXML
     private ComboBox<String> filterField;
 
+    /**
+     * The pattern of a double value.
+     */
+    public static final String DOUBLE_REGEX_WITH_NAN = "([-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)|NaN";
 
     public VTableInspector() {
         FXMLLoader fxmlLoader = new FXMLLoader(
@@ -57,7 +60,11 @@ public class VTableInspector extends GridPane {
     private VTable vTable;
 
     public void setValue(VTable vTable) {
-        columnField.setItems(FXCollections.observableList(VTableFactory.columnNames(vTable)));
+        List<String> columnNames = new ArrayList<>();
+        for (int i = 0; i < vTable.getColumnCount(); i++) {
+            columnNames.add(vTable.getColumnName(i));
+        }
+        columnField.setItems(FXCollections.observableList(columnNames));
         this.vTable = vTable;
     }
 

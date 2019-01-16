@@ -4,12 +4,16 @@
  */
 package org.diirt.javafx.tools;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.VImage;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.ValueUtil;
 
 public final class VImageView extends BorderPane {
 
@@ -33,7 +37,13 @@ public final class VImageView extends BorderPane {
             //Thus, we fix this by creating a new WritableImage of the correct
             //size every time and having SwingFXUtils.toFXImage() draw on that.
             WritableImage newImage = new WritableImage( image.getWidth() , image.getHeight() );
-            newImage = SwingFXUtils.toFXImage(ValueUtil.toImage(image), newImage );
+            
+            BufferedImage vImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+            ListNumber data = image.getData();
+            for (int i = 0; i < data.size(); i++) {
+                ((DataBufferByte) vImage.getRaster().getDataBuffer()).getData()[i] = data.getByte(i);
+            }
+            newImage = SwingFXUtils.toFXImage(vImage, newImage );
             imageView.setImage(newImage);
         }
         else {
