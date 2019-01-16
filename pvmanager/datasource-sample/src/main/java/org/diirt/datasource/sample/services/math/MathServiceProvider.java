@@ -11,7 +11,7 @@ import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
 import org.diirt.service.ServiceProvider;
-import org.diirt.vtype.VNumber;
+import org.epics.vtype.VNumber;
 
 /**
  * A factory for generation of the Math sample service.

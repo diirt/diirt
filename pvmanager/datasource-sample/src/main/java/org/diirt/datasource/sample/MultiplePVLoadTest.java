@@ -13,7 +13,7 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.vtype.ExpressionLanguage;
 import static org.diirt.util.time.TimeDuration.*;
-import org.diirt.vtype.VType;
+import org.epics.vtype.VType;
 
 /**
  *

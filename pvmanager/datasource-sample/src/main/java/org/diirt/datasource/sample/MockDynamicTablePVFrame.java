@@ -4,33 +4,38 @@
  */
 package org.diirt.datasource.sample;
 
+import static org.diirt.datasource.ExpressionLanguage.channel;
+import static org.diirt.datasource.ExpressionLanguage.latestValueOf;
+import static org.diirt.datasource.extra.ExpressionLanguage.group;
+import static org.diirt.util.time.TimeDuration.ofHertz;
+import static org.epics.util.concurrent.Executors.swingEDT;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.SimpleValueFormat;
-import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.VStatistics;
-import org.diirt.datasource.PVReader;
-import org.diirt.datasource.PVManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+
+import org.diirt.datasource.PVManager;
+import org.diirt.datasource.PVReader;
+import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.extra.DynamicGroup;
-import static org.diirt.datasource.ExpressionLanguage.*;
-import org.diirt.datasource.PVReaderEvent;
-import static org.diirt.datasource.extra.ExpressionLanguage.*;
-import static org.diirt.util.concurrent.Executors.swingEDT;
-import static org.diirt.util.time.TimeDuration.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.SimpleValueFormat;
+import org.epics.vtype.Time;
+import org.epics.vtype.VStatistics;
+import org.epics.vtype.ValueFormat;
 
 /**
  *
@@ -116,13 +121,13 @@ public class MockDynamicTablePVFrame extends javax.swing.JFrame {
         private String alarmSeverityOf(Object value) {
             if (value == null)
                 return "";
-            return ValueUtil.alarmOf(value).getAlarmSeverity().toString();
+            return Alarm.alarmOf(value).getSeverity().toString();
         }
 
         private String timeStampOf(Object value) {
             if (value == null)
                 return "";
-            return ValueUtil.timeOf(value).getTimestamp().toString();
+            return Time.timeOf(value).getTimestamp().toString();
         }
 
         @Override

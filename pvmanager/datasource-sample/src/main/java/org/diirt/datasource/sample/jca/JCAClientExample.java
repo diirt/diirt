@@ -6,19 +6,19 @@ package org.diirt.datasource.sample.jca;
 
 import gov.aps.jca.JCALibrary;
 
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VInt;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VString;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VInt;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.vtype.VByteArray;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VFloatArray;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VShortArray;
-import org.diirt.vtype.VStringArray;
+import org.epics.vtype.VByteArray;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VFloatArray;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VShortArray;
+import org.epics.vtype.VStringArray;
 
 import static org.diirt.datasource.ExpressionLanguage.*;
 
@@ -133,7 +133,7 @@ public class JCAClientExample {
                     @Override
                     public void pvChanged(PVReaderEvent<VFloatArray> event) {
                         PVReader<VFloatArray> pv = event.getPvReader();
-                        System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                        System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                     }
                 })
                 .maxRate(ofHertz(10));
@@ -151,7 +151,7 @@ public class JCAClientExample {
                         PVReader<VDoubleArray> pv = event.getPvReader();
                         logException(pv.lastException());
                         if (pv.getValue() != null) {
-                            System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                            System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                         }
                     }
                 })
@@ -168,7 +168,7 @@ public class JCAClientExample {
                     @Override
                     public void pvChanged(PVReaderEvent<VByteArray> event) {
                         PVReader<VByteArray> pv = event.getPvReader();
-                            System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                            System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                     }
                 })
                 .maxRate(ofHertz(10));
@@ -184,7 +184,7 @@ public class JCAClientExample {
                     @Override
                     public void pvChanged(PVReaderEvent<VShortArray> event) {
                         PVReader<VShortArray> pv = event.getPvReader();
-                            System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                            System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                     }
                 })
                 .maxRate(ofHertz(10));
@@ -201,7 +201,7 @@ public class JCAClientExample {
                     public void pvChanged(PVReaderEvent<VIntArray> event) {
                         PVReader<VIntArray> pv = event.getPvReader();
                         logException(pv.lastException());
-                        System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                        System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                     }
                 })
                 .maxRate(ofHertz(10));
@@ -217,7 +217,7 @@ public class JCAClientExample {
                     @Override
                     public void pvChanged(PVReaderEvent<VStringArray> event) {
                         PVReader<VStringArray> pv = event.getPvReader();
-                        System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                        System.out.println(pv.getValue().getData() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                     }
                 })
                 .maxRate(ofHertz(10));
@@ -233,7 +233,7 @@ public class JCAClientExample {
                     @Override
                     public void pvChanged(PVReaderEvent<VDouble> event) {
                         PVReader<VDouble> pv = event.getPvReader();
-                        System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                        System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                     }
                 })
                 .maxRate(ofHertz(10));
@@ -249,7 +249,7 @@ public class JCAClientExample {
                     @Override
                     public void pvChanged(PVReaderEvent<VInt> event) {
                         PVReader<VInt> pv = event.getPvReader();
-                            System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                            System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                     }
                 })
                 .maxRate(ofHertz(10));
@@ -268,7 +268,7 @@ public class JCAClientExample {
                         PVReader<VString> pv = event.getPvReader();
                         logException(pv.lastException());
                         if (pv.getValue() != null) {
-                            System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                            System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                         }
                     }
                 })
@@ -287,7 +287,7 @@ public class JCAClientExample {
                         PVReader<VEnum> pv = event.getPvReader();
                         logException(pv.lastException());
                         if (pv.getValue() != null) {
-                            System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTimestamp()) + " " + pv.getValue().getAlarmSeverity());
+                            System.out.println(pv.getValue().getValue() + " " + Date.from(pv.getValue().getTime().getTimestamp()) + " " + pv.getValue().getAlarm());
                         }
                     }
                 })

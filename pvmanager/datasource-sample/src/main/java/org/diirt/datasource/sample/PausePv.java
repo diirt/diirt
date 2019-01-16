@@ -14,7 +14,7 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.sim.SimulationDataSource;
 import java.time.Duration;
-import org.diirt.vtype.VNumber;
+import org.epics.vtype.VNumber;
 
 /**
  * Shows the pausing and resuming of pvs.

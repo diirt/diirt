@@ -4,7 +4,7 @@
  */
 package org.diirt.datasource.sample;
 
-import org.diirt.vtype.VStatistics;
+import org.epics.vtype.VStatistics;
 import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
@@ -17,7 +17,7 @@ import javax.swing.table.TableModel;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.diirt.util.concurrent.Executors.swingEDT;
+import static org.epics.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

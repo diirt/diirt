@@ -12,7 +12,7 @@ import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import static org.diirt.datasource.vtype.ExpressionLanguage.vNumber;
 import java.time.Duration;
-import org.diirt.vtype.VNumber;
+import org.epics.vtype.VNumber;
 
 /**
  *

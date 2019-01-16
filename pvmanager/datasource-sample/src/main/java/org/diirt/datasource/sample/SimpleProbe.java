@@ -10,13 +10,14 @@ import org.diirt.datasource.ChannelHandler;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVManager;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.SimpleValueFormat;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.Display;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.ValueFormat;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.SimpleValueFormat;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VType;
+import org.epics.vtype.Display;
 
 import java.awt.Color;
 import java.util.EnumMap;
@@ -243,11 +244,11 @@ public class SimpleProbe extends javax.swing.JFrame {
                                 setLastError(pv.lastException());
                                 Object value = pv.getValue();
                                 setTextValue(format.format(value));
-                                setType(ValueUtil.typeOf(value));
-                                setAlarm(ValueUtil.alarmOf(value));
-                                setTime(ValueUtil.timeOf(value));
+                                setType(VType.typeOf(value));
+                                setAlarm(Alarm.alarmOf(value));
+                                setTime(Time.timeOf(value));
                                 setIndicator(ValueUtil.normalizedNumericValueOf(value));
-                                setMetadata(ValueUtil.displayOf(value));
+                                setMetadata(Display.displayOf(value));
                                 setConnected(pv.isConnected());
                             }
                         })
@@ -301,7 +302,7 @@ public class SimpleProbe extends javax.swing.JFrame {
 
     private void setAlarm(Alarm alarm) {
         if (alarm != null) {
-            pvTextValue.setBorder(borders.get(alarm.getAlarmSeverity()));
+            pvTextValue.setBorder(borders.get(alarm.getSeverity()));
         } else {
             pvTextValue.setBorder(borders.get(AlarmSeverity.NONE));
         }
@@ -319,7 +320,7 @@ public class SimpleProbe extends javax.swing.JFrame {
         if (display == null) {
             metadata.setText("");
         } else {
-            metadata.setText(display.getUpperDisplayLimit() + " - " + display.getLowerDisplayLimit());
+            metadata.setText(display.getDisplayRange().getMaximum() + " - " + display.getDisplayRange().getMinimum());
         }
     }
 

@@ -13,18 +13,18 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
 import static java.time.Duration.*;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
+import org.diirt.vtype.util.ValueUtil;
 
 /**
  * Examples for using vType expressions.
@@ -45,7 +45,7 @@ public class VTypeExamples {
                 public void pvChanged(PVReaderEvent<VNumber> event) {
                     VNumber value = event.getPvReader().getValue();
                     if (value != null) {
-                        System.out.println(value.getValue() + " " + value.getAlarmSeverity());
+                        System.out.println(value.getValue() + " " + value.getAlarm());
                     }
                 }
             })
@@ -68,15 +68,15 @@ public class VTypeExamples {
                     // so that we can work on them separately
 
                     // This returns the interface implemented (VDouble, VInt, ...)
-                    Class<?> type = ValueUtil.typeOf(value);
+                    Class<?> type = VType.typeOf(value);
                     // Extracts the alarm if present
-                    Alarm alarm = ValueUtil.alarmOf(value);
+                    Alarm alarm = Alarm.alarmOf(value);
                     // Extracts the time if present
-                    Time time = ValueUtil.timeOf(value);
+                    Time time = Time.timeOf(value);
                     // Extracts a numeric value if present
                     Double number = ValueUtil.numericValueOf(value);
                     // Extract display information if present
-                    Display display = ValueUtil.displayOf(value);
+                    Display display = Display.displayOf(value);
 
                     // setAlarm(alarm);
                     // setTime(time);

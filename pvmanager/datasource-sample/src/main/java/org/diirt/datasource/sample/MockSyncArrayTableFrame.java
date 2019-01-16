@@ -11,7 +11,6 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.VMultiDouble;
 import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
@@ -20,10 +19,10 @@ import org.diirt.datasource.PVReaderListener;
 import javax.swing.table.TableModel;
 
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.diirt.util.concurrent.Executors.swingEDT;
+import static org.epics.util.concurrent.Executors.swingEDT;
 import static java.time.Duration.*;
 
 /**
@@ -133,65 +132,68 @@ public class MockSyncArrayTableFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    PVReader<VMultiDouble> pv;
+//    PVReader<VMultiDouble> pv;
 
     private void createPVButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPVButtonActionPerformed
-        if (pv != null)
-            pv.close();
+        
+        // TODO figure out how to support VMultiDouble with new Vtypes
 
-        int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
-        double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
-        String pvName = "ramp(-1.5, 1.5, 0.1, " + timeIntervalSec + ")";
-        int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
-
-        // Buffer depth has to be longest between the time between scan and
-        // the time between sample multiplied by 5 (so you get at least 5 samples).
-        double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
-
-        pv = PVManager.read(synchronizedArrayOf(ofMillis(75), TimeDuration.ofSeconds(bufferDepth),
-                     vDoubles(Collections.nCopies(nPvs, pvName))))
-                .readListener(new PVReaderListener<VMultiDouble>() {
-                    @Override
-                    public void pvChanged(PVReaderEvent<VMultiDouble> event) {
-                        final List<VDouble> values = pv.getValue().getValues();
-                        if (values != null) {
-                            TableModel model = new AbstractTableModel() {
-
-                                List<String> names = Arrays.asList("Value", "Timestamp");
-
-                                @Override
-                                public int getRowCount() {
-                                    return values.size();
-                                }
-
-                                @Override
-                                public int getColumnCount() {
-                                    return names.size();
-                                }
-
-                                @Override
-                                public String getColumnName(int column) {
-                                    return names.get(column);
-                                }
-
-                                @Override
-                                public Object getValueAt(int rowIndex, int columnIndex) {
-                                    if (values.get(rowIndex) == null)
-                                        return null;
-                                    switch(columnIndex) {
-                                        case 0:
-                                            return values.get(rowIndex).getValue();
-                                        case 1:
-                                            return values.get(rowIndex).getTimestamp();
-                                    }
-                                    throw new IllegalStateException();
-                                }
-                            };
-                            pvTable.setModel(model);
-                        }
-                    }
-                })
-                .maxRate(TimeDuration.ofHertz(scanRate));
+//        if (pv != null)
+//            pv.close();
+//
+//        int nPvs = ((Integer) nPVSpinner.getModel().getValue()).intValue();
+//        double timeIntervalSec = (1.0 / ((Integer) updateRateSpinner.getModel().getValue()).intValue());
+//        String pvName = "ramp(-1.5, 1.5, 0.1, " + timeIntervalSec + ")";
+//        int scanRate = ((Integer) scanRateSpinner.getModel().getValue()).intValue();
+//
+//        // Buffer depth has to be longest between the time between scan and
+//        // the time between sample multiplied by 5 (so you get at least 5 samples).
+//        double bufferDepth = Math.max(timeIntervalSec * 5.0, (1.0 / scanRate));
+//
+//        pv = PVManager.read(synchronizedArrayOf(ofMillis(75), TimeDuration.ofSeconds(bufferDepth),
+//                     vDoubles(Collections.nCopies(nPvs, pvName))))
+//                .readListener(new PVReaderListener<VMultiDouble>() {
+//                    @Override
+//                    public void pvChanged(PVReaderEvent<VMultiDouble> event) {
+//                        final List<VDouble> values = pv.getValue().getValues();
+//                        if (values != null) {
+//                            TableModel model = new AbstractTableModel() {
+//
+//                                List<String> names = Arrays.asList("Value", "Timestamp");
+//
+//                                @Override
+//                                public int getRowCount() {
+//                                    return values.size();
+//                                }
+//
+//                                @Override
+//                                public int getColumnCount() {
+//                                    return names.size();
+//                                }
+//
+//                                @Override
+//                                public String getColumnName(int column) {
+//                                    return names.get(column);
+//                                }
+//
+//                                @Override
+//                                public Object getValueAt(int rowIndex, int columnIndex) {
+//                                    if (values.get(rowIndex) == null)
+//                                        return null;
+//                                    switch(columnIndex) {
+//                                        case 0:
+//                                            return values.get(rowIndex).getValue();
+//                                        case 1:
+//                                            return values.get(rowIndex).getTime();
+//                                    }
+//                                    throw new IllegalStateException();
+//                                }
+//                            };
+//                            pvTable.setModel(model);
+//                        }
+//                    }
+//                })
+//                .maxRate(TimeDuration.ofHertz(scanRate));
 
     }//GEN-LAST:event_createPVButtonActionPerformed
 

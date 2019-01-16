@@ -10,10 +10,10 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.diirt.util.concurrent.Executors.swingEDT;
+import static org.epics.util.concurrent.Executors.swingEDT;
 
 import java.time.Duration;
 

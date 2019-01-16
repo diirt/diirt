@@ -11,7 +11,7 @@ import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import java.time.Duration;
-import org.diirt.vtype.VNumber;
+import org.epics.vtype.VNumber;
 
 /**
  * Shows the automatic closing of garbage collected pvs.

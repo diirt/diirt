@@ -6,11 +6,16 @@ package org.diirt.datasource.sample.services.math;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumber;
+
 
 /**
  * An example service method for the multiplication of {@link VNumber}s.
@@ -47,7 +52,10 @@ public class MultiplyServiceMethod extends ServiceMethod {
         }
 
         // Perform calculation
-        VNumber result = ValueFactory.newVDouble(arg1.getValue().doubleValue() * arg2.getValue().doubleValue());
+        VNumber result = VDouble.of(arg1.getValue().doubleValue() * arg2.getValue().doubleValue(),
+                                    Alarm.none(),
+                                    Time.now(),
+                                    Display.none());
 
         // Prepare the result
         Map<String, Object> resultMap = new HashMap<>();

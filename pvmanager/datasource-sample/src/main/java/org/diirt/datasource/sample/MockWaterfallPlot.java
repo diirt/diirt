@@ -16,8 +16,8 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.VImage;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.VImage;
 import org.diirt.datasource.extra.ColorScheme;
 import org.diirt.datasource.extra.WaterfallPlot;
 import org.diirt.datasource.extra.WaterfallPlotParameters;
@@ -25,7 +25,7 @@ import org.diirt.datasource.extra.WaterfallPlotParameters;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
 import static org.diirt.datasource.extra.ExpressionLanguage.*;
 import static org.diirt.datasource.extra.WaterfallPlotParameters.*;
-import static org.diirt.util.concurrent.Executors.swingEDT;
+import static org.epics.util.concurrent.Executors.swingEDT;
 import static java.time.Duration.*;
 
 /**

@@ -13,13 +13,13 @@ import javax.swing.JTextField;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.vtype.SimpleValueFormat;
-import org.diirt.vtype.ValueFormat;
+import org.epics.vtype.SimpleValueFormat;
+import org.epics.vtype.ValueFormat;
+import org.epics.util.text.NumberFormats;
 
 import static org.diirt.datasource.ExpressionLanguage.*;
 
 import org.diirt.datasource.PVReaderEvent;
-import org.diirt.util.text.NumberFormats;
 import org.diirt.util.time.TimeDuration;
 
 /**
@@ -38,7 +38,7 @@ public class ScaleFrame extends javax.swing.JFrame {
         }
         System.out.println(System.currentTimeMillis() - startTime);
         format = new SimpleValueFormat(3);
-        format.setNumberFormat(NumberFormats.format(6));
+        format.setNumberFormat(NumberFormats.precisionFormat(6));
     }
 
     ValueFormat format;

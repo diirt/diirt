@@ -8,7 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceRegistry;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+
 
 /**
  * Locates a service method and executes it asynchronously (i.e. uses
@@ -30,8 +34,8 @@ public class AsynchonousMethodExecutionExample {
 
         System.out.println("Preparing arguments...");
         Map<String, Object> arguments = new HashMap<>();
-        arguments.put("arg1", ValueFactory.newVDouble(1.0));
-        arguments.put("arg2", ValueFactory.newVDouble(2.0));
+        arguments.put("arg1", VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()));
+        arguments.put("arg2", VDouble.of(2.0, Alarm.none(), Time.now(), Display.none()));
         System.out.println("Arguments: " + arguments);
 
         System.out.println("Executing service...");

@@ -14,14 +14,14 @@ import org.diirt.graphene.LineGraph2DRendererUpdate;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.graphene.Graph2DResult;
 import org.diirt.datasource.graphene.LineGraph2DExpression;
 import static org.diirt.datasource.graphene.ExpressionLanguage.*;
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
 import org.diirt.datasource.sample.SetupUtil;
-import static org.diirt.util.concurrent.Executors.swingEDT;
+import static org.epics.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

@@ -9,15 +9,16 @@ import gov.aps.jca.Monitor;
 import java.util.concurrent.Executor;
 import org.diirt.datasource.CompositeDataSource;
 import org.diirt.datasource.CompositeDataSourceConfiguration;
-import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.sim.SimulationDataSource;
 import org.diirt.support.ca.JCADataSourceConfiguration;
-import static org.diirt.util.concurrent.Executors.swingEDT;
-import static org.diirt.javafx.util.Executors.*;
 import org.diirt.support.ca.JCADataSourceProvider;
+
+import static org.diirt.datasource.ExpressionLanguage.*;
+import static org.diirt.javafx.util.Executors.*;
 import static java.time.Duration.*;
+import static org.epics.util.concurrent.Executors.swingEDT;
 
 /**
  * Examples for basic configuration of pvmanager

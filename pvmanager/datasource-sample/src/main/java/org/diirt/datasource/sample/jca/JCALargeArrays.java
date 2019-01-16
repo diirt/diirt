@@ -11,8 +11,8 @@ import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
 import org.diirt.support.ca.JCADataSourceConfiguration;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VShortArray;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VShortArray;
 import static org.diirt.util.time.TimeDuration.*;
 
 /**

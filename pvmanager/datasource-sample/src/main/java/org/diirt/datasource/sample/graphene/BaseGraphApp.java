@@ -20,9 +20,9 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.graphene.Graph2DExpression;
 import org.diirt.datasource.graphene.Graph2DResult;
 import org.diirt.datasource.sample.SetupUtil;
-import static org.diirt.util.concurrent.Executors.swingEDT;
+import static org.epics.util.concurrent.Executors.swingEDT;
 import static org.diirt.util.time.TimeDuration.ofHertz;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
 
 /**
  *
