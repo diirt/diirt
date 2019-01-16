@@ -22,8 +22,8 @@ import java.util.function.Consumer;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 
 /**
  * @author shroffk
@@ -109,8 +109,7 @@ public class QueryServiceMethod extends ServiceMethod {
                     }
 
                     Map<String, Object> resultMap = new HashMap<>();
-                    resultMap.put("result",
-                            ValueFactory.newVTable(types, names, values));
+                    resultMap.put("result",VTable.of(types, names, values));
                     resultMap.put("result_size", result.channels.size());
                     callback.accept(resultMap);
                 }

@@ -11,8 +11,8 @@ import java.util.Map;
 import org.diirt.datasource.formula.StatefulFormulaFunction;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceRegistry;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 
 /**
  * Function that connects to the Channel Finder server, runs the query,

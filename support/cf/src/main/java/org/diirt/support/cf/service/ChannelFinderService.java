@@ -8,9 +8,9 @@ import org.diirt.service.Service;
 import org.diirt.service.ServiceDescription;
 import org.diirt.service.ServiceMethod;
 import org.diirt.service.ServiceMethodDescription;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 
 /**
  * @author shroffk
