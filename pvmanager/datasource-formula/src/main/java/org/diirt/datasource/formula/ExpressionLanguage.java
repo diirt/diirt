@@ -16,7 +16,7 @@ import org.diirt.datasource.expression.DesiredRateReadWriteExpression;
 import org.diirt.datasource.expression.DesiredRateReadWriteExpressionImpl;
 import org.diirt.datasource.expression.Expressions;
 import org.diirt.datasource.expression.WriteExpression;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VType;
 
 /**
  * Support for formula expressions.
@@ -212,7 +212,7 @@ public class ExpressionLanguage {
                 if (clazz.isInstance(obj)) {
                     return clazz.cast(obj);
                 } else {
-                    throw new RuntimeException(argName + " must be a " + clazz.getSimpleName() + " (was " + ValueUtil.typeOf(obj).getSimpleName() + ")");
+                    throw new RuntimeException(argName + " must be a " + clazz.getSimpleName() + " (was " + VType.typeOf(obj).getSimpleName() + ")");
                 }
             }
         }, arg1.getName());

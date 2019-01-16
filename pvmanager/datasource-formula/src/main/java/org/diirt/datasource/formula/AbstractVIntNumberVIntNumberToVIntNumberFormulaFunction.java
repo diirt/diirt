@@ -7,9 +7,10 @@ package org.diirt.datasource.formula;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.VNumber;
-import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.Display;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VNumber;
 
 
 /**
@@ -111,11 +112,11 @@ public abstract class AbstractVIntNumberVIntNumberToVIntNumberFormulaFunction im
             throw new IllegalArgumentException("Operator '" + getName() + "' only works with integers");
         }
 
-        return newVInt(
+        return VInt.of(
                 calculate(arg1.intValue(), arg2.intValue()),
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args),
-                displayNone());
+                Display.none());
     }
 
     /**

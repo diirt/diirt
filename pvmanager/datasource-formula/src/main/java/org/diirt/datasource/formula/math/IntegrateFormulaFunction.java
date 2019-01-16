@@ -13,8 +13,12 @@ import java.util.List;
 
 import org.diirt.datasource.formula.StatefulFormulaFunction;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumber;
+
 
 /**
  *
@@ -69,10 +73,10 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
 
         if (previousTime == null) {
             Instant now = Instant.now();
-            if (now.compareTo(values.get(0).getTimestamp()) <= 0) {
+            if (now.compareTo(values.get(0).getTime().getTimestamp()) <= 0) {
                 previousTime = now;
             } else {
-                previousTime = values.get(0).getTimestamp();
+                previousTime = values.get(0).getTime().getTimestamp();
             }
         }
         Instant currentTime = Instant.now();
@@ -80,11 +84,11 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
         integratedValue += integrate(previousTime, currentTime, values);
         previousTime = currentTime;
 
-        while (values.size() > 1 && values.get(1).getTimestamp().compareTo(currentTime) <= 0) {
+        while (values.size() > 1 && values.get(1).getTime().getTimestamp().compareTo(currentTime) <= 0) {
             values.remove(0);
         }
 
-        return ValueFactory.newVDouble(integratedValue);
+        return VDouble.of(integratedValue, Alarm.none(), Time.of(currentTime), Display.none());
     }
 
     static double integrate(Instant start, Instant end, List<VNumber> values) {
@@ -92,7 +96,7 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
             return 0;
         }
 
-        if (values.get(0).getTimestamp().compareTo(end) >= 0) {
+        if (values.get(0).getTime().getTimestamp().compareTo(end) >= 0) {
             return 0;
         }
 
@@ -106,10 +110,10 @@ public class IntegrateFormulaFunction extends StatefulFormulaFunction {
     }
 
     static double integrate(Instant start, Instant end, VNumber value, VNumber nextValue) {
-        Instant actualStart = Collections.max(Arrays.asList(start, value.getTimestamp()));
+        Instant actualStart = Collections.max(Arrays.asList(start, value.getTime().getTimestamp()));
         Instant actualEnd = end;
         if (nextValue != null) {
-            actualEnd = Collections.min(Arrays.asList(end, nextValue.getTimestamp()));
+            actualEnd = Collections.min(Arrays.asList(end, nextValue.getTime().getTimestamp()));
         }
         Duration duration = Duration.between(actualStart, actualEnd);
         if (!duration.isNegative() && !duration.isZero()) {

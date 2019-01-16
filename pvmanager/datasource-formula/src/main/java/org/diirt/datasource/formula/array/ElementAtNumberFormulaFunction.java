@@ -4,16 +4,14 @@
  */
 package org.diirt.datasource.formula.array;
 
-import static org.diirt.vtype.ValueFactory.displayNone;
-import static org.diirt.vtype.ValueFactory.newVNumber;
-
 import java.util.Arrays;
 import java.util.List;
+
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  * @author shroffk
@@ -82,8 +80,7 @@ class ElementAtNumberFormulaFunction implements FormulaFunction {
         VNumber index = (VNumber) args.get(1);
         int i = index.getValue().intValue();
 
-        return newVNumber(numberArray.getData().getDouble(i),
-                numberArray, numberArray, displayNone());
+        return VNumber.of(numberArray.getData().getDouble(i), numberArray.getAlarm(), numberArray.getTime(), Display.none());
     }
 
 }

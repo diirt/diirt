@@ -4,19 +4,19 @@
  */
 package org.diirt.datasource.formula.array;
 
+
 import java.util.Arrays;
 import java.util.List;
+
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.text.NumberFormats;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueFactory;
-import static org.diirt.vtype.ValueFactory.*;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.util.array.ListDouble;
+import org.epics.util.stats.Statistics;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  *
@@ -84,20 +84,18 @@ class ArrayOfNumberFormulaFunction implements FormulaFunction {
             }
         }
 
-        Display display = displayNone();
+        Display display = Display.none();
         if (firstNonNull != null) {
-            if (ValueUtil.displayHasValidDisplayLimits(firstNonNull)) {
-                display = firstNonNull;
+            if (ValueUtil.displayHasValidDisplayLimits(firstNonNull.getDisplay())) {
+                display = firstNonNull.getDisplay();
             } else {
                 Statistics stats = StatisticsUtil.statisticsOf(data);
-                display = newDisplay(stats.getRange().getMinimum(), stats.getRange().getMinimum(), stats.getRange().getMinimum(),
-                        "", NumberFormats.toStringFormat(), stats.getRange().getMaximum(), stats.getRange().getMaximum(), stats.getRange().getMaximum(),
-                        stats.getRange().getMinimum(), stats.getRange().getMaximum());
+                display = Display.of(stats.getRange(), stats.getRange(), stats.getRange(), stats.getRange(), "", NumberFormats.toStringFormat());
             }
 
         }
 
-        return ValueFactory.newVNumberArray(data,
+        return VNumberArray.of(data,
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args),
                 display);

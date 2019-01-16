@@ -9,9 +9,9 @@ import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VString;
+
+import org.diirt.vtype.util.ValueUtil;
 
 /**
  * Function that concatenates the arguments into a single string.
@@ -70,7 +70,7 @@ class ConcatStringsFunction implements FormulaFunction {
         }
 
         // Return new value
-        return ValueFactory.newVString(sb.toString(),
+        return VString.of(sb.toString(),
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args));
 

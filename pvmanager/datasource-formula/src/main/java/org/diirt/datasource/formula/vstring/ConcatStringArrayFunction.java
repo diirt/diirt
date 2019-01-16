@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+
 
 /**
  * @author shroffk
@@ -65,9 +65,9 @@ class ConcatStringArrayFunction implements FormulaFunction {
         for (String str : stringArray.getData()) {
             sb.append(str);
         }
-        return ValueFactory.newVString(sb.toString(),
-                stringArray,
-                stringArray);
+        return VString.of(sb.toString(),
+                stringArray.getAlarm(),
+                stringArray.getTime());
 
     }
 

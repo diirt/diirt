@@ -4,16 +4,23 @@
  */
 package org.diirt.datasource.formula.vtable;
 
-import org.diirt.vtype.ValueFactory;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInteger;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 
 /**
  * Extracts a columns from a VTable.
@@ -81,17 +88,17 @@ class ColumnOfVTableFunction implements FormulaFunction {
         if (String.class.isAssignableFrom(type)) {
             @SuppressWarnings("unchecked")
             List<String> data = (List<String>) table.getColumnData(index);
-            return ValueFactory.newVStringArray(data, ValueFactory.alarmNone(), ValueFactory.timeNow());
+            return VStringArray.of(data, Alarm.none(), Time.now());
         }
 
         if (Double.TYPE.isAssignableFrom(type)) {
             ListDouble data = (ListDouble) table.getColumnData(index);
-            return ValueFactory.newVDoubleArray(data, ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+            return VDoubleArray.of(data, Alarm.none(), Time.now(), Display.none());
         }
 
         if (Integer.TYPE.isAssignableFrom(type)) {
-            ListInt data = (ListInt) table.getColumnData(index);
-            return ValueFactory.newVIntArray(data, ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+            ListInteger data = (ListInteger) table.getColumnData(index);
+            return VIntArray.of(data, Alarm.none(), Time.now(), Display.none());
         }
 
         throw new RuntimeException("Unsupported type " + type.getSimpleName());

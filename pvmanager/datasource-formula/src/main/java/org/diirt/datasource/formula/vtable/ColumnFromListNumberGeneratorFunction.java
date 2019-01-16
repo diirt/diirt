@@ -7,10 +7,11 @@ package org.diirt.datasource.formula.vtable;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.vtype.VString;
 import org.diirt.vtype.table.Column;
 import org.diirt.vtype.table.ListNumberProvider;
 import org.diirt.vtype.table.VTableFactory;
+import org.epics.vtype.VString;
+
 
 /**
  *

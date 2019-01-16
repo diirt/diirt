@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.vtype.VTable;
+import org.epics.vtype.VTable;
 import org.diirt.vtype.table.Column;
 import org.diirt.vtype.table.VTableFactory;
+
 
 /**
  *

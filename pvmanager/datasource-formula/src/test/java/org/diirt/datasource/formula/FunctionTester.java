@@ -4,39 +4,32 @@
  */
 package org.diirt.datasource.formula;
 
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.text.NumberFormats;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.VTypeValueEquals;
-import org.diirt.vtype.ValueFactory;
-
-import static org.diirt.vtype.ValueFactory.*;
-
-import org.diirt.vtype.ValueUtil;
 import org.diirt.vtype.table.Column;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.stats.Range;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VType;
 import org.hamcrest.Matcher;
-
-import static org.hamcrest.Matchers.*;
-
 import org.junit.Assert;
-
-import static org.junit.Assert.assertThat;
 
 /**
  *
@@ -112,7 +105,7 @@ public class FunctionTester {
             return true;
         }
         if (obj1 instanceof VType && obj2 instanceof VType) {
-            return VTypeValueEquals.valueEquals(obj1, obj2);
+            return obj1.equals(obj2);
         } else if (obj1 instanceof Column && obj2 instanceof Column) {
             Column column1 = (Column) obj1;
             Column column2 = (Column) obj2;
@@ -128,7 +121,7 @@ public class FunctionTester {
         if (obj instanceof VType) {
             return obj;
         }
-        Object converted = ValueFactory.toVType(obj);
+        Object converted = VType.toVType(obj);
         if (converted != null) {
             return converted;
         }
@@ -148,12 +141,12 @@ public class FunctionTester {
         if (convertTypes) {
             args = convertTypes(args);
         }
-        Alarm result = ValueUtil.alarmOf(function.calculate(Arrays.asList(args)));
+        Alarm result = Alarm.alarmOf(function.calculate(Arrays.asList(args)));
         assertThat(
                 "Wrong result for function '" + function.getName() + "("
-                        + Arrays.toString(args) + ")'. Was (" + VTypeToString.alarmToString(result)
-                        + ") expected (" + VTypeToString.alarmToString(expected) + ")",
-                VTypeValueEquals.alarmEquals(result, expected), equalTo(true));
+                        + Arrays.toString(args) + ")'. Was (" + Alarm.alarmOf(result)
+                        + ") expected (" + Alarm.alarmOf(expected) + ")",
+                result.equals(expected), equalTo(true));
         return this;
     }
 
@@ -161,12 +154,12 @@ public class FunctionTester {
         if (convertTypes) {
             args = convertTypes(args);
         }
-        Time result = ValueUtil.timeOf(function.calculate(Arrays.asList(args)));
+        Time result = Time.timeOf(function.calculate(Arrays.asList(args)));
         assertThat(
                 "Wrong result for function '" + function.getName() + "("
-                        + Arrays.toString(args) + ")'. Was (" + VTypeToString.timeToString(result)
-                        + ") expected (" + VTypeToString.timeToString(expected) + ")",
-                VTypeValueEquals.timeEquals(result, expected), equalTo(true));
+                        + Arrays.toString(args) + ")'. Was (" + Time.timeOf(result)
+                        + ") expected (" + Time.timeOf(expected) + ")",
+                result.equals(expected), equalTo(true));
         return this;
     }
 
@@ -181,75 +174,77 @@ public class FunctionTester {
 
     private Object createValue(Class<?> clazz, Alarm alarm, Time time, Display display) {
         if (clazz.equals(VNumber.class)) {
-            return newVNumber(1.0, alarm, time, display);
+            return VNumber.of(1.0, alarm, time, display);
         } else if (clazz.equals(VNumberArray.class)) {
-            return newVNumberArray(new ArrayDouble(1.0), alarm, time, display);
+            return VNumberArray.of(ArrayDouble.of(1.0), alarm, time, display);
         } else if (clazz.equals(VString.class)) {
-            return newVString("A", alarm, time);
+            return VString.of("A", alarm, time);
         } else if (clazz.equals(VStringArray.class)) {
-            return newVStringArray(Arrays.asList("A"), alarm, time);
+            return VStringArray.of(Arrays.asList("A"), alarm, time);
         } else if (clazz.equals(VBoolean.class)) {
-            return newVBoolean(true, alarm, time);
+            return VBoolean.of(true, alarm, time);
         } else {
             throw new IllegalArgumentException("Can't create sample argument for class " + clazz);
         }
     }
 
     private void highestAlarmReturnedSingleArg(FormulaFunction function) {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
-        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
+        Display display = Display.of(Range.of(-5.0, 5.0), Range.of(-4.0, 4.0), Range.of(-3.0, 3.0), Range.of(-5.0, 5.0),
+                "m", NumberFormats.toStringFormat());
+        Alarm none = Alarm.none();
+        Alarm minor = Alarm.of(AlarmSeverity.MINOR, null, "HIGH");
+        Alarm major = Alarm.of(AlarmSeverity.MAJOR, null, "LOLO");
 
-        compareReturnAlarm(none, createValue(function.getArgumentTypes().get(0), none, timeNow(), display));
-        compareReturnAlarm(minor, createValue(function.getArgumentTypes().get(0), minor, timeNow(), display));
-        compareReturnAlarm(major, createValue(function.getArgumentTypes().get(0), major, timeNow(), display));
+        compareReturnAlarm(none, createValue(function.getArgumentTypes().get(0), none, Time.now(), display));
+        compareReturnAlarm(minor, createValue(function.getArgumentTypes().get(0), minor, Time.now(), display));
+        compareReturnAlarm(major, createValue(function.getArgumentTypes().get(0), major, Time.now(), display));
     }
 
     private void highestAlarmReturnedMultipleArgs(FormulaFunction function) {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        Display display = Display.of(Range.of(-5.0, 5.0), Range.of(-4.0, 4.0), Range.of(-3.0, 3.0), Range.of(-5.0, 5.0),
+                "m", NumberFormats.toStringFormat());
         Object[] args;
         if (function.isVarArgs()) {
             args = new Object[function.getArgumentTypes().size() + 1];
         } else {
             args = new Object[function.getArgumentTypes().size()];
         }
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "HIGH");
-        Alarm major = newAlarm(AlarmSeverity.MAJOR, "LOLO");
+        Alarm none = Alarm.none();
+        Alarm minor = Alarm.of(AlarmSeverity.MINOR, null, "HIGH");
+        Alarm major = Alarm.of(AlarmSeverity.MAJOR, null, "LOLO");
 
         // Prepare arguments with no alarm
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
-            args[i] = createValue(function.getArgumentTypes().get(i), none, timeNow(), display);
+            args[i] = createValue(function.getArgumentTypes().get(i), none, Time.now(), display);
         }
         if (function.isVarArgs()) {
-            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), none, timeNow(), display);
+            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), none, Time.now(), display);
         }
         compareReturnAlarm(none, args);
 
         // Prepare arguments with one minor and everything else none
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {
-                args[i] = createValue(function.getArgumentTypes().get(i), none, timeNow(), display);
+                args[i] = createValue(function.getArgumentTypes().get(i), none, Time.now(), display);
             } else {
-                args[i] = createValue(function.getArgumentTypes().get(i), minor, timeNow(), display);
+                args[i] = createValue(function.getArgumentTypes().get(i), minor, Time.now(), display);
             }
         }
         if (function.isVarArgs()) {
-            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), none, timeNow(), display);
+            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), none, Time.now(), display);
         }
         compareReturnAlarm(minor, args);
 
         // Prepare arguments with one minor and everything else major
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {
-                args[i] = createValue(function.getArgumentTypes().get(i), major, timeNow(), display);
+                args[i] = createValue(function.getArgumentTypes().get(i), major, Time.now(), display);
             } else {
-                args[i] = createValue(function.getArgumentTypes().get(i), minor, timeNow(), display);
+                args[i] = createValue(function.getArgumentTypes().get(i), minor, Time.now(), display);
             }
         }
         if (function.isVarArgs()) {
-            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), major, timeNow(), display);
+            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), major, Time.now(), display);
         }
         compareReturnAlarm(major, args);
     }
@@ -264,58 +259,60 @@ public class FunctionTester {
     }
 
     private void latestTimeReturnedSingleArg(FormulaFunction function) {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        Display display = Display.of(Range.of(-5.0, 5.0), Range.of(-4.0, 4.0), Range.of(-3.0, 3.0), Range.of(-5.0, 5.0),
+                "m", NumberFormats.toStringFormat());
         Object[] args;
-        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
-        Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
+        Time time1 = Time.of(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = Time.of(Instant.ofEpochSecond(12350000, 0));
 
-        compareReturnTime(time1, createValue(function.getArgumentTypes().get(0), alarmNone(), time1, display));
-        compareReturnTime(time2, createValue(function.getArgumentTypes().get(0), alarmNone(), time2, display));
+        compareReturnTime(time1, createValue(function.getArgumentTypes().get(0), Alarm.none(), time1, display));
+        compareReturnTime(time2, createValue(function.getArgumentTypes().get(0), Alarm.none(), time2, display));
     }
 
     private void latestTimeReturnedMultipleArgs(FormulaFunction function) {
-        Display display = newDisplay(-5.0, -4.0, -3.0, "m", NumberFormats.toStringFormat(), 3.0, 4.0, 5.0, -5.0, 5.0);
+        Display display = Display.of(Range.of(-5.0, 5.0), Range.of(-4.0, 4.0), Range.of(-3.0, 3.0), Range.of(-5.0, 5.0),
+                "m", NumberFormats.toStringFormat());
         Object[] args;
         if (function.isVarArgs()) {
             args = new Object[function.getArgumentTypes().size() + 1];
         } else {
             args = new Object[function.getArgumentTypes().size()];
         }
-        Time time1 = newTime(Instant.ofEpochSecond(12340000, 0));
-        Time time2 = newTime(Instant.ofEpochSecond(12350000, 0));
+        Time time1 = Time.of(Instant.ofEpochSecond(12340000, 0));
+        Time time2 = Time.of(Instant.ofEpochSecond(12350000, 0));
 
         // Prepare arguments with all time1
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
-            args[i] = createValue(function.getArgumentTypes().get(i), alarmNone(), time1, display);
+            args[i] = createValue(function.getArgumentTypes().get(i), Alarm.none(), time1, display);
         }
         if (function.isVarArgs()) {
-            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), alarmNone(), time1, display);
+            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), Alarm.none(), time1, display);
         }
         compareReturnTime(time1, args);
 
         // Prepare arguments with one time2 and everything else time1
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {
-                args[i] = createValue(function.getArgumentTypes().get(i), alarmNone(), time1, display);
+                args[i] = createValue(function.getArgumentTypes().get(i), Alarm.none(), time1, display);
             } else {
-                args[i] = createValue(function.getArgumentTypes().get(i), alarmNone(), time2, display);
+                args[i] = createValue(function.getArgumentTypes().get(i), Alarm.none(), time2, display);
             }
         }
         if (function.isVarArgs()) {
-            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), alarmNone(), time1, display);
+            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), Alarm.none(), time1, display);
         }
         compareReturnTime(time2, args);
 
         // Prepare arguments with one minor and everything else major
         for (int i = 0; i < function.getArgumentTypes().size(); i++) {
             if (i == args.length - 1) {
-                args[i] = createValue(function.getArgumentTypes().get(i), alarmNone(), time2, display);
+                args[i] = createValue(function.getArgumentTypes().get(i), Alarm.none(), time2, display);
             } else {
-                args[i] = createValue(function.getArgumentTypes().get(i), alarmNone(), time1, display);
+                args[i] = createValue(function.getArgumentTypes().get(i), Alarm.none(), time1, display);
             }
         }
         if (function.isVarArgs()) {
-            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), alarmNone(), time2, display);
+            args[args.length - 1] = createValue(function.getArgumentTypes().get(args.length - 2), Alarm.none(), time2, display);
         }
         compareReturnTime(time2, args);
     }

@@ -9,9 +9,9 @@ import org.diirt.datasource.formula.AbstractVNumberArrayVNumberToVNumberArrayFor
 import org.diirt.datasource.formula.AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction;
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FormulaFunctionSetDescription;
-import org.diirt.util.array.ListMath;
-import org.diirt.util.array.ListNumber;
-import org.diirt.vtype.VNumberArray;
+import org.epics.util.array.ListMath;
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  * A set of functions to work with {@link VNumberArray}s.
@@ -162,8 +162,6 @@ public class ArrayFunctionSet extends FormulaFunctionSet {
                             }
                         })
                 .addFormulaFunction(new DftFormulaFunction())
-                .addFormulaFunction(new ArrayRangeOfFormulaFunction())
-                .addFormulaFunction(new DimDisplayFormulaFunction())
                 .addFormulaFunction(new NdArrayFormulaFunction())
         );
     }

@@ -12,10 +12,11 @@ import java.util.List;
 import java.util.Objects;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.formula.DynamicFormulaFunction;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
 import org.diirt.vtype.table.VTableFactory;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
+
 
 /**
  * Formula function that accepts a list of strings and returns a table where

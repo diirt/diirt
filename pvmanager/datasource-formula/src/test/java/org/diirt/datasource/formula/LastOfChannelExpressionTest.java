@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource.formula;
 
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VString;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;

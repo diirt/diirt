@@ -7,14 +7,14 @@ package org.diirt.datasource.formula.array;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 
-import org.diirt.util.array.ListMath;
-import org.diirt.util.array.ListNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
+import org.epics.util.array.ListMath;
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VTable;
+
 
 /**
  *
@@ -67,7 +67,7 @@ class DftFormulaFunction implements FormulaFunction {
         }
 
         // TODO: no need to allocate empty array
-        List<ListNumber> fft = ListMath.dft(array.getData(), new ArrayDouble(new double[array.getData().size()]));
+        List<ListNumber> fft = ListMath.dft(array.getData(), ArrayDouble.of(new double[array.getData().size()]));
         final ListNumber real = fft.get(0);
         final ListNumber imaginary = fft.get(1);
         ListNumber modulus = new ListDouble() {
@@ -102,7 +102,7 @@ class DftFormulaFunction implements FormulaFunction {
                 return real.size();
             }
         };
-        return ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class, double.class, double.class),
+        return VTable.of(Arrays.<Class<?>>asList(double.class, double.class, double.class, double.class),
                 Arrays.asList("x", "y", "mod", "phase"),
                 Arrays.<Object>asList(real, imaginary, modulus, phase));
     }

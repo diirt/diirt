@@ -7,9 +7,8 @@ package org.diirt.datasource.formula;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.VBoolean;
 
 
 /**
@@ -107,7 +106,7 @@ public abstract class AbstractVBooleanVBooleanToVBooleanFormulaFunction implemen
         VBoolean arg1 = (VBoolean) args.get(0);
         VBoolean arg2 = (VBoolean) args.get(1);
 
-        return ValueFactory.newVBoolean(
+        return VBoolean.of(
                 calculate(arg1.getValue(), arg2.getValue()),
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args));

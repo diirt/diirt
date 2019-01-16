@@ -4,18 +4,15 @@
  */
 package org.diirt.datasource.formula.array;
 
-import static org.diirt.vtype.ValueFactory.displayNone;
-import static org.diirt.vtype.ValueFactory.newVNumberArray;
-
 import java.util.Arrays;
 import java.util.List;
+
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-
-import org.diirt.util.array.ListMath;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  * @author shroffk
@@ -110,11 +107,11 @@ class SubArrayFormulaFunction implements FormulaFunction {
         int fromIndex = ((VNumber) args.get(1)).getValue().intValue();
         int toIndex = ((VNumber) args.get(2)).getValue().intValue();
 
-        return newVNumberArray(
-                ListMath.limit(numberArray.getData(), fromIndex, toIndex),
+        return VNumberArray.of(
+                numberArray.getData().subList(fromIndex, toIndex),
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args),
-                displayNone());
+                Display.none());
     }
 
 }

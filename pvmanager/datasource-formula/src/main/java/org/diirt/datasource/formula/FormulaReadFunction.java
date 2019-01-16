@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import org.diirt.datasource.PVDirector;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -74,7 +74,7 @@ class FormulaReadFunction implements ReadFunction<Object> {
         if (lastFormula == null) {
             List<String> typeNames = new ArrayList<>(argumentValues.size());
             for (Object object : argumentValues) {
-                Class<?> clazz = ValueUtil.typeOf(object);
+                Class<?> clazz = VType.typeOf(object);
                 if (Object.class.equals(clazz)) {
                     clazz = object.getClass();
                 }

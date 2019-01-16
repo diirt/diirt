@@ -7,13 +7,14 @@ package org.diirt.datasource.formula.venum;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.*;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.VEnum;
+import org.epics.util.array.ArrayDouble;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.EnumDisplay;
+import org.epics.vtype.Time;
+import org.epics.vtype.VEnum;
 
 import org.junit.Test;
 
-import static org.diirt.vtype.ValueFactory.*;
 
 
 /**
@@ -28,25 +29,25 @@ public class VEnumFunctionSetTest {
     public void enumOf1() {
         List<String> labels = Arrays.asList("LOW", "MIDDLE", "HIGH");
 
-        VEnum low = newVEnum(0, labels, alarmNone(), timeNow());
-        VEnum middle = newVEnum(1, labels, alarmNone(), timeNow());
-        VEnum high = newVEnum(2, labels, alarmNone(), timeNow());
+        VEnum low = VEnum.of(0, EnumDisplay.of(labels), Alarm.none(), Time.now());
+        VEnum middle = VEnum.of(1, EnumDisplay.of(labels), Alarm.none(), Time.now());
+        VEnum high = VEnum.of(2, EnumDisplay.of(labels), Alarm.none(), Time.now());
 
         FunctionTester.findByName(set, "enumOf")
-                .compareReturnValue(low, -1.5, new ArrayDouble(-1.0, 1.0), labels)
-                .compareReturnValue(middle, 0.0, new ArrayDouble(-1.0, 1.0), labels)
-                .compareReturnValue(high, 1.5, new ArrayDouble(-1.0, 1.0), labels);
+                .compareReturnValue(low, -1.5, ArrayDouble.of(-1.0, 1.0), labels)
+                .compareReturnValue(middle, 0.0, ArrayDouble.of(-1.0, 1.0), labels)
+                .compareReturnValue(high, 1.5, ArrayDouble.of(-1.0, 1.0), labels);
     }
 
     @Test
     public void enumOf2() {
         List<String> labels = Arrays.asList("A", "B", "C", "D");
-        ArrayDouble intervals = new ArrayDouble(-10.0, 0.0, 10.0);
+        ArrayDouble intervals = ArrayDouble.of(-10.0, 0.0, 10.0);
 
-        VEnum a = newVEnum(0, labels, alarmNone(), timeNow());
-        VEnum b = newVEnum(1, labels, alarmNone(), timeNow());
-        VEnum c = newVEnum(2, labels, alarmNone(), timeNow());
-        VEnum d = newVEnum(3, labels, alarmNone(), timeNow());
+        VEnum a = VEnum.of(0, EnumDisplay.of(labels), Alarm.none(), Time.now());
+        VEnum b = VEnum.of(1, EnumDisplay.of(labels), Alarm.none(), Time.now());
+        VEnum c = VEnum.of(2, EnumDisplay.of(labels), Alarm.none(), Time.now());
+        VEnum d = VEnum.of(3, EnumDisplay.of(labels), Alarm.none(), Time.now());
 
         FunctionTester.findByName(set, "enumOf")
                 .compareReturnValue(a, -11.0, intervals, labels)
@@ -57,9 +58,9 @@ public class VEnumFunctionSetTest {
 
     @Test
     public void indexOf(){
-        Alarm none = alarmNone();
+        Alarm none = Alarm.none();
         List<String> labels = Arrays.asList("One", "Two", "Three");
         FunctionTester.findByName(set, "indexOf")
-                .compareReturnValue(0, newVEnum(0, labels, none, timeNow()));
+                .compareReturnValue(0, VEnum.of(0, EnumDisplay.of(labels), none, Time.now()));
     }
 }

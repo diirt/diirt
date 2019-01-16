@@ -4,23 +4,23 @@
  */
 package org.diirt.datasource.formula.array;
 
-import static org.diirt.vtype.ValueFactory.*;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.formula.StatefulFormulaFunction;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.IteratorNumber;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.ListNumbers;
-import org.diirt.util.stats.Range;
-import org.diirt.util.stats.Ranges;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.text.NumberFormats;
 
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
+import org.diirt.datasource.formula.StatefulFormulaFunction;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
+import org.epics.util.stats.Statistics;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.array.ArrayInteger;
+import org.epics.util.array.IteratorNumber;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  * @author shroffk
@@ -77,7 +77,7 @@ public class HistogramOfFormulaFunction extends StatefulFormulaFunction {
 
         Statistics stats = StatisticsUtil.statisticsOf(numberArray.getData());
         int nBins = 100;
-        Range aggregatedRange = Ranges.aggregateRange(stats.getRange(), previousXRange);
+        Range aggregatedRange = stats.getRange().combine(previousXRange);
         Range xRange;
         if (Ranges.overlap(aggregatedRange, stats.getRange()) >= 0.75) {
             xRange = aggregatedRange;
@@ -90,7 +90,7 @@ public class HistogramOfFormulaFunction extends StatefulFormulaFunction {
         double maxValueRange = xRange.getMaximum();
 
         ListNumber xBoundaries = ListNumbers.linearListFromRange(minValueRange, maxValueRange, nBins + 1);
-        String unit = numberArray.getUnits();
+        String unit = numberArray.getDisplay().getUnit();
         int[] binData = new int[nBins];
         double maxCount = 0;
         while (newValues.hasNext()) {
@@ -117,8 +117,11 @@ public class HistogramOfFormulaFunction extends StatefulFormulaFunction {
         previousMaxCount = maxCount;
         previousXRange = xRange;
         previousValue = numberArray;
-        previousResult = newVNumberArray(new ArrayInt(binData), new ArrayInt(nBins), Arrays.asList(newDisplay(xBoundaries, unit)),
-                numberArray, numberArray, newDisplay(0.0, 0.0, 0.0, "count", NumberFormats.format(0), maxCount, maxCount, maxCount, Double.NaN, Double.NaN));
+        previousResult = VNumberArray.of(ArrayInteger.of(binData),
+                                         ArrayInteger.of(nBins),
+                                         numberArray.getAlarm(),
+                                         numberArray.getTime(),
+                                         Display.of(Range.of(0.0, maxCount), Range.of(0.0, maxCount), Range.of(0.0, maxCount), Range.of(Double.NaN, Double.NaN), "count", NumberFormats.precisionFormat(0)));
 
         return previousResult;
     }

@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.vtype.VTable;
 import org.diirt.vtype.table.VTableFactory;
+import org.epics.vtype.VTable;
+
 
 /**
  * Natural join of a set of tables.

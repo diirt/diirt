@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.formula.DynamicFormulaFunction;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VString;
 
 /**
  * Formula function that returns the value of a channel matching the name

@@ -12,13 +12,14 @@ import java.util.List;
 
 import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FunctionTester;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VNumber;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumber;
 import org.junit.Test;
 
-import static org.diirt.vtype.ValueFactory.*;
 
 /**
  *
@@ -33,8 +34,8 @@ public class VNumberFunctionSetTest {
         FunctionTester.findByName(set, "+")
                 .compareReturnValue(3.0, 1.0, 2.0)
                 .compareReturnValue(-1.0, 1.0, -2.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -44,8 +45,8 @@ public class VNumberFunctionSetTest {
         FunctionTester.findBySignature(set, "-", VNumber.class, VNumber.class)
                 .compareReturnValue(-1.0, 1.0, 2.0)
                 .compareReturnValue(3.0, 1.0, -2.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -65,8 +66,8 @@ public class VNumberFunctionSetTest {
         FunctionTester.findByName(set, "*")
                 .compareReturnValue(10.0, 2.0, 5.0)
                 .compareReturnValue(-6.0, 3.0, -2.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -76,8 +77,8 @@ public class VNumberFunctionSetTest {
         FunctionTester.findByName(set, "/")
                 .compareReturnValue(4.0, 8.0, 2.0)
                 .compareReturnValue(-0.5, 1.0, -2.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -87,8 +88,8 @@ public class VNumberFunctionSetTest {
         FunctionTester.findByName(set, "%")
                 .compareReturnValue(0.0, 8.0, 2.0)
                 .compareReturnValue(1.0, 3.0, 2.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -98,8 +99,8 @@ public class VNumberFunctionSetTest {
         FunctionTester.findByName(set, "^")
                 .compareReturnValue(64.0, 8.0, 2.0)
                 .compareReturnValue(2.0, 4.0, 0.5)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -110,8 +111,8 @@ public class VNumberFunctionSetTest {
                 .compareReturnValue(true, 1.0, 2.0)
                 .compareReturnValue(true, 2.0, 2.0)
                 .compareReturnValue(false, 2.0, 1.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -122,8 +123,8 @@ public class VNumberFunctionSetTest {
                 .compareReturnValue(false, 1.0, 2.0)
                 .compareReturnValue(true, 2.0, 2.0)
                 .compareReturnValue(true, 2.0, 1.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -134,8 +135,8 @@ public class VNumberFunctionSetTest {
                 .compareReturnValue(true, 1.0, 2.0)
                 .compareReturnValue(false, 2.0, 2.0)
                 .compareReturnValue(false, 2.0, 1.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -146,8 +147,8 @@ public class VNumberFunctionSetTest {
                 .compareReturnValue(false, 1.0, 2.0)
                 .compareReturnValue(false, 2.0, 2.0)
                 .compareReturnValue(true, 2.0, 1.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -158,8 +159,8 @@ public class VNumberFunctionSetTest {
                 .compareReturnValue(false, 1.0, 2.0)
                 .compareReturnValue(true, 2.0, 2.0)
                 .compareReturnValue(false, 2.0, 1.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -170,8 +171,8 @@ public class VNumberFunctionSetTest {
                 .compareReturnValue(true, 1.0, 2.0)
                 .compareReturnValue(false, 2.0, 2.0)
                 .compareReturnValue(true, 2.0, 1.0)
-                .compareReturnValue(null, newVDouble(1.0), null)
-                .compareReturnValue(null, null, newVDouble(1.0))
+                .compareReturnValue(null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()), null)
+                .compareReturnValue(null, null, VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()))
                 .highestAlarmReturned()
                 .latestTimeReturned();
     }
@@ -204,76 +205,76 @@ public class VNumberFunctionSetTest {
 
     @Test
     public void bitwiseXOR() {
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
-        Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
+        Alarm none = Alarm.none();
+        Alarm minor = Alarm.of(AlarmSeverity.MINOR, null, "LOW");
+        Time time1 = Time.now();
+        Time time2 = Time.of(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "xor")
                 .compareReturnValue(0b0110, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
                 .compareReturnValue(null, null, 0b1010)
-                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
-                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+                .compareReturnAlarm(none, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, minor, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, minor, Time.now(), Display.none()))
+                .compareReturnTime(time1, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time2, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time2, Display.none()));
     }
 
     @Test
     public void bitwiseOR() {
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
-        Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
+        Alarm none = Alarm.none();
+        Alarm minor = Alarm.of(AlarmSeverity.MINOR, null, "LOW");
+        Time time1 = Time.now();
+        Time time2 = Time.of(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "or")
                 .compareReturnValue(0b1110, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
                 .compareReturnValue(null, null, 0b1010)
-                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
-                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+                .compareReturnAlarm(none, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, minor, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, minor, Time.now(), Display.none()))
+                .compareReturnTime(time1, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time2, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time2, Display.none()));
         FunctionTester.findByName(set, "|")
                 .compareReturnValue(0b1110, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
                 .compareReturnValue(null, null, 0b1010)
-                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
-                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+                .compareReturnAlarm(none, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, minor, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, minor, Time.now(), Display.none()))
+                .compareReturnTime(time1, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time2, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time2, Display.none()));
     }
 
     @Test
     public void bitwiseAND() {
-        Alarm none = alarmNone();
-        Alarm minor = newAlarm(AlarmSeverity.MINOR, "LOW");
-        Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
+        Alarm none = Alarm.none();
+        Alarm minor = Alarm.of(AlarmSeverity.MINOR, null, "LOW");
+        Time time1 = Time.now();
+        Time time2 = Time.of(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "and")
                 .compareReturnValue(0b1000, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
                 .compareReturnValue(null, null, 0b1010)
-                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
-                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+                .compareReturnAlarm(none, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, minor, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, minor, Time.now(), Display.none()))
+                .compareReturnTime(time1, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time2, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time2, Display.none()));
         FunctionTester.findByName(set, "&")
                 .compareReturnValue(0b1000, 0b1100, 0b1010)
                 .compareReturnValue(null, 0b1100, null)
                 .compareReturnValue(null, null, 0b1010)
-                .compareReturnAlarm(none, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, minor, timeNow(), displayNone()), newVNumber(1, none, timeNow(), displayNone()))
-                .compareReturnAlarm(minor, newVNumber(1, none, timeNow(), displayNone()), newVNumber(1, minor, timeNow(), displayNone()))
-                .compareReturnTime(time1, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time2, displayNone()), newVNumber(1, minor, time1, displayNone()))
-                .compareReturnTime(time2, newVNumber(1, none, time1, displayNone()), newVNumber(1, minor, time2, displayNone()));
+                .compareReturnAlarm(none, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, minor, Time.now(), Display.none()), VNumber.of(1, none, Time.now(), Display.none()))
+                .compareReturnAlarm(minor, VNumber.of(1, none, Time.now(), Display.none()), VNumber.of(1, minor, Time.now(), Display.none()))
+                .compareReturnTime(time1, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time2, Display.none()), VNumber.of(1, minor, time1, Display.none()))
+                .compareReturnTime(time2, VNumber.of(1, none, time1, Display.none()), VNumber.of(1, minor, time2, Display.none()));
     }
 
     @Test
@@ -288,10 +289,10 @@ public class VNumberFunctionSetTest {
 
     @Test
     public void conditionalOperator() {
-        Alarm alarm1 = alarmNone();
-        Alarm alarm2 = newAlarm(AlarmSeverity.MINOR, "LOW");
-        Time time1 = timeNow();
-        Time time2 = newTime(time1.getTimestamp().plus(Duration.ofMillis(100)));
+        Alarm alarm1 = Alarm.none();
+        Alarm alarm2 = Alarm.of(AlarmSeverity.MINOR, null, "LOW");
+        Time time1 = Time.now();
+        Time time2 = Time.of(time1.getTimestamp().plus(Duration.ofMillis(100)));
         FunctionTester.findByName(set, "?:")
                 .compareReturnValue(1, true, 1, 0)
                 .compareReturnValue(0, false, 1, 0)

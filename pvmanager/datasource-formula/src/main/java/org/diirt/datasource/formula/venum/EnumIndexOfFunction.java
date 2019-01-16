@@ -4,17 +4,16 @@
  */
 package org.diirt.datasource.formula.venum;
 
-import static org.diirt.vtype.ValueFactory.displayNone;
-import static org.diirt.vtype.ValueFactory.newVInt;
-
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.formula.FormulaFunction;
 
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.Display;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VNumber;
 
 /**
  * @author tom.cobb@diamond.ac.uk
@@ -64,10 +63,10 @@ class EnumIndexOfFunction implements FormulaFunction {
                 }
                 // args[0] is a VEnum
                 VEnum value = (VEnum) args.get(0);
-                return newVInt(value.getIndex(),
+                return VInt.of(value.getIndex(),
                                 ValueUtil.highestSeverityOf(args, false),
                                 ValueUtil.latestValidTimeOrNowOf(args),
-                                displayNone());
+                                Display.none());
         }
 
 }

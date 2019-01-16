@@ -6,8 +6,11 @@ package org.diirt.datasource.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFactory;
+
+import org.epics.vtype.Display;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumber;
+
 
 
 /**
@@ -98,8 +101,8 @@ public abstract class AbstractVNumberToVNumberFormulaFunction implements Formula
         if (arg == null) {
             return null;
         }
-        return ValueFactory.newVDouble(calculate(arg.getValue().doubleValue()),
-                arg, arg, ValueFactory.displayNone());
+        return VDouble.of(calculate(arg.getValue().doubleValue()),
+                arg.getAlarm(), arg.getTime(), Display.none());
     }
 
     /**

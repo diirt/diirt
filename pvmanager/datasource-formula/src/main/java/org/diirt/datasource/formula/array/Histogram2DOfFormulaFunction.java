@@ -4,25 +4,26 @@
  */
 package org.diirt.datasource.formula.array;
 
-import static org.diirt.vtype.ValueFactory.*;
-
 import java.util.Arrays;
 import java.util.List;
+
 import org.diirt.datasource.formula.StatefulFormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.ListNumbers;
-import org.diirt.util.stats.Range;
-import org.diirt.util.stats.Ranges;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.text.NumberFormats;
-
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
+import org.epics.util.stats.Statistics;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.array.ArrayInteger;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.text.NumberFormats;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
 
 /**
  * @author shroffk
@@ -85,8 +86,8 @@ public class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
         Statistics yStats = StatisticsUtil.statisticsOf(yData);
         int nXBins = 20;
         int nYBins = 20;
-        Range aggregatedXRange = Ranges.aggregateRange(xStats.getRange(), previousXRange);
-        Range aggregatedYRange = Ranges.aggregateRange(yStats.getRange(), previousYRange);
+        Range aggregatedXRange = xStats.getRange().combine(previousXRange);
+        Range aggregatedYRange = yStats.getRange().combine(previousYRange);
         Range xRange;
         Range yRange;
         if (Ranges.overlap(aggregatedXRange, xStats.getRange()) >= 0.90) {
@@ -107,6 +108,7 @@ public class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
 
         ListNumber xBoundaries = ListNumbers.linearListFromRange(minXValueRange, maxXValueRange, nXBins + 1);
         ListNumber yBoundaries = ListNumbers.linearListFromRange(minYValueRange, maxYValueRange, nYBins + 1);
+
         int[] binData = new int[nXBins*nYBins];
         double maxCount = 0;
         for (int i = 0; i < nPoints; i++) {
@@ -144,8 +146,12 @@ public class Histogram2DOfFormulaFunction extends StatefulFormulaFunction {
         previousXRange = xRange;
         previousXData = xData;
         previousYData = yData;
-        previousResult = newVNumberArray(new ArrayInt(binData), new ArrayInt(nYBins, nXBins), Arrays.asList(newDisplay(yBoundaries, ""), newDisplay(xBoundaries, "")),
-                   alarmNone(), timeNow(), newDisplay(0.0, 0.0, 0.0, "count", NumberFormats.format(0), maxCount, maxCount, maxCount, Double.NaN, Double.NaN));
+
+        previousResult = VNumberArray.of(ArrayInteger.of(binData),
+                                         ArrayInteger.of(nYBins, nXBins),
+                                         Alarm.none(),
+                                         Time.now(),
+                                         Display.of(Range.of(0.0, maxCount), Range.of(0.0, maxCount), Range.of(0.0, maxCount), Range.of(Double.NaN, Double.NaN), "count", NumberFormats.precisionFormat(0)));
 
         return previousResult;
     }

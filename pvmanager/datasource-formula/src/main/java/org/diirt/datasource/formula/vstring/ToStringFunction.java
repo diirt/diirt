@@ -7,12 +7,12 @@ package org.diirt.datasource.formula.vstring;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.Time;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
+import org.epics.vtype.VType;
 
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
 
 /**
  * @author shroffk
@@ -58,16 +58,16 @@ class ToStringFunction implements FormulaFunction {
     @Override
     public Object calculate(List<Object> args) {
         VType value = (VType) args.get(0);
-        Alarm alarm = ValueUtil.alarmOf(value);
+        Alarm alarm = Alarm.alarmOf(value);
         if (alarm == null) {
-            alarm = ValueFactory.alarmNone();
+            alarm = Alarm.none();
         }
-        Time time = ValueUtil.timeOf(value);
+        Time time = Time.timeOf(value);
         if (time == null) {
-            time = ValueFactory.timeNow();
+            time = Time.now();
         }
 
-        return ValueFactory.newVString(ValueUtil.getDefaultValueFormat().format(value),
+        return VString.of(ValueUtil.getDefaultValueFormat().format(value),
                 alarm,
                 time);
 

@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import org.diirt.util.config.ServiceLoaderOSGiWrapper;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VType;
 
 /**
  * The registry to add functions that will be used by the formula parser.
@@ -55,10 +55,10 @@ public class FormulaRegistry {
     private final Map<String, Object> constants = new ConcurrentHashMap<>();
 
     {
-        constants.put("TRUE", ValueFactory.toVType(true));
-        constants.put("FALSE", ValueFactory.toVType(false));
-        constants.put("PI", ValueFactory.toVType(Math.PI));
-        constants.put("E", ValueFactory.toVType(Math.E));
+        constants.put("TRUE", VType.toVType(true));
+        constants.put("FALSE", VType.toVType(false));
+        constants.put("PI", VType.toVType(Math.PI));
+        constants.put("E", VType.toVType(Math.E));
     }
 
     private void registerFormulaFunction(FormulaFunction formulaFunction) {

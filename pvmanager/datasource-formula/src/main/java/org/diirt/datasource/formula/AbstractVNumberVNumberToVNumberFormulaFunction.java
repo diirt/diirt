@@ -6,11 +6,13 @@ package org.diirt.datasource.formula;
 
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
+
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumber;
+import org.diirt.vtype.util.ValueUtil;
 
 
 /**
@@ -109,12 +111,10 @@ public abstract class AbstractVNumberVNumberToVNumberFormulaFunction implements 
         Alarm alarm = ValueUtil.highestSeverityOf(args, false);
         Time time = ValueUtil.latestTimeOf(args);
         if (time == null) {
-            time = ValueFactory.timeNow();
+            time = Time.now();
         }
-        return ValueFactory.newVDouble(
-                calculate(((VNumber) args.get(0)).getValue().doubleValue(),
-                ((VNumber) args.get(1)).getValue().doubleValue())
-                , alarm, time, ValueFactory.displayNone());
+        return VDouble.of(calculate(((VNumber) args.get(0)).getValue().doubleValue(),
+                ((VNumber) args.get(1)).getValue().doubleValue()), alarm, time, Display.none());
     }
 
     /**

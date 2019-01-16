@@ -11,19 +11,22 @@ import org.diirt.datasource.DataSource;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.ReadExpressionTester;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import org.junit.Test;
 
 import static org.diirt.datasource.formula.ExpressionLanguage.*;
 
 import org.diirt.datasource.test.CountDownPVWriterListener;
 import org.diirt.datasource.test.MockDataSource;
-import org.diirt.util.array.*;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.ValueFactory;
+import org.epics.util.array.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VString;
+
 
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -38,9 +41,9 @@ public class ExpressionLanguageTest {
     public void formula1() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=(3+2+'x')*(5-'y')/'z'"));
         assertThat(exp.getExpression().getName(), equalTo("((((3 + 2) + x) * (5 - y)) / z)"));
-        exp.writeValue("x", ValueFactory.newVDouble(3.0));
-        exp.writeValue("y", ValueFactory.newVDouble(2.0));
-        exp.writeValue("z", ValueFactory.newVDouble(4.0));
+        exp.writeValue("x", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
+        exp.writeValue("y", VDouble.of(2.0, Alarm.none(), Time.now(), Display.none()));
+        exp.writeValue("z", VDouble.of(4.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(6.0));
     }
@@ -49,7 +52,7 @@ public class ExpressionLanguageTest {
     public void formula2() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='x' + 2"));
         assertThat(exp.getExpression().getName(), equalTo("(x + 2)"));
-        exp.writeValue("x", ValueFactory.newVDouble(3.0));
+        exp.writeValue("x", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(5.0));
     }
@@ -58,7 +61,7 @@ public class ExpressionLanguageTest {
     public void formula3() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("mypv.FIELD"));
         assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD"));
-        exp.writeValue("mypv.FIELD", ValueFactory.newVDouble(3.0));
+        exp.writeValue("mypv.FIELD", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -67,7 +70,7 @@ public class ExpressionLanguageTest {
     public void formula4() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("mypv.FIELD$"));
         assertThat(exp.getExpression().getName(), equalTo("mypv.FIELD$"));
-        exp.writeValue("mypv.FIELD$", ValueFactory.newVDouble(3.0));
+        exp.writeValue("mypv.FIELD$", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -76,7 +79,7 @@ public class ExpressionLanguageTest {
     public void formula5() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='loc://test(0)'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test(0)"));
-        exp.writeValue("loc://test(0)", ValueFactory.newVDouble(3.0));
+        exp.writeValue("loc://test(0)", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -85,7 +88,7 @@ public class ExpressionLanguageTest {
     public void formula6() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='loc://test(0)'+3"));
         assertThat(exp.getExpression().getName(), equalTo("(loc://test(0) + 3)"));
-        exp.writeValue("loc://test(0)", ValueFactory.newVDouble(3.0));
+        exp.writeValue("loc://test(0)", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(6.0));
     }
@@ -94,7 +97,7 @@ public class ExpressionLanguageTest {
     public void formula7() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='loc://test(0, 1, 2, 3)'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test(0, 1, 2, 3)"));
-        exp.writeValue("loc://test(0, 1, 2, 3)", ValueFactory.newVDouble(3.0));
+        exp.writeValue("loc://test(0, 1, 2, 3)", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -103,7 +106,7 @@ public class ExpressionLanguageTest {
     public void formula8() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='loc://test(\"0\", \"1\", \"2\", \"3\")'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test(\"0\", \"1\", \"2\", \"3\")"));
-        exp.writeValue("loc://test(\"0\", \"1\", \"2\", \"3\")", ValueFactory.newVDouble(3.0));
+        exp.writeValue("loc://test(\"0\", \"1\", \"2\", \"3\")", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -120,7 +123,7 @@ public class ExpressionLanguageTest {
     public void formula10() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='300abc'"));
         assertThat(exp.getExpression().getName(), equalTo("300abc"));
-        exp.writeValue("300abc", ValueFactory.newVDouble(3.0));
+        exp.writeValue("300abc", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -145,7 +148,7 @@ public class ExpressionLanguageTest {
     public void formula13() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=log('sim://test()')"));
         assertThat(exp.getExpression().getName(), equalTo("log(sim://test())"));
-        exp.writeValue("sim://test()", ValueFactory.newVDouble(1.0));
+        exp.writeValue("sim://test()", VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(0.0));
     }
@@ -186,7 +189,7 @@ public class ExpressionLanguageTest {
     public void formula18() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='sim://const(\"Hello!\")'"));
         assertThat(exp.getExpression().getName(), equalTo("sim://const(\"Hello!\")"));
-        exp.writeValue("sim://const(\"Hello!\")", ValueFactory.newVDouble(1.0));
+        exp.writeValue("sim://const(\"Hello!\")", VDouble.of(1.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(1.0));
     }
@@ -195,7 +198,7 @@ public class ExpressionLanguageTest {
     public void formula19() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='loc://test'"));
         assertThat(exp.getExpression().getName(), equalTo("loc://test"));
-        exp.writeValue("loc://test", ValueFactory.newVDouble(3.0));
+        exp.writeValue("loc://test", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -204,7 +207,7 @@ public class ExpressionLanguageTest {
     public void formula20() throws RecognitionException {
         ReadExpressionTester exp = new ReadExpressionTester(formula("='escaped\\\"pv\\\"'"));
         assertThat(exp.getExpression().getName(), equalTo("escaped\"pv\""));
-        exp.writeValue("escaped\"pv\"", ValueFactory.newVDouble(3.0));
+        exp.writeValue("escaped\"pv\"", VDouble.of(3.0, Alarm.none(), Time.now(), Display.none()));
         VDouble result = (VDouble) exp.getFunction().readValue();
         assertThat(result.getValue(), equalTo(3.0));
     }
@@ -374,7 +377,7 @@ public class ExpressionLanguageTest {
         ReadExpressionTester exp = new ReadExpressionTester(formula("=arrayOf(1,2,3)"));
         assertThat(exp.getExpression().getName(), equalTo("arrayOf(1, 2, 3)"));
         VNumberArray result = (VNumberArray) exp.getFunction().readValue();
-        assertThat(result.getData(), equalTo((ListNumber) new ArrayDouble(1,2,3)));
+        assertThat(result.getData(), equalTo((ListNumber) ArrayDouble.of(1,2,3)));
     }
 
     @Test

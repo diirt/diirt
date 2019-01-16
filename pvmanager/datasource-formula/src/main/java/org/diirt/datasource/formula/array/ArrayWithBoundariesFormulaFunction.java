@@ -7,12 +7,12 @@ package org.diirt.datasource.formula.array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.ArrayDimensionDisplay;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VNumberArray;
 import org.diirt.vtype.table.ListNumberProvider;
+import org.diirt.vtype.util.ArrayDimensionDisplay;
 
 /**
  * Formula function that constructs an array with given data and boundaries.
@@ -67,14 +67,7 @@ class ArrayWithBoundariesFormulaFunction implements FormulaFunction {
             throw new IllegalArgumentException("Dimension of the array must match the number of ListNumberProvider");
         }
 
-        List<ArrayDimensionDisplay> dimDisplay = new ArrayList<>();
-        for (int i = 1; i < args.size(); i++) {
-            ListNumberProvider numberGenerator = (ListNumberProvider) args.get(i);
-            dimDisplay.add(ValueFactory.newDisplay(numberGenerator.createListNumber(array.getSizes().getInt(i-1) + 1), ""));
-        }
-
-
-        return ValueFactory.newVNumberArray(array.getData(), array.getSizes(), dimDisplay, array, array, array);
+        return VNumberArray.of(array.getData(), array.getSizes(), array.getAlarm(), array.getTime(), array.getDisplay());
     }
 
 }

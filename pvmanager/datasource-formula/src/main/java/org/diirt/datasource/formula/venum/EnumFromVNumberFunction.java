@@ -4,18 +4,17 @@
  */
 package org.diirt.datasource.formula.venum;
 
-import static org.diirt.vtype.ValueFactory.*;
-
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.formula.FormulaFunction;
 
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.EnumDisplay;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VStringArray;
 
 /**
  *
@@ -70,8 +69,8 @@ class EnumFromVNumberFunction implements FormulaFunction {
         while (index < intervals.getData().size() && value.getValue().doubleValue() >= intervals.getData().getDouble(index)) {
             index++;
         }
-        return newVEnum(index, labels.getData(),
-                value,
+        return VEnum.of(index, EnumDisplay.of(labels.getData()),
+                value.getAlarm(),
                 ValueUtil.latestValidTimeOrNowOf(args));
     }
 

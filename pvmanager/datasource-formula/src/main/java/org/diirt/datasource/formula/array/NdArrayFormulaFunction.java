@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.ArrayDimensionDisplay;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueFactory;
+import org.diirt.vtype.util.ArrayDimensionDisplay;
+import org.epics.vtype.VNumberArray;
+
 
 /**
  *
@@ -65,7 +65,9 @@ class NdArrayFormulaFunction implements FormulaFunction {
             displays[i] = (ArrayDimensionDisplay) args.get(i + 1);
         }
 
-        return ValueFactory.ndArray(data, displays);
+        // TODO
+        //return ValueFactory.ndArray(data, displays);
+        return null;
     }
 
 }

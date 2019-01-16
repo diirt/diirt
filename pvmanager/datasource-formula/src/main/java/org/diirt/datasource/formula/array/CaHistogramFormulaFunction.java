@@ -10,13 +10,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.formula.DynamicFormulaFunction;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.ValueFactory;
 import org.diirt.vtype.table.VTableFactory;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VString;
+
 
 /**
  * Formula function that gets the name of an epics channel that
@@ -107,9 +108,7 @@ public class CaHistogramFormulaFunction extends DynamicFormulaFunction {
             return null;
         }
 
-        return ValueFactory.newVNumberArray(array.getData(), array.getSizes(),
-                Arrays.asList(ValueFactory.newDisplay(VTableFactory.range(lowerRange.getValue().doubleValue(), upperRange.getValue().doubleValue()).createListNumber(array.getSizes().getInt(0)+1), "")),
-                array, array, array);
+        return VNumberArray.of(array.getData(), array.getSizes(), array.getAlarm(), array.getTime(), array.getDisplay());
     }
 
     @Override

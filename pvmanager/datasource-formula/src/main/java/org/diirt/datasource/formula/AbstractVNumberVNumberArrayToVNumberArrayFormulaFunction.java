@@ -4,17 +4,15 @@
  */
 package org.diirt.datasource.formula;
 
-import static org.diirt.vtype.ValueFactory.displayNone;
-
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.util.NullUtils;
 
-import org.diirt.util.array.ListNumber;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import static org.diirt.vtype.ValueFactory.newVNumberArray;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.datasource.util.NullUtils;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  * Abstract class for formula functions that take a {@link VNumberArray} and a
@@ -116,11 +114,11 @@ public abstract class AbstractVNumberVNumberArrayToVNumberArrayFormulaFunction i
         VNumber arg1 = (VNumber) args.get(0);
         VNumberArray arg2 = (VNumberArray) args.get(1);
 
-        return newVNumberArray(
+        return VNumberArray.of(
                 calculate(arg1.getValue().doubleValue(), arg2.getData()),
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args),
-                displayNone());
+                Display.none());
     }
 
     /**

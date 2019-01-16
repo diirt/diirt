@@ -7,7 +7,7 @@ package org.diirt.datasource.formula.vnumber;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.vtype.VBoolean;
+import org.epics.vtype.VBoolean;
 
 
 /**

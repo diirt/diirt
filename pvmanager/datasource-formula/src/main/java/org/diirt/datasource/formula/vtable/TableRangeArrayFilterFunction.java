@@ -4,15 +4,20 @@
  */
 package org.diirt.datasource.formula.vtable;
 
-import org.diirt.vtype.ValueFactory;
+
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VTable;
 import org.diirt.vtype.table.VTableFactory;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VTable;
+
 
 /**
  * Selects the rows of the table for which the column value is within the range.
@@ -70,7 +75,9 @@ class TableRangeArrayFilterFunction implements FormulaFunction {
             throw new IllegalArgumentException("Range array must be of 2 elements");
         }
 
-        VTable result = VTableFactory.tableRangeFilter(table, columnName.getValue(), ValueFactory.newVDouble(range.getData().getDouble(0)), ValueFactory.newVDouble(range.getData().getDouble(1)));
+        VTable result = VTableFactory.tableRangeFilter(table, columnName.getValue(),
+                VDouble.of(range.getData().getDouble(0), Alarm.none(), Time.now(), Display.none()),
+                VDouble.of(range.getData().getDouble(1), Alarm.none(), Time.now(), Display.none()));
 
         return result;
     }

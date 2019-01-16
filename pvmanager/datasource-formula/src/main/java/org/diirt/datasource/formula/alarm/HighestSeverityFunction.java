@@ -4,16 +4,16 @@
  */
 package org.diirt.datasource.formula.alarm;
 
-import org.diirt.vtype.ValueFactory;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.EnumDisplay;
+import org.epics.vtype.Time;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VType;
 
 /**
  * Retrieves the highest alarm from the values.
@@ -60,12 +60,12 @@ class HighestSeverityFunction implements FormulaFunction {
     @Override
     public Object calculate(final List<Object> args) {
         Alarm alarm = ValueUtil.highestSeverityOf(args, true);
-        Time time = ValueUtil.timeOf(alarm);
+        Time time = Time.timeOf(alarm);
         if (time == null) {
-            time = ValueFactory.timeNow();
+            time = Time.now();
         }
 
-        return ValueFactory.newVEnum(alarm.getAlarmSeverity().ordinal(), AlarmSeverity.labels(), alarm, time);
+        return VEnum.of(alarm.getSeverity().ordinal(), EnumDisplay.of(AlarmSeverity.labels()), alarm, time);
     }
 
 }

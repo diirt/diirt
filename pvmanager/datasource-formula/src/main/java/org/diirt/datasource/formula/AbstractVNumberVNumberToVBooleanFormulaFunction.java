@@ -7,10 +7,9 @@ package org.diirt.datasource.formula;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VBoolean;
+import org.epics.vtype.VNumber;
+import org.diirt.vtype.util.ValueUtil;
 
 
 /**
@@ -108,7 +107,7 @@ public abstract class AbstractVNumberVNumberToVBooleanFormulaFunction implements
         VNumber arg1 = (VNumber) args.get(0);
         VNumber arg2 = (VNumber) args.get(1);
 
-        return ValueFactory.newVBoolean(
+        return VBoolean.of(
                 calculate(arg1.getValue().doubleValue(), arg2.getValue().doubleValue()),
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args));

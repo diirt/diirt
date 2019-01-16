@@ -4,17 +4,16 @@
  */
 package org.diirt.datasource.formula.alarm;
 
-import static org.diirt.vtype.ValueFactory.*;
-
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.formula.FormulaFunction;
 
+import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.EnumDisplay;
+import org.epics.vtype.VEnum;
 
 /**
  * Extract the alarm of a value as a VEnum.
@@ -64,8 +63,8 @@ class AlarmOfFunction implements FormulaFunction {
             return null;
         }
         Object arg = args.get(0);
-        Alarm alarm = ValueUtil.alarmOf(arg);
-        return newVEnum(alarm.getAlarmSeverity().ordinal(), AlarmSeverity.labels(),
+        Alarm alarm = Alarm.alarmOf(arg);
+        return VEnum.of(alarm.getSeverity().ordinal(), EnumDisplay.of(AlarmSeverity.labels()),
                 alarm,
                 ValueUtil.latestValidTimeOrNowOf(args));
     }

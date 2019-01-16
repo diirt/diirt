@@ -4,18 +4,16 @@
  */
 package org.diirt.datasource.formula.array;
 
-import static org.diirt.vtype.ValueFactory.displayNone;
-import static org.diirt.vtype.ValueFactory.newVNumberArray;
-
 import java.util.Arrays;
 import java.util.List;
+
 import org.diirt.datasource.formula.FormulaFunction;
 import org.diirt.datasource.util.NullUtils;
-
-import org.diirt.util.array.ListMath;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.util.array.ListMath;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  * @author shroffk
@@ -69,10 +67,10 @@ class RescaleArrayFormulaFunction implements FormulaFunction {
         VNumber arg2 = (VNumber) args.get(1);
         VNumber arg3 = (VNumber) args.get(2);
 
-        return newVNumberArray(
+        return VNumberArray.of(
                 ListMath.rescale(arg1.getData(), arg2.getValue().doubleValue(), arg3.getValue().doubleValue()),
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args),
-                displayNone());
+                Display.none());
     }
 }

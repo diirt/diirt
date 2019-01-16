@@ -7,8 +7,8 @@ package org.diirt.datasource.formula.vnumber;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VBoolean;
+
 
 
 /**
@@ -67,7 +67,7 @@ class LogicalNotFormulaFunction implements FormulaFunction {
         if (value == null) {
             return null;
         }
-        return ValueFactory.newVBoolean(!value.getValue(), value, value);
+        return VBoolean.of(!value.getValue(), value.getAlarm(), value.getTime());
     }
 
 }

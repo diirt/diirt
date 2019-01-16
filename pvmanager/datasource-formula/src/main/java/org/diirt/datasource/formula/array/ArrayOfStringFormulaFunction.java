@@ -7,12 +7,11 @@ package org.diirt.datasource.formula.array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.datasource.formula.FormulaFunction;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.datasource.formula.FormulaFunction;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
 
 /**
  * @author shroffk
@@ -67,7 +66,7 @@ class ArrayOfStringFormulaFunction implements FormulaFunction {
                 data.add(str.getValue());
         }
 
-        return ValueFactory.newVStringArray(data,
+        return VStringArray.of(data,
                 ValueUtil.highestSeverityOf(args, false),
                 ValueUtil.latestValidTimeOrNowOf(args));
     }
