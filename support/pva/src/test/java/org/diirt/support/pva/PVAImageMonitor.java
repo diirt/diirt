@@ -19,10 +19,11 @@ import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
 import org.diirt.datasource.PVReaderListener;
-import org.diirt.util.array.ListNumber;
 
 import static org.diirt.util.time.TimeDuration.ofHertz;
-import org.diirt.vtype.VImage;
+
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.VImage;
 
 public class PVAImageMonitor {
 

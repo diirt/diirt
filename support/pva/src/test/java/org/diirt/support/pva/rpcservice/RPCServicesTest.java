@@ -16,9 +16,9 @@ import org.diirt.datasource.WriteCache;
 import org.diirt.service.Service;
 import org.diirt.service.ServiceMethod;
 import org.diirt.support.pva.rpcservice.rpcclient.PooledRPCClientFactory;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ArrayFloat;
-import org.diirt.vtype.*;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayFloat;
+import org.epics.vtype.*;
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvaccess.server.rpc.RPCServer;
@@ -140,8 +140,8 @@ public class RPCServicesTest implements Runnable {
         InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
         Service service = RPCServices.createFromXml(stream);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("string", ValueFactory.newVString("thedude", null, null));
-        parameters.put("times", ValueFactory.newVInt(3, null, null, null));
+        parameters.put("string", VString.of("thedude", null, null));
+        parameters.put("times", VInt.of(3, null, null, null));
         ServiceMethod serviceMethod = service.getServiceMethods().get("multipyString");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);
@@ -154,8 +154,8 @@ public class RPCServicesTest implements Runnable {
         InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
         Service service = RPCServices.createFromXml(stream);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("a", ValueFactory.newVString("hello ", null, null));
-        parameters.put("b", ValueFactory.newVString("world", null, null));
+        parameters.put("a", VString.of("hello ", null, null));
+        parameters.put("b", VString.of("world", null, null));
         ServiceMethod serviceMethod = service.getServiceMethods().get("concate");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);
@@ -168,8 +168,8 @@ public class RPCServicesTest implements Runnable {
         InputStream stream = getClass().getResourceAsStream("RPCSumService.xml");
         Service service = RPCServices.createFromXml(stream);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("a", ValueFactory.newVDouble(10.0));
-        parameters.put("b", ValueFactory.newVDouble(20.0));
+        parameters.put("a", VDouble.of(10.0, Alarm.none(), Time.now(), Display.none()));
+        parameters.put("b", VDouble.of(20.0, Alarm.none(), Time.now(), Display.none()));
         ServiceMethod serviceMethod = service.getServiceMethods().get("sum");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);
@@ -185,8 +185,8 @@ public class RPCServicesTest implements Runnable {
      Map<String, Object> parameters = new HashMap<>();
      WriteCache<Map<String, Object>> cache = new WriteCache<>();
      WriteCache<Exception> exceptionCache = new WriteCache<>();
-     parameters.put("a", ValueFactory.newVFloat(10.0f));
-     parameters.put("b", ValueFactory.newVFloat(20.0f));
+     parameters.put("a", VFloat(10.0f));
+     parameters.put("b", VFloat(20.0f));
      ServiceMethod serviceMethod = service.getServiceMethods().get("sumFloatAlias");
      assertNotNull("serviceMethod is null", serviceMethod);
      serviceMethod.execute(parameters, cache, exceptionCache);
@@ -202,9 +202,9 @@ public class RPCServicesTest implements Runnable {
         InputStream stream = getClass().getResourceAsStream("RPCSumServiceFloatArray.xml");
         Service service = RPCServices.createFromXml(stream);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("a", ValueFactory.newVFloatArray(new ArrayFloat(new float[]{10.0f, 20.0f, 30.0f}),
-                ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone()));
-        parameters.put("b", ValueFactory.newVInt(1, null, null, null));
+        parameters.put("a", VFloatArray.of(ArrayFloat.of(new float[]{10.0f, 20.0f, 30.0f}),
+                Alarm.none(), Time.now(), Display.none()));
+        parameters.put("b", VInt.of(1, null, null, null));
         ServiceMethod serviceMethod = service.getServiceMethods().get("addToFloatArray");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);
@@ -220,8 +220,8 @@ public class RPCServicesTest implements Runnable {
         InputStream stream = getClass().getResourceAsStream("RPCSumServiceBoolean.xml");
         Service service = RPCServices.createFromXml(stream);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("a", ValueFactory.newVBoolean(true, ValueFactory.alarmNone(), ValueFactory.timeNow()));
-        parameters.put("b", ValueFactory.newVBoolean(true, ValueFactory.alarmNone(), ValueFactory.timeNow()));
+        parameters.put("a", VBoolean.of(true, Alarm.none(), Time.now()));
+        parameters.put("b", VBoolean.of(true, Alarm.none(), Time.now()));
         ServiceMethod serviceMethod = service.getServiceMethods().get("andOperation");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);
@@ -237,8 +237,8 @@ public class RPCServicesTest implements Runnable {
      Map<String, Object> parameters = new HashMap<>();
      WriteCache<Map<String, Object>> cache = new WriteCache<>();
      WriteCache<Exception> exceptionCache = new WriteCache<>();
-     parameters.put("a_alias", ValueFactory.newVFloat(10.0f));
-     parameters.put("b_alias", ValueFactory.newVFloat(20.0f));
+     parameters.put("a_alias", VFloat(10.0f));
+     parameters.put("b_alias", VFloat(20.0f));
      ServiceMethod serviceMethod = service.getServiceMethods().get("sumFloat");
      assertNotNull("serviceMethod is null", serviceMethod);
      serviceMethod.execute(parameters, cache, exceptionCache);
@@ -256,8 +256,8 @@ public class RPCServicesTest implements Runnable {
      Map<String, Object> parameters = new HashMap<>();
      WriteCache<Map<String, Object>> cache = new WriteCache<>();
      WriteCache<Exception> exceptionCache = new WriteCache<>();
-     parameters.put("a_alias", ValueFactory.newVFloat(10.0f));
-     parameters.put("b_alias", ValueFactory.newVFloat(20.0f));
+     parameters.put("a_alias", VFloat(10.0f));
+     parameters.put("b_alias", VFloat(20.0f));
      ServiceMethod serviceMethod = service.getServiceMethods().get("sumFloatWithAlias");
      assertNotNull("serviceMethod is null", serviceMethod);
      serviceMethod.execute(parameters, cache, exceptionCache);
@@ -275,8 +275,8 @@ public class RPCServicesTest implements Runnable {
      Map<String, Object> parameters = new HashMap<>();
      WriteCache<Map<String, Object>> cache = new WriteCache<>();
      WriteCache<Exception> exceptionCache = new WriteCache<>();
-     parameters.put("a", ValueFactory.newVFloat(10.0f));
-     parameters.put("b", ValueFactory.newVFloat(20.0f));
+     parameters.put("a", VFloat(10.0f));
+     parameters.put("b", VFloat(20.0f));
      ServiceMethod serviceMethod = service.getServiceMethods().get("isGreaterThen");
      assertNotNull("serviceMethod is null", serviceMethod);
      serviceMethod.execute(parameters, cache, exceptionCache);
@@ -349,7 +349,7 @@ public class RPCServicesTest implements Runnable {
         InputStream stream = getClass().getResourceAsStream("RPCSumServiceNTNameValueResult.xml");
         Service service = RPCServices.createFromXml(stream);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("arrType", ValueFactory.newVString(arrType, null, null));
+        parameters.put("arrType", VString.of(arrType, null, null));
         ServiceMethod serviceMethod = service.getServiceMethods().get("createNTNameValue");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);
@@ -559,8 +559,8 @@ public class RPCServicesTest implements Runnable {
         Map<String, Object> parameters = new HashMap<>();
         WriteCache<Map<String, Object>> cache = new WriteCache<>();
         WriteCache<Exception> exceptionCache = new WriteCache<>();
-        parameters.put("a", ValueFactory.newVString("10.0", null, null));
-        parameters.put("b", ValueFactory.newVDouble(20.0));
+        parameters.put("a", VString.of("10.0", null, null));
+        parameters.put("b", VDouble.of(20.0, Alarm.none(), Time.now(), Display.none()));
         ServiceMethod serviceMethod = service.getServiceMethods().get("sum");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);
@@ -579,8 +579,8 @@ public class RPCServicesTest implements Runnable {
         Map<String, Object> parameters = new HashMap<>();
         WriteCache<Map<String, Object>> cache = new WriteCache<>();
         WriteCache<Exception> exceptionCache = new WriteCache<>();
-        parameters.put("a", ValueFactory.newVDouble(10.0));
-        parameters.put("b", ValueFactory.newVDouble(20.0));
+        parameters.put("a", VDouble.of(10.0, Alarm.none(), Time.now(), Display.none()));
+        parameters.put("b", VDouble.of(20.0, Alarm.none(), Time.now(), Display.none()));
         ServiceMethod serviceMethod = service.getServiceMethods().get("sum");
         assertNotNull("serviceMethod is null", serviceMethod);
         Map<String, Object> result = serviceMethod.executeSync(parameters);

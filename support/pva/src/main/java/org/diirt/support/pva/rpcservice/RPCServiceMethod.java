@@ -11,47 +11,42 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.diirt.service.ServiceMethod;
-import org.diirt.support.pva.adapters.NTUtils;
-import org.diirt.support.pva.adapters.PVFieldNTMatrixToVDoubleArray;
-import org.diirt.support.pva.adapters.PVFieldNTNameValueToVTable;
-import org.diirt.support.pva.adapters.PVFieldToVBooleanArray;
-import org.diirt.support.pva.adapters.PVFieldToVByteArray;
-import org.diirt.support.pva.adapters.PVFieldToVDoubleArray;
-import org.diirt.support.pva.adapters.PVFieldToVFloatArray;
-import org.diirt.support.pva.adapters.PVFieldToVIntArray;
-import org.diirt.support.pva.adapters.PVFieldToVShortArray;
-import org.diirt.support.pva.adapters.PVFieldToVStatistics;
-import org.diirt.support.pva.adapters.PVFieldToVStringArray;
-import org.diirt.support.pva.adapters.PVFieldToVTable;
+import org.diirt.support.pva.NTUtils;
+import org.diirt.support.pva.PVAToVTypes;
 import org.diirt.support.pva.rpcservice.rpcclient.PooledRPCClientFactory;
-import org.diirt.util.array.CollectionNumbers;
-import org.diirt.util.array.ListBoolean;
-import org.diirt.util.array.ListByte;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListFloat;
-import org.diirt.util.array.ListInt;
-import org.diirt.util.array.ListLong;
-import org.diirt.util.array.ListShort;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VBooleanArray;
-import org.diirt.vtype.VByte;
-import org.diirt.vtype.VByteArray;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VFloat;
-import org.diirt.vtype.VFloatArray;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VLong;
-import org.diirt.vtype.VLongArray;
-import org.diirt.vtype.VShort;
-import org.diirt.vtype.VShortArray;
-import org.diirt.vtype.VStatistics;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueFactory;
+import org.epics.util.array.ArrayFloat;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListBoolean;
+import org.epics.util.array.ListByte;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListFloat;
+import org.epics.util.array.ListInteger;
+import org.epics.util.array.ListInteger;
+import org.epics.util.array.ListLong;
+import org.epics.util.array.ListShort;
+import org.epics.util.array.UnsafeUnwrapper;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
+import org.epics.vtype.VByte;
+import org.epics.vtype.VByteArray;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VFloat;
+import org.epics.vtype.VFloatArray;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VLong;
+import org.epics.vtype.VLongArray;
+import org.epics.vtype.VShort;
+import org.epics.vtype.VShortArray;
+import org.epics.vtype.VStatistics;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
+
 import org.epics.pvaccess.client.rpc.RPCClient;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvdata.factory.ConvertFactory;
@@ -60,13 +55,16 @@ import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.Convert;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.FieldCreate;
+import org.epics.pvdata.pv.FloatArrayData;
 import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVFloatArray;
 import org.epics.pvdata.pv.PVScalar;
 import org.epics.pvdata.pv.PVScalarArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.Structure;
 
+import static org.diirt.support.pva.PVAToVTypes.*;
 /**
  * The implementation of a pvAccess RPC rpcservice method.
  *
@@ -274,41 +272,42 @@ class RPCServiceMethod extends ServiceMethod {
                 PVScalarArray pvScalarArray = (PVScalarArray) pvField;
                 if (value instanceof VDoubleArray) {
                     ListDouble list = ((VDoubleArray) value).getData();
-                    double[] arr = CollectionNumbers.doubleArrayWrappedOrCopy(list);
+                    double[] arr = UnsafeUnwrapper.wrappedDoubleArray(list).array;
                     convert.fromDoubleArray(pvScalarArray, 0, arr.length, arr, 0);
                 } else if (value instanceof VIntArray) {
-                    ListInt list = ((VIntArray) value).getData();
-                    int[] arr = CollectionNumbers.intArrayWrappedOrCopy(list);
+                    ListInteger list = ((VIntArray) value).getData();
+                    int[] arr = UnsafeUnwrapper.wrappedIntArray(list).array;
                     convert.fromIntArray(pvScalarArray, 0, arr.length, arr, 0);
                 } else if (value instanceof VFloatArray) {
                     ListFloat list = ((VFloatArray) value).getData();
-                    float[] arr = CollectionNumbers.floatArrayWrappedOrCopy(list);
+                    float[] arr = UnsafeUnwrapper.wrappedFloatArray(list).array;
                     convert.fromFloatArray(pvScalarArray, 0, arr.length, arr, 0);
                 } else if (value instanceof VLongArray) {
                     ListLong list = ((VLongArray) value).getData();
-                    long[] arr = CollectionNumbers.longArrayWrappedOrCopy(list);
+                    long[] arr = UnsafeUnwrapper.wrappedLongArray(list).array;
                     convert.fromLongArray(pvScalarArray, 0, arr.length, arr, 0);
                 } else if (value instanceof VShortArray) {
                     ListShort list = ((VShortArray) value).getData();
-                    short[] arr = CollectionNumbers.shortArrayWrappedOrCopy(list);
+                    short[] arr = UnsafeUnwrapper.wrappedShortArray(list).array;
                     convert.fromShortArray(pvScalarArray, 0, arr.length, arr, 0);
                 } else if (value instanceof VByteArray) {
                     ListByte list = ((VByteArray) value).getData();
-                    byte[] arr = CollectionNumbers.byteArrayWrappedOrCopy(list);
+                    byte[] arr = UnsafeUnwrapper.wrappedByteArray(list).array;
                     convert.fromByteArray(pvScalarArray, 0, arr.length, arr, 0);
                 } else if (value instanceof VStringArray) {
                     List<String> list = ((VStringArray) value).getData();
                     String[] arr = list.toArray(new String[list.size()]);
                     convert.fromStringArray(pvScalarArray, 0, arr.length, arr, 0);
-                } else if (value instanceof VBooleanArray) {
-                    ListBoolean list = ((VBooleanArray) value).getData();
-                    int len = list.size();
-                    byte[] arr = new byte[len];
-                    for (int i = 0; i < len; i++) {
-                        arr[i] = list.getBoolean(i) ? (byte) 1 : (byte) 0;
-                    }
-                    convert.fromByteArray(pvScalarArray, 0, len, arr, 0);
                 }
+//                else if (value instanceof VBooleanArray) {
+//                    ListBoolean list = ((VBooleanArray) value).getData();
+//                    int len = list.size();
+//                    byte[] arr = new byte[len];
+//                    for (int i = 0; i < len; i++) {
+//                        arr[i] = list.getBoolean(i) ? (byte) 1 : (byte) 0;
+//                    }
+//                    convert.fromByteArray(pvScalarArray, 0, len, arr, 0);
+//                }
             } else {
                 // TODO complex types (do we need to support them?)
                 throw new RuntimeException("pvAccess RPC Service mapping support for " + value.getClass().getSimpleName() + " not implemented");
@@ -329,79 +328,77 @@ class RPCServiceMethod extends ServiceMethod {
 
         Class<?> resultType = getResults().get(0).getType();
 
-        if (isResultStandalone) {
-            if (resultType.isAssignableFrom(VTable.class)) {
-
-                if ("ev4:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID())) {
-                    return new PVFieldNTNameValueToVTable(pvResult, false);
-                } else {
-                    return new PVFieldToVTable(pvResult, false);
-                }
-
-                // TODO !!!
-                //} else if (resultType.isAssignableFrom(VImage.class)) {
-                //  return new PVFieldToVImage(pvResult, false);
-            } else if (resultType.isAssignableFrom(VStatistics.class)) {
-                return new PVFieldToVStatistics(pvResult, false);
-            } else if (resultType.isAssignableFrom(VDoubleArray.class)
-                    && "ev4:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID())) {
-                return new PVFieldNTMatrixToVDoubleArray(pvResult, false);
-            }
-
-            throw new IllegalArgumentException("Standalone result type " + resultType.getSimpleName() + " not supported in pvAccess RPC rpcservice");
-        }
+//        if (isResultStandalone) {
+//            if (resultType.isAssignableFrom(VTable.class)) {
+//
+//                if ("ev4:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID())) {
+//                    return new PVFieldNTNameValueToVTable(pvResult, false);
+//                } else {
+//                    return new PVFieldToVTable(pvResult, false);
+//                }
+//
+//                // TODO !!!
+//                // } else if (resultType.isAssignableFrom(VImage.class)) {
+//                // return new PVFieldToVImage(pvResult, false);
+//            } else if (resultType.isAssignableFrom(VStatistics.class)) {
+//                return new PVFieldToVStatistics(pvResult, false);
+//            } else if (resultType.isAssignableFrom(VDoubleArray.class)
+//                    && "ev4:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID())) {
+//                return new PVFieldNTMatrixToVDoubleArray(pvResult, false);
+//            }
+//
+//            throw new IllegalArgumentException("Standalone result type " + resultType.getSimpleName()
+//                    + " not supported in pvAccess RPC rpcservice");
+//        }
 
         // TODO unsigned types, complex types
         String resultName = getResults().get(0).getName();
         String fieldName = fieldNames.get(resultName);
 
         if (resultType.isAssignableFrom(VDouble.class)) {
-            return ValueFactory.newVDouble(pvResult.getDoubleField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+            return VDouble.of(pvResult.getDoubleField(fieldName != null ? fieldName : resultName).get(),
+                    Alarm.none(), Time.now(), Display.none());
         } else if (resultType.isAssignableFrom(VFloat.class)) {
-            return ValueFactory.newVFloat(pvResult.getFloatField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+            return VFloat.of(pvResult.getFloatField(fieldName != null ? fieldName : resultName).get(), Alarm.none(), Time.now(), Display.none());
         } else if (resultType.isAssignableFrom(VString.class)) {
-            return ValueFactory.newVString(pvResult.getStringField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
+            return VString.of(pvResult.getStringField(fieldName != null ? fieldName : resultName).get(), Alarm.none(), Time.now());
         } else if (resultType.isAssignableFrom(VInt.class)) {
-            return ValueFactory.newVInt(pvResult.getIntField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+            return VInt.of(pvResult.getIntField(fieldName != null ? fieldName : resultName).get(), Alarm.none(), Time.now(), Display.none());
         } else if (resultType.isAssignableFrom(VShort.class)) {
-            return ValueFactory.newVShort(pvResult.getShortField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+            return VShort.of(pvResult.getShortField(fieldName != null ? fieldName : resultName).get(), Alarm.none(), Time.now(), Display.none());
         } else if (resultType.isAssignableFrom(VByte.class)) {
-            return ValueFactory.newVByte(pvResult.getByteField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow(), ValueFactory.displayNone());
+            return VByte.of(pvResult.getByteField(fieldName != null ? fieldName : resultName).get(), Alarm.none(), Time.now(), Display.none());
         } else if (resultType.isAssignableFrom(VBoolean.class)) {
-            return ValueFactory.newVBoolean(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), ValueFactory.alarmNone(), ValueFactory.timeNow());
+            return VBoolean.of(pvResult.getBooleanField(fieldName != null ? fieldName : resultName).get(), Alarm.none(), Time.now());
         } else if (resultType.isAssignableFrom(VDoubleArray.class)) {
-
-            if ("epics:nt/NTMatrix:1.0".equals(pvResult.getStructure().getID())) {
-                return new PVFieldNTMatrixToVDoubleArray(pvResult, false);
-            } else {
-                return new PVFieldToVDoubleArray(fieldName != null ? fieldName : resultName, pvResult, true);
-            }
-
+            return vDoubleArrayOf(pvResult.getScalarArrayField(fieldName != null ? fieldName : resultName, ScalarType.pvDouble), pvResult, true);
         } else if (resultType.isAssignableFrom(VFloatArray.class)) {
-            return new PVFieldToVFloatArray(fieldName != null ? fieldName : resultName, pvResult, true);
+            return vFloatArrayOf(pvResult.getScalarArrayField(fieldName != null ? fieldName : resultName, ScalarType.pvFloat), pvResult, true);
         } else if (resultType.isAssignableFrom(VIntArray.class)) {
-            return new PVFieldToVIntArray(fieldName != null ? fieldName : resultName, pvResult, true);
+            return vIntArrayOf(pvResult.getScalarArrayField(fieldName != null ? fieldName : resultName, ScalarType.pvInt), pvResult, true);
         } else if (resultType.isAssignableFrom(VShortArray.class)) {
-            return new PVFieldToVShortArray(fieldName != null ? fieldName : resultName, pvResult, true);
+            return vShortArrayOf(pvResult.getScalarArrayField(fieldName != null ? fieldName : resultName, ScalarType.pvShort), pvResult, true);
         } else if (resultType.isAssignableFrom(VByteArray.class)) {
-            return new PVFieldToVByteArray(fieldName != null ? fieldName : resultName, pvResult, true);
-        } else if (resultType.isAssignableFrom(VStringArray.class)) {
-            return new PVFieldToVStringArray(fieldName != null ? fieldName : resultName, pvResult, true);
-        } else if (resultType.isAssignableFrom(VBooleanArray.class)) {
-        return new PVFieldToVBooleanArray(fieldName != null ? fieldName : resultName, pvResult, true);
-        } else if (resultType.isAssignableFrom(VTable.class)) {
-            if ("epics:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID())) {
-                return new PVFieldNTNameValueToVTable(pvResult, false);
-            } else {
-                return new PVFieldToVTable(pvResult, false);
-            }
-            // TODO !!!
-            //} else if (resultType.isAssignableFrom(VImage.class)) {
-            //   return new PVFieldToVImage(pvResult,false);
-        } else if (resultType.isAssignableFrom(VStatistics.class)) {
-            return new PVFieldToVStatistics(pvResult, false);
+            return vByteArrayOf(pvResult.getScalarArrayField(fieldName != null ? fieldName : resultName, ScalarType.pvByte), pvResult, true);
         }
+        // TODO the following type support needs to be updated and added.
 
+//        } else if (resultType.isAssignableFrom(VStringArray.class)) {
+//            return vStringArrayOf(pvResult.getScalarArrayField(fieldName != null ? fieldName : resultName, ScalarType.pvString), pvResult, true);
+//        } else if (resultType.isAssignableFrom(VBooleanArray.class)) {
+//            return new PVFieldToVBooleanArray(fieldName != null ? fieldName : resultName, pvResult, true);
+//        } else if (resultType.isAssignableFrom(VTable.class)) {
+//            if ("epics:nt/NTNameValue:1.0".equals(pvResult.getStructure().getID())) {
+//                return new PVFieldNTNameValueToVTable(pvResult, false);
+//            } else {
+//                return new PVFieldToVTable(pvResult, false);
+//            }
+            // TODO !!!
+            // } else if (resultType.isAssignableFrom(VImage.class)) {
+            // return new PVFieldToVImage(pvResult,false);
+//        } else if (resultType.isAssignableFrom(VStatistics.class)) {
+//            return new PVFieldToVStatistics(pvResult, false);
+//        }
         throw new IllegalArgumentException("Result type " + resultType.getSimpleName() + " not supported in pvAccess RPC rpcservice");
 
     }

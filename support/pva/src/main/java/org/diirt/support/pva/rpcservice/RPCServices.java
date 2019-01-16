@@ -19,7 +19,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.diirt.service.Service;
 import org.diirt.support.pva.rpcservice.rpcclient.PooledRPCClientFactory;
-import org.diirt.vtype.VType;
+import org.epics.vtype.VType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
  */
 public class RPCServices {
 
-    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.diirt.util.concurrent.Executors.namedPool("pvAccess RPC services"));
+    private static ExecutorService defaultExecutor = Executors.newSingleThreadExecutor(org.epics.util.concurrent.Executors.namedPool("pvAccess RPC services"));
 
     /**
      * Creates a pvAccess RPC Service based on the description in the XML file.

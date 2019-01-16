@@ -43,8 +43,9 @@ import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.Status;
 import org.epics.pvdata.pv.StringArrayData;
 import org.epics.pvdata.pv.Structure;
-import org.diirt.util.array.CollectionNumbers;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.UnsafeUnwrapper;
 
 /**
  *
@@ -559,9 +560,9 @@ public class PVAChannelHandler extends
             // if it's a ListNumber, extract the array
             if (newValue instanceof ListNumber) {
                 ListNumber data = (ListNumber) newValue;
-                Object wrappedArray = CollectionNumbers.wrappedArray(data);
+                Object wrappedArray = UnsafeUnwrapper.wrappedArray(data).array;
                 if (wrappedArray == null) {
-                    newValue = CollectionNumbers.doubleArrayCopyOf(data);
+                    newValue = data.toArray(new Double[data.size()]);
                 } else {
                     newValue = wrappedArray;
                 }

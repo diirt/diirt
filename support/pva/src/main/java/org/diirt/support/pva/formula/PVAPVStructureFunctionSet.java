@@ -4,11 +4,19 @@
  */
 package org.diirt.support.pva.formula;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import org.diirt.datasource.formula.FormulaFunction;
+import org.diirt.datasource.formula.FormulaFunctionSet;
+import org.diirt.datasource.formula.FormulaFunctionSetDescription;
+import org.diirt.support.pva.PVAPVField;
+import org.diirt.support.pva.PVAPVStructure;
+import org.diirt.support.pva.PVATypeAdapter;
+import org.diirt.support.pva.PVAVTypeAdapterSet;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.PVBoolean;
 import org.epics.pvdata.pv.PVByte;
@@ -32,51 +40,29 @@ import org.epics.pvdata.pv.ScalarArray;
 import org.epics.pvdata.pv.Structure;
 import org.epics.pvdata.pv.Type;
 import org.epics.pvdata.pv.Union;
-import org.diirt.datasource.formula.FormulaFunction;
-import org.diirt.datasource.formula.FormulaFunctionSet;
-import org.diirt.datasource.formula.FormulaFunctionSetDescription;
-import org.diirt.support.pva.PVATypeAdapter;
-import org.diirt.support.pva.PVAVTypeAdapterSet;
-import org.diirt.support.pva.adapters.PVAPVField;
-import org.diirt.support.pva.adapters.PVAPVStructure;
-import org.diirt.support.pva.adapters.PVFieldToVBoolean;
-import org.diirt.support.pva.adapters.PVFieldToVBooleanArray;
-import org.diirt.support.pva.adapters.PVFieldToVByte;
-import org.diirt.support.pva.adapters.PVFieldToVByteArray;
-import org.diirt.support.pva.adapters.PVFieldToVDouble;
-import org.diirt.support.pva.adapters.PVFieldToVDoubleArray;
-import org.diirt.support.pva.adapters.PVFieldToVFloat;
-import org.diirt.support.pva.adapters.PVFieldToVFloatArray;
-import org.diirt.support.pva.adapters.PVFieldToVInt;
-import org.diirt.support.pva.adapters.PVFieldToVIntArray;
-import org.diirt.support.pva.adapters.PVFieldToVLong;
-import org.diirt.support.pva.adapters.PVFieldToVLongArray;
-import org.diirt.support.pva.adapters.PVFieldToVShort;
-import org.diirt.support.pva.adapters.PVFieldToVShortArray;
-import org.diirt.support.pva.adapters.PVFieldToVString;
-import org.diirt.support.pva.adapters.PVFieldToVStringArray;
-import java.time.Instant;
-import org.diirt.vtype.VBoolean;
-import org.diirt.vtype.VBooleanArray;
-import org.diirt.vtype.VByte;
-import org.diirt.vtype.VByteArray;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VFloat;
-import org.diirt.vtype.VFloatArray;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VLong;
-import org.diirt.vtype.VLongArray;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VShort;
-import org.diirt.vtype.VShortArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
+//import org.epics.vtype.VBooleanArray;
+import org.epics.vtype.VByte;
+import org.epics.vtype.VByteArray;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VFloat;
+import org.epics.vtype.VFloatArray;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VLong;
+import org.epics.vtype.VLongArray;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VShort;
+import org.epics.vtype.VShortArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
 
+import static org.diirt.support.pva.PVAToVTypes.*;
 
 
 /**
@@ -129,7 +115,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
 
             }
 
-            return ValueFactory.newVTable(
+            return VTable.of(
                         types,
                         Arrays.asList(pvStructure.getStructure().getFieldNames()),
                         values);
@@ -310,7 +296,7 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
             PVAPVField value = (PVAPVField) args.get(0);
             String str = (value == null ? "null" : value.toString());
 
-            return ValueFactory.newVString(str, ValueFactory.alarmNone(), ValueFactory.timeNow());
+            return VString.of(str, Alarm.none(), Time.now());
         }
 
         @Override
@@ -372,25 +358,29 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
             switch (pvScalar.getScalar().getScalarType())
             {
             case pvDouble:
-                return new PVFieldToVDouble(pvField, pvMetadataParent, false);
+                return vDoubleOf(pvField, pvMetadataParent, false);
             case pvFloat:
-                return new PVFieldToVFloat(pvField, pvMetadataParent, false);
+                return vFloatOf(pvField, pvMetadataParent, false);
             case pvInt:
+                return vIntOf(pvField, pvMetadataParent, false);
             case pvUInt:
-                return new PVFieldToVInt(pvField, pvMetadataParent, false);
+                return vUIntOf(pvField, pvMetadataParent, false);
             case pvLong:
+                return vLongOf(pvField, pvMetadataParent, false);
             case pvULong:
-                return new PVFieldToVLong(pvField, pvMetadataParent, false);
+                return vULongOf(pvField, pvMetadataParent, false);
             case pvShort:
+                return vShortOf(pvField, pvMetadataParent, false);
             case pvUShort:
-                return new PVFieldToVShort(pvField, pvMetadataParent, false);
+                return vUShortOf(pvField, pvMetadataParent, false);
             case pvByte:
+                return vByteOf(pvField, pvMetadataParent, false);
             case pvUByte:
-                return new PVFieldToVByte(pvField, pvMetadataParent, false);
+                return vUByteOf(pvField, pvMetadataParent, false);
             case pvString:
-                return new PVFieldToVString(pvField, pvMetadataParent, false);
+                return vStringOf(pvField, pvMetadataParent, false);
             case pvBoolean:
-                return new PVFieldToVBoolean(pvField, pvMetadataParent, false);
+                return vFloatOf(pvField, pvMetadataParent, false);
             default:
                 throw new RuntimeException("unsupported scalar type: " + pvScalar.getScalar());
             }
@@ -401,25 +391,29 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
             switch (pvScalarArray.getScalarArray().getElementType())
             {
             case pvDouble:
-                return new PVFieldToVDoubleArray(pvField, pvMetadataParent, false);
+                return vDoubleArrayOf(pvField, pvMetadataParent, false);
             case pvFloat:
-                return new PVFieldToVFloatArray(pvField, pvMetadataParent, false);
+                return vFloatArrayOf(pvField, pvMetadataParent, false);
             case pvInt:
+                return vIntArrayOf(pvField, pvMetadataParent, false);
             case pvUInt:
-                return new PVFieldToVIntArray(pvField, pvMetadataParent, false);
+                return vUIntArrayOf(pvField, pvMetadataParent, false);
             case pvLong:
+                return vLongArrayOf(pvField, pvMetadataParent, false);
             case pvULong:
-                return new PVFieldToVLongArray(pvField, pvMetadataParent, false);
+                return vULongArrayOf(pvField, pvMetadataParent, false);
             case pvShort:
+                return vShortArrayOf(pvField, pvMetadataParent, false);
             case pvUShort:
-                return new PVFieldToVShortArray(pvField, pvMetadataParent, false);
+                return vUShortArrayOf(pvField, pvMetadataParent, false);
             case pvByte:
+                return vByteArrayOf(pvField, pvMetadataParent, false);
             case pvUByte:
-                return new PVFieldToVByteArray(pvField, pvMetadataParent, false);
-            case pvString:
-                return new PVFieldToVStringArray(pvField, pvMetadataParent, false);
-            case pvBoolean:
-                return new PVFieldToVBooleanArray(pvField, pvMetadataParent, false);
+                return vUByteArrayOf(pvField, pvMetadataParent, false);
+//            case pvString:
+//                return vDoubleArrayOf(pvField, pvMetadataParent, false);
+//            case pvBoolean:
+//                return vDoubleArrayOf(pvField, pvMetadataParent, false);
             default:
                 throw new RuntimeException("unsupported scalar array element type: " + pvScalarArray.getScalarArray());
             }
@@ -690,8 +684,8 @@ public class PVAPVStructureFunctionSet extends FormulaFunctionSet {
                 return VByteArray.class;
             case pvString:
                 return VStringArray.class;
-            case pvBoolean:
-                return VBooleanArray.class;
+//            case pvBoolean:
+//                return VBooleanArray.class;
             default:
                 throw new RuntimeException("unsupported scalar array element type: " + scalarArray.getElementType());
             }

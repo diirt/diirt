@@ -9,7 +9,7 @@ import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.Type;
 import org.diirt.datasource.DataSourceTypeSupport;
 import org.diirt.datasource.ValueCache;
-import org.diirt.support.pva.adapters.PVAPVStructure;
+import org.diirt.support.pva.PVAPVStructure;
 
 /**
  *
