@@ -27,7 +27,7 @@ public final class FileDataSource extends DataSource {
         DataTypeSupport.install();
     }
 
-    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.diirt.util.concurrent.Executors.namedPool("diirt - file watch"));
+    private final ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor(org.epics.util.concurrent.Executors.namedPool("diirt - file watch"));
 
     FileDataSource(FileDataSourceConfiguration conf) {
         super(true);

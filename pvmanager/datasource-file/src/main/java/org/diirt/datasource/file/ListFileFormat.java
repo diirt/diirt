@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.diirt.vtype.VType;
+import org.epics.vtype.VType;
 import org.diirt.vtype.io.TextIO;
 
 /**

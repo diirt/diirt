@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter;
 import java.util.Collections;
 import java.util.Set;
 
-import org.diirt.vtype.VTable;
+import org.epics.vtype.VTable;
 import org.diirt.vtype.io.CSVIO;
 
 /**

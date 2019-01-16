@@ -11,8 +11,7 @@ import java.io.OutputStream;
 
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.MultiplexedChannelHandler;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VType;
 
 /**
  * Implementation for channels of a {@link LocalDataSource}.
@@ -94,7 +93,7 @@ class FileChannelHandler extends MultiplexedChannelHandler<File, Object> {
         // If the new value is not a VType, try to convert it using
         // the standard conversions
         if (!(newValue instanceof VType)) {
-            Object converted = ValueFactory.toVType(newValue);
+            Object converted = VType.toVType(newValue);
             if (converted != null) {
                 newValue = converted;
             }

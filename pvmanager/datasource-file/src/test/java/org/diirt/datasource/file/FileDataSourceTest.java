@@ -4,6 +4,13 @@
  */
 package org.diirt.datasource.file;
 
+import static java.time.Duration.ofMillis;
+import static org.diirt.datasource.vtype.ExpressionLanguage.vType;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,9 +18,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.time.Duration;
-
-import org.diirt.datasource.test.CountDownPVReaderListener;
-
 import java.util.Arrays;
 
 import org.diirt.datasource.DataSource;
@@ -21,22 +25,16 @@ import org.diirt.datasource.PV;
 import org.diirt.datasource.PVManager;
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderEvent;
-
-import static org.junit.Assert.*;
-
-import org.junit.*;
-
-import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-
-import org.diirt.util.array.ArrayDouble;
-
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.ValueFactory;
-
-import static org.hamcrest.Matchers.*;
-import static java.time.Duration.*;
+import org.diirt.datasource.test.CountDownPVReaderListener;
+import org.epics.util.array.ArrayDouble;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 /**
  *
  * @author carcassi
@@ -149,7 +147,7 @@ public class FileDataSourceTest {
         assertThat(vTable.getColumnName(0), equalTo("Name"));
         assertThat(vTable.getColumnName(1), equalTo("Value"));
         assertThat(vTable.getColumnData(0), equalTo((Object) Arrays.asList("Andrew", "Bob")));
-        assertThat(vTable.getColumnData(1), equalTo((Object) new ArrayDouble(34,12)));
+        assertThat(vTable.getColumnData(1), equalTo((Object) ArrayDouble.of(34,12)));
 
         listener.resetCount(1);
 
@@ -168,7 +166,7 @@ public class FileDataSourceTest {
         assertThat(vTable.getColumnName(0), equalTo("Name"));
         assertThat(vTable.getColumnName(1), equalTo("Value"));
         assertThat(vTable.getColumnData(0), equalTo((Object) Arrays.asList("Andrew", "Bob", "Charlie")));
-        assertThat(vTable.getColumnData(1), equalTo((Object) new ArrayDouble(34,12,71)));
+        assertThat(vTable.getColumnData(1), equalTo((Object) ArrayDouble.of(34,12,71)));
     }
 
     @Test
@@ -195,7 +193,7 @@ public class FileDataSourceTest {
         assertThat(array.getData(), equalTo(Arrays.asList("A", "B", "C")));
 
         listener.resetCount(1);
-        fullPv.write(ValueFactory.toVType(Arrays.asList("A", "B", "C", "D")));
+        fullPv.write(VType.toVType(Arrays.asList("A", "B", "C", "D")));
 
         listener.await(ofMillis(2000));
         assertThat(listener.getCount(), equalTo(0));

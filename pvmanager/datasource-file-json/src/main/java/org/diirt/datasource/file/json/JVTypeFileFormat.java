@@ -12,8 +12,8 @@ import javax.json.Json;
 import javax.json.JsonReader;
 import javax.json.JsonWriter;
 import org.diirt.datasource.file.FileFormat;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.json.VTypeToJson;
+import org.epics.vtype.VType;
+import org.epics.vtype.json.VTypeToJson;
 
 
 /**
