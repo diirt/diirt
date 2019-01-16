@@ -4,6 +4,6 @@
  */
 
 /**
- * Support for formula functions that operate on {@link org.diirt.vtype.Array}s.
+ * Support for formula functions that operate on {@link org.epics.vtype.Array}s.
  */
 package org.diirt.datasource.formula.array;

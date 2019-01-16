@@ -34,7 +34,7 @@ public class PooledRPCClientFactory {
 
   /**
    * Override the default configuration with a new one
-   * @param poolConfig
+   * @param poolConfig pool configuration
    */
   public synchronized static void setPoolConfiguration(PoolConfiguration poolConfig) {
 
@@ -50,8 +50,8 @@ public class PooledRPCClientFactory {
 
   /**
    * Set pool configuration from text (in java properties format)
-   * @param poolConfigAsPropertiesText
-   * @throws IOException
+   * @param poolConfigAsPropertiesText pool configuration
+   * @throws IOException exception when creating poolConfiguration 
    */
   public synchronized static void setPoolConfiguration(String poolConfigAsPropertiesText) throws IOException {
 
@@ -77,10 +77,10 @@ public class PooledRPCClientFactory {
   /**
    * Get a pooled rpc client
    *
-   * @param hostName
-   * @param channelName
-   * @return RPCClient
-   * @throws RPCRequestException
+   * @param hostName host name 
+   * @param channelName channel name 
+   * @return RPCClient rpc client
+   * @throws RPCRequestException request exception
    */
   public synchronized static RPCClient getRPCClient(String hostName, String channelName) throws RPCRequestException {
 
@@ -99,8 +99,8 @@ public class PooledRPCClientFactory {
 
   /**
    * Get a pool statistics for a pool that contains the rpc clients for a hostname and a channel name
-   * @param hostName
-   * @param channelName
+   * @param hostName host name
+   * @param channelName channel name
    * @return PoolStatistics a pool statistics (null if a pool is not active)
    */
   public synchronized static PoolStatistics getPoolStatistics(String hostName, String channelName) {

@@ -13,7 +13,7 @@ import org.diirt.datasource.formula.AbstractVNumberToVNumberFormulaFunction;
 import org.diirt.datasource.formula.AbstractVNumberVNumberToVNumberFormulaFunction;
 
 /**
- * Formula functions that operate on {@link org.diirt.vtype.VNumber}s.
+ * Formula functions that operate on {@link org.epics.vtype.VNumber}s.
  *
  * @author carcassi
  */

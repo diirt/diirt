@@ -7,7 +7,7 @@ package org.diirt.datasource.formula.alarm;
 import org.diirt.datasource.formula.*;
 
 /**
- * Formula functions that operate on {@link org.diirt.vtype.Alarm}s.
+ * Formula functions that operate on {@link org.epics.vtype.Alarm}s.
  *
  * @author carcassi
  */

@@ -4,6 +4,6 @@
  */
 
 /**
- * Support for formula functions that operate on {@link org.diirt.vtype.VTable}s.
+ * Support for formula functions that operate on {@link org.epics.vtype.VTable}s.
  */
 package org.diirt.datasource.formula.vtable;

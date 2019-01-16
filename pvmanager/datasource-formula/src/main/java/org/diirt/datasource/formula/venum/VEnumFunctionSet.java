@@ -7,7 +7,7 @@ package org.diirt.datasource.formula.venum;
 import org.diirt.datasource.formula.*;
 
 /**
- * Formula functions that operate on {@link org.diirt.vtype.VEnum}s.
+ * Formula functions that operate on {@link org.epics.vtype.VEnum}s.
  *
  * @author carcassi
  */

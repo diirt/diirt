@@ -4,6 +4,6 @@
  */
 
 /**
- * Support for formula functions that operate on {@link org.diirt.vtype.VString}s.
+ * Support for formula functions that operate on {@link org.epics.vtype.VString}s.
  */
 package org.diirt.datasource.formula.vstring;

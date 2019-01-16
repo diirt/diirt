@@ -4,6 +4,6 @@
  */
 
 /**
- * Support for formula functions that operate on {@link org.diirt.vtype.VNumber}s.
+ * Support for formula functions that operate on {@link org.epics.vtype.VNumber}s.
  */
 package org.diirt.datasource.formula.vnumber;

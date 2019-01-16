@@ -8,7 +8,7 @@ import org.diirt.datasource.formula.FormulaFunctionSet;
 import org.diirt.datasource.formula.FormulaFunctionSetDescription;
 
 /**
- * Formula functions that operate on {@link org.diirt.vtype.VString}s.
+ * Formula functions that operate on {@link org.epics.vtype.VString}s.
  *
  * @author shroffk
  */

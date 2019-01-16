@@ -4,6 +4,6 @@
  */
 /**
  * Support for vTypes serialized in JSON (.jvtype) according to the mechanism
- * provided by {@link org.diirt.vtype.json.VTypeToJson}.
+ * provided by {@link org.epics.vtype.json.VTypeToJson}.
  */
 package org.diirt.datasource.file.json;

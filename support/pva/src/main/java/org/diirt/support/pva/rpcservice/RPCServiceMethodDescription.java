@@ -113,6 +113,7 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
      * Adds an argument for pvAccess RPC rpcservice.
      *
      * @param name argument name
+     * @param fieldName field name
      * @param description argument description
      * @param type the expected type of the argument
      * @return this
@@ -129,7 +130,9 @@ public class RPCServiceMethodDescription extends ServiceMethodDescription {
      * Adds a result for the pvAccess RPC Service.
      *
      * @param name the result name
+     * @param fieldName field name
      * @param description the result description
+     * @param type the expected type of the argument
      * @return this
      */
     public RPCServiceMethodDescription addRPCResult(String name, String fieldName, String description, Class<?> type) {

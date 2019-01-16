@@ -4,6 +4,6 @@
  */
 
 /**
- * Support for formula functions that operate on {@link org.diirt.vtype.VEnum}s.
+ * Support for formula functions that operate on {@link org.epics.vtype.VEnum}s.
  */
 package org.diirt.datasource.formula.venum;

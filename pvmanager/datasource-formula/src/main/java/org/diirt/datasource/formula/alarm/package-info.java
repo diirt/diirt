@@ -4,6 +4,6 @@
  */
 
 /**
- * Support for formula functions that operate on {@link org.diirt.vtype.Alarm}s.
+ * Support for formula functions that operate on {@link org.epics.vtype.Alarm}s.
  */
 package org.diirt.datasource.formula.alarm;
