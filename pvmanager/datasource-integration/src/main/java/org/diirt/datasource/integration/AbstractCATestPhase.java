@@ -8,7 +8,7 @@ import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.PVManager;
 import static org.diirt.util.time.TimeDuration.*;
 import org.diirt.support.ca.JCADataSource;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VString;
 
 /**
  * Superclass for Channel Access tests.

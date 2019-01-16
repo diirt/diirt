@@ -4,20 +4,21 @@
  */
 package org.diirt.datasource.integration;
 
-import static org.diirt.datasource.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.channel;
+import static org.diirt.datasource.integration.Constants.const_double;
+import static org.diirt.datasource.integration.Constants.const_double_value;
+import static org.diirt.datasource.integration.VTypeMatchMask.ALL_EXCEPT_TIME;
 
 import java.time.Instant;
 
 import org.diirt.datasource.PVManager;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.AlarmSeverity;
-
-import static org.diirt.datasource.integration.VTypeMatchMask.*;
-import static org.diirt.vtype.ValueFactory.*;
-import static org.diirt.datasource.integration.Constants.*;
-
 import org.diirt.support.ca.JCADataSourceConfiguration;
-import org.diirt.vtype.VDouble;
+import org.diirt.util.time.TimeDuration;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -48,7 +49,7 @@ public class RepeatedDisconnectTestPhase extends AbstractCATestPhase {
     @Override
     public final void verify(Log log) {
         // Check double
-        VDouble disconnected = newVDouble(0.13, newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone());
+        VDouble disconnected = VDouble.of(0.13, Alarm.of(AlarmSeverity.UNDEFINED, null, "Disconnected"), Time.of(Instant.ofEpochSecond(631152000, 0), null, false), Display.none());
         log.matchConnections(const_double, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true);
         log.matchValues(const_double, ALL_EXCEPT_TIME,
                 const_double_value,

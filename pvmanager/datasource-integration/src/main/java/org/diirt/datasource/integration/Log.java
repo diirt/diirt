@@ -7,7 +7,6 @@ package org.diirt.datasource.integration;
 import java.io.PrintStream;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,9 +21,8 @@ import org.diirt.datasource.PVReaderListener;
 import org.diirt.datasource.PVWriterEvent;
 import org.diirt.datasource.PVWriterListener;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.VNumber;
 
 /**
  *
@@ -303,7 +301,7 @@ public class Log {
             if (pvName.equals(event.getPvName()) && event instanceof ReadEvent) {
                 ReadEvent readEvent = (ReadEvent) event;
                 if (readEvent.getEvent().isValueChanged()) {
-                    values.add(ValueUtil.alarmOf(readEvent.getValue()));
+                    values.add(Alarm.alarmOf(readEvent.getValue()));
                 }
             }
         }

@@ -4,16 +4,19 @@
  */
 package org.diirt.datasource.integration;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.diirt.datasource.PVReader;
 import org.diirt.datasource.PVReaderConfiguration;
 import org.diirt.datasource.PVWriter;
 import org.diirt.datasource.PVWriterConfiguration;
-import java.time.Duration;
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
 
 /**
  *
@@ -64,7 +67,7 @@ public abstract class TestPhase {
         if (getDebugLevel() >= 2) {
             System.out.println("Waiting for '" + value + "' on '" + name + "'");
         }
-        PVReaderValueCondition cond = new PVReaderValueCondition(VTypeMatchMask.VALUE, newVString(value, alarmNone(), timeNow()));
+        PVReaderValueCondition cond = new PVReaderValueCondition(VTypeMatchMask.VALUE, VString.of(value, Alarm.none(), Time.now()));
         @SuppressWarnings("unchecked")
         PVReader<Object> pvReader = (PVReader<Object>) pvReaders.get(name);
         boolean conditionMet = cond.waitOn(pvReader, msTimeout);

@@ -4,20 +4,35 @@
  */
 package org.diirt.datasource.integration;
 
+import static org.diirt.datasource.ExpressionLanguage.channel;
+import static org.diirt.datasource.integration.Constants.alarm_string;
+import static org.diirt.datasource.integration.Constants.alarm_string_value;
+import static org.diirt.datasource.integration.Constants.const_double;
+import static org.diirt.datasource.integration.Constants.const_double_value;
+import static org.diirt.datasource.integration.Constants.const_enum;
+import static org.diirt.datasource.integration.Constants.const_enum_value;
+import static org.diirt.datasource.integration.Constants.const_int;
+import static org.diirt.datasource.integration.Constants.const_int_value;
+import static org.diirt.datasource.integration.Constants.const_string;
+import static org.diirt.datasource.integration.Constants.const_string_value;
+import static org.diirt.datasource.integration.Constants.counter_double_100Hz;
+import static org.diirt.datasource.integration.Constants.counter_double_1Hz;
+import static org.diirt.datasource.integration.VTypeMatchMask.ALL;
+import static org.diirt.datasource.integration.VTypeMatchMask.ALL_EXCEPT_TIME;
+import static org.diirt.datasource.integration.VTypeMatchMask.VALUE;
+
 import java.time.Instant;
 import java.util.Arrays;
 
-import static org.diirt.datasource.ExpressionLanguage.*;
-
 import org.diirt.datasource.PVManager;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.AlarmSeverity;
-
-import static org.diirt.datasource.integration.VTypeMatchMask.*;
-import static org.diirt.vtype.ValueFactory.*;
-import static org.diirt.datasource.integration.Constants.*;
-
 import org.diirt.support.ca.JCADataSourceConfiguration;
+import org.diirt.util.time.TimeDuration;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VInt;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -52,7 +67,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
         log.matchConnections(const_double, true);
         log.matchValues(const_double, ALL_EXCEPT_TIME,
                 const_double_value,
-                newVDouble(3.0, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone()));
+                VDouble.of(3.0, Alarm.of(AlarmSeverity.NONE, null, "NO_ALARM"), Time.of(Instant.ofEpochSecond(631152000, 0), null, false), Display.none()));
         log.matchWriteConnections(const_double, true);
         log.matchWriteNotifications(const_double, true);
 
@@ -60,7 +75,7 @@ public class UpdateTestPhase extends AbstractCATestPhase {
         log.matchConnections(const_int, true);
         log.matchValues(const_int, ALL_EXCEPT_TIME,
                 const_int_value,
-                newVInt(42, newAlarm(AlarmSeverity.NONE, "NO_ALARM"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone()));
+                VInt.of(42, Alarm.of(AlarmSeverity.NONE, null, "NO_ALARM"), Time.of(Instant.ofEpochSecond(631152000, 0), null, false), Display.none()));
         log.matchWriteConnections(const_double, true);
         log.matchWriteNotifications(const_double, true);
 
@@ -74,10 +89,10 @@ public class UpdateTestPhase extends AbstractCATestPhase {
         log.matchConnections(counter_double_100Hz, true);
         log.matchValueEventRate(counter_double_100Hz, 45, 50);
         log.matchAllValues(alarm_string, VALUE, alarm_string_value);
-        log.validate(alarm_string, Validators.cycleValidator(VTypeMatchMask.ALARM, Arrays.<Object>asList(newAlarm(AlarmSeverity.NONE, "NO_ALARM"),
-                newAlarm(AlarmSeverity.MINOR, "LINK_ALARM"), newAlarm(AlarmSeverity.NONE, "NO_ALARM"),
-                newAlarm(AlarmSeverity.MAJOR, "LINK_ALARM"), newAlarm(AlarmSeverity.NONE, "NO_ALARM"),
-                newAlarm(AlarmSeverity.INVALID, "LINK_ALARM"))));
+        log.validate(alarm_string, Validators.cycleValidator(VTypeMatchMask.ALARM, Arrays.<Object>asList(Alarm.of(AlarmSeverity.NONE, null, "NO_ALARM"),
+                Alarm.of(AlarmSeverity.MINOR, null, "LINK_ALARM"), Alarm.of(AlarmSeverity.NONE, null, "NO_ALARM"),
+                Alarm.of(AlarmSeverity.MAJOR, null, "LINK_ALARM"), Alarm.of(AlarmSeverity.NONE, null, "NO_ALARM"),
+                Alarm.of(AlarmSeverity.INVALID, null, "LINK_ALARM"))));
     }
 
     public static void main(String[] args) throws Exception {

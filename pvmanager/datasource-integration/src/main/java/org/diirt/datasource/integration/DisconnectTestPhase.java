@@ -4,13 +4,16 @@
  */
 package org.diirt.datasource.integration;
 
-import static org.diirt.datasource.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.channel;
+import static org.diirt.datasource.integration.Constants.const_double;
+import static org.diirt.datasource.integration.Constants.const_double_value;
+import static org.diirt.datasource.integration.VTypeMatchMask.ALL;
+
 import org.diirt.datasource.PVManager;
 import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.AlarmSeverity;
-import static org.diirt.datasource.integration.VTypeMatchMask.*;
-import static org.diirt.vtype.ValueFactory.*;
-import static org.diirt.datasource.integration.Constants.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.VDouble;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -45,7 +48,7 @@ public abstract class DisconnectTestPhase extends AbstractCATestPhase {
         // Value should remain the same, but change alarm
         log.matchValues(const_double, ALL,
                 const_double_value,
-                newVDouble(const_double_value.getValue(), newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), const_double_value, const_double_value),
+                VDouble.of(const_double_value.getValue(), Alarm.of(AlarmSeverity.UNDEFINED, null, "Disconnected"), const_double_value.getTime(), const_double_value.getDisplay()),
                 const_double_value);
         // No errors
         log.matchErrors(const_double);
@@ -56,7 +59,7 @@ public abstract class DisconnectTestPhase extends AbstractCATestPhase {
         // Value should remain the same, but change alarm
 //        log.matchValues(const_string, ALL,
 //                const_string_value,
-//                newVString(const_string_value.getValue(), newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), const_string_value),
+//                newVString(const_string_value.getValue(), Alarm.of(AlarmSeverity.UNDEFINED, "Disconnected"), const_string_value),
 //                const_string_value);
 //        // No errors
 //        log.matchErrors(const_string);

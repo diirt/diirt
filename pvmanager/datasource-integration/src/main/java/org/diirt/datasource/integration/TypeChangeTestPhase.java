@@ -4,19 +4,20 @@
  */
 package org.diirt.datasource.integration;
 
-import static org.diirt.datasource.ExpressionLanguage.*;
+import static org.diirt.datasource.ExpressionLanguage.channel;
+import static org.diirt.datasource.integration.VTypeMatchMask.ALL_EXCEPT_TIME;
 
 import java.time.Instant;
 
 import org.diirt.datasource.PVManager;
-import org.diirt.util.time.TimeDuration;
-import org.diirt.vtype.AlarmSeverity;
-
-import static org.diirt.datasource.integration.VTypeMatchMask.*;
-
 import org.diirt.support.ca.JCADataSourceConfiguration;
-
-import static org.diirt.vtype.ValueFactory.*;
+import org.diirt.util.time.TimeDuration;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VInt;
 
 /**
  * Tests reconnects caused by a server restart.
@@ -42,9 +43,9 @@ public class TypeChangeTestPhase extends AbstractCATestPhase {
         // Check double
         log.matchConnections("double-to-i32", true, false, true);
         log.matchValues("double-to-i32", ALL_EXCEPT_TIME,
-                newVDouble(0.0, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone()),
-                newVDouble(0.0, newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone()),
-                newVInt(0, newAlarm(AlarmSeverity.INVALID, "UDF_ALARM"), newTime(Instant.ofEpochSecond(631152000, 0), null, false), displayNone()));
+                VDouble.of(0.0, Alarm.of(AlarmSeverity.INVALID, null, "UDF_ALARM"), Time.of(Instant.ofEpochSecond(631152000, 0), null, false), Display.none()),
+                VDouble.of(0.0, Alarm.of(AlarmSeverity.UNDEFINED, null, "Disconnected"), Time.of(Instant.ofEpochSecond(631152000, 0), null, false), Display.none()),
+                VInt.of(0, Alarm.of(AlarmSeverity.INVALID, null, "UDF_ALARM"), Time.of(Instant.ofEpochSecond(631152000, 0), null, false), Display.none()));
     }
 
     public static void main(String[] args) throws Exception {

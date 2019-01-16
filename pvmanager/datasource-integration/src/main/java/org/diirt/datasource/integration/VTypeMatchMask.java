@@ -4,9 +4,8 @@
  */
 package org.diirt.datasource.integration;
 
-import org.diirt.vtype.VTypeToString;
-import org.diirt.vtype.VTypeValueEquals;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
 
 /**
  *
@@ -34,14 +33,14 @@ public enum VTypeMatchMask {
     }
 
     public String match(Object expectedValue, Object actualValue) {
-        if (value && !VTypeValueEquals.typeEquals(actualValue, expectedValue)) {
+        if (value && !expectedValue.equals(actualValue)) {
             return "TYPE mismatch: was " + actualValue + " (expected " + expectedValue + ")";
-        } else if (value && !VTypeValueEquals.valueEquals(actualValue, expectedValue)) {
+        } else if (value && !expectedValue.equals(actualValue)) {
             return "VALUE mismatch: was " + actualValue + " (expected " + expectedValue + ")";
-        } else if (alarm && !VTypeValueEquals.alarmEquals(ValueUtil.alarmOf(actualValue), ValueUtil.alarmOf(expectedValue))) {
-            return "ALARM mismatch: was " + VTypeToString.alarmToString(ValueUtil.alarmOf(actualValue))
-                    + " (expected " + VTypeToString.alarmToString(ValueUtil.alarmOf(expectedValue)) + ")";
-        } else if (time && !VTypeValueEquals.timeEquals(ValueUtil.timeOf(actualValue), ValueUtil.timeOf(expectedValue))) {
+        } else if (alarm && !Alarm.alarmOf(expectedValue).equals(Alarm.alarmOf(actualValue))) {
+            return "ALARM mismatch: was " + Alarm.alarmOf(actualValue)
+                    + " (expected " + Alarm.alarmOf(expectedValue) + ")";
+        } else if (time && !Time.timeOf(expectedValue).equals(Time.timeOf(actualValue))) {
             return "TIME mismatch: was " + actualValue + " (expected " + expectedValue + ")";
         }
         return null;
