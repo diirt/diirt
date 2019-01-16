@@ -4,7 +4,7 @@
  */
 package org.diirt.datasource.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 
 /**
  * Range information of a drawn graph.

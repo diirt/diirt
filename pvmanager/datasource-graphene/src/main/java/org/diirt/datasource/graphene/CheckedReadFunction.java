@@ -6,8 +6,9 @@ package org.diirt.datasource.graphene;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -52,7 +53,7 @@ public class CheckedReadFunction<T> implements ReadFunction<T> {
             if (clazz.isInstance(obj)) {
                 return clazz.cast(obj);
             } else {
-                throw new RuntimeException(argName + " must be a " + clazz.getSimpleName() + " (was " + ValueUtil.typeOf(obj).getSimpleName() + ")");
+                throw new RuntimeException(argName + " must be a " + clazz.getSimpleName() + " (was " + VType.typeOf(obj).getSimpleName() + ")");
             }
         } else {
             for (Class<? extends T> aClass : classes) {
@@ -65,7 +66,7 @@ public class CheckedReadFunction<T> implements ReadFunction<T> {
             for (Class<? extends T> aClass : classes) {
                 names.add(aClass.getSimpleName());
             }
-            throw new RuntimeException(argName + " must be one of " + names.toString() + " (was " + ValueUtil.typeOf(obj).getSimpleName() + ")");
+            throw new RuntimeException(argName + " must be one of " + names.toString() + " (was " + VType.typeOf(obj).getSimpleName() + ")");
         }
     }
 }

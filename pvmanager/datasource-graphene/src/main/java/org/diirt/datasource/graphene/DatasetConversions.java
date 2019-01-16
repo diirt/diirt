@@ -7,22 +7,21 @@ package org.diirt.datasource.graphene;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.diirt.graphene.Cell1DDataset;
 import org.diirt.graphene.Cell1DDatasets;
-import org.diirt.graphene.Cell2DDataset;
 import org.diirt.graphene.Point2DDataset;
 import org.diirt.graphene.Point2DDatasets;
 import org.diirt.graphene.Point3DWithLabelDataset;
 import org.diirt.graphene.Point3DWithLabelDatasets;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.ListNumbers;
-import org.diirt.util.stats.Range;
-import org.diirt.util.stats.Ranges;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueUtil;
+import org.diirt.vtype.util.ValueUtil;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.stats.Range;
+import org.epics.vtype.Display;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VTable;
 
 /**
  * Utility class to convert VTypes into graphene datasets.
@@ -189,27 +188,32 @@ public class DatasetConversions {
 
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    public static Cell2DDataset cell2DDatasetsFromVNumberArray(VNumberArray data) {
-        return new Cell2DDatasetFromVNumberArray(data);
-    }
+//
+//    public static Cell2DDataset cell2DDatasetsFromVNumberArray(VNumberArray data) {
+//        return new Cell2DDatasetFromVNumberArray(data);
+//    }
 
     public static Range toRange(Display display) {
         if (display == null) {
             return null;
         }
 
-        Double min = display.getLowerDisplayLimit();
-        Double max = display.getUpperDisplayLimit();
+        Double min = display.getDisplayRange().getMinimum();
+        Double max = display.getDisplayRange().getMaximum();
 
         if (min != null && max != null) {
-            return Ranges.range(min, max);
+            return Range.of(min, max);
         } else {
             return null;
         }
     }
 
     public static Cell1DDataset cell1DDatasetsFromVNumberArray(VNumberArray data) {
-        return Cell1DDatasets.datasetFrom(data.getData(), data.getDimensionDisplay().get(0).getCellBoundaries(), toRange(data));
+        return Cell1DDatasets.datasetFrom(data.getData(),
+                ListNumbers.linearListFromRange(data.getDisplay().getControlRange().getMinimum(),
+                        data.getDisplay().getControlRange().getMaximum(), data.getData().size() + 1),
+                data.getDisplay().getDisplayRange());
+        
+
     }
 }

@@ -5,7 +5,7 @@
 package org.diirt.datasource.graphene;
 
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VString;
 
 /**
  *

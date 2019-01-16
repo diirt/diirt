@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 import org.diirt.graphene.*;
 import org.diirt.datasource.QueueCollector;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VNumberArray;
+import org.diirt.vtype.util.ValueUtil;
 
 /**
  *

@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource.graphene;
 
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.VType;
+import org.epics.vtype.VImage;
+import org.epics.vtype.VType;
 
 /**
  *

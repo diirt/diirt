@@ -12,9 +12,9 @@ import org.diirt.graphene.ScatterGraph2DRenderer;
 import org.diirt.graphene.ScatterGraph2DRendererUpdate;
 import org.diirt.datasource.QueueCollector;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VImage;
+import org.epics.vtype.VTable;
+import org.diirt.vtype.util.ValueUtil;
 
 import static org.diirt.datasource.graphene.ArgumentExpressions.*;
 
@@ -28,11 +28,9 @@ public class ScatterGraph2DFunction implements ReadFunction<Graph2DResult> {
     private ReadFunctionArgument<String> xColumnName;
     private ReadFunctionArgument<String> yColumnName;
     private ReadFunctionArgument<String> tooltipColumnName;
-    private ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300,
-            200);
+    private ScatterGraph2DRenderer renderer = new ScatterGraph2DRenderer(300, 200);
     private VImage previousImage;
-    private final QueueCollector<ScatterGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(
-            100);
+    private final QueueCollector<ScatterGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
     public ScatterGraph2DFunction(ReadFunction<?> tableData,
             ReadFunction<?> xColumnName,

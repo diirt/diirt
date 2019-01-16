@@ -11,9 +11,9 @@ import org.diirt.graphene.BubbleGraph2DRendererUpdate;
 import org.diirt.graphene.Point3DWithLabelDataset;
 import org.diirt.datasource.QueueCollector;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VImage;
+import org.epics.vtype.VTable;
+import org.diirt.vtype.util.ValueUtil;
 
 import static org.diirt.datasource.graphene.ArgumentExpressions.*;
 
@@ -28,11 +28,9 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
     private ReadFunctionArgument<String> yColumnName;
     private ReadFunctionArgument<String> sizeColumnName;
     private ReadFunctionArgument<String> colorColumnName;
-    private BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(300,
-            200);
+    private BubbleGraph2DRenderer renderer = new BubbleGraph2DRenderer(300, 200);
     private VImage previousImage;
-    private final QueueCollector<BubbleGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(
-            100);
+    private final QueueCollector<BubbleGraph2DRendererUpdate> rendererUpdateQueue = new QueueCollector<>(100);
 
     public BubbleGraph2DFunction(ReadFunction<?> tableData,
             ReadFunction<?> xColumnName,
@@ -76,10 +74,10 @@ public class BubbleGraph2DFunction implements ReadFunction<Graph2DResult> {
             return null;
         }
 
-        BufferedImage image = new BufferedImage(renderer.getImageWidth(),
-                renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);
         renderer.draw(image.createGraphics(), dataset);
 
+        
         previousImage = ValueUtil.toVImage(image);
         int focusValueIndex = -1;
         if (renderer.getFocusValueIndex() != null) {

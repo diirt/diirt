@@ -4,17 +4,17 @@
  */
 package org.diirt.datasource.graphene;
 
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VImage;
+import org.diirt.vtype.util.ValueUtil;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import org.diirt.graphene.*;
 import org.diirt.datasource.QueueCollector;
 import org.diirt.datasource.ReadFunction;
 import static org.diirt.datasource.graphene.ArgumentExpressions.stringArgument;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 
 /**
  *

@@ -4,9 +4,9 @@
  */
 package org.diirt.datasource.graphene;
 
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VImage;
-import org.diirt.vtype.ValueUtil;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VImage;
+import org.diirt.vtype.util.ValueUtil;
 import java.awt.image.BufferedImage;
 import java.util.AbstractList;
 import java.util.Collections;
@@ -15,10 +15,10 @@ import org.diirt.graphene.*;
 import org.diirt.datasource.QueueCollector;
 import org.diirt.datasource.ReadFunction;
 import static org.diirt.datasource.graphene.ArgumentExpressions.*;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VType;
+import org.epics.util.stats.Statistics;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
 
 /**
  *

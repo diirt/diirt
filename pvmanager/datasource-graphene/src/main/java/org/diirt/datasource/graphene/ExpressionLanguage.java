@@ -10,15 +10,15 @@ import org.diirt.datasource.NotificationSupport;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.TypeSupport;
 import org.diirt.datasource.vtype.DataTypeSupport;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.diirt.datasource.expression.DesiredRateExpressionImpl;
 import org.diirt.datasource.expression.DesiredRateExpressionList;
 import org.diirt.datasource.expression.DesiredRateExpressionListImpl;
-import org.diirt.util.array.ListNumbers;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.ValueFactory;
+import org.epics.util.array.ListNumbers;
+import org.epics.vtype.VTable;
+
 
 /**
  *
@@ -40,10 +40,10 @@ public class ExpressionLanguage {
         return new HistogramGraph2DExpression(arrayData);
     }
 
-    public static IntensityGraph2DExpression intensityGraphOf(
-            DesiredRateExpression<?> arrayData) {
-        return new IntensityGraph2DExpression(arrayData);
-    }
+//    public static IntensityGraph2DExpression intensityGraphOf(
+//            DesiredRateExpression<?> arrayData) {
+//        return new IntensityGraph2DExpression(arrayData);
+//    }
 
     public static LineGraph2DExpression lineGraphOf(DesiredRateExpression<? extends VNumberArray> vDoubleArray) {
         return lineGraphOf(vDoubleArray, null, null, null);
@@ -65,7 +65,7 @@ public class ExpressionLanguage {
                     return null;
                 }
 
-                return ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class),
+                return VTable.of(Arrays.<Class<?>>asList(double.class, double.class),
                         Arrays.asList("X", "Y"),
                         Arrays.<Object>asList(ListNumbers.linearList(offset.getValue().doubleValue(), increment.getValue().doubleValue(), values.getData().size()),
                         new ListDoubleView(values.getData())));
@@ -89,7 +89,7 @@ public class ExpressionLanguage {
                     return null;
                 }
 
-                return ValueFactory.newVTable(Arrays.<Class<?>>asList(double.class, double.class),
+                return VTable.of(Arrays.<Class<?>>asList(double.class, double.class),
                         Arrays.asList("X", "Y"),
                         Arrays.<Object>asList(new ListDoubleView(xValues.getData()),
                         new ListDoubleView(yValues.getData())));

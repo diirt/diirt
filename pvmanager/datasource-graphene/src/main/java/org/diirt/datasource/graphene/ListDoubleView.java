@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource.graphene;
 
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
 
 /**
  *
