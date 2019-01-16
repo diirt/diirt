@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>diirt-io</artifactId>
+            <artifactId>diirt-vtype</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
