@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.VType;
+import org.epics.vtype.ValueFormat;
+import org.epics.vtype.VType;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.WriteFunction;
 

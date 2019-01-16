@@ -4,7 +4,9 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VTable;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInteger;
+import org.epics.vtype.VTable;
 import java.util.Arrays;
 import java.util.List;
 import org.diirt.datasource.expression.DesiredRateExpression;
@@ -12,8 +14,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ArrayInt;
 
 /**
  *
@@ -34,9 +34,9 @@ public class VTableAggegationTest {
         assertThat(result.getColumnData(0), equalTo((Object) Arrays.asList("One", "Two", "Three")));
         assertThat(result.getColumnName(1), equalTo("Values"));
         assertThat(result.getColumnType(1), equalTo((Class) Double.TYPE));
-        assertThat(result.getColumnData(1), equalTo((Object) new ArrayDouble(1.0, 2.0, 3.0)));
+        assertThat(result.getColumnData(1), equalTo((Object) ArrayDouble.of(1.0, 2.0, 3.0)));
         assertThat(result.getColumnName(2), equalTo("Counts"));
         assertThat(result.getColumnType(2), equalTo((Class) Integer.TYPE));
-        assertThat(result.getColumnData(2), equalTo((Object) new ArrayInt(1, 2, 3)));
+        assertThat(result.getColumnData(2), equalTo((Object) ArrayInteger.of(1, 2, 3)));
     }
 }

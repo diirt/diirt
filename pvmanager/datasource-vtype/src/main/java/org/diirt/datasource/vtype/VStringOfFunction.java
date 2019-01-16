@@ -4,13 +4,11 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.ValueFactory;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.Alarm;
+import org.epics.vtype.VString;
+import org.epics.vtype.Time;
+import org.epics.vtype.VType;
+import org.epics.vtype.ValueFormat;
+import org.epics.vtype.Alarm;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.WriteFunction;
 
@@ -45,15 +43,15 @@ class VStringOfFunction implements ReadFunction<VString> {
             return null;
         }
         String string = format.format(value);
-        Alarm alarm = ValueUtil.alarmOf(value);
+        Alarm alarm = Alarm.alarmOf(value);
         if (alarm == null) {
-            alarm = ValueFactory.alarmNone();
+            alarm = Alarm.none();
         }
-        Time time = ValueUtil.timeOf(value);
+        Time time = Time.timeOf(value);
         if (time == null) {
-            time = ValueFactory.timeNow();
+            time = Time.now();
         }
-        return ValueFactory.newVString(string, alarm, time);
+        return VString.of(string, alarm, time);
     }
 
 }

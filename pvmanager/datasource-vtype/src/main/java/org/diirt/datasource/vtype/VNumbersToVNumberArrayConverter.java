@@ -4,19 +4,17 @@
  */
 package org.diirt.datasource.vtype;
 
-import static org.diirt.vtype.ValueFactory.alarmNone;
-import static org.diirt.vtype.ValueFactory.displayNone;
-import static org.diirt.vtype.ValueFactory.timeNow;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.diirt.datasource.ReadFunction;
-import org.diirt.util.array.ListDouble;
-import org.diirt.vtype.Display;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.ValueFactory;
+import org.epics.util.array.ListDouble;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
 
 /**
  * Converts numeric types to VDouble.
@@ -40,13 +38,13 @@ class VNumbersToVNumberArrayConverter implements ReadFunction<VNumberArray> {
     public VNumberArray readValue() {
         final List<VNumber> values = new ArrayList<VNumber>();
 
-        Display meta = displayNone();
+        Display meta = Display.none();
 
         for (ReadFunction<? extends VNumber> function : arguments) {
             VNumber number = function.readValue();
             values.add(number);
             if (meta == null && number != null)
-                meta = number;
+                meta = Display.displayOf(number);
         }
 
         ListDouble data = new ListDouble() {
@@ -66,7 +64,7 @@ class VNumbersToVNumberArrayConverter implements ReadFunction<VNumberArray> {
             }
         };
 
-        return ValueFactory.newVDoubleArray(data, alarmNone(), timeNow(), displayNone());
+        return VDoubleArray.of(data, Alarm.none(), Time.now(), Display.none());
     }
 
 }

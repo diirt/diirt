@@ -4,7 +4,7 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VType;
+import org.epics.vtype.VType;
 import org.diirt.datasource.NotificationSupport;
 import org.diirt.datasource.TypeSupport;
 

@@ -4,8 +4,7 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VMultiDouble;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import java.util.List;
 
 /**
@@ -13,10 +12,6 @@ import java.util.List;
  * @author carcassi
  */
 public class DataUtils {
-
-    public static void printArray(VMultiDouble array) {
-        printArray(array.getValues());
-    }
 
     public static void printArray(List<VDouble> array) {
         if (array == null)
@@ -30,7 +25,7 @@ public class DataUtils {
             if (value == null)
                 System.out.print("null");
             else
-                System.out.print(value.getTimestamp());// + " - " + value.getDoubleValue()[0]);
+                System.out.print(value.getTime());// + " - " + value.getDoubleValue()[0]);
         }
         System.out.println("]");
     }

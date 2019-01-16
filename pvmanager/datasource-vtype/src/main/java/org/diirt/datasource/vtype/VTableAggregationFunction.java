@@ -4,21 +4,20 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VString;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.Scalar;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VString;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VType;
+import org.epics.vtype.Scalar;
+import org.epics.vtype.VDouble;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.diirt.datasource.ReadFunction;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.vtype.ValueFactory;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInteger;
 
 /**
  *
@@ -64,7 +63,7 @@ class VTableAggregationFunction implements ReadFunction<VTable> {
 
             @Override
             public Object finalizeData(Object data) {
-                return new ArrayDouble((double[]) data);
+                return ArrayDouble.of((double[]) data);
             }
         });
         arrayAdders.put(Integer.TYPE, new ArrayAdder() {
@@ -80,7 +79,7 @@ class VTableAggregationFunction implements ReadFunction<VTable> {
 
             @Override
             public Object finalizeData(Object data) {
-                return new ArrayInt((int[]) data);
+                return ArrayInteger.of((int[]) data);
             }
 
         });
@@ -124,7 +123,7 @@ class VTableAggregationFunction implements ReadFunction<VTable> {
             values.add(arrayAdders.get(columnType).finalizeData(data));
         }
 
-        return ValueFactory.newVTable(types, names, values);
+        return VTable.of(types, names, values);
     }
 
     private static interface ArrayAdder {
@@ -137,7 +136,7 @@ class VTableAggregationFunction implements ReadFunction<VTable> {
             return oldType;
 
         // Type of the final array
-        Class<?> newType = typeConversion.get(ValueUtil.typeOf(value));
+        Class<?> newType = typeConversion.get(VType.typeOf(value));
         if (oldType == null)
             return newType;
 

@@ -4,13 +4,15 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.AlarmStatus;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 import java.util.List;
 import org.diirt.datasource.Aggregator;
 import org.diirt.datasource.ReadFunction;
-import static org.diirt.vtype.AlarmSeverity.*;
-import static org.diirt.vtype.ValueFactory.*;
+import static org.epics.vtype.AlarmSeverity.*;
 
 /**
  * Aggregates the values by taking the average.
@@ -29,7 +31,7 @@ class AverageAggregator extends Aggregator<VDouble, VDouble> {
         double totalSum = 0;
         AlarmSeverity statSeverity = null;
         for (VDouble vDouble : data) {
-            switch(vDouble.getAlarmSeverity()) {
+            switch(vDouble.getAlarm().getSeverity()) {
                 case NONE:
                     // if severity was never MINOR or MAJOR,
                     // severity should be NONE
@@ -64,8 +66,10 @@ class AverageAggregator extends Aggregator<VDouble, VDouble> {
                 default:
             }
         }
-        return newVDouble(totalSum / data.size(), newAlarm(statSeverity, "NONE"),
-                newTime(data.get(data.size() / 2).getTimestamp()), data.get(0));
+        return VDouble.of(totalSum / data.size(),
+                Alarm.of(statSeverity, AlarmStatus.NONE ,"NONE"),
+                Time.of(data.get(data.size() / 2).getTime().getTimestamp()),
+                data.get(0).getDisplay());
     }
 
 }

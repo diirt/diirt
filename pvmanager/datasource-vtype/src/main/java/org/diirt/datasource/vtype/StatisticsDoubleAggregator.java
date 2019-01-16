@@ -4,15 +4,17 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VStatistics;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VStatistics;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.AlarmStatus;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 import static java.lang.Math.*;
 import java.util.List;
 import org.diirt.datasource.Aggregator;
 import org.diirt.datasource.ReadFunction;
-import static org.diirt.vtype.AlarmSeverity.*;
-import static org.diirt.vtype.ValueFactory.*;
+import static org.epics.vtype.AlarmSeverity.*;
 
 /**
  * Aggregates statistics out of multiple VDoubles.
@@ -57,7 +59,7 @@ class StatisticsDoubleAggregator extends Aggregator<VStatistics, VDouble> {
         Stats stats = new Stats();
         AlarmSeverity statSeverity = null;
         for (VDouble vDouble : data) {
-            switch(vDouble.getAlarmSeverity()) {
+            switch(vDouble.getAlarm().getSeverity()) {
                 case NONE:
                     // if severity was never MINOR or MAJOR,
                     // severity should be NONE
@@ -92,10 +94,10 @@ class StatisticsDoubleAggregator extends Aggregator<VStatistics, VDouble> {
                 default:
             }
         }
-        return newVStatistics(stats.totalSum / stats.nElements,
-                sqrt(stats.totalSquareSum / stats.nElements - (stats.totalSum * stats.totalSum) / (stats.nElements * stats.nElements)),
-                stats.min, stats.max, stats.nElements,
-                newAlarm(statSeverity, "NONE"), newTime(data.get(data.size() / 2).getTimestamp()), data.get(0));
+        return VStatistics.of(stats.totalSum / stats.nElements,
+                sqrt(stats.totalSquareSum / stats.nElements
+                        - (stats.totalSum * stats.totalSum) / (stats.nElements * stats.nElements)),
+                stats.min, stats.max, stats.nElements, Alarm.of(statSeverity, AlarmStatus.NONE, ""), Time.of(data.get(data.size() / 2).getTime().getTimestamp()), data.get(0).getDisplay());
     }
 
 }

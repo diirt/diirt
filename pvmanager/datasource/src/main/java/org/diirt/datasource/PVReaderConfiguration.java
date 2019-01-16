@@ -37,7 +37,7 @@ public class PVReaderConfiguration<T> extends CommonConfiguration {
     /**
      * Sets a timeout for no values received.
      * <p>
-     * For more details, consult {@link #timeout(org.diirt.util.time.Duration, java.lang.String) }.
+     * For more details, consult {@link #timeout(org.epics.util.time.Duration, java.lang.String) }.
      *
      * @param timeout the duration of the timeout; can't be null
      * @return this expression

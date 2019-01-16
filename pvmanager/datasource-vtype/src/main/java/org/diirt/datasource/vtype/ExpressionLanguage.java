@@ -4,28 +4,33 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VStatistics;
-import org.diirt.vtype.Time;
-import org.diirt.vtype.VMultiDouble;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VFloat;
-import org.diirt.vtype.VTable;
-import org.diirt.vtype.VFloatArray;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VStringArray;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VString;
-import org.diirt.vtype.VEnum;
-import org.diirt.vtype.VByteArray;
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.ValueFormat;
-import org.diirt.vtype.VByte;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VShort;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VShortArray;
-import org.diirt.vtype.ValueUtil;
-import org.diirt.vtype.VType;
+import org.epics.vtype.VStatistics;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.SimpleValueFormat;
+import org.epics.vtype.Time;
+import org.epics.vtype.TimeProvider;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VFloat;
+import org.epics.vtype.VTable;
+import org.epics.vtype.VFloatArray;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VStringArray;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VString;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VByteArray;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VByte;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VShort;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VShortArray;
+import org.epics.vtype.VType;
+import org.epics.vtype.VUByteArray;
+import org.epics.vtype.VUIntArray;
+import org.epics.vtype.VUShortArray;
+import org.epics.vtype.ValueFormat;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -37,8 +42,6 @@ import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.LatestValueCollector;
 import org.diirt.datasource.ReadFunction;
 import org.diirt.datasource.WriteFunction;
-
-import static org.diirt.vtype.ValueFactory.*;
 
 import org.diirt.datasource.expression.ChannelExpression;
 import org.diirt.datasource.expression.ChannelExpressionList;
@@ -53,14 +56,17 @@ import org.diirt.datasource.expression.SourceRateExpression;
 import org.diirt.datasource.expression.SourceRateExpressionList;
 import org.diirt.datasource.expression.WriteExpression;
 import org.diirt.datasource.expression.WriteExpressionImpl;
-import org.diirt.util.array.ArrayByte;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ArrayFloat;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ArrayShort;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ArrayByte;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayFloat;
+import org.epics.util.array.ArrayInteger;
+import org.epics.util.array.ArrayShort;
+import org.epics.util.array.ArrayUByte;
+import org.epics.util.array.ArrayUInteger;
+import org.epics.util.array.ArrayUShort;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInteger;
+import org.epics.util.array.ListNumber;
 import org.diirt.util.time.TimeDuration;
 
 /**
@@ -229,6 +235,16 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A channel with the given name of type VUByteArray.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static ChannelExpression<VUByteArray, ArrayUByte> vUByteArray(String name) {
+        return channel(name, VUByteArray.class, ArrayUByte.class);
+    }
+
+    /**
      * A channel with the given name of type VShortArray.
      *
      * @param name the channel name; can't be null
@@ -239,13 +255,33 @@ public class ExpressionLanguage {
     }
 
     /**
+     * A channel with the given name of type VUShortArray.
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static ChannelExpression<VUShortArray, ArrayUShort> vUShortArray(String name) {
+        return channel(name, VUShortArray.class, ArrayUShort.class);
+    }
+
+    /**
      * A channel with the given name of type VIntArray.
      *
      * @param name the channel name; can't be null
      * @return an expression representing the channel
      */
-    public static ChannelExpression<VIntArray, ArrayInt> vIntArray(String name) {
-        return channel(name, VIntArray.class, ArrayInt.class);
+    public static ChannelExpression<VIntArray, ArrayInteger> vIntArray(String name) {
+        return channel(name, VIntArray.class, ArrayInteger.class);
+    }
+
+    /**
+     * A channel with the given name of type VUIntArray
+     *
+     * @param name the channel name; can't be null
+     * @return an expression representing the channel
+     */
+    public static ChannelExpression<VUIntArray, ArrayUInteger> vUIntArray(String name) {
+        return channel(name, VUIntArray.class, ArrayUInteger.class);
     }
 
     /**
@@ -300,7 +336,7 @@ public class ExpressionLanguage {
      * @return a string expression
      */
     public static DesiredRateExpression<VString> vConst(String value) {
-        return constant(newVString(value, alarmNone(), timeNow()), value);
+        return constant(VString.of(value, Alarm.none(), Time.now()), value);
     }
 
     /**
@@ -311,7 +347,7 @@ public class ExpressionLanguage {
      * @return a double expression
      */
     public static DesiredRateExpression<VDouble> vConst(double value) {
-        return constant(newVDouble(value, alarmNone(), timeNow(), displayNone()), Double.toString(value));
+        return constant(VDouble.of(value, Alarm.none(), Time.now(), Display.none()), Double.toString(value));
     }
 
     /**
@@ -322,7 +358,7 @@ public class ExpressionLanguage {
      * @return an int expression
      */
     public static DesiredRateExpression<VInt> vConst(int value) {
-        return constant(newVInt(value, alarmNone(), timeNow(), displayNone()), Integer.toString(value));
+        return constant(VInt.of(value, Alarm.none(), Time.now(), Display.none()), Integer.toString(value));
     }
 
     /**
@@ -333,7 +369,7 @@ public class ExpressionLanguage {
      * @return a double array expression
      */
     public static DesiredRateExpression<VDoubleArray> vConst(double... values) {
-        return constant(newVDoubleArray(new ArrayDouble(values), alarmNone(), timeNow(), displayNone()));
+        return constant(VDoubleArray.of(ArrayDouble.of(values), Alarm.none(), Time.now(), Display.none()));
     }
 
     /**
@@ -344,7 +380,7 @@ public class ExpressionLanguage {
      * @return a double array expression
      */
     public static DesiredRateExpression<VDoubleArray> vConst(ListDouble values) {
-        return constant(newVDoubleArray(values, alarmNone(), timeNow(), displayNone()));
+        return constant(VDoubleArray.of(values, Alarm.none(), Time.now(), Display.none()));
     }
 
     /**
@@ -355,7 +391,7 @@ public class ExpressionLanguage {
      * @return an int array expression
      */
     public static DesiredRateExpression<VIntArray> vConst(int... values) {
-        return constant(newVIntArray(new ArrayInt(values), alarmNone(), timeNow(), displayNone()));
+        return constant(VIntArray.of(ArrayInteger.of(values), Alarm.none(), Time.now(), Display.none()));
     }
 
     /**
@@ -365,8 +401,8 @@ public class ExpressionLanguage {
      * @param values the constant values
      * @return an int array expression
      */
-    public static DesiredRateExpression<VIntArray> vConst(ListInt values) {
-        return constant(newVIntArray(values, alarmNone(), timeNow(), displayNone()));
+    public static DesiredRateExpression<VIntArray> vConst(ListInteger values) {
+        return constant(VIntArray.of(values, Alarm.none(), Time.now(), Display.none()));
     }
 
     /**
@@ -378,7 +414,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpressionList<VDouble> vDoubleConstants(List<Double> values) {
         DesiredRateExpressionList<VDouble> list = new DesiredRateExpressionListImpl<VDouble>();
         for (Double value : values) {
-            list.and(constant(newVDouble(value, alarmNone(), timeNow(), displayNone())));
+            list.and(constant(VDouble.of(value, Alarm.none(), Time.now(), Display.none())));
         }
         return list;
     }
@@ -392,7 +428,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpressionList<VInt> vIntConstants(List<Integer> values) {
         DesiredRateExpressionList<VInt> list = new DesiredRateExpressionListImpl<VInt>();
         for (Integer value : values) {
-            list.and(constant(newVInt(value, alarmNone(), timeNow(), displayNone())));
+            list.and(constant(VInt.of(value, Alarm.none(), Time.now(), Display.none())));
         }
         return list;
     }
@@ -406,7 +442,7 @@ public class ExpressionLanguage {
     public static DesiredRateExpressionList<VString> vStringConstants(List<String> values) {
         DesiredRateExpressionList<VString> list = new DesiredRateExpressionListImpl<VString>();
         for (String value : values) {
-            list.and(constant(newVString(value, alarmNone(), timeNow())));
+            list.and(constant(VString.of(value, Alarm.none(), Time.now())));
         }
         return list;
     }
@@ -431,7 +467,8 @@ public class ExpressionLanguage {
      * @return an expression with the string representation of the argument
      */
     public static DesiredRateExpression<VString> vStringOf(DesiredRateExpression<? extends VType> expression) {
-        return new DesiredRateExpressionImpl<>(expression, new VStringOfFunction(expression.getFunction(), ValueUtil.getDefaultValueFormat()), expression.getName());
+        return new DesiredRateExpressionImpl<>(expression,
+                new VStringOfFunction(expression.getFunction(), new SimpleValueFormat(3)), expression.getName());
     }
 
     /**
@@ -442,7 +479,7 @@ public class ExpressionLanguage {
      * @return an expression with the string representation of the argument
      */
     public static DesiredRateReadWriteExpression<VString, String> vStringOf(DesiredRateReadWriteExpression<? extends VType, ? extends Object> expression) {
-        return vStringOf(expression, ValueUtil.getDefaultValueFormat());
+        return vStringOf(expression, new SimpleValueFormat(3));
     }
 
     /**
@@ -505,46 +542,46 @@ public class ExpressionLanguage {
         return expressions;
     }
 
-    /**
-     * A synchronized array from the given expression.
-     *
-     * @param tolerance maximum time difference between samples
-     * @param expressions the expressions from which to reconstruct the array
-     * @return an expression for the array
-     */
-    public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(Duration tolerance, SourceRateExpressionList<VDouble> expressions) {
-        return synchronizedArrayOf(tolerance, tolerance.multipliedBy(10), expressions);
-    }
-
-    /**
-     * A synchronized array from the given expression.
-     *
-     * @param tolerance maximum time difference between samples in the
-     * reconstructed array
-     * @param cacheDepth maximum time difference between samples in the caches
-     * used to reconstruct the array
-     * @param expressions the expressions from which to reconstruct the array
-     * @return an expression for the array
-     */
-    public static DesiredRateExpression<VMultiDouble>
-            synchronizedArrayOf(Duration tolerance, Duration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
-        if (cacheDepth.equals(Duration.ofMillis(0)) && TimeDuration.toSecondsDouble(cacheDepth) > 0)
-            throw new IllegalArgumentException("Distance between samples must be non-zero and positive");
-        List<String> names = new ArrayList<String>();
-        List<ReadFunction<List<VDouble>>> collectors = new ArrayList<ReadFunction<List<VDouble>>>();
-        DesiredRateExpressionList<List<VDouble>> desiredRateExpressions = new DesiredRateExpressionListImpl<List<VDouble>>();
-        for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
-            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
-            desiredRateExpressions.and(collectorExp);
-            collectors.add(collectorExp.getFunction());
-            names.add(expression.getName());
-        }
-        SynchronizedVDoubleAggregator aggregator =
-                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
-        return new DesiredRateExpressionImpl<VMultiDouble>(desiredRateExpressions,
-                (ReadFunction<VMultiDouble>) aggregator, "syncArray");
-    }
+//    /**
+//     * A synchronized array from the given expression.
+//     *
+//     * @param tolerance maximum time difference between samples
+//     * @param expressions the expressions from which to reconstruct the array
+//     * @return an expression for the array
+//     */
+//    public static DesiredRateExpression<VMultiDouble>
+//            synchronizedArrayOf(Duration tolerance, SourceRateExpressionList<VDouble> expressions) {
+//        return synchronizedArrayOf(tolerance, tolerance.multipliedBy(10), expressions);
+//    }
+//
+//    /**
+//     * A synchronized array from the given expression.
+//     *
+//     * @param tolerance maximum time difference between samples in the
+//     * reconstructed array
+//     * @param cacheDepth maximum time difference between samples in the caches
+//     * used to reconstruct the array
+//     * @param expressions the expressions from which to reconstruct the array
+//     * @return an expression for the array
+//     */
+//    public static DesiredRateExpression<VMultiDouble>
+//            synchronizedArrayOf(Duration tolerance, Duration cacheDepth, SourceRateExpressionList<VDouble> expressions) {
+//        if (cacheDepth.equals(Duration.ofMillis(0)) && TimeDuration.toSecondsDouble(cacheDepth) > 0)
+//            throw new IllegalArgumentException("Distance between samples must be non-zero and positive");
+//        List<String> names = new ArrayList<String>();
+//        List<ReadFunction<List<VDouble>>> collectors = new ArrayList<ReadFunction<List<VDouble>>>();
+//        DesiredRateExpressionList<List<VDouble>> desiredRateExpressions = new DesiredRateExpressionListImpl<List<VDouble>>();
+//        for (SourceRateExpression<VDouble> expression : expressions.getSourceRateExpressions()) {
+//            DesiredRateExpression<List<VDouble>> collectorExp = timedCacheOf(expression, cacheDepth);
+//            desiredRateExpressions.and(collectorExp);
+//            collectors.add(collectorExp.getFunction());
+//            names.add(expression.getName());
+//        }
+//        SynchronizedVDoubleAggregator aggregator =
+//                new SynchronizedVDoubleAggregator(names, collectors, tolerance);
+//        return new DesiredRateExpressionImpl<VMultiDouble>(desiredRateExpressions,
+//                (ReadFunction<VMultiDouble>) aggregator, "syncArray");
+//    }
 
     /**
      * Returns all the values starting the latest value and older up to
@@ -555,7 +592,7 @@ public class ExpressionLanguage {
      * @param maxIntervalBetweenSamples maximum time difference between values
      * @return a new expression
      */
-    public static <T extends Time> DesiredRateExpression<List<T>>
+    public static <T extends TimeProvider> DesiredRateExpression<List<T>>
             timedCacheOf(SourceRateExpression<T> expression, Duration maxIntervalBetweenSamples) {
         return new DesiredRateExpressionImpl<List<T>>(expression,
                 new TimedCacheCollector<T>(expression.getFunction(), maxIntervalBetweenSamples),

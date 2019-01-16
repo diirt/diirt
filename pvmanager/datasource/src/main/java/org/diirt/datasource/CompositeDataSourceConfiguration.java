@@ -98,6 +98,7 @@ public final class CompositeDataSourceConfiguration {
      * one explicitely. The data source must have already been added.
      *
      * @param defaultDataSource the default data source
+     * @return {@link CompositeDataSourceConfiguration}
      */
     public CompositeDataSourceConfiguration defaultDataSource(String defaultDataSource) {
         this.defaultDataSource = defaultDataSource;

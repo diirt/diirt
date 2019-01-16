@@ -57,7 +57,7 @@ public abstract class ConfigurableDataSourceProvider<D extends DataSource, C ext
      * file in the directory. It must be bundled in the same package of
      * the provider.
      *
-     * @return
+     * @return name of default configuration file
      */
     public String getBundledDefaultConfiguration() {
         return getName() + ".default.xml";

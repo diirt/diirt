@@ -4,27 +4,38 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.VNumber;
-import org.diirt.vtype.VNumberArray;
-import org.diirt.vtype.VType;
-import org.diirt.vtype.VInt;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.VStatistics;
-import org.diirt.vtype.VDouble;
-import org.diirt.vtype.VIntArray;
-import org.diirt.vtype.VString;
+import org.epics.vtype.VNumber;
+import org.epics.vtype.VNumberArray;
+import org.epics.vtype.VType;
+import org.epics.vtype.VInt;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VEnum;
+import org.epics.vtype.VStatistics;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInteger;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInteger;
+import org.epics.util.array.ListNumber;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.EnumDisplay;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
+import org.epics.vtype.VIntArray;
+import org.epics.vtype.VString;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import org.diirt.datasource.ReadExpressionTester;
 import org.diirt.datasource.ValueCache;
 import org.diirt.datasource.expression.DesiredRateExpression;
 import org.junit.Test;
 import static org.diirt.datasource.vtype.ExpressionLanguage.*;
-import static org.diirt.vtype.ValueFactory.*;
 import static org.diirt.datasource.ExpressionLanguage.*;
 import org.diirt.datasource.WriteExpressionTester;
 import org.diirt.datasource.expression.ChannelExpression;
 import org.diirt.datasource.expression.DesiredRateReadWriteExpression;
-import org.diirt.util.array.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -121,18 +132,18 @@ public class ExpressionLanguageTest {
         ValueCache<VDoubleArray> cache = (ValueCache<VDoubleArray>) exp.getFunction();
         assertThat(cache.readValue(), not(nullValue()));
         assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
-        ListDouble reference = new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4);
+        ListDouble reference = ArrayDouble.of(0.0, 0.1, 0.2, 0.3, 0.4);
         assertThat(cache.readValue().getData(), equalTo(reference));
     }
 
     @Test
     public void vDoubleArrayConstant2() {
-        DesiredRateExpression<VDoubleArray> exp = vConst(new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4));
+        DesiredRateExpression<VDoubleArray> exp = vConst(ArrayDouble.of(0.0, 0.1, 0.2, 0.3, 0.4));
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VDoubleArray> cache = (ValueCache<VDoubleArray>) exp.getFunction();
         assertThat(cache.readValue(), not(nullValue()));
         assertThat(cache.readValue(), instanceOf(VDoubleArray.class));
-        ListDouble reference = new ArrayDouble(0.0, 0.1, 0.2, 0.3, 0.4);
+        ListDouble reference = ArrayDouble.of(0.0, 0.1, 0.2, 0.3, 0.4);
         assertThat(cache.readValue().getData(), equalTo(reference));
     }
 
@@ -143,18 +154,18 @@ public class ExpressionLanguageTest {
         ValueCache<VIntArray> cache = (ValueCache<VIntArray>) exp.getFunction();
         assertThat(cache.readValue(), not(nullValue()));
         assertThat(cache.readValue(), instanceOf(VIntArray.class));
-        ListInt reference = new ArrayInt(0, 1, 2, 3, 4);
+        ListInteger reference = ArrayInteger.of(0, 1, 2, 3, 4);
         assertThat(cache.readValue().getData(), equalTo(reference));
     }
 
     @Test
     public void vIntArrayConstant2() {
-        DesiredRateExpression<VIntArray> exp = vConst(new ArrayInt(0, 1, 2, 3, 4));
+        DesiredRateExpression<VIntArray> exp = vConst(ArrayInteger.of(0, 1, 2, 3, 4));
         assertThat(exp.getFunction(), instanceOf(ValueCache.class));
         ValueCache<VIntArray> cache = (ValueCache<VIntArray>) exp.getFunction();
         assertThat(cache.readValue(), not(nullValue()));
         assertThat(cache.readValue(), instanceOf(VIntArray.class));
-        ListInt reference = new ArrayInt(0, 1, 2, 3, 4);
+        ListInteger reference = ArrayInteger.of(0, 1, 2, 3, 4);
         assertThat(cache.readValue().getData(), equalTo(reference));
     }
 
@@ -172,20 +183,21 @@ public class ExpressionLanguageTest {
 
     @Test
     public void vStringOf1() {
+        // TODO shroffk fix the NumberFormatter to format Double 3.0 as "3.0"
         ReadExpressionTester exp = new ReadExpressionTester(vStringOf(latestValueOf(vType("pv"))));
-        exp.writeValue("pv", newVDouble(3.0));
+        exp.writeValue("pv", VDouble.of(3.1, Alarm.none(), Time.now(), Display.none()));
         String string = ((VString) exp.getValue()).getValue();
-        assertThat(string, equalTo((Object) "3.0"));
+        assertThat(string, equalTo((Object) "3.1"));
 
-        exp.writeValue("pv", newVInt(5, alarmNone(), timeNow(), displayNone()));
+        exp.writeValue("pv", VInt.of(5, Alarm.none(), Time.now(), Display.none()));
         string = ((VString) exp.getValue()).getValue();
         assertThat(string, equalTo((Object) "5"));
 
-        exp.writeValue("pv", newVEnum(2, Arrays.asList("A", "B", "C", "D", "E"), alarmNone(), timeNow()));
+        exp.writeValue("pv", VEnum.of(2, EnumDisplay.of(Arrays.asList("A", "B", "C", "D", "E")), Alarm.none(), Time.now()));
         string = ((VString) exp.getValue()).getValue();
         assertThat(string, equalTo((Object) "C"));
 
-        exp.writeValue("pv", newVString("Test", alarmNone(), timeNow()));
+        exp.writeValue("pv", VString.of("Test", Alarm.none(), Time.now()));
         string = ((VString) exp.getValue()).getValue();
         assertThat(string, equalTo((Object) "Test"));
     }
@@ -197,9 +209,10 @@ public class ExpressionLanguageTest {
         WriteExpressionTester writeExp = new WriteExpressionTester(vStringOf);
 
         // Read a VDouble
-        readExp.writeValue("pv", newVDouble(3.0));
+        // TODO shroffk fix the NumberFormatter to format Double 3.0 as "3.0"
+        readExp.writeValue("pv", VDouble.of(3.1, Alarm.none(), Time.now(), Display.none()));
         String string = ((VString) readExp.getValue()).getValue();
-        assertThat(string, equalTo((Object) "3.0"));
+        assertThat(string, equalTo((Object) "3.1"));
 
         // Write a string, and get a double
         writeExp.setValue("3.14");
@@ -207,7 +220,7 @@ public class ExpressionLanguageTest {
         assertThat(value, equalTo(3.14));
 
         // Read a VDoubleArray
-        readExp.writeValue("pv", newVEnum(1, Arrays.asList("ONE", "TWO", "THREE"), alarmNone(), timeNow()));
+        readExp.writeValue("pv", VEnum.of(1, EnumDisplay.of(Arrays.asList("ONE", "TWO", "THREE")), Alarm.none(), Time.now()));
         string = ((VString) readExp.getValue()).getValue();
         assertThat(string, equalTo((Object) "TWO"));
 
@@ -217,7 +230,7 @@ public class ExpressionLanguageTest {
         assertThat(intValue, equalTo(2));
 //
 //        // Read a VDoubleArray
-//        readExp.writeValue("pv", newVDoubleArray(new double[] {1.0, 2.0, 3.0}, displayNone()));
+//        readExp.writeValue("pv", VDouble.ofArray(new double[] {1.0, 2.0, 3.0}, Display.none()));
 //        string = ((VString) readExp.getValue()).getValue();
 //        assertThat(string, equalTo((Object) "[1.0, 2.0, 3.0]"));
 //

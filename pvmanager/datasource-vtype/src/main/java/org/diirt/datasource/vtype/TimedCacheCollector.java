@@ -4,7 +4,9 @@
  */
 package org.diirt.datasource.vtype;
 
-import org.diirt.vtype.Time;
+import org.epics.vtype.Time;
+import org.epics.vtype.TimeProvider;
+
 import java.util.*;
 import org.diirt.datasource.Collector;
 import org.diirt.datasource.ReadFunction;
@@ -15,7 +17,7 @@ import org.diirt.util.time.TimeInterval;
  *
  * @author carcassi
  */
-class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
+class TimedCacheCollector<T extends TimeProvider> implements Collector<T, List<T>> {
 
     private final Deque<T> buffer = new ArrayDeque<T>();
     private final ReadFunction<T> function;
@@ -67,8 +69,8 @@ class TimedCacheCollector<T extends Time> implements Collector<T, List<T>> {
 
     private void prune() {
         // Remove all values that are too old
-        TimeInterval periodAllowed = TimeInterval.before(cachedPeriod, buffer.getLast().getTimestamp());
-        while (!buffer.isEmpty() && !periodAllowed.contains(buffer.getFirst().getTimestamp())) {
+        TimeInterval periodAllowed = TimeInterval.before(cachedPeriod, buffer.getLast().getTime().getTimestamp());
+        while (!buffer.isEmpty() && !periodAllowed.contains(buffer.getFirst().getTime().getTimestamp())) {
             // Discard value
             buffer.removeFirst();
         }
