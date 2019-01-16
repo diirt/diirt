@@ -4,7 +4,7 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import javafx.scene.paint.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,9 +27,9 @@ import org.diirt.util.config.Configuration;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListNumbers;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumbers;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -155,7 +155,7 @@ public class NumberColorMaps {
         }
         String colormapName = file.getName();
         colormapName = colormapName.substring(0,colormapName.lastIndexOf('.'));
-        return new NumberColorMapGradient(colors, new ArrayDouble(positionsArray), relative, nanColor, colormapName);
+        return new NumberColorMapGradient(colors, ArrayDouble.of(positionsArray), relative, nanColor, colormapName);
     }
 
 

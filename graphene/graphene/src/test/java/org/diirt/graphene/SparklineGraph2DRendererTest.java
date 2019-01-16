@@ -6,7 +6,7 @@ package org.diirt.graphene;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.BeforeClass;
@@ -85,8 +85,8 @@ public class SparklineGraph2DRendererTest extends BaseGraphTest<SparklineGraph2D
     }
 
     private Point2DDataset maxMinLastValueDataset() {
-        Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(0, 1, 2, 3, 4, 5),
-                new ArrayDouble(3, 3, 3, 3, 3, 3));
+        Point2DDataset data = Point2DDatasets.lineData(ArrayDouble.of(0, 1, 2, 3, 4, 5),
+                ArrayDouble.of(3, 3, 3, 3, 3, 3));
         return data;
     }
 

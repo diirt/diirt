@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
 import org.diirt.util.time.TimeInterval;
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ public class LinearAbsoluteTimeScaleTest {
         Instant start = TimeScalesTest.create(2013, 5, 10, 16, 13, 44, 123);
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofSeconds(20)));
         TimeAxis timeAxis = linearScale.references(timeInterval, 2, 11);
-        assertAxisEquals(timeInterval, new ArrayDouble(1877.0/20000.0,
+        assertAxisEquals(timeInterval, ArrayDouble.of(1877.0/20000.0,
                 3877.0/20000.0,
                 5877.0/20000.0,
                 7877.0/20000.0,
@@ -92,7 +92,7 @@ public class LinearAbsoluteTimeScaleTest {
         Instant start = TimeScalesTest.create(2013, 5, 10, 16, 13, 44, 100);
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofSeconds(5)));
         TimeAxis timeAxis = linearScale.references(timeInterval, 2, 11);
-        assertAxisEquals(timeInterval, new ArrayDouble(4.0/50.0,
+        assertAxisEquals(timeInterval, ArrayDouble.of(4.0/50.0,
                 9.0/50.0,
                 14.0/50.0,
                 19.0/50.0,
@@ -135,7 +135,7 @@ public class LinearAbsoluteTimeScaleTest {
     ArrayList< String > noLabels = new ArrayList< String >();
 
     assertAxisEquals(timeInterval,
-        new ArrayDouble(
+        ArrayDouble.of(
 
         ),
         noTimestamps,
@@ -173,7 +173,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 1 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
         assertAxisEquals(timeInterval,
-                new ArrayDouble(
+                ArrayDouble.of(
                     0.0/1.0,
                     1.0/1.0
                 ),
@@ -198,7 +198,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeInterval timeInterval = TimeInterval.between(start, start.plus(Duration.ofMillis( 2 ) ) );
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 99999999 );
         assertAxisEquals(timeInterval,
-                new ArrayDouble(
+                ArrayDouble.of(
                     0.0/2.0,
                     1.0/2.0,
                     2.0/2.0
@@ -278,7 +278,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
 
         assertAxisEquals(timeInterval,
-        new ArrayDouble(
+        ArrayDouble.of(
             normalValues
         ),
         times,
@@ -346,7 +346,7 @@ public class LinearAbsoluteTimeScaleTest {
     }
 
         assertAxisEquals(timeInterval,
-        new ArrayDouble(
+        ArrayDouble.of(
             normalValues
         ),
         times,
@@ -365,7 +365,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 3 , 3 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 2.0/16.0,
                 7.0/16.0,
                 12.0/16.0
@@ -396,7 +396,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 1.0/18.0,
                 6.0/18.0,
                 11.0/18.0,
@@ -430,7 +430,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 1.0/18.0,
                 6.0/18.0,
                 11.0/18.0,
@@ -464,7 +464,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 1.0/18.0,
                 6.0/18.0,
                 11.0/18.0,
@@ -498,7 +498,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 1.0/18.0,
                 6.0/18.0,
                 11.0/18.0,
@@ -532,7 +532,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 1.0/18.0,
                 6.0/18.0,
                 11.0/18.0,
@@ -566,7 +566,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 1.0/18.0,
                 6.0/18.0,
                 11.0/18.0,
@@ -600,7 +600,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 4 , 4 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 344.0/2000.0,
                 844.0/2000.0,
                 1344.0/2000.0,
@@ -634,7 +634,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 2 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                 200.0/1037.0,
                 700.0/1037.0
             ),
@@ -664,7 +664,7 @@ public class LinearAbsoluteTimeScaleTest {
         TimeAxis timeAxis = linearScale.references( timeInterval, 2 , 7 );
         assertAxisEquals(
             timeInterval,
-            new ArrayDouble(
+            ArrayDouble.of(
                     198.0/5040.0,
                     918.0/5040.0,
                     1662.0/5040.0,

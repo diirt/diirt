@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -12,11 +11,13 @@ import java.awt.RenderingHints;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
-import org.diirt.util.stats.Ranges;
+
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInteger;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInteger;
 
 /**
  * Provides high level representation for a graph, based on user level settings,
@@ -59,13 +60,13 @@ class GraphAreaData {
     Color labelColor;
     Color referenceLineColor;
 
-    ListInt xReferencePixels;
+    ListInteger xReferencePixels;
     ListDouble xReferenceValues;
     List<String> xReferenceLabels;
     int labelMarginBottom;
     int xLabelMaxHeight;
 
-    ListInt yReferencePixels;
+    ListInteger yReferencePixels;
     ListDouble yReferenceValues;
     List<String> yReferenceLabels;
     int labelMarginLeft;
@@ -178,22 +179,22 @@ class GraphAreaData {
         if (!(xValueRange.getMinimum() == xValueRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xValueRange, 2, Math.max(2, (areaRight - areaLeft + 1) / 55));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
-            xReferenceValues = new ArrayDouble(xAxis.getTickValues());
+            xReferenceValues = ArrayDouble.of(xAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             xReferenceLabels = Collections.singletonList(Double.toString(xValueRange.getMinimum()));
-            xReferenceValues = new ArrayDouble(xValueRange.getMinimum());
+            xReferenceValues = ArrayDouble.of(xValueRange.getMinimum());
         }
 
         // Calculate vertical axis references. If range is zero, use special logic
         if (!(yValueRange.getMinimum() == yValueRange.getMaximum())) {
             ValueAxis yAxis = yValueScale.references(yValueRange, 2, Math.max(2, (areaBottom - areaTop + 1) / 55));
             yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
-            yReferenceValues = new ArrayDouble(yAxis.getTickValues());
+            yReferenceValues = ArrayDouble.of(yAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             yReferenceLabels = Collections.singletonList(Double.toString(yValueRange.getMinimum()));
-            yReferenceValues = new ArrayDouble(yValueRange.getMinimum());
+            yReferenceValues = ArrayDouble.of(yValueRange.getMinimum());
         }
 
         FontMetrics labelFontMetrics = graphBuffer.getGraphicsContext().getFontMetrics(labelFont);
@@ -219,7 +220,7 @@ class GraphAreaData {
      */
     private Range safeRange(Range range) {
         if (range.getMinimum() == range.getMaximum()) {
-            return Ranges.range(range.getMinimum() - 1.0, range.getMaximum() + 1.0);
+            return Range.of(range.getMinimum() - 1.0, range.getMaximum() + 1.0);
         } else {
             return range;
         }
@@ -260,7 +261,7 @@ class GraphAreaData {
             if (asCell && xRefCoords[xReferenceValues.size() - 1] == graphRight + 1) {
                 xRefCoords[xReferenceValues.size() - 1]--;
             }
-            xReferencePixels = new ArrayInt(xRefCoords);
+            xReferencePixels = ArrayInteger.of(xRefCoords);
         }
 
         if (yReferenceValues != null) {
@@ -271,7 +272,7 @@ class GraphAreaData {
             if (asCell && yRefCoords[yReferenceValues.size() - 1] == graphTop - 1) {
                 yRefCoords[yReferenceValues.size() - 1]++;
             }
-            yReferencePixels = new ArrayInt(yRefCoords);
+            yReferencePixels = ArrayInteger.of(yRefCoords);
         }
     }
 

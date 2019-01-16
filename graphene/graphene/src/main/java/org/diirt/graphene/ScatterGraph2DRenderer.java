@@ -7,7 +7,7 @@ package org.diirt.graphene;
 import java.awt.*;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ListNumber;
 
 /**
  *

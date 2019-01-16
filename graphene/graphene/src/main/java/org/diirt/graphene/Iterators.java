@@ -7,8 +7,8 @@ package org.diirt.graphene;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.diirt.util.array.IteratorDouble;
-import org.diirt.util.array.IteratorNumber;
+import org.epics.util.array.IteratorDouble;
+import org.epics.util.array.IteratorNumber;
 
 /**
  *

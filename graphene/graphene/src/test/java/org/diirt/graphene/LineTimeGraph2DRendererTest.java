@@ -18,7 +18,7 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.TimeZone;
 
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 import org.diirt.util.time.TimeDuration;
 import org.diirt.util.time.TimeInterval;
 import org.junit.AfterClass;
@@ -47,7 +47,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void test1() throws Exception {
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,10),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(0,4,3,7,6,10),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -65,7 +65,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void test2() throws Exception {
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,10),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(0,4,3,7,6,10),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -83,7 +83,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void test3() throws Exception {
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,10),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(0,4,3,7,6,10),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -101,7 +101,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void test4() throws Exception {
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,10),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(0,4,3,7,6,10),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -119,7 +119,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void testPreviousValueNaNMiddle1() throws Exception {
         Instant start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, Double.NaN, 4, 5, 6),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1, 2, Double.NaN, 4, 5, 6),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1000)),
                 start.plus(Duration.ofMillis(2000)),
@@ -137,7 +137,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void testPreviousValueNaNStart1() throws Exception {
     Instant start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(Double.NaN, 2, 0, 4, 5, 6),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(Double.NaN, 2, 0, 4, 5, 6),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1000)),
                 start.plus(Duration.ofMillis(2000)),
@@ -159,7 +159,7 @@ public class LineTimeGraph2DRendererTest {
     //previous value; however, when the end value is NaN, we do not
     //jump up at the end
         Instant start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 333 );
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, 0 , 4, 5, Double.NaN ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1, 2, 0 , 4, 5, Double.NaN ),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1000)),
                 start.plus(Duration.ofMillis(2000)),
@@ -177,7 +177,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void testPreviousValueEndNotNaN1() throws Exception {
     Instant start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 333 );
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, 0 , 4, 5, 6 ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1, 2, 0 , 4, 5, 6 ),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1000)),
                 start.plus(Duration.ofMillis(2000)),
@@ -196,7 +196,7 @@ public class LineTimeGraph2DRendererTest {
     public void testPreviousValueStartNaN2() throws Exception {
     //test how previous value deals with NaN with only 2 data points
         Instant start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 111 );
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(Double.NaN , 2 ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(Double.NaN , 2 ),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1000))));
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
@@ -210,7 +210,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void testPreviousValueMultiNaNEnd1() throws Exception {
         Instant start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1, 2, 3 , Double.NaN , Double.NaN , Double.NaN ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1, 2, 3 , Double.NaN , Double.NaN , Double.NaN ),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1000)),
                 start.plus(Duration.ofMillis(2000)),
@@ -228,7 +228,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void testPreviousValueBigFluctuation() throws Exception {
     Instant start = TimeScalesTest.create(2014, 1 , 19 , 11 , 0 , 0 , 0 );
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10 , 0 , 100 , 0 , 10 , 0 , 100 , -100 , 0 , 10 , 100 , -100 , 100 , -100 , 0  ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(10 , 0 , 100 , 0 , 10 , 0 , 100 , -100 , 0 , 10 , 100 , -100 , 100 , -100 , 0  ),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1)),
                 start.plus(Duration.ofMillis(2)),
@@ -255,7 +255,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void extraGraphArea1() throws Exception {
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(0,4,3,7,6,11),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(0,4,3,7,6,11),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -278,7 +278,7 @@ public class LineTimeGraph2DRendererTest {
     //test using a small extra graph area gap. The gap is only 1 second in
     //this test case
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1,2,3,4,5,6),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -301,7 +301,7 @@ public class LineTimeGraph2DRendererTest {
     //test using a huge extra graph area gap. The gap is a minute, while
     //the data points are just second apart
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1,2,3,4,5,6),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(1000)),
                 start.plus(Duration.ofMillis(2000)),
@@ -324,7 +324,7 @@ public class LineTimeGraph2DRendererTest {
     //test extra graph area with the data points falling perfectly
     //in line with the gridlines
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 0);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1,2,3,4,5,6),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(10000)),
                 start.plus(Duration.ofMillis(20000)),
@@ -346,7 +346,7 @@ public class LineTimeGraph2DRendererTest {
     public void lessGraphArea1() throws Exception {
     //test using an absolute time axis that doesn't fit everything.
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1,2,3,4,5,6),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(10000)),
                 start.plus(Duration.ofMillis(20000)),
@@ -368,7 +368,7 @@ public class LineTimeGraph2DRendererTest {
     public void lessGraphArea2() throws Exception {
     //test using an absolute time axis that barely fits anything.
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,6),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1,2,3,4,5,6),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(10000)),
                 start.plus(Duration.ofMillis(20000)),
@@ -390,7 +390,7 @@ public class LineTimeGraph2DRendererTest {
     public void lessGraphArea3() throws Exception {
     //test using a y-axis that does not fit the data
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 10, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10,20,30,40,50,60),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(10,20,30,40,50,60),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(10000)),
                 start.plus(Duration.ofMillis(20000)),
@@ -413,7 +413,7 @@ public class LineTimeGraph2DRendererTest {
     //test going backwards in time. Sure, it's a degenerate graph, but we
     //will see if it handles extending to the end of the graph correctly.
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(10,20,30,40,50,25),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(10,20,30,40,50,25),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -436,7 +436,7 @@ public class LineTimeGraph2DRendererTest {
     //our data points extend the whole x axis range, but the last data point
     //has x value less than other data points
         Instant start = TimeScalesTest.create(2013, 4, 5, 11, 13, 3, 900);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble(1,2,3,4,5,-1),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of(1,2,3,4,5,-1),
                 Arrays.asList(start,
                 start.plus(Duration.ofMillis(3000)),
                 start.plus(Duration.ofMillis(6000)),
@@ -457,7 +457,7 @@ public class LineTimeGraph2DRendererTest {
     public void testSpringForward() throws Exception {
         assumeTrue(TimeZone.getDefault().hasSameRules(TimeZone.getTimeZone("America/New_York")));
         Instant start = TimeScalesTest.create(2015, 3, 8, 1, 0, 0, 0);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 90,34,58,66,61,16,90,24,87,61,97,89,4,89,63,70,67,66,64,2 ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of( 90,34,58,66,61,16,90,24,87,61,97,89,4,89,63,70,67,66,64,2 ),
                 Arrays.asList(start,
                     start.plus(TimeDuration.ofMinutes(2.4)),
                     start.plus(TimeDuration.ofMinutes(3.3)),
@@ -490,7 +490,7 @@ public class LineTimeGraph2DRendererTest {
     @Test
     public void testMultilineLabels() throws Exception {
         Instant start = TimeScalesTest.create(2014, 12, 31, 23, 30, 0, 0);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 929,333,542,304,153,631,562,98,187,285,710,688,399,528,679,102,533,156,526,941 ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of( 929,333,542,304,153,631,562,98,187,285,710,688,399,528,679,102,533,156,526,941 ),
                 Arrays.asList(start,
                     start.plus(TimeDuration.ofMinutes(2.4)),
                     start.plus(TimeDuration.ofMinutes(3.3)),
@@ -525,7 +525,7 @@ public class LineTimeGraph2DRendererTest {
     //tests what happens if we have a date and time for the last label
     //on the graph
         Instant start = TimeScalesTest.create(2014, 12, 31, 23, 30, 0, 0);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 1 , 2 , 3 , 4 ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of( 1 , 2 , 3 , 4 ),
                 Arrays.asList(start,
                         start.plus( TimeDuration.ofMinutes( 10 ) ) ,
                         start.plus( TimeDuration.ofMinutes( 20 ) ) ,
@@ -544,7 +544,7 @@ public class LineTimeGraph2DRendererTest {
     //tests what happens if we have a date and time for the first, last labels
     //on the graph, and many in the middle
         Instant start = TimeScalesTest.create(2015, 4, 1, 0, 0, 0, 0);
-        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(new ArrayDouble( 1 , 2 , 3 , 4 ),
+        TimeSeriesDataset data = TimeSeriesDatasets.timeSeriesOf(ArrayDouble.of( 1 , 2 , 3 , 4 ),
                 Arrays.asList(start,
             start.plus( Duration.ofHours( 720 ) ) , /*go past all of April*/
             start.plus( Duration.ofHours( 720 + 744 ) ) , /*go past all of May*/

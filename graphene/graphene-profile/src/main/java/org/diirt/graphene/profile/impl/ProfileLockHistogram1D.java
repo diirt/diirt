@@ -11,8 +11,8 @@ import java.awt.Graphics2D;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumbers;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumbers;
 
 /**
  * Handles profiling for <code>Histogram1D</code> while synchronized.
@@ -42,7 +42,7 @@ public class ProfileLockHistogram1D extends ProfileHistogram1D{
             data[i] = rand.nextGaussian();
         }
 
-        dataset = Cell1DDatasets.datasetFrom(new ArrayDouble(data), ListNumbers.linearList(0, 1, nSamples));
+        dataset = Cell1DDatasets.datasetFrom(ArrayDouble.of(data), ListNumbers.linearList(0, 1, nSamples));
     }
 
 

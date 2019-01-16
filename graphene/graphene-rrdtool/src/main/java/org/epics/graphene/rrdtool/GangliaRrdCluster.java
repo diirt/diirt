@@ -145,7 +145,7 @@ public class GangliaRrdCluster {
         for (int i = 0; i < values.length; i++) {
             values[i] = getValue(machineNames.get(i), signal, time);
         }
-        return new ArrayDouble(values);
+        return ArrayDouble.of(values);
     }
 
     public double getValue(String machine, String signal, Timestamp time) {

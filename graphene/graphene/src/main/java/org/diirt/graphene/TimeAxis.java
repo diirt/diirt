@@ -9,7 +9,7 @@ import java.text.*;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.diirt.util.array.ListDouble;
+import org.epics.util.array.ListDouble;
 import org.diirt.util.time.TimeInterval;
 import java.time.Instant;
 

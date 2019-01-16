@@ -4,9 +4,9 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.util.Random;
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Point2DTestDatasets {
             data[j] = amplitude * Math.sin(j * 2.0 * Math.PI / wavelengthInSamples + initialAngleInRad) + average;
         }
 
-        return Point2DDatasets.lineData(xRange, new ArrayDouble(data));
+        return Point2DDatasets.lineData(xRange, ArrayDouble.of(data));
     }
 
     public static double[] randomDataset() {

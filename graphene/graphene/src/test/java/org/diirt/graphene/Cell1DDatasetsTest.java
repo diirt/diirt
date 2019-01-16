@@ -4,8 +4,8 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -18,7 +18,7 @@ public class Cell1DDatasetsTest {
 
     @Test
     public void linearRange1() {
-        ListNumber values = new ArrayDouble(5, 3, 7, -1, 2);
+        ListNumber values = ArrayDouble.of(5, 3, 7, -1, 2);
         Cell1DDataset dataset = Cell1DDatasets.linearRange(values, 0, 10);
 
         assertThat(dataset.getXCount(), equalTo(5));
@@ -46,8 +46,8 @@ public class Cell1DDatasetsTest {
 
     @Test
     public void datasetFrom1() {
-        ListNumber values = new ArrayDouble(5, 3, 7, -1, 2);
-        ListNumber boundaries = new ArrayDouble(0, 2, 4, 6, 8, 10);
+        ListNumber values = ArrayDouble.of(5, 3, 7, -1, 2);
+        ListNumber boundaries = ArrayDouble.of(0, 2, 4, 6, 8, 10);
         Cell1DDataset dataset = Cell1DDatasets.datasetFrom(values, boundaries);
 
         assertThat(dataset.getXCount(), equalTo(5));

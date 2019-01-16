@@ -4,10 +4,10 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import javafx.scene.paint.Color;
 import java.util.List;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ListNumber;
 
 /**
  * A numeric color map defined by interpolated colors (gradients).

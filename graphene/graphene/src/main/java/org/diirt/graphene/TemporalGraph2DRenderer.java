@@ -4,7 +4,7 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -16,9 +16,9 @@ import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.List;
 import static org.diirt.graphene.InterpolationScheme.NEAREST_NEIGHBOR;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
 import org.diirt.util.time.TimeInterval;
 import java.time.Instant;
 
@@ -287,7 +287,7 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         valueReferenceLabels = Arrays.asList(valueAxis.getTickLabels());
         timeReferences = timeAxis.getTimestamps();
         normalizedTimeReferences = timeAxis.getNormalizedValues();
-        valueReferences = new ArrayDouble(valueAxis.getTickValues());
+        valueReferences = ArrayDouble.of(valueAxis.getTickValues());
 
         labelFontMetrics = g.getFontMetrics(labelFont);
 
@@ -323,13 +323,13 @@ public abstract class TemporalGraph2DRenderer<T extends TemporalGraph2DRendererU
         for (int i = 0; i < xRefCoords.length; i++) {
             xRefCoords[i] = scaledX(normalizedTimeReferences.getDouble(i));
         }
-        xReferenceCoords = new ArrayDouble(xRefCoords);
+        xReferenceCoords = ArrayDouble.of(xRefCoords);
 
         double[] yRefCoords = new double[valueReferences.size()];
         for (int i = 0; i < yRefCoords.length; i++) {
             yRefCoords[i] = scaledY(valueReferences.getDouble(i));
         }
-        yReferenceCoords = new ArrayDouble(yRefCoords);
+        yReferenceCoords = ArrayDouble.of(yRefCoords);
     }
 
     protected void drawBackground() {

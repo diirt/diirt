@@ -4,11 +4,16 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.stats.Range;
-import org.diirt.util.array.*;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.CollectionDouble;
+import org.epics.util.array.CollectionNumber;
+import org.epics.util.array.IteratorDouble;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Statistics;
+import org.epics.util.stats.StatisticsUtil;
 
 /**
  * Factory methods for wrapper datasets.
@@ -200,14 +205,14 @@ public class Cell2DDatasets {
                 values[y * xCount + x] = function.getValue(middleX, middleY);
             }
         }
-        ListDouble data = new ArrayDouble(values);
+        ListDouble data = ArrayDouble.of(values);
         return datasetFrom(data, xBoundaries, yBoundaries);
     }
 
     public static Cell2DDataset datasetFrom(final ListNumber values, final ListNumber xBoundaries, final ListNumber yBoundaries) {
         final Statistics statistics = StatisticsUtil.statisticsOf(values);
-        final Range xRange = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
-        final Range yRange = Ranges.range(yBoundaries.getDouble(0), yBoundaries.getDouble(yBoundaries.size() - 1));
+        final Range xRange = Range.of(xBoundaries.getDouble(0), xBoundaries.getDouble(xBoundaries.size() - 1));
+        final Range yRange = Range.of(yBoundaries.getDouble(0), yBoundaries.getDouble(yBoundaries.size() - 1));
 
         // Check boundary sizes correspond match the number of points.
         final int xCount = xBoundaries.size() - 1;

@@ -4,15 +4,16 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.SortedListView;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.array.SortedListView;
+import org.epics.util.stats.Ranges;
 
 /**
  * Renderer for a line graph.
@@ -126,8 +127,8 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         drawBackground();
         drawGraphArea();
 
-        SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.getXValues());
-        ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
+        SortedListView xValues = ListNumbers.sortedView(data.getXValues());
+        ListNumber yValues = ListNumbers.sortedView(data.getYValues(), xValues.getIndexes());
 
         setClip(g);
         g.setColor(Color.BLACK);
@@ -203,7 +204,7 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         drawBackground();
         drawGraphArea();
 
-        Range datasetRangeCheck = Ranges.range(0,data.size());
+        Range datasetRangeCheck = Range.of(0,data.size());
 
         //Set color scheme
         if(valueColorSchemeInstance == null || datasetRange == null || datasetRange != datasetRangeCheck){
@@ -212,8 +213,8 @@ public class LineGraph2DRenderer extends Graph2DRenderer<LineGraph2DRendererUpda
         }
         //Draw a line for each set of data in the data array.
         for(int datasetNumber = 0; datasetNumber < data.size(); datasetNumber++){
-            SortedListView xValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getXValues());
-            ListNumber yValues = org.diirt.util.array.ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());
+            SortedListView xValues = ListNumbers.sortedView(data.get(datasetNumber).getXValues());
+            ListNumber yValues = ListNumbers.sortedView(data.get(datasetNumber).getYValues(), xValues.getIndexes());
             setClip(g);
             g.setColor(new Color(valueColorSchemeInstance.colorFor((double)datasetNumber)));
             drawValueExplicitLine(xValues, yValues, interpolation, reduction);

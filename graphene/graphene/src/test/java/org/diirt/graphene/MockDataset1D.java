@@ -4,12 +4,12 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.stats.Statistics;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.stats.Statistics;
 import java.util.Random;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.stats.Range;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Range;
 
 /**
  *
@@ -23,7 +23,7 @@ public class MockDataset1D implements Point1DDataset {
     private Statistics statistics;
 
     public MockDataset1D(double[] data) {
-        values = new ArrayDouble(data);
+        values = ArrayDouble.of(data);
         statistics = StatisticsUtil.statisticsOf(values);
     }
 

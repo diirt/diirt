@@ -3,7 +3,6 @@
  * All rights reserved. Use is subject to license terms. See LICENSE.TXT
  */
 package org.diirt.graphene;
-import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -13,11 +12,12 @@ import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.List;
-import org.diirt.util.array.ListInt;
-import org.diirt.util.array.ListMath;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.ListNumbers;
-import org.diirt.util.array.SortedListView;
+
+import org.epics.util.array.ListInteger;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.array.SortedListView;
+import org.epics.util.stats.Range;
 
 /**
  * Provides low level drawing operations, at the right granularity to perform
@@ -361,7 +361,7 @@ public class GraphBuffer {
      * @param rightPixel the rightmost x-coordinate at which the label may be drawn
      * @param topPixel the y-coordinate of the top of the label
      */
-    void drawBottomLabels(List<String> labels, ListInt valuePixelPositions, Color labelColor, Font labelFont, int leftPixel, int rightPixel, int topPixel) {
+    void drawBottomLabels(List<String> labels, ListInteger valuePixelPositions, Color labelColor, Font labelFont, int leftPixel, int rightPixel, int topPixel) {
         // Draw X labels
         if (labels != null && !labels.isEmpty()) {
             //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -433,7 +433,7 @@ public class GraphBuffer {
         }
     }
 
-    void drawLeftLabels(List<String> labels, ListInt valuePixelPositions, Color labelColor, Font labelFont, int bottomPixel, int topPixel, int leftPixel) {
+    void drawLeftLabels(List<String> labels, ListInteger valuePixelPositions, Color labelColor, Font labelFont, int bottomPixel, int topPixel, int leftPixel) {
         // Draw Y labels
         if (labels != null && !labels.isEmpty()) {
             //g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -490,7 +490,7 @@ public class GraphBuffer {
         }
     }
 
-    void drawHorizontalReferenceLines(ListInt referencePixels, Color lineColor, int graphLeftPixel, int graphRightPixel) {
+    void drawHorizontalReferenceLines(ListInteger referencePixels, Color lineColor, int graphLeftPixel, int graphRightPixel) {
         g.setColor(lineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 
@@ -500,7 +500,7 @@ public class GraphBuffer {
         }
     }
 
-    void drawVerticalReferenceLines(ListInt referencePixels, Color lineColor, int graphBottomPixel, int graphTopPixel) {
+    void drawVerticalReferenceLines(ListInteger referencePixels, Color lineColor, int graphBottomPixel, int graphTopPixel) {
         g.setColor(lineColor);
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
         for (int i = 0; i < referencePixels.size(); i++) {
@@ -567,8 +567,8 @@ public class GraphBuffer {
         int start = ListNumbers.binarySearchValueOrLower(xValues, xLeftValue);
         int end = ListNumbers.binarySearchValueOrHigher(xValues, xRightValue);
 
-        xValues = ListMath.limit(xValues, start, end + 1);
-        yValues = ListMath.limit(yValues, start, end + 1);
+        xValues = xValues.subList(start, end + 1);
+        yValues = yValues.subList(start, end + 1);
 
         switch (reduction) {
             default:

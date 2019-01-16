@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -27,9 +27,9 @@ public class BubbleGraph2DRendererTest extends BaseGraphTest<BubbleGraph2DRender
     private Point3DWithLabelDataset defaultDataset() {
         Random rand = new Random(0);
         int size = 50;
-        ArrayDouble x = new ArrayDouble(new double[size], false);
-        ArrayDouble y = new ArrayDouble(new double[size], false);
-        ArrayDouble z = new ArrayDouble(new double[size], false);
+        ArrayDouble x = ArrayDouble.of(new double[size]);
+        ArrayDouble y = ArrayDouble.of(new double[size]);
+        ArrayDouble z = ArrayDouble.of(new double[size]);
         String[] labelSet = new String[]{"First", "Second", "Third", "Fourth", "Fifth"};
         List<String> labels = new ArrayList<String>(size);
         for (int i = 0; i < size; i++) {
@@ -46,9 +46,9 @@ public class BubbleGraph2DRendererTest extends BaseGraphTest<BubbleGraph2DRender
     private Point3DWithLabelDataset randomDataset() {
         Random rand = new Random(0);
         int size = 50;
-        ArrayDouble x = new ArrayDouble(new double[size], false);
-        ArrayDouble y = new ArrayDouble(new double[size], false);
-        ArrayDouble z = new ArrayDouble(new double[size], false);
+        ArrayDouble x = ArrayDouble.of(new double[size]);
+        ArrayDouble y = ArrayDouble.of(new double[size]);
+        ArrayDouble z = ArrayDouble.of(new double[size]);
         String[] labelSet = new String[]{"First", "Second", "Third", "Fourth", "Fifth"};
         List<String> labels = new ArrayList<String>(size);
         for (int i = 0; i < size; i++) {
@@ -62,9 +62,9 @@ public class BubbleGraph2DRendererTest extends BaseGraphTest<BubbleGraph2DRender
     }
 
     private Point3DWithLabelDataset consecDataset() {
-        ArrayDouble x = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble y = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble z = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble x = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble y = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble z = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
                 "First", "Second", "Third", "Fourth", "Fifth");
 
@@ -73,9 +73,9 @@ public class BubbleGraph2DRendererTest extends BaseGraphTest<BubbleGraph2DRender
     }
 
     private Point3DWithLabelDataset negativeExceptLastDataset() {
-        ArrayDouble x = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble y = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble z = new ArrayDouble(-1, 2, -3, 4, -5, 6, -7, 8, -9, 10);
+        ArrayDouble x = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble y = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble z = ArrayDouble.of(-1, 2, -3, 4, -5, 6, -7, 8, -9, 10);
         List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
                 "First", "Second", "Third", "Fourth", "Fifth");
 
@@ -85,9 +85,9 @@ public class BubbleGraph2DRendererTest extends BaseGraphTest<BubbleGraph2DRender
     }
 
     private Point3DWithLabelDataset negativeDataset() {
-        ArrayDouble x = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble y = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble z = new ArrayDouble(-1, -2, -3, -4, -5, -6, -7, -8, -9, -10);
+        ArrayDouble x = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble y = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble z = ArrayDouble.of(-1, -2, -3, -4, -5, -6, -7, -8, -9, -10);
         List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
                 "First", "Second", "Third", "Fourth", "Fifth");
 
@@ -96,9 +96,9 @@ public class BubbleGraph2DRendererTest extends BaseGraphTest<BubbleGraph2DRender
     }
 
     private Point3DWithLabelDataset zerosDataset() {
-        ArrayDouble x = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble y = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble z = new ArrayDouble(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        ArrayDouble x = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble y = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble z = ArrayDouble.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
                 "First", "Second", "Third", "Fourth", "Fifth");
 
@@ -107,9 +107,9 @@ public class BubbleGraph2DRendererTest extends BaseGraphTest<BubbleGraph2DRender
     }
 
     private Point3DWithLabelDataset perfectSquareDataset() {
-        ArrayDouble x = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble y = new ArrayDouble(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ArrayDouble z = new ArrayDouble(1, 4, 9, 16, 25, 36, 49, 64, 81, 100);
+        ArrayDouble x = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble y = ArrayDouble.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ArrayDouble z = ArrayDouble.of(1, 4, 9, 16, 25, 36, 49, 64, 81, 100);
         List<String> labels = Arrays.asList("First", "Second", "Third", "Fourth", "Fifth",
                 "First", "Second", "Third", "Fourth", "Fifth");
 

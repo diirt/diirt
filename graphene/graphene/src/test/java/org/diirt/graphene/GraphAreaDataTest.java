@@ -5,7 +5,9 @@
 package org.diirt.graphene;
 
 import java.awt.Color;
-import org.diirt.util.stats.Ranges;
+
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
 import org.junit.Test;
 
 /**
@@ -22,7 +24,7 @@ public class GraphAreaDataTest {
         data.setGraphPadding(0, 0, 0, 0);
         data.setGraphBuffer(graphBuffer);
         data.setLabelMargin(5, 5);
-        data.setRanges(Ranges.range(-5, 5), ValueScales.linearScale(), Ranges.range(-10, 10), ValueScales.linearScale());
+        data.setRanges(Range.of(-5, 5), ValueScales.linearScale(), Range.of(-10, 10), ValueScales.linearScale());
         graphBuffer.drawBackground(Color.WHITE);
         data.prepareLabels(FontUtil.getLiberationSansRegular(), Color.BLACK);
         data.prepareGraphArea(true, Color.GRAY);

@@ -4,14 +4,14 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.stats.Range;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.IteratorNumber;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.array.ListNumbers;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.stats.Statistics;
+import org.epics.util.stats.Range;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.IteratorNumber;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.stats.Ranges;
 
 /**
  *
@@ -47,14 +47,14 @@ class Cell1DHistogramDataset implements Cell1DDataset {
             this.minValueRange = dataset.getStatistics().getRange().getMinimum();
             this.maxValueRange = dataset.getStatistics().getRange().getMaximum();
             xBoundaries = ListNumbers.linearListFromRange(minValueRange, maxValueRange, nBins);
-            xRange = Ranges.range(xBoundaries.getDouble(0), xBoundaries.getDouble(nBins));
+            xRange = Range.of(xBoundaries.getDouble(0), xBoundaries.getDouble(nBins));
         }
         values = new double[nBins];
         while (newValues.hasNext()) {
             addValueToBin(newValues.nextDouble());
         }
 
-        statistics = StatisticsUtil.statisticsOf(new ArrayDouble(values));
+        statistics = StatisticsUtil.statisticsOf(ArrayDouble.of(values));
     }
 
     private void addValueToBin(double value) {

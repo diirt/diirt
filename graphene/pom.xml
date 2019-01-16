@@ -47,5 +47,10 @@
             <artifactId>diirt-util</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>epics-util</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

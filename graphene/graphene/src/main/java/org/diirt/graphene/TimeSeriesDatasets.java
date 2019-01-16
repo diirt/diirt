@@ -4,11 +4,11 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.stats.Statistics;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.stats.Statistics;
 import java.util.List;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
 import org.diirt.util.time.TimeInterval;
 import java.time.Instant;
 

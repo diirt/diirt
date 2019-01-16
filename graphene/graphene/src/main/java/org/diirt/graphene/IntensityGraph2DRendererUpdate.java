@@ -4,8 +4,8 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
 
 /**
  * A set of parameters that can be applied to a <code>IntensityGraph2DRenderer</code>
@@ -107,14 +107,14 @@ public class IntensityGraph2DRendererUpdate extends Graph2DRendererUpdate<Intens
      */
     public IntensityGraph2DRendererUpdate pixelSelectionRange(int x1, int x2, int y1, int y2) {
         if (x1 > x2) {
-            xPixelSelectionRange = Ranges.range(x2, x1);
+            xPixelSelectionRange = Range.of(x2, x1);
         } else {
-            xPixelSelectionRange = Ranges.range(x1, x2);
+            xPixelSelectionRange = Range.of(x1, x2);
         }
         if (y1 > y2) {
-            yPixelSelectionRange = Ranges.range(y2, y1);
+            yPixelSelectionRange = Range.of(y2, y1);
         } else {
-            yPixelSelectionRange = Ranges.range(y1, y2);
+            yPixelSelectionRange = Range.of(y1, y2);
         }
         return self();
     }

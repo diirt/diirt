@@ -9,8 +9,8 @@ import com.sun.management.OperatingSystemMXBean;
 import java.lang.management.ManagementFactory;
 import java.math.BigInteger;
 import java.util.Arrays;
-import org.diirt.util.array.ArrayLong;
-import org.diirt.util.array.ListLong;
+import org.epics.util.array.ArrayLong;
+import org.epics.util.array.ListLong;
 
 /**
  * A timing system to track a set of durations of a process.
@@ -140,7 +140,7 @@ public class StopWatch implements Settings{
      * @return copy of times
      */
     public ListLong getNanoTimings() {
-        return new ArrayLong(Arrays.copyOfRange(timings, 0, nAttempts));
+        return ArrayLong.of(Arrays.copyOfRange(timings, 0, nAttempts));
     }
 
     /**
@@ -165,7 +165,7 @@ public class StopWatch implements Settings{
             total = total.add(BigInteger.valueOf(timings[i + start]));
             averages[i] = total.divide(BigInteger.valueOf(i+1)).longValue();
         }
-        return new ArrayLong(averages);
+        return ArrayLong.of(averages);
     }
 
     /**

@@ -4,15 +4,18 @@
  */
 package org.diirt.graphene;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.stats.Ranges;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInteger;
 import org.junit.Test;
-import org.diirt.util.array.ArrayDouble;
 /**
  *
  * @author carcassi
@@ -23,7 +26,7 @@ public class GraphBufferTest {
     @Test
     public void xScalingAsCell() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setXScaleAsCell(Ranges.range(0, 100), 0, 3, ValueScales.linearScale());
+        graph.setXScaleAsCell(Range.of(0, 100), 0, 3, ValueScales.linearScale());
         assertThat(graph.xValueToPixel(0), equalTo(0));
         assertThat(graph.xValueToPixel(24.9999), equalTo(0));
         assertThat(graph.xValueToPixel(25), equalTo(1));
@@ -51,7 +54,7 @@ public class GraphBufferTest {
     public void xScalingAsCell2()throws Exception {
 
         GraphBuffer test=new GraphBuffer(300,200);
-        test.setXScaleAsCell(Ranges.range(0,1), 0 , 3, ValueScales.linearScale());
+        test.setXScaleAsCell(Range.of(0,1), 0 , 3, ValueScales.linearScale());
 
         assertThat(test.xValueToPixel(0.0),equalTo(0));
         assertThat(test.xValueToPixel(0.249999),equalTo(0));
@@ -82,7 +85,7 @@ public class GraphBufferTest {
     @Test
     public void xScalingAsCellLog()throws Exception{
         GraphBuffer test=new GraphBuffer(300, 200);
-        test.setXScaleAsCell(Ranges.range(1,10000), 0, 3, ValueScales.logScale());
+        test.setXScaleAsCell(Range.of(1,10000), 0, 3, ValueScales.logScale());
 
         assertThat(test.xValueToPixel(1),equalTo(0));
         assertThat(test.xValueToPixel(10),equalTo(1));
@@ -98,7 +101,7 @@ public class GraphBufferTest {
     @Test
     public void xScalingAsPoint() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setXScaleAsPoint(Ranges.range(0, 30), 0, 3, ValueScales.linearScale());
+        graph.setXScaleAsPoint(Range.of(0, 30), 0, 3, ValueScales.linearScale());
         assertThat(graph.xValueToPixel(0), equalTo(0));
         assertThat(graph.xValueToPixel(4.9999), equalTo(0));
         assertThat(graph.xValueToPixel(5), equalTo(1));
@@ -127,7 +130,7 @@ public class GraphBufferTest {
     public void xScalingAsPoint2()throws Exception{
 
         GraphBuffer test=new GraphBuffer(300,200);
-        test.setXScaleAsPoint(Ranges.range(0,60), 0, 3, ValueScales.linearScale());
+        test.setXScaleAsPoint(Range.of(0,60), 0, 3, ValueScales.linearScale());
         assertThat(test.xValueToPixel(0), equalTo(0));
         assertThat(test.xValueToPixel(10), equalTo(1));
         assertThat(test.xValueToPixel(10.01), equalTo(1));
@@ -143,7 +146,7 @@ public class GraphBufferTest {
     public void xScalingAsPointLog()throws Exception{
 
         GraphBuffer test=new GraphBuffer(300, 200);
-        test.setXScaleAsPoint(Ranges.range(1, 1000000), 0, 3, ValueScales.logScale());
+        test.setXScaleAsPoint(Range.of(1, 1000000), 0, 3, ValueScales.logScale());
         assertThat(test.xValueToPixel(1),equalTo(0));
         assertThat(test.xValueToPixel(10),equalTo(1));
         assertThat(test.xValueToPixel(100),equalTo(1));
@@ -159,7 +162,7 @@ public class GraphBufferTest {
     @Test
     public void yScalingAsCell() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setYScaleAsCell(Ranges.range(0, 100), 3, 0, ValueScales.linearScale());
+        graph.setYScaleAsCell(Range.of(0, 100), 3, 0, ValueScales.linearScale());
         assertThat(graph.yValueToPixel(0), equalTo(3));
         assertThat(graph.yValueToPixel(24.9999), equalTo(3));
         assertThat(graph.yValueToPixel(25), equalTo(2));
@@ -188,7 +191,7 @@ public class GraphBufferTest {
 
 
         GraphBuffer test= new GraphBuffer(300, 200);
-        test.setYScaleAsCell(Ranges.range(0,1), 3, 0, ValueScales.linearScale());
+        test.setYScaleAsCell(Range.of(0,1), 3, 0, ValueScales.linearScale());
         assertThat(test.yValueToPixel(0), equalTo(3));
         assertThat(test.yValueToPixel(0.25), equalTo(2));
         assertThat(test.yValueToPixel(0.5), equalTo(1));
@@ -204,7 +207,7 @@ public class GraphBufferTest {
     @Test
     public void yScalingAsPoint() throws Exception {
         GraphBuffer graph = new GraphBuffer(300, 200);
-        graph.setYScaleAsPoint(Ranges.range(0, 30), 3, 0, ValueScales.linearScale());
+        graph.setYScaleAsPoint(Range.of(0, 30), 3, 0, ValueScales.linearScale());
         assertThat(graph.yValueToPixel(0), equalTo(3));
         assertThat(graph.yValueToPixel(4.9999), equalTo(3));
         assertThat(graph.yValueToPixel(5), equalTo(2));
@@ -222,7 +225,7 @@ public class GraphBufferTest {
 
 
         GraphBuffer test=new GraphBuffer(300,200);
-        test.setYScaleAsPoint(Ranges.range(0, 6), 0, 3,ValueScales.linearScale());
+        test.setYScaleAsPoint(Range.of(0, 6), 0, 3,ValueScales.linearScale());
         assertThat(test.yValueToPixel(0), equalTo(0));
         assertThat(test.yValueToPixel(0.5), equalTo(0));
         assertThat(test.yValueToPixel(1.5), equalTo(1));
@@ -241,7 +244,7 @@ public class GraphBufferTest {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
         graphBuffer.drawBackground(Color.WHITE);
         List<String> labels = Arrays.asList("0", "50", "100");
-        ArrayInt positions = new ArrayInt(10, 150, 289);
+        ArrayInteger positions = ArrayInteger.of(10, 150, 289);
         graphBuffer.drawBottomLabels(labels, positions, Color.BLACK, FontUtil.getLiberationSansRegular(),
                 10, 289, 190);
         ImageAssert.compareImages("graphBuffer.drawBottomLabels", graphBuffer.getImage());
@@ -252,7 +255,7 @@ public class GraphBufferTest {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
         graphBuffer.drawBackground(Color.WHITE);
         List<String> labels = Arrays.asList("0", "50", "100");
-        ArrayInt positions = new ArrayInt(189, 100, 10);
+        ArrayInteger positions = ArrayInteger.of(189, 100, 10);
         graphBuffer.drawLeftLabels(labels, positions, Color.BLACK, FontUtil.getLiberationSansRegular(),
                 189, 10, 35);
         ImageAssert.compareImages("graphBuffer.drawLeftLabels", graphBuffer.getImage());
@@ -262,7 +265,7 @@ public class GraphBufferTest {
     public void drawHorizontalReferenceLines() throws Exception {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
         graphBuffer.drawBackground(Color.WHITE);
-        ArrayInt positions = new ArrayInt(189, 100, 10);
+        ArrayInteger positions = ArrayInteger.of(189, 100, 10);
         graphBuffer.drawHorizontalReferenceLines(positions, Color.BLACK, 5, 294);
         ImageAssert.compareImages("graphBuffer.drawHorizontalReferenceLines", graphBuffer.getImage());
     }
@@ -271,7 +274,7 @@ public class GraphBufferTest {
     public void drawHorizontalReferenceLines2() throws Exception{
         GraphBuffer test = new GraphBuffer(300, 200);
         test.drawBackground(Color.BLACK);
-        ArrayInt position = new ArrayInt(50,100,150);
+        ArrayInteger position = ArrayInteger.of(50,100,150);
         test.drawHorizontalReferenceLines(position, Color.WHITE, 0, 300);
         ImageAssert.compareImages("graphBuffer.drawHorizontalReferenceLines2", test.getImage());
     }
@@ -280,7 +283,7 @@ public class GraphBufferTest {
     public void drawHorizontalReferenceLines3() throws Exception{
          GraphBuffer test = new GraphBuffer(300, 200);
         test.drawBackground(Color.LIGHT_GRAY);
-        ArrayInt pos= new ArrayInt(50,100,150);
+        ArrayInteger pos= ArrayInteger.of(50,100,150);
         test.drawHorizontalReferenceLines(pos, Color.BLACK, 0, 149);
         test.drawHorizontalReferenceLines(pos, Color.GREEN, 151, 300);
         ImageAssert.compareImages("graphBuffer.drawHorizontalReferenceLines3", test.getImage());
@@ -290,7 +293,7 @@ public class GraphBufferTest {
     public void drawVerticalReferenceLines() throws Exception {
         GraphBuffer graphBuffer = new GraphBuffer(300, 200);
         graphBuffer.drawBackground(Color.WHITE);
-        ArrayInt positions = new ArrayInt(10, 150, 289);
+        ArrayInteger positions = ArrayInteger.of(10, 150, 289);
         graphBuffer.drawVerticalReferenceLines(positions, Color.BLACK, 5, 194);
         ImageAssert.compareImages("graphBuffer.drawVerticalReferenceLines", graphBuffer.getImage());
 
@@ -300,7 +303,7 @@ public class GraphBufferTest {
 
         GraphBuffer test = new GraphBuffer(300, 200);
         test.drawBackground(Color.WHITE);
-        ArrayInt position = new ArrayInt(50,100,150,200,250,300);
+        ArrayInteger position = ArrayInteger.of(50,100,150,200,250,300);
         test.drawVerticalReferenceLines(position, Color.BLACK, 0, 200);
         ImageAssert.compareImages("graphBuffer.drawVerticalReferenceLines2", test.getImage());
     }
@@ -318,12 +321,12 @@ public class GraphBufferTest {
             numbers[i]=colorValue;
 
         }
-        ArrayDouble dataList=new ArrayDouble(numbers);
-        Cell2DDataset dataSet=Cell2DDatasets.linearRange(dataList,Ranges.range(0,200),200,Ranges.range(0, 100),100 );
+        ArrayDouble dataList=ArrayDouble.of(numbers);
+        Cell2DDataset dataSet=Cell2DDatasets.linearRange(dataList,Range.of(0,200),200,Range.of(0, 100),100 );
 
         GraphBuffer test=new GraphBuffer(300, 200);
-        test.setXScaleAsCell(Ranges.range(0, 200), 0, 200, ValueScales.linearScale());
-        test.setYScaleAsCell(Ranges.range(0, 100), 0, 100, ValueScales.linearScale());
+        test.setXScaleAsCell(Range.of(0, 200), 0, 200, ValueScales.linearScale());
+        test.setYScaleAsCell(Range.of(0, 100), 0, 100, ValueScales.linearScale());
         int [] xPointToDataMap= new int [200];
         int [] yPointToDataMap= new int [100];
         for(int i=0; i<200;i++){
@@ -336,7 +339,7 @@ public class GraphBufferTest {
 
 
         NumberColorMap colormap = NumberColorMaps.JET;
-        NumberColorMapInstance colorMapInstance=colormap.createInstance(Ranges.range(1, 4));
+        NumberColorMapInstance colorMapInstance=colormap.createInstance(Range.of(1, 4));
 
         test.drawBackground(Color.white);
         test.drawDataImage(50,50, xPointToDataMap, yPointToDataMap, dataSet, colorMapInstance);

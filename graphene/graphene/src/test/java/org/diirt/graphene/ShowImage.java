@@ -7,7 +7,7 @@ package org.diirt.graphene;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 
 /**
  *
@@ -58,7 +58,7 @@ public class ShowImage extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) throws Exception {
-        Cell1DDataset hist = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
+        Cell1DDataset hist = Cell1DDatasets.linearRange(ArrayDouble.of(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
                                         350, 230, 180, 220, 170, 130, 80, 30, 40), 0.0, 2.0);
         AreaGraph2DRenderer renderer = new AreaGraph2DRenderer(300, 200);
         BufferedImage image = new BufferedImage(renderer.getImageWidth(), renderer.getImageHeight(), BufferedImage.TYPE_3BYTE_BGR);

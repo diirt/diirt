@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -121,8 +121,8 @@ public class LineGraph2DRendererTest extends BaseGraphTest<LineGraph2DRendererUp
     }
 
     private Point2DDataset scatteredPerfectSquaresDataset() {
-        Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(5, 3, 1, 4, 2, 0),
-                new ArrayDouble(25, 9, 1, 16, 4, 0));
+        Point2DDataset data = Point2DDatasets.lineData(ArrayDouble.of(5, 3, 1, 4, 2, 0),
+                ArrayDouble.of(25, 9, 1, 16, 4, 0));
         return data;
     }
 

@@ -4,10 +4,10 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.stats.Range;
-import org.diirt.util.array.*;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.stats.Statistics;
+import org.epics.util.stats.Range;
+import org.epics.util.array.*;
 
 /**
  *
@@ -16,7 +16,7 @@ import org.diirt.util.array.*;
 public class Point2DDatasets {
 
     public static Point2DDataset lineData(final double[] data) {
-        return lineData(new ArrayDouble(data));
+        return lineData(ArrayDouble.of(data));
     }
 
     public static Point2DDataset lineData(final ListNumber data) {
@@ -24,7 +24,7 @@ public class Point2DDatasets {
     }
 
     public static Point2DDataset lineData(final double[] data, final double xInitialOffset, final double xIncrementSize) {
-        return lineData(new ArrayDouble(data), xInitialOffset, xIncrementSize);
+        return lineData(ArrayDouble.of(data), xInitialOffset, xIncrementSize);
     }
 
     public static Point2DDataset lineData(final ListNumber data, final double xInitialOffset, final double xIncrementSize) {
@@ -32,7 +32,7 @@ public class Point2DDatasets {
     }
 
     public static Point2DDataset lineData(final double[] x, final double[] y) {
-        return lineData(new ArrayDouble(x), new ArrayDouble(y));
+        return lineData(ArrayDouble.of(x), ArrayDouble.of(y));
     }
 
     public static Point2DDataset lineData(final Range xRange, final ListNumber y) {

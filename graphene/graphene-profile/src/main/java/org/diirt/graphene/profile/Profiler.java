@@ -19,8 +19,8 @@ import org.diirt.graphene.profile.io.CSVWriter;
 import org.diirt.graphene.profile.settings.ProfileSettings;
 import org.diirt.graphene.profile.utils.Statistics;
 import org.diirt.graphene.profile.utils.StopWatch;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListMath;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListMath;
 
 public abstract class Profiler {
     protected int         nTries = 0;
@@ -139,7 +139,7 @@ public abstract class Profiler {
             throw new NullPointerException("Has not been profiled.");
         }
 
-        ListDouble timingsExcludeFirst = ListMath.rescale(ListMath.limit(stopWatch.getNanoTimings(), 1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
+        ListDouble timingsExcludeFirst = ListMath.rescale(stopWatch.getNanoTimings().subList(1, stopWatch.getNanoTimings().size()), 0.000001, 0.0);
         ListDouble averages = ListMath.rescale(stopWatch.getNanoAverages(1), 0.000001, 0.0);
 
         Point1DDataset timings = Point1DDatasets.of(timingsExcludeFirst);

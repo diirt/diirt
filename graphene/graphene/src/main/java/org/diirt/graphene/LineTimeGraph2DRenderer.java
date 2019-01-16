@@ -7,9 +7,10 @@ package org.diirt.graphene;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Arrays;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
+import org.epics.util.array.ListNumbers;
 
 /**
  * Renderer for a line graph.
@@ -80,9 +81,9 @@ public class LineTimeGraph2DRenderer extends TemporalGraph2DRenderer<LineTimeGra
         if ( xValues.getDouble( xValues.size()-1 ) != 1.0 ) {
             if ( super.getAggregatedTimeInterval().getEnd().compareTo( super.getPlotTimeInterval().getEnd() ) < 0 ) {
                 double lastX = 1.0;
-                xValues = ListDouble.concatenate( xValues , new ArrayDouble( new double[] {lastX} ) );
+                xValues = ListNumbers.concatenate( xValues , ArrayDouble.of( new double[] {lastX} ) );
                 double lastY = yValues.getDouble( yValues.size()-1 );
-                yValues = ListDouble.concatenate( yValues , new ArrayDouble( new double[] {lastY} ) );
+                yValues = ListNumbers.concatenate( yValues , ArrayDouble.of( new double[] {lastY} ) );
             }
         }
 

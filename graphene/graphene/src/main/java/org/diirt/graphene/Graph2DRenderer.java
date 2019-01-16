@@ -4,7 +4,6 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -16,15 +15,11 @@ import java.awt.geom.Path2D;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import static org.diirt.graphene.InterpolationScheme.CUBIC;
-import static org.diirt.graphene.InterpolationScheme.LINEAR;
-import static org.diirt.graphene.InterpolationScheme.NEAREST_NEIGHBOR;
-import static org.diirt.graphene.ReductionScheme.FIRST_MAX_MIN_LAST;
-import static org.diirt.graphene.ReductionScheme.NONE;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListMath;
-import org.diirt.util.array.ListNumber;
+
+import org.epics.util.stats.Range;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListNumber;
 
 /**
  * The base class for all graph renderers.
@@ -343,22 +338,22 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         if (!(xPlotRange.getMinimum() == xPlotRange.getMaximum())) {
             ValueAxis xAxis = xValueScale.references(xPlotRange, 2, Math.max(2, getImageWidth() / 60));
             xReferenceLabels = Arrays.asList(xAxis.getTickLabels());
-            xReferenceValues = new ArrayDouble(xAxis.getTickValues());
+            xReferenceValues = ArrayDouble.of(xAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             xReferenceLabels = Collections.singletonList(Double.toString(xPlotRange.getMinimum()));
-            xReferenceValues = new ArrayDouble(xPlotRange.getMinimum());
+            xReferenceValues = ArrayDouble.of(xPlotRange.getMinimum());
         }
 
         // Calculate vertical axis references. If range is zero, use special logic
         if (!(yPlotRange.getMinimum() == yPlotRange.getMaximum())) {
             ValueAxis yAxis = yValueScale.references(yPlotRange, 2, Math.max(2, getImageHeight() / 60));
             yReferenceLabels = Arrays.asList(yAxis.getTickLabels());
-            yReferenceValues = new ArrayDouble(yAxis.getTickValues());
+            yReferenceValues = ArrayDouble.of(yAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             yReferenceLabels = Collections.singletonList(Double.toString(yPlotRange.getMinimum()));
-            yReferenceValues = new ArrayDouble(yPlotRange.getMinimum());
+            yReferenceValues = ArrayDouble.of(yPlotRange.getMinimum());
         }
 
         labelFontMetrics = g.getFontMetrics(labelFont);
@@ -424,7 +419,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             for (int i = 0; i < xRefCoords.length; i++) {
                 xRefCoords[i] = scaledX(xReferenceValues.getDouble(i));
             }
-            xReferenceCoords = new ArrayDouble(xRefCoords);
+            xReferenceCoords = ArrayDouble.of(xRefCoords);
         }
 
         if (yReferenceValues != null) {
@@ -432,7 +427,7 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
             for (int i = 0; i < yRefCoords.length; i++) {
                 yRefCoords[i] = scaledY(yReferenceValues.getDouble(i));
             }
-            yReferenceCoords = new ArrayDouble(yRefCoords);
+            yReferenceCoords = ArrayDouble.of(yRefCoords);
         }
     }
 
@@ -612,11 +607,11 @@ public abstract class Graph2DRenderer<T extends Graph2DRendererUpdate> {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
         // Narrow the data
-        int start = org.diirt.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
-        int end = org.diirt.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
+        int start = org.epics.util.array.ListNumbers.binarySearchValueOrLower(xValues, xPlotValueStart);
+        int end = org.epics.util.array.ListNumbers.binarySearchValueOrHigher(xValues, xPlotValueEnd);
 
-        xValues = ListMath.limit(xValues, start, end + 1);
-        yValues = ListMath.limit(yValues, start, end + 1);
+        xValues = xValues.subList(start, end + 1);
+        yValues = yValues.subList(start, end + 1);
 
         switch (reduction) {
             default:

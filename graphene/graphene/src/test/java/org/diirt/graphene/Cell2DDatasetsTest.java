@@ -4,9 +4,10 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -26,7 +27,7 @@ public class Cell2DDatasetsTest {
             public double getValue(double x, double y) {
                 return x + y;
             }
-        }, Ranges.range(0, 1), 10, Ranges.range(0, 1), 20);
+        }, Range.of(0, 1), 10, Range.of(0, 1), 20);
 
         assertThat(dataset.getXCount(), equalTo(10));
         assertThat(dataset.getXRange().getMinimum(), equalTo(0.0));
@@ -52,9 +53,9 @@ public class Cell2DDatasetsTest {
 //    @Test
 //    //Not sure how to test this method
 //    public void linearRangeFromListNumber(){
-//        ListNumber values = new ArrayDouble(5, 3, 7, -1, 2, 2);
-//        Range xRange = Ranges.range(0.0, 10.0);
-//        Range yRange = Ranges.range(0.0,20.0);
+//        ListNumber values = ArrayDouble.of(5, 3, 7, -1, 2, 2);
+//        Range xRange = Range.of(0.0, 10.0);
+//        Range yRange = Range.of(0.0,20.0);
 //        int xCount = 5;
 //        int yCount = 10;
 //        Cell2DDataset dataset = Cell2DDatasets.linearRange(values, xRange, xCount, yRange, yCount);
@@ -62,9 +63,9 @@ public class Cell2DDatasetsTest {
 
     @Test
     public void datasetFromListNumber() {
-        ListNumber values = new ArrayDouble(5, 3, 7, -1, 2, 2);
-        ListNumber xBoundaries = new ArrayDouble(-1, 0, 1);
-        ListNumber yBoundaries = new ArrayDouble(0, 1, 2, 3);
+        ListNumber values = ArrayDouble.of(5, 3, 7, -1, 2, 2);
+        ListNumber xBoundaries = ArrayDouble.of(-1, 0, 1);
+        ListNumber yBoundaries = ArrayDouble.of(0, 1, 2, 3);
         Cell2DDataset dataset = Cell2DDatasets.datasetFrom(values, xBoundaries, yBoundaries);
 
         assertThat(dataset.getXCount(), equalTo(2));
@@ -102,7 +103,7 @@ public class Cell2DDatasetsTest {
             public double getValue(double x, double y) {
                 return x + y;
             }
-        }, new ArrayDouble(0, 2, 3, 5), new ArrayDouble(0, 1, 3));
+        }, ArrayDouble.of(0, 2, 3, 5), ArrayDouble.of(0, 1, 3));
 
         assertThat(dataset.getXCount(), equalTo(3));
         assertThat(dataset.getXRange().getMinimum(), equalTo(0.0));

@@ -4,8 +4,8 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
 import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -30,7 +30,7 @@ public class Point2DDatasetsTest {
 
     @Test
     public void lineDataFromList() {
-        ListNumber data = new ArrayDouble(1,2,3);
+        ListNumber data = ArrayDouble.of(1,2,3);
         Point2DDataset dataset = Point2DDatasets.lineData(data);
         assertEquals(3, dataset.getCount());
         assertEquals(0.0, dataset.getXValues().getDouble(0), 0.001);
@@ -60,7 +60,7 @@ public class Point2DDatasetsTest {
 // TODO: Are these supposed to be tested as well (methods that use arrays)?
 //    @Test
 //    public void testArrayLineData() {
-//        Point2DDataset dataset = Point2DDatasets.lineData(new ArrayDouble(1, 2, 3));
+//        Point2DDataset dataset = Point2DDatasets.lineData(ArrayDouble.of(1, 2, 3));
 //        assertEquals(3, dataset.getCount());
 //        assertEquals(0.0, dataset.getXValues().getDouble(0), 0.001);
 //        assertEquals(1.0, dataset.getXValues().getDouble(1), 0.001);
@@ -72,7 +72,7 @@ public class Point2DDatasetsTest {
 //
 //    @Test
 //    public void testArrayScaledLineData() {
-//        Point2DDataset dataset = Point2DDatasets.lineData(new ArrayDouble(1, 2, 3), 10, 5);
+//        Point2DDataset dataset = Point2DDatasets.lineData(ArrayDouble.of(1, 2, 3), 10, 5);
 //        assertEquals(3, dataset.getCount());
 //        assertEquals(10.0, dataset.getXValues().getDouble(0), 0.001);
 //        assertEquals(15.0, dataset.getXValues().getDouble(1), 0.001);
@@ -84,7 +84,7 @@ public class Point2DDatasetsTest {
 //
 //    @Test
 //    public void testDoubleArrayLineData() {
-//        Point2DDataset dataset = Point2DDatasets.lineData(new ArrayDouble(1, 2, 3), new ArrayDouble(3,7,5));
+//        Point2DDataset dataset = Point2DDatasets.lineData(ArrayDouble.of(1, 2, 3), ArrayDouble.of(3,7,5));
 //        assertEquals(3, dataset.getCount());
 //        assertEquals(1.0, dataset.getXValues().getDouble(0), 0.001);
 //        assertEquals(2.0, dataset.getXValues().getDouble(1), 0.001);

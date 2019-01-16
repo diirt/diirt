@@ -12,8 +12,8 @@ import java.awt.Graphics2D;
 import java.util.LinkedHashMap;
 import java.util.Random;
 import org.diirt.graphene.profile.ProfileGraph2D;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumbers;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumbers;
 
 /**
  * Handles profiling for <code>Histogram1D</code>.
@@ -39,7 +39,7 @@ public class ProfileHistogram1D extends ProfileGraph2D<AreaGraph2DRenderer, Cell
             data[i] = rand.nextGaussian();
         }
 
-        return Cell1DDatasets.datasetFrom(new ArrayDouble(data), ListNumbers.linearList(0, 1, nSamples));
+        return Cell1DDatasets.datasetFrom(ArrayDouble.of(data), ListNumbers.linearList(0, 1, nSamples));
     }
 
     /**

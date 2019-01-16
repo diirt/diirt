@@ -4,7 +4,7 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.util.HashMap;
 
 /**

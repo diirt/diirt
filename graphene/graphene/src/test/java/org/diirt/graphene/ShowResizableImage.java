@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 
 /**
  *
@@ -95,7 +95,7 @@ public class ShowResizableImage extends javax.swing.JFrame {
     }
 
     public static void main(String args[]) throws Exception {
-        Cell1DDataset hist = Cell1DDatasets.linearRange(new ArrayDouble(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
+        Cell1DDataset hist = Cell1DDatasets.linearRange(ArrayDouble.of(30, 14, 150, 160, 180, 230, 220, 350, 400, 450, 500,
                                         350, 230, 180, 220, 170, 130, 80, 30, 40), 0.0, 2.0);
         showHistogram(hist);
     }

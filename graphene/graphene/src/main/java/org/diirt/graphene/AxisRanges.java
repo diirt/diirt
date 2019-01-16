@@ -5,8 +5,8 @@
 package org.diirt.graphene;
 
 import java.util.Objects;
-import org.diirt.util.stats.Range;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
 
 /**
  * Standard implementation for the logic to calculate the data range to
@@ -45,7 +45,7 @@ public class AxisRanges {
      * @return the axis range; never null
      */
     public static AxisRange fixed(final double min, final double max) {
-        final Range fixedRange = Ranges.range(min, max);
+        final Range fixedRange = Range.of(min, max);
         return new Fixed(fixedRange);
     }
 
@@ -196,7 +196,7 @@ public class AxisRanges {
 
                 @Override
                 public Range axisRange(Range dataRange, Range displayRange) {
-                    aggregatedRange = Ranges.aggregateRange(dataRange, aggregatedRange);
+                    aggregatedRange = dataRange.combine(aggregatedRange);
                     if (Ranges.overlap(aggregatedRange, dataRange) < minUsage) {
                         aggregatedRange = dataRange;
                     }

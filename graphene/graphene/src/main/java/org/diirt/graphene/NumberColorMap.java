@@ -4,7 +4,7 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 
 /**
  * A function that associates a numeric value with an RBG color.

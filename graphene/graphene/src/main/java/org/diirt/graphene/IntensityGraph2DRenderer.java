@@ -5,17 +5,17 @@
 package org.diirt.graphene;
 
 import java.awt.Color;
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.util.array.ListNumbers;
-import org.diirt.util.array.*;
+import org.epics.util.array.ListNumbers;
+import org.epics.util.array.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.util.Objects;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.stats.Ranges;
 
 /**
  * A renderer for intensity graph (also known as heat graph), which visualizes
@@ -100,7 +100,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
     private Range zPlotRange;
     private AxisRangeInstance zAxisRange = AxisRanges.display().createInstance();
     private ValueScale zValueScale = ValueScales.linearScale();
-    protected ListInt zReferenceCoords;
+    protected ListInteger zReferenceCoords;
     protected ListDouble zReferenceValues;
     protected List<String> zReferenceLabels;
     private int zLabelMaxWidth;
@@ -166,7 +166,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
                         zRefCoords[i] = (int) scaledZ(zReferenceValues.getDouble(i), area.graphBottom, area.graphTop);
                     }
                 }
-                zReferenceCoords = new ArrayInt(zRefCoords);
+                zReferenceCoords = ArrayInteger.of(zRefCoords);
             }
         }
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
@@ -202,7 +202,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             same length as the the height of the graph in pixels.*/
             ListNumber dataList = ListNumbers.linearListFromRange(zPlotRange.getMinimum(),zPlotRange.getMaximum(),(int)yHeightTotal);
             //legendData is a Cell2DDataset representation of dataList.
-            Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 1), 1, Ranges.range(0, (int)yHeightTotal), (int)yHeightTotal);
+            Cell2DDataset legendData = Cell2DDatasets.linearRange(dataList, Range.of(0, 1), 1, Range.of(0, (int)yHeightTotal), (int)yHeightTotal);
             int xLegendStart = getImageWidth() - originalRightMargin - zLabelMaxWidth - zLabelMargin - legendWidth;
             drawRectanglesArray(g, legendData, xLegendStart, yEndGraph, legendWidth, yHeightTotal, 1, legendWidth, image);
             graphBuffer.drawLeftLabels(zReferenceLabels, zReferenceCoords, labelColor, labelFont, area.areaBottom, area.areaTop, getImageWidth() - originalRightMargin - 1);
@@ -221,8 +221,8 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             double selectionRightValue = graphBuffer.xPixelRightToValue(selectionRightPixel);
             double selectionTopValue = graphBuffer.yPixelTopToValue(selectionTopPixel);
             double selectionBottomValue = graphBuffer.yPixelBottomToValue(selectionBottomPixel);
-            xValueSelectionRange = Ranges.range(selectionLeftValue, selectionRightValue);
-            yValueSelectionRange = Ranges.range(selectionBottomValue, selectionTopValue);
+            xValueSelectionRange = Range.of(selectionLeftValue, selectionRightValue);
+            yValueSelectionRange = Range.of(selectionBottomValue, selectionTopValue);
 
             // Calcualte the selection data index boundaries
             int xLeftOffset = selectionLeftPixel - xPointToDataMap.startPoint;
@@ -234,7 +234,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             } else {
                 xLeftOffset = Math.max(0, xLeftOffset);
                 xRightOffset = Math.min(xPointToDataMap.pointToDataMap.length, xRightOffset);
-                xIndexSelectionRange = Ranges.range(xPointToDataMap.pointToDataMap[xLeftOffset], xPointToDataMap.pointToDataMap[xRightOffset]);
+                xIndexSelectionRange = Range.of(xPointToDataMap.pointToDataMap[xLeftOffset], xPointToDataMap.pointToDataMap[xRightOffset]);
             }
 
             int yBottomOffset = selectionBottomPixel - yPointToDataMap.startPoint;
@@ -246,7 +246,7 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
             } else {
                 yTopOffset = Math.max(0, yTopOffset);
                 yBottomOffset = Math.min(xPointToDataMap.pointToDataMap.length, yBottomOffset);
-                yIndexSelectionRange = Ranges.range(yPointToDataMap.pointToDataMap[yBottomOffset], yPointToDataMap.pointToDataMap[yTopOffset]);
+                yIndexSelectionRange = Range.of(yPointToDataMap.pointToDataMap[yBottomOffset], yPointToDataMap.pointToDataMap[yTopOffset]);
             }
 
             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
@@ -415,12 +415,12 @@ public class IntensityGraph2DRenderer extends Graph2DRenderer<IntensityGraph2DRe
         if (!(zPlotRange.getMinimum() == zPlotRange.getMaximum())) {
             ValueAxis zAxis = zValueScale.references(zPlotRange, 2, Math.max(2, getImageHeight() / 60));
             zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
-            zReferenceValues = new ArrayDouble(zAxis.getTickValues());
+            zReferenceValues = ArrayDouble.of(zAxis.getTickValues());
         } else {
             // TODO: use something better to format the number
             ValueAxis zAxis = zValueScale.references(zPlotRange, 1, 1);
             zReferenceLabels = Arrays.asList(zAxis.getTickLabels());
-            zReferenceValues = new ArrayDouble(zPlotRange.getMinimum());
+            zReferenceValues = ArrayDouble.of(zPlotRange.getMinimum());
         }
 
         // Compute z axis spacing

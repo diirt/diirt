@@ -4,21 +4,19 @@
  */
 package org.diirt.graphene;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.TimeZone;
-
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.time.TimeInterval;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.diirt.util.time.TimeInterval;
+import org.epics.util.array.ArrayInteger;
 
 
 /**
@@ -411,8 +409,8 @@ public class TimeScales {
     }
 
     private static DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.nnnnnnnnn");
-    private static ArrayInt possibleStopFromEnd = new ArrayInt(0,1,2,3,4,5,6,7,8,10,13,19,22,25,28);
-    private static ArrayInt possibleStopFromStart = new ArrayInt(0,11,19,28);
+    private static ArrayInteger possibleStopFromEnd = ArrayInteger.of(0,1,2,3,4,5,6,7,8,10,13,19,22,25,28);
+    private static ArrayInteger possibleStopFromStart = ArrayInteger.of(0,11,19,28);
     private static String zeroFormat = "0000/01/01 00:00:00.000000000";
 
     static List<String> createLabels(List<Instant> timestamps) {

@@ -4,12 +4,12 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import static org.diirt.graphene.ValueAxis.orderOfMagnitude;
-import org.diirt.util.text.NumberFormats;
+import org.epics.util.text.NumberFormats;
 
 /**
  *
@@ -53,16 +53,16 @@ final class LinearValueScale implements ValueScale {
         String exponent = null;
         if (rangeOrder >= -3 && rangeOrder <= 3) {
             if (incrementOrder < 0) {
-                format = NumberFormats.format(-incrementOrder);
+                format = NumberFormats.precisionFormat(-incrementOrder);
             } else {
-                format = NumberFormats.format(0);
+                format = NumberFormats.precisionFormat(0);
             }
         } else if (rangeOrder > 3) {
-            format = NumberFormats.format(nDigits);
+            format = NumberFormats.precisionFormat(nDigits);
             normalization = Math.pow(10.0, rangeOrder);
             exponent = Integer.toString(rangeOrder);
         } else if (rangeOrder < -3) {
-            format = NumberFormats.format(nDigits);
+            format = NumberFormats.precisionFormat(nDigits);
             normalization = Math.pow(10.0, rangeOrder);
             exponent = Integer.toString(rangeOrder);
         }

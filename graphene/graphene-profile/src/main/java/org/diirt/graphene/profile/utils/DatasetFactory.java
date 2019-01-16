@@ -16,9 +16,11 @@ import org.diirt.graphene.Point1DDatasets;
 import org.diirt.graphene.Point2DDataset;
 import org.diirt.graphene.Point3DWithLabelDataset;
 import org.diirt.graphene.Point3DWithLabelDatasets;
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.stats.Statistics;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
 
 /**
  * Factory object to create datasets.
@@ -94,7 +96,7 @@ public final class DatasetFactory {
         for (int i = 0; i < nSamples; i++) {
             data[i] = rand.nextGaussian();
         }
-        Point1DDataset dataset = Point1DDatasets.of(new ArrayDouble(data));
+        Point1DDataset dataset = Point1DDatasets.of(ArrayDouble.of(data));
 
         return dataset;
     }
@@ -137,9 +139,9 @@ public final class DatasetFactory {
      * @return a set of data to be drawn
      */
     public static Point3DWithLabelDataset makePoint3DWithLabelGaussianRandomData(int nSamples){
-        ArrayDouble x = new ArrayDouble(new double[nSamples], false);
-        ArrayDouble y = new ArrayDouble(new double[nSamples], false);
-        ArrayDouble z = new ArrayDouble(new double[nSamples], false);
+        ArrayDouble x = ArrayDouble.of(new double[nSamples]);
+        ArrayDouble y = ArrayDouble.of(new double[nSamples]);
+        ArrayDouble z = ArrayDouble.of(new double[nSamples]);
 
         int seed = 1;
 
@@ -179,8 +181,8 @@ public final class DatasetFactory {
             waveform[i] = rand.nextGaussian();
         }
 
-        org.diirt.util.stats.Statistics stats = StatisticsUtil.statisticsOf(new ArrayDouble(waveform));
-        return Cell1DDatasets.linearRange(new ArrayDouble(waveform), stats.getRange().getMinimum(), stats.getRange().getMaximum());
+        Statistics stats = StatisticsUtil.statisticsOf(ArrayDouble.of(waveform));
+        return Cell1DDatasets.linearRange(ArrayDouble.of(waveform), stats.getRange().getMinimum(), stats.getRange().getMaximum());
     }
 
     /**
@@ -206,7 +208,7 @@ public final class DatasetFactory {
             waveform[i] = rand.nextGaussian();
         }
 
-        return Cell2DDatasets.linearRange(new ArrayDouble(waveform), Ranges.range(0, xSamples), xSamples, Ranges.range(0, ySamples), ySamples);
+        return Cell2DDatasets.linearRange(ArrayDouble.of(waveform), Range.of(0, xSamples), xSamples, Range.of(0, ySamples), ySamples);
     }
 
     //--------------------------------------------------------------------------

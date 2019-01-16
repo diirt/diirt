@@ -4,12 +4,16 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import org.diirt.util.array.ListInt;
-import org.diirt.util.stats.Ranges;
+
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
+import org.epics.util.array.ListInteger;
 
 /**
  *
@@ -75,7 +79,7 @@ public class BubbleGraph2DRenderer extends Graph2DRenderer<BubbleGraph2DRenderer
         LabelColorScheme labelColor = LabelColorSchemes.orderedHueColor(data.getLabels());
 
         // Order values by
-        ListInt indexes = org.diirt.util.array.ListNumbers.sortedView(data.getZValues()).getIndexes();
+        ListInteger indexes = org.epics.util.array.ListNumbers.sortedView(data.getZValues()).getIndexes();
 
         // Reset current focused value
         focusValueIndex = null;

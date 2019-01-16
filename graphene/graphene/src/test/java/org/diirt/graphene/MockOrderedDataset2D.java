@@ -4,11 +4,11 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.StatisticsUtil;
-import org.diirt.util.stats.Statistics;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListNumber;
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.StatisticsUtil;
+import org.epics.util.stats.Statistics;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListNumber;
+import org.epics.util.stats.Range;
 
 /**
  *
@@ -22,8 +22,8 @@ public class MockOrderedDataset2D implements Point2DDataset {
     private Statistics yStatistics;
 
     public MockOrderedDataset2D(double[] xValues, double[] yValues) {
-        this.xValues = new ArrayDouble(xValues);
-        this.yValues = new ArrayDouble(yValues);
+        this.xValues = ArrayDouble.of(xValues);
+        this.yValues = ArrayDouble.of(yValues);
         xStatistics = StatisticsUtil.statisticsOf(this.xValues);
         yStatistics = StatisticsUtil.statisticsOf(this.yValues);
     }

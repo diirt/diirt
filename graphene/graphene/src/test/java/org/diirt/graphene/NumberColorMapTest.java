@@ -4,13 +4,13 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import  javafx.scene.paint.Color;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.stats.Ranges;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.Matchers.*;
@@ -31,7 +31,7 @@ public class NumberColorMapTest {
     }
     @Test
     public void jetScheme() {
-        Range range = Ranges.range(0.0, 1.0);
+        Range range = Range.of(0.0, 1.0);
         NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
         // TODO: we should better test the optimized version as well.
         assertThat(colorScheme.colorFor(Double.NaN), equalTo(getRGB(Color.rgb(0,0,0))));
@@ -43,7 +43,7 @@ public class NumberColorMapTest {
 
     @Test
     public void jetSchemeOptimized(){
-        Range range = Ranges.range(0.0, 1.0);
+        Range range = Range.of(0.0, 1.0);
         NumberColorMapInstance colorScheme = NumberColorMaps.JET.createInstance(range);
         //ensure that the optimized colormap handles nan
         colorScheme = NumberColorMaps.optimize(colorScheme, range);
@@ -56,7 +56,7 @@ public class NumberColorMapTest {
 
     @Test
     public void optimizedScheme() {
-        Range range = Ranges.range(0.0, 1.0);
+        Range range = Range.of(0.0, 1.0);
         NumberColorMapInstance colorScheme = NumberColorMaps.optimize(NumberColorMaps.JET.createInstance(range), range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.rgb(0,0,138))));
         assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.rgb(0,0,138))));
@@ -136,7 +136,7 @@ public class NumberColorMapTest {
         //percentage value should not be negative
         NumberColorMap colorMap = NumberColorMaps.relative(
                 Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
-                new ArrayDouble(-1.0, 0, 1.0),
+                ArrayDouble.of(-1.0, 0, 1.0),
                 Color.BLACK, "TEST");
     }
 
@@ -145,14 +145,14 @@ public class NumberColorMapTest {
         //position values should always be in increasing order
           NumberColorMap colorMap = NumberColorMaps.absolute(
                 Arrays.asList(Color.RED,Color.DARKGRAY,Color.BLACK, Color.YELLOW, Color.GREEN),
-                new ArrayDouble(-1.0, 0, -0.5, 1.0, 0.5),
+                ArrayDouble.of(-1.0, 0, -0.5, 1.0, 0.5),
                 Color.BLACK, "TEST");
     }
     @Test(expected = RuntimeException.class)
     public void expectExceptionIncreasingOrder2() throws Exception {
         NumberColorMap colorMap = NumberColorMaps.relative(
                 Arrays.asList(Color.RED,Color.DARKGRAY,Color.BLACK, Color.YELLOW, Color.GREEN),
-                new ArrayDouble(0.0, 0.1, 0.2, 0.5,0.3),
+                ArrayDouble.of(0.0, 0.1, 0.2, 0.5,0.3),
                 Color.BLACK, "TEST");
     }
 
@@ -161,13 +161,13 @@ public class NumberColorMapTest {
     public void absoluteScheme()throws Exception {
         NumberColorMap colorMap = NumberColorMaps.absolute(
                 Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
-                new ArrayDouble(-1.0, 0, 1.0),
+                ArrayDouble.of(-1.0, 0, 1.0),
                 Color.BLACK, "TEST");
-        NumberColorMapInstance instance = colorMap.createInstance(Ranges.range(0.0, 1.0));
+        NumberColorMapInstance instance = colorMap.createInstance(Range.of(0.0, 1.0));
         assertThat(instance.colorFor(-1.0), equalTo(getRGB(Color.RED)));
         assertThat(instance.colorFor(0.0), equalTo(getRGB(Color.YELLOW)));
         assertThat(instance.colorFor(1.0), equalTo(getRGB(Color.GREEN)));
-        instance = colorMap.createInstance(Ranges.range(-1.0, 1.0));
+        instance = colorMap.createInstance(Range.of(-1.0, 1.0));
         assertThat(instance.colorFor(-1.0), equalTo(getRGB(Color.RED)));
         assertThat(instance.colorFor(0.0), equalTo(getRGB(Color.YELLOW)));
         assertThat(instance.colorFor(1.0), equalTo(getRGB(Color.GREEN)));
@@ -177,7 +177,7 @@ public class NumberColorMapTest {
     public void absoluteScheme2() throws Exception{
         File file = new File("src/test/resources/org/diirt/graphene/customizedColorMap2.xml");
         NumberColorMap customized = NumberColorMaps.load(file);
-        NumberColorMapInstance instance = customized.createInstance(Ranges.range(0.0, 1.0));
+        NumberColorMapInstance instance = customized.createInstance(Range.of(0.0, 1.0));
         assertThat(instance.colorFor(-1.0),equalTo(getRGB(Color.rgb(95,0,0))));
         assertThat(instance.colorFor(0.0),equalTo(getRGB(Color.rgb(95,0,0))));
         assertThat(instance.colorFor(0.1),equalTo(getRGB(Color.rgb(135,2,2))));
@@ -188,7 +188,7 @@ public class NumberColorMapTest {
         assertThat(instance.colorFor(1.0),equalTo(getRGB(Color.rgb(0,0,95))));
         assertThat(instance.colorFor(1.1),equalTo(getRGB(Color.rgb(0,0,95))));
 
-        instance = customized.createInstance(Ranges.range(-1.0, 1.0));
+        instance = customized.createInstance(Range.of(-1.0, 1.0));
         assertThat(instance.colorFor(-1.0), equalTo(getRGB(Color.rgb(95, 0, 0))));
         assertThat(instance.colorFor(0.0), equalTo(getRGB(Color.rgb(95, 0, 0))));
         assertThat(instance.colorFor(0.1), equalTo(getRGB(Color.rgb(135, 2, 2))));
@@ -204,13 +204,13 @@ public class NumberColorMapTest {
     public void relativeScheme() throws Exception {
         NumberColorMap colorMap = NumberColorMaps.relative(
                 Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN),
-                new ArrayDouble(0.0, 0.5, 1.0),
+                ArrayDouble.of(0.0, 0.5, 1.0),
                 Color.BLACK, "TEST");
-        NumberColorMapInstance instance = colorMap.createInstance(Ranges.range(0.0, 1.0));
+        NumberColorMapInstance instance = colorMap.createInstance(Range.of(0.0, 1.0));
         assertThat(instance.colorFor(0.0), equalTo(getRGB(Color.RED)));
         assertThat(instance.colorFor(0.5), equalTo(getRGB(Color.YELLOW)));
         assertThat(instance.colorFor(1.0), equalTo(getRGB(Color.GREEN)));
-        instance = colorMap.createInstance(Ranges.range(-1.0, 1.0));
+        instance = colorMap.createInstance(Range.of(-1.0, 1.0));
         assertThat(instance.colorFor(-1.0), equalTo(getRGB(Color.RED)));
         assertThat(instance.colorFor(0.0), equalTo(getRGB(Color.YELLOW)));
         assertThat(instance.colorFor(1.0), equalTo(getRGB(Color.GREEN)));
@@ -221,7 +221,7 @@ public class NumberColorMapTest {
     public void getRegisteredColorSchemeJET() throws Exception{
 
        NumberColorMap jet = NumberColorMaps.getRegisteredColorSchemes().get("JET");
-        Range range = Ranges.range(0.0, 1.0);
+        Range range = Range.of(0.0, 1.0);
         NumberColorMapInstance colorScheme = jet.createInstance(range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.rgb(0,0,138))));
         assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.rgb(0,0,138))));
@@ -233,7 +233,7 @@ public class NumberColorMapTest {
 
     public void getRegisterColorSchemeBONE() throws Exception{
         NumberColorMap bone = NumberColorMaps.getRegisteredColorSchemes().get("BONE");
-        Range range = Ranges.range(0.0,1.0);
+        Range range = Range.of(0.0,1.0);
         NumberColorMapInstance colorScheme = bone.createInstance(range);
         assertThat(colorScheme.colorFor(-0.1), equalTo(getRGB(Color.BLACK)));
         assertThat(colorScheme.colorFor(0.0), equalTo(getRGB(Color.BLACK)));

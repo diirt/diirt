@@ -4,12 +4,12 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 import org.junit.Test;
-import org.diirt.util.array.*;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.array.*;
+import org.epics.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
@@ -34,8 +34,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (10 * 10); i++) {
             listOfData[i] = i;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 10), 10, Ranges.range(0, 10), 10);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 10), 10, Range.of(0, 10), 10);
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
         return graphBuffer.getImage();
@@ -49,8 +49,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < nSamples; i++) {
             waveform[i] = rand.nextGaussian();
         }
-        ArrayDouble data = new ArrayDouble(waveform);
-        Cell2DDataset datum = Cell2DDatasets.linearRange(data, Ranges.range(0, 1000), 1000, Ranges.range(0, 1000), 1000);
+        ArrayDouble data = ArrayDouble.of(waveform);
+        Cell2DDataset datum = Cell2DDatasets.linearRange(data, Range.of(0, 1000), 1000, Range.of(0, 1000), 1000);
         return datum;
     }
 
@@ -60,8 +60,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (640 * 480); i++) {
             listOfData[i] = rand.nextDouble();
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 640), 640, Ranges.range(0, 480), 480);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 640), 640, Range.of(0, 480), 480);
         return data;
     }
 
@@ -70,8 +70,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (10 * 10); i++) {
             listOfData[i] = i;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 10), 10, Ranges.range(0, 10), 10);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 10), 10, Range.of(0, 10), 10);
         return data;
     }
 
@@ -80,8 +80,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (640 * 10); i++) {
             listOfData[i] = 1;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 640), 640, Ranges.range(0, 10), 10);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 640), 640, Range.of(0, 10), 10);
         return data;
     }
 
@@ -90,8 +90,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (640 * 10); i++) {
             listOfData[i] = i;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 640), 640, Ranges.range(0, 10), 10);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 640), 640, Range.of(0, 10), 10);
         return data;
     }
 
@@ -100,8 +100,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (10 * 480); i++) {
             listOfData[i] = 1;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 10), 10, Ranges.range(0, 480), 480);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 10), 10, Range.of(0, 480), 480);
         return data;
     }
 
@@ -110,8 +110,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (10 * 480); i++) {
             listOfData[i] = i;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 10), 10, Ranges.range(0, 480), 480);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 10), 10, Range.of(0, 480), 480);
         return data;
 
     }
@@ -121,8 +121,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (640 * 480); i++) {
             listOfData[i] = 1;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 640), 640, Ranges.range(0, 480), 480);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 640), 640, Range.of(0, 480), 480);
         return data;
     }
 
@@ -131,8 +131,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (640 * 480); i++) {
             listOfData[i] = i;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 640), 640, Ranges.range(0, 480), 480);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 640), 640, Range.of(0, 480), 480);
         return data;
     }
 
@@ -145,8 +145,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
                 listOfData[i] = 1;
             }
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 640), 640, Ranges.range(0, 480), 480);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 640), 640, Range.of(0, 480), 480);
         return data;
     }
 
@@ -155,8 +155,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (640 * 480); i++) {
             listOfData[i] = 10000000;
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Ranges.range(0, 640), 640, Ranges.range(0, 480), 480);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        Cell2DDataset data = Cell2DDatasets.linearRange(dataList, Range.of(0, 640), 640, Range.of(0, 480), 480);
         return data;
     }
 
@@ -166,7 +166,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
             public double getValue(double x, double y) {
                 return x * y;
             }
-        }, new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100), new ArrayDouble(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100));
+        }, ArrayDouble.of(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100), ArrayDouble.of(0, 1, 2, 4, 9, 16, 25, 36, 49, 64, 81, 100));
         return data;
     }
 
@@ -182,7 +182,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
             public double getValue(double x, double y) {
                 return x * y;
             }
-        }, new ArrayDouble(boundaries), new ArrayDouble(boundaries));
+        }, ArrayDouble.of(boundaries), ArrayDouble.of(boundaries));
         return data;
     }
 
@@ -339,7 +339,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
 
     @Test
     public void smallCellsZoomInAndOut() throws Exception {
-        Cell2DDataset data = ellipticParaboloid(200, Ranges.range(0, 100), 200, Ranges.range(0, 100));
+        Cell2DDataset data = ellipticParaboloid(200, Range.of(0, 100), 200, Range.of(0, 100));
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
@@ -412,8 +412,8 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         for (int i = 0; i < (width * height); i++) {
             listOfData[i] = rand.nextDouble();
         }
-        ArrayDouble dataList = new ArrayDouble(listOfData);
-        return Cell2DDatasets.linearRange(dataList, Ranges.range(0, width), width, Ranges.range(0, height), height);
+        ArrayDouble dataList = ArrayDouble.of(listOfData);
+        return Cell2DDatasets.linearRange(dataList, Range.of(0, width), width, Range.of(0, height), height);
     }
 
     @Test
@@ -435,7 +435,7 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
 
     @Test
     public void selectedRegion() throws Exception {
-        Cell2DDataset data = ellipticParaboloid(200, Ranges.range(0, 100), 200, Ranges.range(0, 100));
+        Cell2DDataset data = ellipticParaboloid(200, Range.of(0, 100), 200, Range.of(0, 100));
         IntensityGraph2DRenderer renderer = new IntensityGraph2DRenderer(640, 480);
         renderer.update(renderer.newUpdate().pixelSelectionRange(100, 200, 150, 250));
         GraphBuffer graphBuffer = new GraphBuffer(renderer);

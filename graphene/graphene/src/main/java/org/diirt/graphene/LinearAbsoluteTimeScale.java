@@ -6,7 +6,7 @@ package org.diirt.graphene;
 
 import java.util.List;
 
-import org.diirt.util.array.ArrayDouble;
+import org.epics.util.array.ArrayDouble;
 
 import java.time.Duration;
 
@@ -71,7 +71,7 @@ final class LinearAbsoluteTimeScale implements TimeScale {
         for (int i = 0; i < references.size(); i++) {
             normalized[i] = TimeScales.normalize(references.get(i), range);
         }
-        ArrayDouble normalizedValues = new ArrayDouble(normalized);
+        ArrayDouble normalizedValues = ArrayDouble.of(normalized);
 
         return new TimeAxis(range, references, normalizedValues, TimeScales.trimLabels(TimeScales.createLabels(references)));
     }

@@ -4,12 +4,12 @@
  */
 package org.diirt.graphene;
 
-import org.diirt.util.stats.Range;
+import org.epics.util.stats.Range;
 import java.text.NumberFormat;
-import org.diirt.util.array.CircularBufferDouble;
-import org.diirt.util.array.CollectionNumbers;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.text.NumberFormats;
+import org.epics.util.array.CircularBufferDouble;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.array.ListDouble;
+import org.epics.util.text.NumberFormats;
 
 /**
  *
@@ -71,10 +71,10 @@ final class LogValueScale implements ValueScale {
         if ((minExp - orderOfIncrement) < -3 || maxExp > 3) {
             // Would need more than 3 decimal places or more than 3 zeros
             useExponentialNotation = true;
-            format = NumberFormats.format(orderOfIncrement);
+            format = NumberFormats.precisionFormat(orderOfIncrement);
         } else {
             useExponentialNotation = false;
-            format = NumberFormats.format(Math.max(0, orderOfIncrement - minExp));
+            format = NumberFormats.precisionFormat(Math.max(0, orderOfIncrement - minExp));
         }
 
         String[] labels = new String[references.size()];
@@ -86,8 +86,9 @@ final class LogValueScale implements ValueScale {
                 labels[i] = format(value, format, null, 1);
             }
         }
-
-        return new ValueAxis(minValue, maxValue, CollectionNumbers.doubleArrayCopyOf(references), labels);
+        double[] tickValues = new double[references.size()];
+        CollectionNumbers.arrayCopy(references, tickValues, 0);
+        return new ValueAxis(minValue, maxValue, tickValues, labels);
     }
 
     static String format(double number, NumberFormat format, String exponent, double normalization) {

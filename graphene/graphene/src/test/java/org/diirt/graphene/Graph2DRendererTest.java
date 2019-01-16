@@ -8,8 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Collections;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.stats.Ranges;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.stats.Range;
+import org.epics.util.stats.Ranges;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -32,8 +33,8 @@ public class Graph2DRendererTest {
                 this.xAreaCoordEnd = 296;
                 this.yAreaCoordStart = 4;
                 this.yAreaCoordEnd = 196;
-                this.xReferenceCoords = new ArrayDouble(4.5, 150, 295.5);
-                this.yReferenceCoords = new ArrayDouble(195.5, 100, 4.5);
+                this.xReferenceCoords = ArrayDouble.of(4.5, 150, 295.5);
+                this.yReferenceCoords = ArrayDouble.of(195.5, 100, 4.5);
                 this.yReferenceLabels = Collections.<String>emptyList();
             }
 
@@ -61,8 +62,8 @@ public class Graph2DRendererTest {
                 this.xAreaCoordEnd = 296;
                 this.yAreaCoordStart = 4;
                 this.yAreaCoordEnd = 196;
-                this.xReferenceCoords = new ArrayDouble(24.5, 150, 295.5);
-                this.yReferenceCoords = new ArrayDouble(195.5, 147.75, 100, 47.25, 4.5);
+                this.xReferenceCoords = ArrayDouble.of(24.5, 150, 295.5);
+                this.yReferenceCoords = ArrayDouble.of(195.5, 147.75, 100, 47.25, 4.5);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
                 this.yLabelMargin = 2;
             }
@@ -91,8 +92,8 @@ public class Graph2DRendererTest {
                 this.xAreaCoordEnd = 296;
                 this.yAreaCoordStart = 4;
                 this.yAreaCoordEnd = 196;
-                this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
-                this.yReferenceCoords = new ArrayDouble(160, 120, 80, 40);
+                this.xReferenceCoords = ArrayDouble.of(50, 100, 150, 200, 250);
+                this.yReferenceCoords = ArrayDouble.of(160, 120, 80, 40);
                 this.yReferenceLabels = Arrays.asList("0", "50", "100", "150");
                 this.yLabelMargin = 1;
             }
@@ -120,10 +121,10 @@ public class Graph2DRendererTest {
                 this.xAreaCoordEnd = 296;
                 this.yAreaCoordStart = 4;
                 this.yAreaCoordEnd = 186;
-                this.xReferenceCoords = new ArrayDouble(50, 100, 150, 200, 250);
+                this.xReferenceCoords = ArrayDouble.of(50, 100, 150, 200, 250);
                 this.xReferenceLabels = Arrays.asList("0", "50", "100", "150", "200");
                 this.xLabelMargin = 1;
-                this.yReferenceCoords = new ArrayDouble(160, 120, 80, 40);
+                this.yReferenceCoords = ArrayDouble.of(160, 120, 80, 40);
                 this.yLabelMargin = 1;
             }
 
@@ -154,7 +155,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10));
+        renderer.calculateRanges(Range.of(0, 10), Range.of(0, 10), Range.of(0, 10), Range.of(0, 10));
         renderer.calculateLabels();
         renderer.calculateGraphArea();
         renderer.drawBackground();
@@ -175,7 +176,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(3, 3), Ranges.range(3, 3));
+        renderer.calculateRanges(Range.of(0, 10), Range.of(0, 10), Range.of(3, 3), Range.of(3, 3));
         renderer.calculateLabels();
         renderer.calculateGraphArea();
         renderer.drawBackground();
@@ -196,7 +197,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(3, 3), Ranges.range(3, 3), Ranges.range(0, 10), Ranges.range(0, 10));
+        renderer.calculateRanges(Range.of(3, 3), Range.of(3, 3), Range.of(0, 10), Range.of(0, 10));
         renderer.calculateLabels();
         renderer.calculateGraphArea();
         renderer.drawBackground();
@@ -219,7 +220,7 @@ public class Graph2DRendererTest {
         renderer.g = graphics;
         renderer.xPointMargin = 2.5;
         renderer.yPointMargin = 2.5;
-        renderer.calculateRanges(Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10), Ranges.range(0, 10));
+        renderer.calculateRanges(Range.of(0, 10), Range.of(0, 10), Range.of(0, 10), Range.of(0, 10));
         renderer.calculateLabels();
         renderer.calculateGraphArea();
         renderer.drawBackground();
@@ -257,7 +258,7 @@ public class Graph2DRendererTest {
 
     @Test
     public void processValue1() throws Exception {
-        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        final Point2DDataset data = Point2DDatasets.lineData(ArrayDouble.of(1,2,3,4,5), ArrayDouble.of(1,3,5,7,9));
         Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
             @Override
             public Graph2DRendererUpdate newUpdate() {
@@ -281,7 +282,7 @@ public class Graph2DRendererTest {
 
     @Test
     public void processValue2() throws Exception {
-        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        final Point2DDataset data = Point2DDatasets.lineData(ArrayDouble.of(1,2,3,4,5), ArrayDouble.of(1,3,5,7,9));
         Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
             @Override
             public Graph2DRendererUpdate newUpdate() {
@@ -305,7 +306,7 @@ public class Graph2DRendererTest {
 
     @Test
     public void processValue3() throws Exception {
-        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        final Point2DDataset data = Point2DDatasets.lineData(ArrayDouble.of(1,2,3,4,5), ArrayDouble.of(1,3,5,7,9));
         Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
             @Override
             public Graph2DRendererUpdate newUpdate() {
@@ -322,14 +323,14 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(2.5, 4.5), null, data.getYStatistics().getRange(), data.getYDisplayRange());
+        renderer.calculateRanges(Range.of(2.5, 4.5), null, data.getYStatistics().getRange(), data.getYDisplayRange());
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.NONE);
     }
 
     @Test
     public void processValue4() throws Exception {
-        final Point2DDataset data = Point2DDatasets.lineData(new ArrayDouble(1,2,3,4,5), new ArrayDouble(1,3,5,7,9));
+        final Point2DDataset data = Point2DDatasets.lineData(ArrayDouble.of(1,2,3,4,5), ArrayDouble.of(1,3,5,7,9));
         Graph2DRenderer<?> renderer = new Graph2DRenderer<Graph2DRendererUpdate>(300, 200) {
             @Override
             public Graph2DRendererUpdate newUpdate() {
@@ -346,7 +347,7 @@ public class Graph2DRendererTest {
         BufferedImage image = new BufferedImage(300, 200, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
         renderer.g = graphics;
-        renderer.calculateRanges(Ranges.range(2.5, 4.5), null, data.getYStatistics().getRange(), data.getYDisplayRange());
+        renderer.calculateRanges(Range.of(2.5, 4.5), null, data.getYStatistics().getRange(), data.getYDisplayRange());
         renderer.calculateLabels();
         renderer.drawValueExplicitLine(data.getXValues(), data.getYValues(), InterpolationScheme.LINEAR, ReductionScheme.FIRST_MAX_MIN_LAST);
     }
