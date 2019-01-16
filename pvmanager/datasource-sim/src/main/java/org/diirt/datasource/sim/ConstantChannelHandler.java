@@ -6,10 +6,11 @@ package org.diirt.datasource.sim;
 
 import java.util.List;
 import java.util.logging.Logger;
+
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.util.FunctionParser;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -23,7 +24,7 @@ class ConstantChannelHandler extends MultiplexedChannelHandler<Object, Object> {
         super(channelName);
         List<Object> tokens = FunctionParser.parseFunctionWithScalarOrArrayArguments(channelName,
                 "Wrong syntax. Correct examples: const(3.14), const(\"Bob\"), const(1,2,3), const(\"ON\", \"OFF\"");
-        processMessage((Object) ValueFactory.toVTypeChecked(tokens.get(1)));
+        processMessage((Object) VType.toVTypeChecked(tokens.get(1)));
     }
 
     @Override

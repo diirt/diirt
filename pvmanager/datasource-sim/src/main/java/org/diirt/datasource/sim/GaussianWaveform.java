@@ -8,10 +8,12 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.vtype.VDoubleArray;
-
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.util.array.CollectionNumbers;
+import org.epics.util.stats.Range;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDoubleArray;
 
 /**
  * Function to simulate a waveform containing a gaussian that moves to the
@@ -98,8 +100,14 @@ public class GaussianWaveform extends SimFunction<VDoubleArray> {
         }
         double t = initialRefernce.until(lastTime, ChronoUnit.SECONDS);
         double omega = 2 * Math.PI / periodInSeconds;
-        return newVDoubleArray(new ArrayDouble(generateNewValue(omega, t)), alarmNone(),
-                newTime(lastTime), newDisplay(0.0, 0.0, 0.0, "x", Constants.DOUBLE_FORMAT,
-                1.0, 1.0, 1.0, 0.0, 1.0));
+        return VDoubleArray.of(CollectionNumbers.toListDouble(generateNewValue(omega, t)),
+                Alarm.none(),
+                Time.of(lastTime),
+                Display.of(Range.of(0.0, 1.0),
+                        Range.of(0.0, 1.0), 
+                        Range.of(0.0, 1.0),
+                        Range.of(0.0, 1.0), 
+                        "x",
+                        Constants.DOUBLE_FORMAT));
     }
 }

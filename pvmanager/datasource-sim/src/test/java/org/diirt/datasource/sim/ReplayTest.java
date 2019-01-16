@@ -7,8 +7,8 @@ package org.diirt.datasource.sim;
 import java.util.List;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.VDouble;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -38,42 +38,42 @@ public class ReplayTest {
         // Check first value
         VDouble value = values.get(0);
         assertThat(value.getValue(), equalTo(0.0));
-        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0)));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmName(), equalTo("NONE"));
-        assertThat(value.getTimeUserTag(), equalTo(0));
-        assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
-        assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(value.getLowerAlarmLimit(), equalTo(-9.0));
-        assertThat(value.getLowerWarningLimit(), equalTo(-8.0));
-        assertThat(value.getUpperWarningLimit(), equalTo(8.0));
-        assertThat(value.getUpperAlarmLimit(), equalTo(9.0));
-        assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
-        assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(value.getTime().getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0)));
+        assertThat(value.getAlarm().getSeverity(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarm().getName(), equalTo("NONE"));
+        assertThat(value.getTime().getUserTag(), equalTo(0));
+        assertThat(value.getDisplay().getControlRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getAlarmRange().getMinimum(), equalTo(-9.0));
+        assertThat(value.getDisplay().getWarningRange().getMinimum(), equalTo(-8.0));
+        assertThat(value.getDisplay().getWarningRange().getMaximum(), equalTo(8.0));
+        assertThat(value.getDisplay().getAlarmRange().getMaximum(), equalTo(9.0));
+        assertThat(value.getDisplay().getControlRange().getMaximum(), equalTo(10.0));
+        assertThat(value.getDisplay().getDisplayRange().getMaximum(), equalTo(10.0));
 
         // Check second value
         value = values.get(1);
         assertThat(value.getValue(), equalTo(1.0));
-        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(100))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
-        assertThat(value.getAlarmName(), equalTo("RECORD"));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        assertThat(value.getTime().getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(100))));
+        assertThat(value.getAlarm(), equalTo(AlarmSeverity.INVALID));
+        assertThat(value.getAlarm().getName(), equalTo("RECORD"));
+        assertThat(value.getTime(), equalTo(0));
 
         // Check third value
         value = values.get(2);
         assertThat(value.getValue(), equalTo(2.0));
-        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(200))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmName(), equalTo("NONE"));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        assertThat(value.getTime().getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(200))));
+        assertThat(value.getAlarm(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarm().getName(), equalTo("NONE"));
+        assertThat(value.getTime(), equalTo(0));
 
         // Check fourth value
         value = values.get(3);
         assertThat(value.getValue(), equalTo(3.0));
-        assertThat(value.getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(500))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmName(), equalTo("NONE"));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        assertThat(value.getTime().getTimestamp(), equalTo(Instant.ofEpochSecond(0, 0).plus(ofMillis(500))));
+        assertThat(value.getAlarm(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarm().getName(), equalTo("NONE"));
+        assertThat(value.getTime(), equalTo(0));
     }
 
     @BeforeClass
@@ -94,33 +94,33 @@ public class ReplayTest {
         // Check first value
         VDouble value = values.get(0);
         assertThat(value.getValue(), equalTo(0.0));
-        assertThat(value.getTimestamp(), within(TimeInterval.around(ofMillis(1), start)));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmName(), equalTo("NONE"));
-        assertThat(value.getTimeUserTag(), equalTo(0));
-        assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
-        assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(value.getLowerAlarmLimit(), equalTo(-9.0));
-        assertThat(value.getLowerWarningLimit(), equalTo(-8.0));
-        assertThat(value.getUpperWarningLimit(), equalTo(8.0));
-        assertThat(value.getUpperAlarmLimit(), equalTo(9.0));
-        assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
-        assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
+        assertThat(value.getTime().getTimestamp(), within(TimeInterval.around(ofMillis(1), start)));
+        assertThat(value.getAlarm(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarm().getName(), equalTo("NONE"));
+        assertThat(value.getTime(), equalTo(0));
+        assertThat(value.getDisplay().getControlRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getAlarmRange().getMinimum(), equalTo(-9.0));
+        assertThat(value.getDisplay().getWarningRange().getMinimum(), equalTo(-8.0));
+        assertThat(value.getDisplay().getWarningRange().getMaximum(), equalTo(8.0));
+        assertThat(value.getDisplay().getAlarmRange().getMaximum(), equalTo(9.0));
+        assertThat(value.getDisplay().getControlRange().getMaximum(), equalTo(10.0));
+        assertThat(value.getDisplay().getDisplayRange().getMaximum(), equalTo(10.0));
 
         // Check second value
         value = values.get(1);
         assertThat(value.getValue(), equalTo(1.0));
-        assertThat(value.getTimestamp(), within(TimeInterval.around(ofMillis(1), start.plus(ofMillis(1000)))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.INVALID));
-        assertThat(value.getAlarmName(), equalTo("RECORD"));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        assertThat(value.getTime().getTimestamp(), within(TimeInterval.around(ofMillis(1), start.plus(ofMillis(1000)))));
+        assertThat(value.getAlarm(), equalTo(AlarmSeverity.INVALID));
+        assertThat(value.getAlarm().getName(), equalTo("RECORD"));
+        assertThat(value.getTime(), equalTo(0));
 
         // Check third value
         value = values.get(2);
         assertThat(value.getValue(), equalTo(2.0));
-        assertThat(value.getTimestamp(), within(TimeInterval.around(ofMillis(1), start.plus(ofMillis(2000)))));
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.NONE));
-        assertThat(value.getAlarmName(), equalTo("NONE"));
-        assertThat(value.getTimeUserTag(), equalTo(0));
+        assertThat(value.getTime().getTimestamp(), within(TimeInterval.around(ofMillis(1), start.plus(ofMillis(2000)))));
+        assertThat(value.getAlarm(), equalTo(AlarmSeverity.NONE));
+        assertThat(value.getAlarm().getName(), equalTo("NONE"));
+        assertThat(value.getTime(), equalTo(0));
     }
 }

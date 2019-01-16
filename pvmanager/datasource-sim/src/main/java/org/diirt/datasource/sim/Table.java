@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ListDouble;
-import org.diirt.util.array.ListInt;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ArrayInteger;
+import org.epics.util.array.ListDouble;
+import org.epics.util.array.ListInteger;
 import java.time.Instant;
-import org.diirt.vtype.VTable;
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.VTable;
 
 /**
  * Function to simulate a signal that generates VTables.
@@ -39,19 +38,19 @@ public class Table extends SimFunction<VTable> {
 
     @Override
     VTable nextValue() {
-        return newVTable(types, Arrays.asList("Text", "Value", "Index", "Timestamps"),
+        return VTable.of(types, Arrays.asList("Text", "Value", "Index", "Timestamps"),
                 Arrays.asList((Object) generateStringColumn(10), generateDoubleColumn(10),
                 generateIntegerColumn(10), generateTimestampColumn(10)));
     }
 
     private final Random rand = new Random();
 
-    ListInt generateIntegerColumn(int size) {
+    ListInteger generateIntegerColumn(int size) {
         int[] column = new int[size];
         for (int i = 0; i < column.length; i++) {
             column[i] = i;
         }
-        return new ArrayInt(column);
+        return ArrayInteger.of(column);
     }
 
     ListDouble generateDoubleColumn(int size) {
@@ -59,7 +58,7 @@ public class Table extends SimFunction<VTable> {
         for (int i = 0; i < column.length; i++) {
             column[i] = rand.nextGaussian();
         }
-        return new ArrayDouble(column);
+        return ArrayDouble.of(column);
     }
 
     List<String> generateStringColumn(int size) {

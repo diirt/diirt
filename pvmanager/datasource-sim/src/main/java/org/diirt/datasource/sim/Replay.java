@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 
 /**
  * Function that reads an xml file and simulates a pv by replaying it.
@@ -36,7 +36,7 @@ public class Replay extends Simulation<VDouble> {
 
     @Override
     List<VDouble> createValues(TimeInterval interval) {
-        offset = Duration.between(interval.getStart(), ((VDouble) values.getValues().get(0)).getTimestamp()).abs();
+        offset = Duration.between(interval.getStart(), ((XmlVDouble) values.getValues().get(0)).getTime().getTimestamp()).abs();
         TimeInterval originalInterval = interval.minus(offset);
         List<VDouble> newValues = new ArrayList<VDouble>();
         for (ReplayValue value : values.getValues()) {
@@ -45,7 +45,7 @@ public class Replay extends Simulation<VDouble> {
                 if (values.isAdjustTime()) {
                     copy.adjustTime(offset);
                 }
-                newValues.add((VDouble) copy);
+                newValues.add(((XmlVDouble)copy).getVDouble());
             }
         }
         return newValues;

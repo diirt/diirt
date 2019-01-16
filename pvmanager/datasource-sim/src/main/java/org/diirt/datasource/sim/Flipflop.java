@@ -4,8 +4,9 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.vtype.VBoolean;
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VBoolean;
 
 /**
  * Function to simulate a boolean signal that turns on and off.
@@ -38,6 +39,6 @@ public class Flipflop extends SimFunction<VBoolean> {
     @Override
     VBoolean nextValue() {
         value = !value;
-        return newVBoolean(value, alarmNone(), timeNow());
+        return VBoolean.of(value, Alarm.none(), Time.now());
     }
 }

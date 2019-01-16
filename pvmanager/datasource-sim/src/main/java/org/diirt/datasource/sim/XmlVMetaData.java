@@ -5,15 +5,17 @@
 package org.diirt.datasource.sim;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import org.diirt.vtype.Alarm;
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.Time;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmProvider;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.Time;
+import org.epics.vtype.TimeProvider;
 
 /**
  *
  * @author carcassi
  */
-class XmlVMetaData extends ReplayValue implements Time, Alarm {
+class XmlVMetaData extends ReplayValue implements TimeProvider, AlarmProvider {
 
     @XmlAttribute
     Integer timeUserTag;
@@ -22,24 +24,30 @@ class XmlVMetaData extends ReplayValue implements Time, Alarm {
     @XmlAttribute
     String alarmName;
 
-    @Override
     public Integer getTimeUserTag() {
         return timeUserTag;
     }
 
-    @Override
     public AlarmSeverity getAlarmSeverity() {
         return alarmSeverity;
     }
 
-    @Override
     public String getAlarmName() {
         return alarmName;
     }
 
-    @Override
     public boolean isTimeValid() {
         return true;
+    }
+
+    @Override
+    public Alarm getAlarm() {
+        return Alarm.of(getAlarmSeverity(), null, getAlarmName());
+    }
+
+    @Override
+    public Time getTime() {
+        return Time.of(getTimestamp());
     }
 
 }

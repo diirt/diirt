@@ -5,20 +5,22 @@
 package org.diirt.datasource.sim;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 
 /**
  *
  * @author carcassi
  */
-class XmlVDouble extends XmlVNumberMetaData implements VDouble {
+class XmlVDouble extends XmlVNumberMetaData {
 
     @XmlAttribute
     Double value;
 
-    @Override
     public Double getValue() {
         return value;
     }
 
+    public VDouble getVDouble() {
+        return VDouble.of(getValue(), getAlarm(), getTime(), getDisplay());
+    }
 }

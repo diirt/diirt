@@ -4,7 +4,7 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -23,14 +23,14 @@ public class NoiseTest {
         VDouble firstValue = noise.nextValue();
 
         // Check limits
-        assertThat(firstValue.getLowerCtrlLimit(), equalTo(-10.0));
-        assertThat(firstValue.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(firstValue.getLowerAlarmLimit(), equalTo(-8.0));
-        assertThat(firstValue.getLowerWarningLimit(), equalTo(-6.0));
-        assertThat(firstValue.getUpperWarningLimit(), equalTo(6.0));
-        assertThat(firstValue.getUpperAlarmLimit(), equalTo(8.0));
-        assertThat(firstValue.getUpperDisplayLimit(), equalTo(10.0));
-        assertThat(firstValue.getUpperCtrlLimit(), equalTo(10.0));
+        assertThat(firstValue.getDisplay().getControlRange().getMinimum(), equalTo(-10.0));
+        assertThat(firstValue.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
+        assertThat(firstValue.getDisplay().getAlarmRange().getMinimum(), equalTo(-8.0));
+        assertThat(firstValue.getDisplay().getWarningRange().getMinimum(), equalTo(-6.0));
+        assertThat(firstValue.getDisplay().getWarningRange().getMaximum(), equalTo(6.0));
+        assertThat(firstValue.getDisplay().getAlarmRange().getMaximum(), equalTo(8.0));
+        assertThat(firstValue.getDisplay().getDisplayRange().getMaximum(), equalTo(10.0));
+        assertThat(firstValue.getDisplay().getControlRange().getMaximum(), equalTo(10.0));
 
         // Calculate histogram
         int quart1 = 0;

@@ -5,8 +5,12 @@
 package org.diirt.datasource.sim;
 
 import java.util.Random;
-import org.diirt.vtype.VDouble;
-import static org.diirt.vtype.ValueFactory.*;
+
+import org.epics.util.stats.Range;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 
 /**
  * Function to simulate a signal that has a uniform distribution. The warning
@@ -62,9 +66,15 @@ public class Noise extends SimFunction<VDouble> {
         this.min = min;
         this.max = max;
         range = this.max - this.min;
-        lastValue = newVDouble(min, alarmNone(), timeNow(),
-                newDisplay(min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,
-                min + range * 0.8, min + range * 0.9, max, min, max));
+        lastValue = VDouble.of(min,
+                                Alarm.none(),
+                                Time.now(),
+                                Display.of(Range.of(min, max),
+                                           Range.of(min + range * 0.1, min + range * 0.9),
+                                           Range.of(min + range * 0.2, min + range * 0.8),
+                                           Range.of(min, max),
+                                           "x",
+                                           Constants.DOUBLE_FORMAT));
     }
 
     @Override

@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.diirt.vtype.VDouble;
-
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 
 import org.diirt.util.time.TimeInterval;
 
@@ -95,7 +94,7 @@ abstract class SimFunction<T> extends Simulation<T> {
         if (lastTime == null)
             lastTime = Instant.now();
 
-        return newVDouble(value, timeNow(), oldValue);
+        return VDouble.of(value, oldValue.getAlarm(), Time.now(), oldValue.getDisplay());
     }
 
     /**

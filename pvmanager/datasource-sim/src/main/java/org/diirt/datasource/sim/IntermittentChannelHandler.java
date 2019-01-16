@@ -15,8 +15,12 @@ import java.util.logging.Logger;
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.util.FunctionParser;
-import org.diirt.vtype.AlarmSeverity;
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.AlarmStatus;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -37,9 +41,11 @@ class IntermittentChannelHandler extends MultiplexedChannelHandler<Object, Objec
 
                 if (toConnect) {
                     processConnection(new Object());
-                    processMessage(toVTypeChecked(value));
+                    processMessage(VType.toVTypeChecked(value));
                 } else {
-                    processMessage(toVTypeChecked(value, newAlarm(AlarmSeverity.UNDEFINED, "Disconnected"), timeNow(), displayNone()));
+                    processMessage(VType.toVTypeChecked(value,
+                            Alarm.of(AlarmSeverity.UNDEFINED, AlarmStatus.UNDEFINED, "Disconnected"), Time.now(),
+                            Display.none()));
                     processConnection(null);
                 }
             } catch (Exception ex) {

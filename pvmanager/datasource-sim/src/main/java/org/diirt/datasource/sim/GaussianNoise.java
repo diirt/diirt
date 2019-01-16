@@ -5,8 +5,12 @@
 package org.diirt.datasource.sim;
 
 import java.util.Random;
-import org.diirt.vtype.VDouble;
-import static org.diirt.vtype.ValueFactory.*;
+
+import org.epics.util.stats.Range;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 
 /**
  * Function to simulate a signal that has a gaussian distribution. The warning
@@ -47,9 +51,15 @@ public class GaussianNoise extends SimFunction<VDouble> {
         }
         this.average = average;
         this.stdDev = stdDev;
-        lastValue = newVDouble(average, alarmNone(), timeNow(),
-                newDisplay(average - 4 * stdDev, average - 2 * stdDev, average - stdDev, "x", Constants.DOUBLE_FORMAT,
-                average + stdDev, average + 2 * stdDev, average + 4 * stdDev, average - 4 * stdDev, average + 4 * stdDev));
+        lastValue = VDouble.of(average,
+                                Alarm.none(),
+                                Time.now(),
+                                Display.of(Range.of(average - 4 * stdDev, average + 4 * stdDev),
+                                           Range.of(average - 2 * stdDev, average + 2 * stdDev), 
+                                           Range.of(average - stdDev, average + stdDev),
+                                           Range.of(average - 4 * stdDev, average + 4 * stdDev), 
+                                           "x",
+                                           Constants.DOUBLE_FORMAT));
     }
 
     @Override

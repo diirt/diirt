@@ -7,11 +7,12 @@ package org.diirt.datasource.sim;
 import java.time.Instant;
 import java.util.Random;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.ValueFactory;
-
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.stats.Range;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDoubleArray;
 
 /**
  * Function to simulate a waveform containing a uniformly distributed
@@ -80,8 +81,14 @@ public class NoiseWaveform extends SimFunction<VDoubleArray> {
     VDoubleArray nextValue() {
         if (lastTime == null)
             lastTime = Instant.now();
-        return ValueFactory.newVDoubleArray(new ArrayDouble(generateNewValue()), alarmNone(),
-                newTime(lastTime), newDisplay(min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,
-                min + range * 0.8, min + range * 0.9, max, min, max));
+        return VDoubleArray.of(ArrayDouble.of(generateNewValue()),
+                Alarm.none(),
+                Time.of(lastTime),
+                Display.of(Range.of(min, max),
+                           Range.of(min + range * 0.1, min + range * 0.9),
+                           Range.of(min + range * 0.2, min + range * 0.8),
+                           Range.of(min, max),
+                           "x",
+                           Constants.DOUBLE_FORMAT));
     }
 }

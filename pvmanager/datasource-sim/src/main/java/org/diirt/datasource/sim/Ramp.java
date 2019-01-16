@@ -4,9 +4,11 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.vtype.VDouble;
-import static org.diirt.vtype.ValueFactory.*;
-import java.time.Instant;
+import org.epics.util.stats.Range;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDouble;
 
 /**
  * Function to simulate a signal that increases constantly within a range
@@ -49,9 +51,10 @@ public class Ramp extends SimFunction<VDouble> {
         }
         this.step = step;
         range = max - min;
-        lastValue = newVDouble(currentValue, alarmNone(), timeNow(),
-                newDisplay(min, min + range * 0.1, min + range * 0.2, "x", Constants.DOUBLE_FORMAT,
-                min + range * 0.8, min + range * 0.9, max, min, max));
+        lastValue = VDouble.of(currentValue, Alarm.none(), Time.now(),
+                Display.of(Range.of(min, max), Range.of(min + range * 0.1, min + range * 0.9),
+                        Range.of(min + range * 0.2, min + range * 0.8), Range.of(min, max), "x",
+                        Constants.DOUBLE_FORMAT));
     }
 
     /**

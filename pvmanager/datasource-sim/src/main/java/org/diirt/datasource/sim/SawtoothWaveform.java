@@ -4,15 +4,16 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.util.array.ArrayDouble;
-import org.diirt.util.array.ListDouble;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.ValueFactory;
-
-import static org.diirt.vtype.ValueFactory.*;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+
+import org.epics.util.array.ArrayDouble;
+import org.epics.util.array.ListDouble;
+import org.epics.util.stats.Range;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDoubleArray;
 
 /**
  * Function to simulate a waveform containing a triangle wave.
@@ -72,7 +73,7 @@ public class SawtoothWaveform extends SimFunction<VDoubleArray> {
             double normalizedPositionInPeriod = x - (double) (long) x;
             newArray[i] = -1.0 + 2 * normalizedPositionInPeriod;
         }
-        return new ArrayDouble(newArray);
+        return ArrayDouble.of(newArray);
     }
 
     @Override
@@ -86,8 +87,9 @@ public class SawtoothWaveform extends SimFunction<VDoubleArray> {
         double min = 1.0;
         double max = -1.0;
         double range = 0.0;
-        return ValueFactory.newVDoubleArray(generateNewValue(omega, t, k), alarmNone(),
-                newTime(lastTime), newDisplay(min, min + range * 0.1, min + range * 0.2, "", Constants.DOUBLE_FORMAT,
-                min + range * 0.8, min + range * 0.9, max, min, max));
+        return VDoubleArray.of(generateNewValue(omega, t, k), Alarm.none(), Time.of(lastTime),
+                Display.of(Range.of(min, max), Range.of(min + range * 0.1, min + range * 0.9),
+                        Range.of(min + range * 0.2, min + range * 0.8), Range.of(min, max), "x",
+                        Constants.DOUBLE_FORMAT));
     }
 }

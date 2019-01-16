@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.diirt.datasource.ChannelWriteCallback;
 import org.diirt.datasource.MultiplexedChannelHandler;
 import org.diirt.datasource.util.FunctionParser;
-import org.diirt.vtype.ValueFactory;
+import org.epics.vtype.VType;
 
 /**
  *
@@ -38,7 +38,7 @@ class DelayedConnectionChannelHandler extends MultiplexedChannelHandler<Object, 
             if (value == null) {
                 throw new IllegalArgumentException(errorMessage);
             }
-            initialValue = ValueFactory.toVTypeChecked(value);
+            initialValue = VType.toVTypeChecked(value);
         }
         delayInSeconds = (Double) tokens.get(1);
         this.exec = exec;

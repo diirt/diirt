@@ -4,8 +4,8 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.vtype.AlarmSeverity;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.AlarmSeverity;
+import org.epics.vtype.VDouble;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -23,16 +23,16 @@ public class RampTest {
         VDouble value = ramp.nextValue();
 
         // Check limits
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(value.getAlarmName(), equalTo("LOLO"));
-        assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
-        assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(value.getLowerAlarmLimit(), equalTo(-8.0));
-        assertThat(value.getLowerWarningLimit(), equalTo(-6.0));
-        assertThat(value.getUpperWarningLimit(), equalTo(6.0));
-        assertThat(value.getUpperAlarmLimit(), equalTo(8.0));
-        assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
-        assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
+        assertThat(value.getAlarm().getSeverity(), equalTo(AlarmSeverity.MAJOR));
+        assertThat(value.getAlarm().getName(), equalTo("LOLO"));
+        assertThat(value.getDisplay().getControlRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getAlarmRange().getMinimum(), equalTo(-8.0));
+        assertThat(value.getDisplay().getWarningRange().getMinimum(), equalTo(-6.0));
+        assertThat(value.getDisplay().getWarningRange().getMaximum(), equalTo(6.0));
+        assertThat(value.getDisplay().getAlarmRange().getMaximum(), equalTo(8.0));
+        assertThat(value.getDisplay().getDisplayRange().getMaximum(), equalTo(10.0));
+        assertThat(value.getDisplay().getControlRange().getMaximum(), equalTo(10.0));
 
         assertThat(value.getValue(), equalTo(-10.0));
         value = ramp.nextValue();
@@ -66,16 +66,16 @@ public class RampTest {
         VDouble value = ramp.nextValue();
 
         // Check limits
-        assertThat(value.getAlarmSeverity(), equalTo(AlarmSeverity.MAJOR));
-        assertThat(value.getAlarmName(), equalTo("HIHI"));
-        assertThat(value.getLowerCtrlLimit(), equalTo(-10.0));
-        assertThat(value.getLowerDisplayLimit(), equalTo(-10.0));
-        assertThat(value.getLowerAlarmLimit(), equalTo(-8.0));
-        assertThat(value.getLowerWarningLimit(), equalTo(-6.0));
-        assertThat(value.getUpperWarningLimit(), equalTo(6.0));
-        assertThat(value.getUpperAlarmLimit(), equalTo(8.0));
-        assertThat(value.getUpperDisplayLimit(), equalTo(10.0));
-        assertThat(value.getUpperCtrlLimit(), equalTo(10.0));
+        assertThat(value.getAlarm().getSeverity(), equalTo(AlarmSeverity.MAJOR));
+        assertThat(value.getAlarm().getName(), equalTo("HIHI"));
+        assertThat(value.getDisplay().getControlRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getDisplayRange().getMinimum(), equalTo(-10.0));
+        assertThat(value.getDisplay().getAlarmRange().getMinimum(), equalTo(-8.0));
+        assertThat(value.getDisplay().getWarningRange().getMinimum(), equalTo(-6.0));
+        assertThat(value.getDisplay().getWarningRange().getMaximum(), equalTo(6.0));
+        assertThat(value.getDisplay().getAlarmRange().getMaximum(), equalTo(8.0));
+        assertThat(value.getDisplay().getDisplayRange().getMaximum(), equalTo(10.0));
+        assertThat(value.getDisplay().getControlRange().getMaximum(), equalTo(10.0));
 
         assertThat(value.getValue(), equalTo(10.0));
         value = ramp.nextValue();

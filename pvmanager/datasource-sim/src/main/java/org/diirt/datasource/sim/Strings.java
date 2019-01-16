@@ -4,8 +4,9 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.vtype.VString;
-import static org.diirt.vtype.ValueFactory.*;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Time;
+import org.epics.vtype.VString;
 
 /**
  * Function to simulate a signal that generates Strings.
@@ -39,7 +40,7 @@ public class Strings extends SimFunction<VString> {
 
     @Override
     VString nextValue() {
-        return newVString(nextString(), alarmNone(), timeNow());
+        return VString.of(nextString(), Alarm.none(), Time.now());
     }
 
     String nextString() {

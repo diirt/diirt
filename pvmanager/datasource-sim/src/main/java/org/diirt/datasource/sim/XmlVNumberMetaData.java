@@ -6,13 +6,16 @@ package org.diirt.datasource.sim;
 
 import java.text.NumberFormat;
 import javax.xml.bind.annotation.XmlAttribute;
-import org.diirt.vtype.Display;
+
+import org.epics.util.stats.Range;
+import org.epics.vtype.Display;
+import org.epics.vtype.DisplayProvider;
 
 /**
  *
  * @author carcassi
  */
-class XmlVNumberMetaData extends XmlVMetaData implements Display {
+class XmlVNumberMetaData extends XmlVMetaData implements DisplayProvider {
 
     @XmlAttribute
     String units;
@@ -33,54 +36,53 @@ class XmlVNumberMetaData extends XmlVMetaData implements Display {
     @XmlAttribute
     Double upperDisplayLimit;
 
-    @Override
     public Double getLowerDisplayLimit() {
         return lowerDisplayLimit;
     }
 
-    @Override
     public Double getLowerCtrlLimit() {
         return lowerCtrlLimit;
     }
 
-    @Override
     public Double getLowerAlarmLimit() {
         return lowerAlarmLimit;
     }
 
-    @Override
     public Double getLowerWarningLimit() {
         return lowerWarningLimit;
     }
 
-    @Override
     public String getUnits() {
         return units;
     }
 
-    @Override
     public NumberFormat getFormat() {
         // TODO fix
         return NumberFormat.getNumberInstance();
     }
 
-    @Override
     public Double getUpperWarningLimit() {
         return upperWarningLimit;
     }
 
-    @Override
     public Double getUpperAlarmLimit() {
         return upperAlarmLimit;
     }
 
-    @Override
     public Double getUpperCtrlLimit() {
         return upperCtrlLimit;
     }
 
-    @Override
     public Double getUpperDisplayLimit() {
         return upperDisplayLimit;
+    }
+
+    public Display getDisplay() {
+        return Display.of(Range.of(getLowerDisplayLimit(), getUpperDisplayLimit()),
+                          Range.of(getLowerAlarmLimit(), getUpperAlarmLimit()),
+                          Range.of(getLowerWarningLimit(), getUpperWarningLimit()),
+                          Range.of(getLowerCtrlLimit(), getUpperCtrlLimit()),
+                          getUnits(),
+                          getFormat());
     }
 }

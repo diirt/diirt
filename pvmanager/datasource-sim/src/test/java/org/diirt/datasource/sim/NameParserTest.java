@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.diirt.util.time.TimeInterval;
-import org.diirt.vtype.VDouble;
+import org.epics.vtype.VDouble;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -103,8 +103,8 @@ public class NameParserTest {
         Noise noise1 = (Noise) NameParser.createFunction("noise(0.0, 10.0, 1.0)");
         Noise noise2 = (Noise) NameParser.createFunction("noise");
         // Forces use of variables
-        assertThat(noise1.nextValue().getAlarmName(), notNullValue());
-        assertThat(noise2.nextValue().getAlarmName(), notNullValue());
+        assertThat(noise1.nextValue().getAlarm().getName(), notNullValue());
+        assertThat(noise2.nextValue().getAlarm().getName(), notNullValue());
     }
 
     @Test
@@ -113,8 +113,8 @@ public class NameParserTest {
         GaussianNoise noise2 = (GaussianNoise) NameParser.createFunction("gaussianNoise");
         GaussianNoise noise3 = (GaussianNoise) NameParser.createFunction("gaussianNoise()");
         // Forces use of variables
-        assertThat(noise1.nextValue().getAlarmName(), notNullValue());
-        assertThat(noise2.nextValue().getAlarmName(), notNullValue());
+        assertThat(noise1.nextValue().getAlarm().getName(), notNullValue());
+        assertThat(noise2.nextValue().getAlarm().getName(), notNullValue());
     }
 
     @Test

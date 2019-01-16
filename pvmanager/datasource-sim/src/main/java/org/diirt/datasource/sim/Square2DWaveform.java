@@ -4,17 +4,16 @@
  */
 package org.diirt.datasource.sim;
 
-import org.diirt.util.array.ArrayInt;
-import org.diirt.util.array.ListDouble;
-import org.diirt.vtype.VDoubleArray;
-import org.diirt.vtype.ValueFactory;
-
-import static org.diirt.vtype.ValueFactory.*;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import org.diirt.vtype.ValueUtil;
+import org.epics.util.array.ListDouble;
+import org.epics.util.stats.Range;
+import org.epics.vtype.Alarm;
+import org.epics.vtype.Display;
+import org.epics.vtype.Time;
+import org.epics.vtype.VDoubleArray;
+import org.epics.vtype.VNumberArray;
 
 /**
  * Function to simulate a 2D waveform containing a sine wave.
@@ -123,9 +122,18 @@ public class Square2DWaveform extends SimFunction<VDoubleArray> {
         double min = -1.0;
         double max = 1.0;
         double range = 0.0;
-        return (VDoubleArray) ValueFactory.newVNumberArray(generateNewValue(omega, t, k), new ArrayInt(ySamples, xSamples),
-                ValueUtil.defaultArrayDisplay(new ArrayInt(ySamples, xSamples)), alarmNone(),
-                newTime(lastTime), newDisplay(min, min + range * 0.1, min + range * 0.2, "", Constants.DOUBLE_FORMAT,
-                min + range * 0.8, min + range * 0.9, max, min, max));
+//        return (VDoubleArray) VNumberArray(generateNewValue(omega, t, k), ArrayInteger.of(ySamples, xSamples),
+//                ValueUtil.defaultArrayDisplay(ArrayInteger.of(ySamples, xSamples)), Alarm.none(),
+//                newTime(lastTime), newDisplay(min, min + range * 0.1, min + range * 0.2, "", Constants.DOUBLE_FORMAT,
+//                min + range * 0.8, min + range * 0.9, max, min, max));
+        return (VDoubleArray) VNumberArray.of(generateNewValue(omega, t, k),
+                Alarm.none(),
+                Time.now(),
+                Display.of(Range.of(min, max),
+                           Range.of(min + range * 0.1, min + range * 0.9),
+                           Range.of(min + range * 0.2, min + range * 0.8),
+                           Range.of(min, max),
+                           "x",
+                           Constants.DOUBLE_FORMAT));
     }
 }
