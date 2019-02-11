@@ -233,8 +233,13 @@ public class CompositeDataSource extends DataSource {
                 if (dataSource == null) {
                     throw new IllegalStateException("DataSourceProvider '" + name + conf.delimiter + "' did not create a valid datasource.");
                 }
-                dataSources.put(name, dataSource);
-                log.log(Level.CONFIG, "Created instance for data source {0} ({1})", new Object[]{name, dataSource.getClass().getSimpleName()});
+                DataSource existingDataSource = dataSources.putIfAbsent(name, dataSource);
+                if (existingDataSource != null) {
+                    dataSource.close();
+                    dataSource = existingDataSource;
+                } else {
+                    log.log(Level.CONFIG, "Created instance for data source {0} ({1})", new Object[]{name, dataSource.getClass().getSimpleName()});
+                }
             }
         }
         return dataSource;
