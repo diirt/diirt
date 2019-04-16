@@ -1,7 +1,10 @@
 sudo: required
+language: java
+dist: trusty
 
 jdk:
   - oraclejdk8
+  - oraclejdk9
   
 script:
   - mvn clean verify
