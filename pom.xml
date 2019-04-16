@@ -71,10 +71,19 @@
     </ciManagement>
 
     <properties>
+        <java.release>8</java.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <github.global.server>github.com</github.global.server>
         <serviceloader.maven.plugin.version>1.0.4</serviceloader.maven.plugin.version>
         <antlr.runtime.version>3.4</antlr.runtime.version>
+        <!-- Auxiliary programs -->
+        <dot.executable>/usr/local/bin/dot</dot.executable>
+        <!-- Plugin Dependencies Versions -->
+        <asm.version>7.1</asm.version>
+        <!-- Dependencies Versions -->
+        <assertj.version>3.12.2</assertj.version>
+        <junit.version>4.12</junit.version>
+        <javafx.version>11.0.2</javafx.version>
     </properties>
 
     <profiles>
@@ -200,14 +209,35 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.1</version>
+                <configuration>
+                  <additionalOptions>--javafx</additionalOptions>
+                  <detectJavaApiLink>true</detectJavaApiLink>
+                  <detectLinks>false</detectLinks>
+                  <detectOfflineLinks>true</detectOfflineLinks>
+                  <docfilessubdirs>true</docfilessubdirs>
+                  <isOffline>false</isOffline>
+                  <!-- Hardcoding the java 8 docs since 11.0.2 and maven javadoc plugin hit 
+                  the following jdk bug https://bugs.openjdk.java.net/browse/JDK-8212233 -->
+                  <links>
+                    <link>https://docs.oracle.com/javase/8/docs/api/</link>
+                  </links>
+                  <source>8</source>
+                </configuration>
                 <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
+                  <execution>
+                    <id>attach-javadocs</id>
+                    <goals>
+                      <goal>jar</goal>
+                    </goals>
+                  </execution>
                 </executions>
+                <dependencies>
+                  <dependency>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                    <version>${asm.version}</version>
+                  </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
