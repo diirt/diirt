@@ -22,7 +22,7 @@ public class ImageAssert {
             assertEquals("Images are not the same height", expected.getHeight(), image.getHeight());
             assertEquals("Images are not the same width", expected.getWidth(), image.getWidth());
 
-            double acceptableRange = 0.0;
+            double acceptableRange = 1.0;
             if(!System.getProperty("java.version").startsWith("11")) {
                 acceptableRange = 5.0;
             }
