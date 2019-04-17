@@ -6,7 +6,11 @@ package org.diirt.graphene;
 
 import org.diirt.util.stats.Range;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+
 import org.junit.Test;
 import org.diirt.util.array.*;
 import org.diirt.util.stats.Ranges;
@@ -440,18 +444,37 @@ public class IntensityGraph2DRendererTest extends BaseGraphTest<IntensityGraph2D
         renderer.update(renderer.newUpdate().pixelSelectionRange(100, 200, 150, 250));
         GraphBuffer graphBuffer = new GraphBuffer(renderer);
         renderer.draw(graphBuffer, data);
-        assertThat(renderer.getXPixelSelectionRange().getMinimum(), equalTo(100.0));
-        assertThat(renderer.getXPixelSelectionRange().getMaximum(), equalTo(200.0));
-        assertThat(renderer.getYPixelSelectionRange().getMinimum(), equalTo(150.0));
-        assertThat(renderer.getYPixelSelectionRange().getMaximum(), equalTo(250.0));
-        assertThat(renderer.getXValueSelectionRange().getMinimum(), closeTo(12.5203, 0.0001));
-        assertThat(renderer.getXValueSelectionRange().getMaximum(), closeTo(28.9430, 0.0001));
-        assertThat(renderer.getYValueSelectionRange().getMinimum(), closeTo(45.9869, 0.0001));
-        assertThat(renderer.getYValueSelectionRange().getMaximum(), closeTo(67.8958, 0.0001));
-        assertThat(renderer.getXIndexSelectionRange().getMinimum(), equalTo(25.0));
-        assertThat(renderer.getXIndexSelectionRange().getMaximum(), equalTo(57.0));
-        assertThat(renderer.getYIndexSelectionRange().getMinimum(), equalTo(92.0));
-        assertThat(renderer.getYIndexSelectionRange().getMaximum(), equalTo(135.0));
+
+        boolean done = false;
+        String imageName = "intensityGraph2D.selectedRegion.1";
+        try {
+            BufferedImage expected = ImageIO.read(ImageAssert.class.getResource("intensityGraph2D.selectedRegion.1" + ".png"));
+
+            assertThat(renderer.getXPixelSelectionRange().getMinimum(), equalTo(100.0));
+            assertThat(renderer.getXPixelSelectionRange().getMaximum(), equalTo(200.0));
+            assertThat(renderer.getYPixelSelectionRange().getMinimum(), equalTo(150.0));
+            assertThat(renderer.getYPixelSelectionRange().getMaximum(), equalTo(250.0));
+            assertThat(renderer.getXValueSelectionRange().getMinimum(), closeTo(12.5203, 0.0001));
+            assertThat(renderer.getXValueSelectionRange().getMaximum(), closeTo(28.9430, 0.0001));
+            assertThat(renderer.getYValueSelectionRange().getMinimum(), closeTo(45.8695, 0.0001));
+            assertThat(renderer.getYValueSelectionRange().getMaximum(), closeTo(67.8260, 0.0001));
+            assertThat(renderer.getXIndexSelectionRange().getMinimum(), equalTo(25.0));
+            assertThat(renderer.getXIndexSelectionRange().getMaximum(), equalTo(57.0));
+            assertThat(renderer.getYIndexSelectionRange().getMinimum(), equalTo(92.0));
+            assertThat(renderer.getYIndexSelectionRange().getMaximum(), equalTo(135.0));
+
+            done = true;
+        } finally {
+            if (!done) {
+                ImageIO.write(graphBuffer.getImage(), "png", new File("src/test/resources/org/diirt/graphene/" + imageName + ".failed.png"));
+            } else {
+                File file = new File("src/test/resources/org/diirt/graphene/" + imageName + ".failed.png");
+                if (file.exists()) {
+                    file.delete();
+                }
+            }
+        }
+        
         ImageAssert.compareImages("intensityGraph2D.selectedRegion.1", graphBuffer.getImage());
     }
 
