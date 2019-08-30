@@ -32,7 +32,7 @@ public class ADDataTypeMappingFunction2 implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "adData-string";
+        return "adDataString";
     }
 
     @Override

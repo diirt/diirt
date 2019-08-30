@@ -17,7 +17,11 @@ import org.diirt.util.array.ListNumbers;
 import org.diirt.vtype.VEnum;
 import org.diirt.vtype.VNumberArray;
 import org.diirt.vtype.ValueFactory;
-
+/**
+ * 
+ * @author kunal
+ *
+ */
 public class ADDataTypeMappingFunction implements FormulaFunction {
 
     @Override
@@ -32,7 +36,7 @@ public class ADDataTypeMappingFunction implements FormulaFunction {
 
     @Override
     public String getName() {
-        return "adData-enum";
+        return "adDataEnum";
     }
 
     @Override
