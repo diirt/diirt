@@ -74,17 +74,19 @@ public class ADDataTypeMappingFunction2 implements FormulaFunction {
             int[] newUInt16Data = new int[data.getData().size()];
             for (int i = 0; i < data.getData().size(); i++) {
                 if (data.getData().getInt(i) < 0) {
-                    newUInt16Data[i] = data.getData().getInt(i) + 256;
+                    newUInt16Data[i] = data.getData().getInt(i) + ((int) Math.pow(2, 16));
+                } else {
+                    newUInt16Data[i] = data.getData().getInt(i);
                 }
             }
             return ValueFactory.newVNumberArray(ListNumbers.toListNumber(newUInt16Data), alarmNone(), timeNow(), displayNone());
         case "UInt32":
-            int[] newUInt32Data = new int[data.getData().size()];
+            long[] newUInt32Data = new long[data.getData().size()];
             for (int i = 0; i < data.getData().size(); i++) {
-                System.out.println("value:" + data.getData().getInt(i));
                 if (data.getData().getInt(i) < 0) {
-                    System.out.println("value:" + (data.getData().getInt(i) + 256));
-                    newUInt32Data[i] = data.getData().getInt(i) + 256;
+                    newUInt32Data[i] = data.getData().getInt(i) + ((long) Math.pow(2, 32));
+                } else {
+                    newUInt32Data[i] = data.getData().getInt(i);
                 }
             }
             return ValueFactory.newVNumberArray(ListNumbers.toListNumber(newUInt32Data), alarmNone(), timeNow(), displayNone());
