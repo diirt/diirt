@@ -78,7 +78,7 @@ public class AreaDetectorFunctionSetTest {
         VNumberArray array = newVIntArray(new ArrayInt(-1, 0, 1), alarmNone(), timeNow(), displayNone());
         VNumberArray expectedArray = newVIntArray(new ArrayInt(-1, 0, 1), alarmNone(), timeNow(), displayNone());
 
-        FunctionTester.findBySignature(set, "adData-enum", VNumberArray.class, VEnum.class)
+        FunctionTester.findBySignature(set, "adDataEnum", VNumberArray.class, VEnum.class)
                 .compareReturnValue(expectedArray, array, newVEnum(4, labels, alarmNone(), timeNow()));
 
     }
@@ -88,7 +88,7 @@ public class AreaDetectorFunctionSetTest {
         VNumberArray array = newVIntArray(new ArrayInt(-1, 0, 1), alarmNone(), timeNow(), displayNone());
         VNumberArray expectedArray = newVLongArray(new ArrayLong(4294967295L, 0, 1), alarmNone(), timeNow(), displayNone());
 
-        FunctionTester.findBySignature(set, "adData-enum", VNumberArray.class, VEnum.class)
+        FunctionTester.findBySignature(set, "adDataEnum", VNumberArray.class, VEnum.class)
                 .compareReturnValue(expectedArray, array, newVEnum(5, labels, alarmNone(), timeNow()));
 
     }
