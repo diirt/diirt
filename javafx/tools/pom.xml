@@ -4,13 +4,13 @@
     <parent>
         <artifactId>javafx-all</artifactId>
         <groupId>org.diirt.javafx</groupId>
-        <version>3.1.8</version>
+        <version>3.1.9-SNAPSHOT</version>
     </parent>
 
     <artifactId>tools</artifactId>
     <name>org.diirt.javafx.tools</name>
     <description>A set of standard diirt tools for debugging and basic usage.</description>
-    <version>3.1.8</version>
+    <version>3.1.9-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <dependencies>
