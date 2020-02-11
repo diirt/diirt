@@ -96,6 +96,7 @@ public class TimeDuration {
      * The number of seconds concatenated with the number of nanoseconds (12.500000000
      * for 12.5 seconds).
      *
+     * @param duration The duration to be converted to string
      * @return the string representation
      */
     public static String toSecondString(Duration duration){
